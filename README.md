@@ -22,7 +22,8 @@ Le depot couvre:
 - `functions/api/status.js` : suivi client par numero + code
 - `functions/api/ops/cases.js` : recherche et actions operateur
 - `functions/_lib/` : logique partagee (DB, auth, emails, Stripe, rate-limit)
-- `migrations/neon/0001_full_schema.sql` : schema Postgres consolide
+- `supabase/migrations/` : migrations Supabase cible
+- `migrations/neon/0001_full_schema.sql` : schema Postgres historique conserve temporairement
 - `migrations/d1-archive/` : ancienne base D1 (archive historique uniquement)
 - `wrangler.jsonc` : configuration Pages/Functions, source de verite
 - `.dev.vars.example` : variables locales a copier vers `.dev.vars`
@@ -33,9 +34,9 @@ Supabase est la pile cible pour les nouveaux developpements. Le depot conserve t
 
 ## Prerequis de lancement
 
-1. Provisionner une base Neon Postgres et recuperer son `DATABASE_URL`.
-2. Appliquer le schema `migrations/neon/0001_full_schema.sql` via `psql` ou la console Neon.
-3. Declarer `DATABASE_URL` comme secret Cloudflare Pages.
+1. Provisionner un projet Supabase et recuperer l'URL Postgres pooled compatible Cloudflare.
+2. Appliquer les migrations `supabase/migrations/` avec Supabase CLI ou SQL Editor.
+3. Declarer l'URL Postgres Supabase comme secret Cloudflare Pages sous le nom `DATABASE_URL` tant que l'adaptateur legacy reste actif.
 4. Creer un secret fort `ACCESS_CODE_SECRET`.
 5. Configurer les alias `contact@`, `urgence@`, `dossiers@` dans Cloudflare Email Routing.
 6. Verifier le domaine d'envoi dans Resend et fournir `RESEND_API_KEY`.

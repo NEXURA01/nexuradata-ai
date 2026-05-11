@@ -1,14 +1,17 @@
 # Runbook Lancement NEXURADATA
 
-## 1. Cloudflare Pages et Neon Postgres
+## 1. Cloudflare Pages et Supabase Postgres
 
 1. Connecter le repo a Cloudflare Pages si ce n'est pas deja fait.
-2. Provisionner une base Neon Postgres (https://neon.tech) pour le projet.
-3. Recuperer le `DATABASE_URL` (chaine de connexion pooled).
-4. Declarer `DATABASE_URL` comme secret Cloudflare Pages (production + preview).
-5. Copier `.dev.vars.example` vers `.dev.vars` pour le dev local et y placer un `DATABASE_URL` de branche Neon.
-6. Appliquer le schema consolide via `psql` ou la console Neon:
-   - `psql "$DATABASE_URL" -f migrations/neon/0001_full_schema.sql`
+2. Provisionner un projet Supabase pour NEXURADATA.
+3. Recuperer l'URL Postgres pooled compatible Cloudflare depuis Supabase.
+4. Declarer cette URL comme secret Cloudflare Pages sous `DATABASE_URL` pendant la transition legacy.
+5. Copier `.dev.vars.example` vers `.dev.vars` pour le dev local et y placer l'URL Supabase locale ou pooled.
+6. Appliquer le schema consolide via Supabase CLI ou SQL Editor:
+   - `npx supabase db push`
+   - ou executer `supabase/migrations/20260511191000_initial_operational_schema.sql` dans le SQL Editor.
+
+Note: `functions/_lib/db.js` conserve encore l'adaptateur legacy. Ne pas reutiliser l'ancienne URL Neon. Le secret `DATABASE_URL` doit pointer vers Supabase jusqu'au remplacement complet de l'adaptateur DB.
 
 ## 2. Emails
 
@@ -57,7 +60,7 @@ Evenements minimum:
 - les paiements sont crees depuis `/operations/`
 - types prevus: acompte, solde final, paiement ponctuel
 - chaque lien de paiement Stripe est rattache a un `caseId`
-- le webhook met a jour le statut du paiement dans Neon et l'historique du dossier
+- le webhook met a jour le statut du paiement dans Supabase et l'historique du dossier
 
 ## 3. Protection de la console interne
 

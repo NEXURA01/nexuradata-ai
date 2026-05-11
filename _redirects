@@ -1,10 +1,24 @@
 /index.html / 301
 /index2 / 301
 /index2.html / 301
-/services.html /services-recuperation-forensique-montreal.html 301
 /en/services.html /en/ 301
 /intelligence-artificielle-laboratoire.html /le-laboratoire.html 301
 /en/intelligence-artificielle-laboratoire.html /en/le-laboratoire.html 301
+
+# NEXURA canonical public architecture
+/operational-assessment /operational-assessment.html 200
+/services /services.html 200
+/workflow-automation /workflow-automation.html 200
+/operational-dashboard /operational-dashboard.html 200
+/ai-operational-analysis /ai-operational-analysis.html 200
+/pricing /pricing.html 200
+/portal /portal.html 200
+/faq /faq.html 200
+/contact /contact.html 200
+/privacy /privacy.html 200
+/terms /terms.html 200
+/status /status.html 200
+/insights /insights.html 200
 
 # Ghost pages from previous deploys — redirect to canonical equivalents
 /whatsapp.html /#contact 301

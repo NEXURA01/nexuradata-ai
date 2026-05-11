@@ -1,4 +1,4 @@
--- PostgreSQL schema for NEXURADATA (Neon)
+-- PostgreSQL schema for NEXURA (Neon)
 -- Consolidated from D1 migrations 0001–0003
 
 CREATE TABLE IF NOT EXISTS cases (

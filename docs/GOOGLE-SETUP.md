@@ -18,7 +18,7 @@ Account-side tasks still need confirmation in Google and Cloudflare dashboards:
 - Merchant Center account created, website claimed and feed scheduled.
 - Google Business Profile created and verification requested or completed.
 
-Pre-launch checklist for connecting NEXURADATA to Google. All properties must be created and owned by **olivier@nexuradata.ca** (Workspace account on `nexuradata.ca`).
+Pre-launch checklist for connecting NEXURA to Google. All properties must be created and owned by **olivier@nexuradata.ca** (Workspace account on `nexuradata.ca`).
 
 > Verification domain: `nexuradata.ca` (apex). Add `www.nexuradata.ca` only after the apex is verified and the redirect in `_redirects` is confirmed.
 
@@ -47,10 +47,10 @@ Pre-launch checklist for connecting NEXURADATA to Google. All properties must be
 ## 2. Google Analytics 4 (GA4)
 
 1. Go to https://analytics.google.com → sign in as `olivier@nexuradata.ca`.
-2. **Admin → Create → Account**: `NEXURADATA` (Canada, CAD, English).
+2. **Admin → Create → Account**: `NEXURA` (Canada, CAD, English).
 3. **Create property**: `nexuradata.ca`, time zone `America/Montreal`, currency `CAD`.
 4. Industry: `Business & Industrial Markets`. Size: `Small`.
-5. **Data stream → Web** → URL `https://nexuradata.ca`, name `NEXURADATA Web`.
+5. **Data stream → Web** → URL `https://nexuradata.ca`, name `NEXURA Web`.
 6. Measurement ID currently wired in repo: `G-TC31YSS01P`.
 7. Confirm in GA4 Realtime that visits to `https://nexuradata.ca/` are received after deployment.
 
@@ -69,13 +69,13 @@ Pre-launch checklist for connecting NEXURADATA to Google. All properties must be
 Feed already published at `https://nexuradata.ca/merchant-feed.xml` (RSS 2.0 with `g:` namespace). The current feed is French-first and points to the French public pages.
 
 1. Go to https://merchants.google.com → sign in as `olivier@nexuradata.ca`.
-2. **Create account** → business name `NEXURADATA`, country `Canada`, time zone `America/Montreal`.
+2. **Create account** → business name `NEXURA`, country `Canada`, time zone `America/Montreal`.
 3. **Tools → Business information → Website** → claim `https://nexuradata.ca` (use Search Console verification — auto-claims since same Google account).
 4. **Products → Feeds → Add primary feed**:
    - Country: `Canada`
    - Language: `French`
    - Destination: `Free product listings` (skip Shopping ads for now)
-   - Name: `NEXURADATA services FR`
+   - Name: `NEXURA services FR`
    - Method: **Scheduled fetch**
    - URL: `https://nexuradata.ca/merchant-feed.xml`
    - Frequency: weekly, Monday 06:00 ET
@@ -86,7 +86,7 @@ Feed already published at `https://nexuradata.ca/merchant-feed.xml` (RSS 2.0 wit
 ## 4. Google Business Profile (Maps + local SEO)
 
 1. Go to https://business.google.com → sign in as `olivier@nexuradata.ca`.
-2. **Add business** → name `NEXURADATA`, category `Data recovery service`.
+2. **Add business** → name `NEXURA`, category `Data recovery service`.
 3. Address: lab address in Montreal (do **not** publish if it's a residential address — choose "I deliver goods and services to my customers" and set a service area).
 4. Service area: `Montréal`, `Laval`, `Longueuil`, `Brossard`, `Boucherville`, `Saint-Léonard`, `Anjou`, `Lachine`, `LaSalle`, `Verdun` (matches `zones-desservies-montreal-quebec.html`).
 5. Phone: lab phone. Website: `https://nexuradata.ca/`.
@@ -102,7 +102,7 @@ Feed already published at `https://nexuradata.ca/merchant-feed.xml` (RSS 2.0 wit
 
 Use these fields exactly unless operations have changed:
 
-- Public name: `NEXURADATA`
+- Public name: `NEXURA`
 - Primary category: `Data recovery service`
 - Website button / main landing page: `https://nexuradata.ca/`
 - Quote/contact landing page: `https://nexuradata.ca/#contact`
@@ -115,7 +115,7 @@ Use these fields exactly unless operations have changed:
 Short description:
 
 ```text
-NEXURADATA accompagne les dossiers de récupération de données, RAID, SSD, mobile et forensique numérique pour Montréal et le Grand Montréal. Les demandes sont qualifiées avant intervention, avec confidentialité, suivi par dossier et cadre de paiement ou d'autorisation clair.
+NEXURA accompagne les dossiers de récupération de données, RAID, SSD, mobile et forensique numérique pour Montréal et le Grand Montréal. Les demandes sont qualifiées avant intervention, avec confidentialité, suivi par dossier et cadre de paiement ou d'autorisation clair.
 ```
 
 ### Google Business Profile posts
@@ -127,7 +127,7 @@ Post 1 — opening / qualification:
 ```text
 Support inaccessible, RAID dégradé, SSD non reconnu ou téléphone verrouillé?
 
-NEXURADATA qualifie les demandes de récupération de données et de forensique numérique avant intervention. Le dossier est cadré, autorisé, puis suivi de façon sécurisée.
+NEXURA qualifie les demandes de récupération de données et de forensique numérique avant intervention. Le dossier est cadré, autorisé, puis suivi de façon sécurisée.
 
 Ouvrir une demande: https://nexuradata.ca/#contact
 ```
@@ -139,7 +139,7 @@ Post 2 — urgent prevention:
 ```text
 Avant de relancer un disque qui clique, de reconstruire un RAID ou d'essayer plusieurs outils sur un SSD, arrêtez les manipulations répétées.
 
-Chaque tentative peut modifier l'état du support. NEXURADATA vérifie le contexte et confirme le parcours utile avant intervention.
+Chaque tentative peut modifier l'état du support. NEXURA vérifie le contexte et confirme le parcours utile avant intervention.
 
 Processus: https://nexuradata.ca/processus-recuperation-donnees-montreal.html
 ```
@@ -151,7 +151,7 @@ Post 3 — RAID / NAS / enterprise:
 ```text
 RAID, NAS ou serveur en panne: le bon réflexe est de documenter l'état, limiter les redémarrages et qualifier le dossier avant toute reconstruction.
 
-NEXURADATA accompagne les mandats d'entreprise avec confidentialité, autorisation claire et suivi par dossier.
+NEXURA accompagne les mandats d'entreprise avec confidentialité, autorisation claire et suivi par dossier.
 
 RAID et entreprise: https://nexuradata.ca/recuperation-raid-ssd-montreal.html
 ```
@@ -163,7 +163,7 @@ Post 4 — mobile / phone:
 ```text
 Téléphone endommagé, verrouillé ou données critiques à préserver?
 
-NEXURADATA traite les demandes mobile avec une approche contrôlée: qualification, limites réalistes, autorisation et confidentialité.
+NEXURA traite les demandes mobile avec une approche contrôlée: qualification, limites réalistes, autorisation et confidentialité.
 
 Mobile: https://nexuradata.ca/recuperation-telephone-montreal.html
 ```
@@ -175,7 +175,7 @@ Post 5 — forensic / confidential:
 ```text
 Les dossiers sensibles exigent plus qu'un outil: ils exigent un cadre.
 
-NEXURADATA accompagne les besoins de forensique numérique, préservation de données et documentation d'intervention pour Montréal et le Grand Montréal.
+NEXURA accompagne les besoins de forensique numérique, préservation de données et documentation d'intervention pour Montréal et le Grand Montréal.
 
 Forensique: https://nexuradata.ca/forensique-numerique-montreal.html
 ```
@@ -184,7 +184,7 @@ Suggested button: `Learn more` → `https://nexuradata.ca/forensique-numerique-m
 
 Posting cadence: publish posts 1 and 2 during launch week, then one service post per week. Refresh the QR intake post monthly and whenever ads or printed material point to the profile.
 
-Do not add a Facebook profile to structured data or Google public links until the Facebook Page is created, secured and controlled by NEXURADATA.
+Do not add a Facebook profile to structured data or Google public links until the Facebook Page is created, secured and controlled by NEXURA.
 
 ---
 

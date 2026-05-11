@@ -632,7 +632,7 @@ export const approveCaseAuthorization = async (env, payload) => {
 
   const timestamp = nowIso();
   const status = "Intervention autorisée";
-  const nextStep = "NEXURA Analytics prépare les consignes et la séquence de traitement confirmées.";
+  const nextStep = "NEXURA prépare les consignes et la séquence de traitement confirmées.";
   const clientSummary = "Votre autorisation a été reçue. Le laboratoire peut maintenant poursuivre selon le cadre transmis et préparer les prochaines actions nécessaires.";
 
   await sql`UPDATE cases

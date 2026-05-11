@@ -1,8 +1,8 @@
-# NEXURADATA Deployment & Execution Plan
+# NEXURA Deployment & Execution Plan
 
 ## Purpose
 
-NEXURADATA has a locked doctrine: operational intelligence infrastructure, restrained identity, premium pricing, Quebec-aware trust, and a living operational environment.
+NEXURA has a locked doctrine: operational intelligence infrastructure, restrained identity, premium pricing, Quebec-aware trust, and a living operational environment.
 
 The risk is overbuilding without operational coherence. This plan sequences execution so the platform becomes functional infrastructure instead of decorative positioning.
 
@@ -21,7 +21,7 @@ Do not add complexity unless it strengthens the operational engine.
 
 ## Doctrine Transition Risk
 
-The principal current risk is structural and narrative. NEXURADATA has been deeply repositioned toward operational intelligence infrastructure, but the repository still contains legacy business language, service-oriented pages, inherited visual patterns, older architecture paths, and components that may not reflect the current doctrine.
+The principal current risk is structural and narrative. NEXURA has been deeply repositioned toward operational intelligence infrastructure, but the repository still contains legacy business language, service-oriented pages, inherited visual patterns, older architecture paths, and components that may not reflect the current doctrine.
 
 This creates risk of perception incoherence, narrative fragmentation, diluted positioning, conflict between old and new identity, and a non-unified user experience.
 

@@ -62,7 +62,7 @@ These cannot be verified from the repository. They must be completed in Google, 
 
 ### Facebook / Meta
 
-- [x] Facebook Page exists as `NEXURADATA` at `https://www.facebook.com/nexuradata`
+- [x] Facebook Page exists as `NEXURA` at `https://www.facebook.com/nexuradata`
 - [x] Facebook URL restored to homepage structured data `sameAs`
 - [ ] Public unauthenticated Facebook Page visibility confirmed
 - [ ] Page category set to `Data Recovery Service`

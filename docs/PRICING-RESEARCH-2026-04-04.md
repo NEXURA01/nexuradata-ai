@@ -1,6 +1,6 @@
 # Pricing Research - April 4, 2026
 
-Objective: build a public-facing NEXURADATA pricing approach that stays competitive for simple cases while keeping complex work on quote/contact.
+Objective: build a public-facing NEXURA pricing approach that stays competitive for simple cases while keeping complex work on quote/contact.
 
 ## Public sources reviewed
 
@@ -71,7 +71,7 @@ The market splits into two visible bands:
 - Mechanical damage, RAID, NAS, server, enterprise, forensic
 - Usually quoted after evaluation, often with no reliable public fixed price
 
-## Recommended NEXURADATA public display
+## Recommended NEXURA public display
 
 Use a conversion-first structure:
 

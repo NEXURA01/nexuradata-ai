@@ -1,4 +1,4 @@
--- NEXURADATA Supabase baseline schema
+-- NEXURA Supabase baseline schema
 -- Mirrors the current operational Postgres schema used by the public intake,
 -- operator console, client status flow, and Stripe payment tracking.
 

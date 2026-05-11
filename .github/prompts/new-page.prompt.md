@@ -3,7 +3,7 @@ description: "Scaffold a new bilingual page pair (FR + EN) with correct meta tag
 agent: "agent"
 argument-hint: "Page slug and topic, e.g. 'faq-recuperation-donnees-montreal — FAQ page'"
 ---
-Create a new bilingual page pair for the NEXURADATA site.
+Create a new bilingual page pair for the NEXURA site.
 
 Ask for anything not provided: slug, French title, English title, FR/EN meta descriptions, page type (content or legal/shell).
 

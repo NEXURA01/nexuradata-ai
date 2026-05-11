@@ -105,7 +105,7 @@ const saveTrackingConsent = (choices) => {
 const cookieI18n = isEnglishDocument
   ? {
     title: "Cookie preferences",
-    copy: "NEXURA Analytics uses essential site storage and, only with consent, analytics or marketing measurement to improve operational reliability and communication paths.",
+    copy: "NEXURA uses essential site storage and, only with consent, analytics or marketing measurement to improve operational reliability and communication paths.",
     analytics: "Analytics measurement",
     marketing: "Marketing measurement",
     reject: "Reject optional",
@@ -115,7 +115,7 @@ const cookieI18n = isEnglishDocument
   }
   : {
     title: "Préférences témoins",
-    copy: "NEXURA Analytics utilise le stockage essentiel du site et, seulement avec consentement, des mesures analytiques ou marketing afin d'améliorer la fiabilité opérationnelle et les parcours de communication.",
+    copy: "NEXURA utilise le stockage essentiel du site et, seulement avec consentement, des mesures analytiques ou marketing afin d'améliorer la fiabilité opérationnelle et les parcours de communication.",
     analytics: "Mesure analytique",
     marketing: "Mesure marketing",
     reject: "Refuser l'optionnel",
@@ -137,7 +137,7 @@ const renderCookieConsent = (force = false) => {
   banner.innerHTML = `
     <div class="cookie-consent-panel">
       <div class="cookie-consent-copy">
-        <p class="cookie-kicker">NEXURA Analytics</p>
+        <p class="cookie-kicker">NEXURA</p>
         <h2>${cookieI18n.title}</h2>
         <p>${cookieI18n.copy} <a href="${privacyHref}">${cookieI18n.privacy}</a>.</p>
       </div>
@@ -240,7 +240,7 @@ const publicI18n = isEnglishDocument
     navClose: "Close navigation",
     navMenu: "Menu",
     navCloseLabel: "Close",
-    intakeSubjectPrefix: "NEXURA Analytics inquiry",
+    intakeSubjectPrefix: "NEXURA inquiry",
     fieldName: "Name",
     fieldEmail: "Email",
     fieldPhone: "Phone",
@@ -259,7 +259,7 @@ const publicI18n = isEnglishDocument
     intakeError: "The request could not be processed.",
     intakeOffline: "The backend is unreachable. Your email application is opening with a prefilled message.",
     statusRequired: "Enter a valid case number and access code.",
-    statusNotFound: "No case matched this access. Check the credentials provided by NEXURA Analytics or request an update.",
+    statusNotFound: "No case matched this access. Check the credentials provided by NEXURA or request an update.",
     statusFound: "Case found.",
     statusBusy: "Searching...",
     statusSearching: "Searching for your case...",
@@ -288,7 +288,7 @@ const publicI18n = isEnglishDocument
     workroomLocked: "The lab is still qualifying the case. The guided workroom opens after payment or authorization.",
     workroomOpen: "Workroom open",
     workroomAwaiting: "Awaiting payment or authorization",
-    workroomMailSubject: (caseId) => `NEXURA Analytics workroom - ${caseId}`,
+    workroomMailSubject: (caseId) => `NEXURA workroom - ${caseId}`,
     demoCaseOne: {
       status: "Assessment in progress",
       updatedAt: "April 4, 2026 11:40 AM",
@@ -356,7 +356,7 @@ const publicI18n = isEnglishDocument
     navClose: "Fermer la navigation",
     navMenu: "Menu",
     navCloseLabel: "Fermer",
-    intakeSubjectPrefix: "Demande NEXURA Analytics",
+    intakeSubjectPrefix: "Demande NEXURA",
     fieldName: "Nom",
     fieldEmail: "Courriel",
     fieldPhone: "Téléphone",
@@ -375,7 +375,7 @@ const publicI18n = isEnglishDocument
     intakeError: "La demande n'a pas pu être traitée.",
     intakeOffline: "Le backend n'est pas joignable. Votre application courriel s'ouvre avec un message prérempli.",
     statusRequired: "Entrez un numéro de dossier et un code d'accès valides.",
-    statusNotFound: "Aucun dossier n'a été trouvé avec cet accès. Vérifiez les identifiants transmis par NEXURA Analytics ou demandez une mise à jour.",
+    statusNotFound: "Aucun dossier n'a été trouvé avec cet accès. Vérifiez les identifiants transmis par NEXURA ou demandez une mise à jour.",
     statusFound: "Dossier trouvé.",
     statusBusy: "Recherche...",
     statusSearching: "Recherche du dossier en cours...",
@@ -404,7 +404,7 @@ const publicI18n = isEnglishDocument
     workroomLocked: "Le laboratoire qualifie encore le dossier. L'espace guidé s'ouvre après paiement ou autorisation.",
     workroomOpen: "Espace de travail ouvert",
     workroomAwaiting: "En attente du paiement ou de l'autorisation",
-    workroomMailSubject: (caseId) => `Espace de travail NEXURA Analytics - ${caseId}`,
+    workroomMailSubject: (caseId) => `Espace de travail NEXURA - ${caseId}`,
     demoCaseOne: {
       status: "Évaluation en cours",
       updatedAt: "4 avril 2026 à 11 h 40",
@@ -478,8 +478,8 @@ if (footerNote) {
   copyrightDiv.className = "footer-bottom";
   const year = new Date().getFullYear();
   copyrightDiv.innerHTML = isEnglishDocument
-    ? `<p>&copy; ${year} NEXURA Analytics. All rights reserved.</p>`
-    : `<p>&copy; ${year} NEXURA Analytics. Tous droits r\u00e9serv\u00e9s.</p>`;
+    ? `<p>&copy; ${year} NEXURA. All rights reserved.</p>`
+    : `<p>&copy; ${year} NEXURA. Tous droits r\u00e9serv\u00e9s.</p>`;
   footerNote.insertAdjacentElement("afterend", copyrightDiv);
 }
 
@@ -739,7 +739,7 @@ document.querySelectorAll("[data-paid-path-app]").forEach((app) => {
       recovery: {
         title: "Media intervention deposit",
         price: "From $350",
-        summary: "For physical media, NEXURA Analytics confirms the safest handling path before work begins and tells you exactly what to send or avoid doing.",
+        summary: "For physical media, NEXURA confirms the safest handling path before work begins and tells you exactly what to send or avoid doing.",
         steps: ["Open the case and confirm the deposit.", "Prepare the media using the reception instructions.", "Receive the next handling or lab treatment step."]
       },
       forensic: {
@@ -765,7 +765,7 @@ document.querySelectorAll("[data-paid-path-app]").forEach((app) => {
       recovery: {
         title: "Acompte d'intervention support",
         price: "À partir de 350 $",
-        summary: "Pour un support physique, NEXURA Analytics confirme la voie de manipulation la plus sûre avant le traitement et indique exactement quoi transmettre ou éviter.",
+        summary: "Pour un support physique, NEXURA confirme la voie de manipulation la plus sûre avant le traitement et indique exactement quoi transmettre ou éviter.",
         steps: ["Ouvrir le dossier et confirmer l'acompte.", "Préparer le support selon les consignes de réception.", "Recevoir la prochaine étape de manipulation ou de traitement."]
       },
       forensic: {
@@ -822,7 +822,7 @@ document.querySelectorAll("[data-paid-path-app]").forEach((app) => {
   if (mailLink) {
     const subject = caseId
       ? `Dossier ${caseId} - suivi paiement`
-      : "Suivi activation NEXURA Analytics";
+      : "Suivi activation NEXURA";
     const body = [
       caseId ? `Numéro de dossier: ${caseId}` : "",
       paymentRequestId ? `Référence d'activation: ${paymentRequestId}` : "",
@@ -849,6 +849,26 @@ const setButtonBusy = (button, busy, busyLabel) => {
   }
 
   if (busy) {
+    if (!button.dataset.defaultLabel) {
+      button.dataset.defaultLabel = button.textContent || "";
+    }
+
+    if (busyLabel) {
+      button.textContent = busyLabel;
+    }
+
+    button.disabled = true;
+    button.setAttribute("aria-busy", "true");
+    return;
+  }
+
+  if (button.dataset.defaultLabel) {
+    button.textContent = button.dataset.defaultLabel;
+  }
+
+  button.disabled = false;
+  button.removeAttribute("aria-busy");
+};
 
 const initializeWorkflowSimulator = () => {
   const simulator = document.querySelector("[data-workflow-simulator]");
@@ -857,78 +877,78 @@ const initializeWorkflowSimulator = () => {
   const states = isEnglishDocument
     ? {
       lead: {
-        classification: "Classification: commercial opportunity",
-        routing: "Routing: operations + sales",
-        task: "Task: qualify need, budget, timeline",
-        dashboard: "Dashboard: pipeline updated",
-        status: "Queue stable",
+        classification: "Form: operational problem received",
+        routing: "AI: complexity and solution recommended",
+        task: "Stripe: assessment or setup ready to pay",
+        dashboard: "Dashboard: workflow and progress visible",
+        status: "Workflow active",
         metrics: [18, 7, 42],
-        feed: ["Lead classified and assigned", "Owner notified", "Dashboard updated"]
+        feed: ["Client problem analyzed", "Estimate generated", "Workflow created in dashboard"]
       },
       task: {
-        classification: "Classification: internal execution task",
-        routing: "Routing: operations owner",
-        task: "Task: assign due date and dependency",
-        dashboard: "Dashboard: execution lane refreshed",
-        status: "Execution layer stable",
+        classification: "Task: repetitive internal work detected",
+        routing: "Workflow: owner and next step assigned",
+        task: "Automation: reminder and follow-up created",
+        dashboard: "Dashboard: internal task visible",
+        status: "Task routed",
         metrics: [21, 9, 47],
-        feed: ["Internal task normalized", "Dependency mapped", "Execution lane refreshed"]
+        feed: ["Task captured", "Owner assigned", "Follow-up automated"]
       },
       client: {
-        classification: "Classification: client request",
-        routing: "Routing: service desk + account owner",
-        task: "Task: create response path and SLA",
+        classification: "Request: client follow-up needed",
+        routing: "Workflow: support + account owner",
+        task: "Automation: response path and SLA created",
         dashboard: "Dashboard: client queue synchronized",
-        status: "Client queue synchronized",
+        status: "Client request tracked",
         metrics: [16, 5, 38],
         feed: ["Client request structured", "SLA path assigned", "Queue synchronized"]
       },
       support: {
-        classification: "Classification: support issue",
-        routing: "Routing: support + escalation rule",
-        task: "Task: collect context and trigger follow-up",
-        dashboard: "Dashboard: support load nominal",
-        status: "Operational load nominal",
+        classification: "Support: issue categorized",
+        routing: "Workflow: support + escalation rule",
+        task: "Automation: context collected and follow-up triggered",
+        dashboard: "Dashboard: support load visible",
+        status: "Support workflow active",
         metrics: [24, 11, 53],
-        feed: ["Support issue classified", "Escalation rule checked", "Load remains nominal"]
+        feed: ["Support issue categorized", "Escalation rule checked", "Follow-up triggered"]
       }
     }
     : {
       lead: {
-        classification: "Classification: opportunite commerciale",
-        routing: "Routage: operations + ventes",
-        task: "Tache: qualifier besoin, budget, echeance",
-        dashboard: "Dashboard: pipeline mis a jour",
-        status: "File stable",
+        classification: "Formulaire: probleme operationnel recu",
+        routing: "AI: complexite et solution recommandees",
+        task: "Stripe: assessment ou setup pret a payer",
+        dashboard: "Dashboard: workflow et progression visibles",
+        status: "Workflow actif",
         metrics: [18, 7, 42],
-        feed: ["Lead classe et assigne", "Responsable notifie", "Tableau de bord actualise"]
+        feed: ["Probleme client analyse", "Estimation generee", "Workflow cree dans le dashboard"]
       },
       task: {
-        classification: "Classification: tache d'execution interne",
-        routing: "Routage: responsable operations",
-        task: "Tache: assigner echeance et dependance",
-        dashboard: "Dashboard: voie d'execution actualisee",
-        status: "Couche d'execution stable",
+        classification: "Tache: travail repetitif detecte",
+        routing: "Workflow: responsable et prochaine etape assignes",
+        task: "Automatisation: rappel et suivi crees",
+        dashboard: "Dashboard: tache interne visible",
+        status: "Tache routee",
         metrics: [21, 9, 47],
-        feed: ["Tache interne normalisee", "Dependance cartographiee", "Voie d'execution actualisee"]
+        feed: ["Tache capturee", "Responsable assigne", "Suivi automatise"]
       },
       client: {
-        classification: "Classification: demande client",
-        routing: "Routage: support + responsable compte",
-        task: "Tache: creer parcours de reponse et SLA",
+        classification: "Demande: suivi client requis",
+        routing: "Workflow: support + responsable compte",
+        task: "Automatisation: parcours de reponse et SLA crees",
         dashboard: "Dashboard: file client synchronisee",
-        status: "File client synchronisee",
+        status: "Demande client suivie",
         metrics: [16, 5, 38],
         feed: ["Demande client structuree", "Parcours SLA assigne", "File synchronisee"]
       },
       support: {
-        classification: "Classification: enjeu support",
-        routing: "Routage: support + regle d'escalade",
-        task: "Tache: collecter contexte et declencher suivi",
-        dashboard: "Dashboard: charge support nominale",
-        status: "Charge operationnelle nominale",
+        classification: "Support: probleme categorise",
+        routing: "Workflow: support + regle d'escalade",
+        task: "Automatisation: contexte collecte et suivi declenche",
+        dashboard: "Dashboard: charge support visible",
+        status: "Workflow support actif",
         metrics: [24, 11, 53],
-        feed: ["Enjeu support classe", "Regle d'escalade verifiee", "Charge nominale"]
+        feed: ["Probleme support categorise", "Regle d'escalade verifiee", "Suivi declenche"]
       }
     };
 
@@ -977,26 +997,6 @@ const initializeWorkflowSimulator = () => {
 };
 
 initializeWorkflowSimulator();
-    if (!button.dataset.defaultLabel) {
-      button.dataset.defaultLabel = button.textContent || "";
-    }
-
-    if (busyLabel) {
-      button.textContent = busyLabel;
-    }
-
-    button.disabled = true;
-    button.setAttribute("aria-busy", "true");
-    return;
-  }
-
-  if (button.dataset.defaultLabel) {
-    button.textContent = button.dataset.defaultLabel;
-  }
-
-  button.disabled = false;
-  button.removeAttribute("aria-busy");
-};
 
 const parseJsonResponse = async (response) => {
   try {
@@ -1092,7 +1092,7 @@ if (estimateForm) {
       required: "Complete the operational estimate fields.",
       busy: "Analyzing...",
       running: "Analyzing operational scope...",
-      ready: "Nexura Analytics assessment prepared. Human validation remains required.",
+      ready: "NEXURA estimate prepared. Human validation remains required.",
       error: "The estimate could not be generated.",
       paymentBusy: "Initializing..."
     }
@@ -1100,7 +1100,7 @@ if (estimateForm) {
       required: "Completez les champs d'estimation operationnelle.",
       busy: "Analyse...",
       running: "Analyse du perimetre operationnel...",
-      ready: "Evaluation Nexura Analytics preparee. Une validation humaine reste requise.",
+      ready: "Estimation NEXURA preparee. Une validation humaine reste requise.",
       error: "L'estimation n'a pas pu etre generee.",
       paymentBusy: "Initialisation..."
     };
@@ -1377,7 +1377,7 @@ const workroomCopy = isEnglishDocument
       note: "Use this path when the lab can safely guide actions before deeper handling.",
       prepare: ["Keep the device powered as-is unless the lab asks otherwise.", "Prepare screenshots, error messages, account notices or file names.", "Write down what changed just before the issue appeared."],
       avoid: ["Do not install random recovery utilities.", "Do not reset, reinstall or overwrite the affected data.", "Do not send passwords through chat or email."],
-      transfer: "Send the symptoms and screenshots first. If remote assistance is useful, NEXURA Analytics will confirm a supervised session with your consent."
+      transfer: "Send the symptoms and screenshots first. If remote assistance is useful, NEXURA will confirm a supervised session with your consent."
     },
     media: {
       title: "Media intervention workroom",
@@ -1391,14 +1391,14 @@ const workroomCopy = isEnglishDocument
       note: "Use this path for RAID, NAS, server and operations-blocking incidents.",
       prepare: ["List the number of disks and any disk labels or slot positions.", "Export screenshots of the storage dashboard if accessible.", "Identify the last known healthy state and any rebuild attempt."],
       avoid: ["Do not rebuild, initialize or replace disks blindly.", "Do not force-mount affected volumes in write mode.", "Do not change disk order."],
-      transfer: "Send architecture details and business impact. NEXURA Analytics will confirm whether the next step is remote review, image capture or lab handling."
+      transfer: "Send architecture details and business impact. NEXURA will confirm whether the next step is remote review, image capture or lab handling."
     },
     forensic: {
       title: "Evidence and incident workroom",
       note: "Use this path when traceability, dispute, insurer, HR or legal context matters.",
       prepare: ["Preserve the original device or account state.", "Write a timeline of events and involved parties.", "Collect reference numbers, insurer notes or mandate context."],
       avoid: ["Do not modify, clean or reorganize evidence.", "Do not share sensitive material through informal channels.", "Do not let multiple people handle the same device without tracking."],
-      transfer: "Send only the context first. NEXURA Analytics will confirm the controlled transfer method and the evidence-handling boundary."
+      transfer: "Send only the context first. NEXURA will confirm the controlled transfer method and the evidence-handling boundary."
     },
     mobile: {
       title: "Mobile case workroom",
@@ -1414,7 +1414,7 @@ const workroomCopy = isEnglishDocument
       note: "Utilisez ce parcours lorsque le laboratoire peut guider des actions sécuritaires avant une prise en charge plus lourde.",
       prepare: ["Gardez l'appareil dans son état actuel sauf consigne contraire.", "Préparez captures, messages d'erreur, avis de compte ou noms de fichiers.", "Notez ce qui a changé juste avant l'apparition du problème."],
       avoid: ["N'installez pas d'utilitaires de récupération au hasard.", "Ne réinitialisez pas, ne réinstallez pas et n'écrasez pas les données touchées.", "N'envoyez pas de mots de passe par clavardage ou courriel."],
-      transfer: "Envoyez d'abord les symptômes et captures. Si une assistance à distance est utile, NEXURA Analytics confirme une session supervisée avec votre consentement."
+      transfer: "Envoyez d'abord les symptômes et captures. Si une assistance à distance est utile, NEXURA confirme une session supervisée avec votre consentement."
     },
     media: {
       title: "Espace d'intervention support",
@@ -1428,14 +1428,14 @@ const workroomCopy = isEnglishDocument
       note: "Utilisez ce parcours pour RAID, NAS, serveurs et incidents qui bloquent les opérations.",
       prepare: ["Listez le nombre de disques et les positions ou étiquettes visibles.", "Exportez des captures de la console de stockage si elle est accessible.", "Indiquez le dernier état sain connu et toute tentative de reconstruction."],
       avoid: ["Ne reconstruisez pas, n'initialisez pas et ne remplacez pas des disques à l'aveugle.", "Ne forcez pas le montage en écriture.", "Ne changez pas l'ordre des disques."],
-      transfer: "Envoyez l'architecture et l'impact d'affaires. NEXURA Analytics confirme si la suite passe par revue distante, image disque ou laboratoire."
+      transfer: "Envoyez l'architecture et l'impact d'affaires. NEXURA confirme si la suite passe par revue distante, image disque ou laboratoire."
     },
     forensic: {
       title: "Espace preuve et incident",
       note: "Utilisez ce parcours lorsque la traçabilité, un litige, un assureur, RH ou un contexte juridique compte.",
       prepare: ["Préservez l'appareil ou le compte dans son état original.", "Rédigez une chronologie des événements et parties impliquées.", "Rassemblez numéros de référence, notes d'assureur ou contexte de mandat."],
       avoid: ["Ne modifiez pas, ne nettoyez pas et ne réorganisez pas la preuve.", "Ne partagez pas de matériel sensible par des canaux informels.", "Ne laissez pas plusieurs personnes manipuler le même support sans suivi."],
-      transfer: "Envoyez d'abord le contexte. NEXURA Analytics confirme la méthode de transmission contrôlée et la limite de traitement probatoire."
+      transfer: "Envoyez d'abord le contexte. NEXURA confirme la méthode de transmission contrôlée et la limite de traitement probatoire."
     },
     mobile: {
       title: "Espace dossier mobile",
@@ -1724,8 +1724,8 @@ if (statusForm) {
           status: isEnglishDocument ? "Intervention authorized" : "Intervention autorisée",
           updatedAt: timestamp,
           nextStep: isEnglishDocument
-            ? "NEXURA Analytics prepares the confirmed instructions and treatment sequence."
-            : "NEXURA Analytics prépare les consignes et la séquence de traitement confirmées.",
+            ? "NEXURA prepares the confirmed instructions and treatment sequence."
+            : "NEXURA prépare les consignes et la séquence de traitement confirmées.",
           summary: isEnglishDocument
             ? "Authorization has been received. The lab can continue according to the transmitted scope."
             : "Votre autorisation a été reçue. Le laboratoire peut poursuivre selon le cadre transmis.",

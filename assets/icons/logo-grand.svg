@@ -1,12 +1,12 @@
 ﻿<svg viewBox="0 0 500 90" xmlns="http://www.w3.org/2000/svg" width="500" height="90" role="img" aria-labelledby="title desc">
-  <title id="title">NEXURA Analytics</title>
-  <desc id="desc">Structural NX monogram and NEXURA Analytics wordmark.</desc>
+  <title id="title">NEXURA</title>
+  <desc id="desc">Structural NX monogram and NEXURA wordmark.</desc>
   <g transform="translate(28, 18)">
     <path d="M0 0H56V56H0Z" fill="#0A0A0B"/>
     <path d="M0 0H56M0 0V56M56 0V56M0 56H56" fill="none" stroke="#F5F1E8" stroke-width="1" opacity="0.28"/>
     <path d="M12 44V12H18L38 44H44V12" fill="none" stroke="#F5F1E8" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/>
     <path d="M37 12L49 28L37 44M49 12L37 28L49 44" fill="none" stroke="#B87333" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"/>
   </g>
-  <text x="104" y="56" font-family="'Inter Tight', 'IBM Plex Sans', Inter, Arial, sans-serif" font-size="38" font-weight="800" letter-spacing="4.2" fill="#F5F1E8">NEXURA Analytics</text>
+  <text x="104" y="56" font-family="'Inter Tight', 'IBM Plex Sans', Inter, Arial, sans-serif" font-size="38" font-weight="800" letter-spacing="4.2" fill="#F5F1E8">NEXURA</text>
   <line x1="104" y1="68" x2="454" y2="68" stroke="#F5F1E8" stroke-width="1" opacity="0.16"/>
 </svg>

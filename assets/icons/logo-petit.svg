@@ -1,10 +1,10 @@
 ﻿<svg viewBox="0 0 200 24" xmlns="http://www.w3.org/2000/svg" width="200" height="24" role="img" aria-labelledby="title desc">
-  <title id="title">NEXURA Analytics</title>
+  <title id="title">NEXURA</title>
   <desc id="desc">Compact NX monogram and wordmark.</desc>
   <g transform="translate(8, 2)">
     <path d="M0 0H20V20H0Z" fill="#0A0A0B"/>
     <path d="M4 16V4H7L14 16H16V4" fill="none" stroke="#F5F1E8" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"/>
     <path d="M14 4L18 10L14 16M18 4L14 10L18 16" fill="none" stroke="#B87333" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter"/>
   </g>
-  <text x="36" y="17" font-family="'Inter Tight', 'IBM Plex Sans', Inter, Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="2" fill="#F5F1E8">NEXURA Analytics</text>
+  <text x="36" y="17" font-family="'Inter Tight', 'IBM Plex Sans', Inter, Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="2" fill="#F5F1E8">NEXURA</text>
 </svg>

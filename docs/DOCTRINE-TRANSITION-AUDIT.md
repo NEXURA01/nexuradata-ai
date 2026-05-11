@@ -1,4 +1,4 @@
-# NEXURADATA Doctrine Transition Audit
+# NEXURA Doctrine Transition Audit
 
 ## Purpose
 
@@ -10,7 +10,7 @@ The current risk is structural and narrative, not only technical. The platform h
 
 The main current risk is no longer purely technical. It is structural and narrative.
 
-NEXURADATA has moved toward operational intelligence infrastructure centered on:
+NEXURA has moved toward operational intelligence infrastructure centered on:
 
 - workflow systems
 - orchestration

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
-    <title>NEXURADATA — Services de récupération de données</title>
+    <title>NEXURA — Services de récupération de données</title>
     <link>https://nexuradata.ca</link>
     <description>Services de récupération de données et de forensique numérique à Montréal</description>
 
@@ -14,7 +14,7 @@
       <g:price>79.00 CAD</g:price>
       <g:availability>in_stock</g:availability>
       <g:condition>new</g:condition>
-      <g:brand>NEXURADATA</g:brand>
+      <g:brand>NEXURA</g:brand>
       <g:google_product_category>5032</g:google_product_category>
       <g:product_type>Services &gt; Récupération de données &gt; Fichiers supprimés</g:product_type>
     </item>
@@ -28,7 +28,7 @@
       <g:price>129.00 CAD</g:price>
       <g:availability>in_stock</g:availability>
       <g:condition>new</g:condition>
-      <g:brand>NEXURADATA</g:brand>
+      <g:brand>NEXURA</g:brand>
       <g:google_product_category>5032</g:google_product_category>
       <g:product_type>Services &gt; Récupération de données &gt; Supports externes</g:product_type>
     </item>
@@ -42,7 +42,7 @@
       <g:price>149.00 CAD</g:price>
       <g:availability>in_stock</g:availability>
       <g:condition>new</g:condition>
-      <g:brand>NEXURADATA</g:brand>
+      <g:brand>NEXURA</g:brand>
       <g:google_product_category>5032</g:google_product_category>
       <g:product_type>Services &gt; Récupération de données &gt; Appareil mobile</g:product_type>
     </item>
@@ -56,7 +56,7 @@
       <g:price>350.00 CAD</g:price>
       <g:availability>in_stock</g:availability>
       <g:condition>new</g:condition>
-      <g:brand>NEXURADATA</g:brand>
+      <g:brand>NEXURA</g:brand>
       <g:google_product_category>5032</g:google_product_category>
       <g:product_type>Services &gt; Récupération de données &gt; Disque dur et SSD</g:product_type>
     </item>
@@ -70,7 +70,7 @@
       <g:price>650.00 CAD</g:price>
       <g:availability>in_stock</g:availability>
       <g:condition>new</g:condition>
-      <g:brand>NEXURADATA</g:brand>
+      <g:brand>NEXURA</g:brand>
       <g:google_product_category>5032</g:google_product_category>
       <g:product_type>Services &gt; Récupération de données &gt; RAID et serveur</g:product_type>
     </item>
@@ -84,7 +84,7 @@
       <g:price>500.00 CAD</g:price>
       <g:availability>in_stock</g:availability>
       <g:condition>new</g:condition>
-      <g:brand>NEXURADATA</g:brand>
+      <g:brand>NEXURA</g:brand>
       <g:google_product_category>5032</g:google_product_category>
       <g:product_type>Services &gt; Forensique numérique</g:product_type>
     </item>

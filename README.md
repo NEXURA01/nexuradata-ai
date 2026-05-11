@@ -1,4 +1,4 @@
-# NEXURADATA
+# NEXURA
 
 Site marketing et plateforme de lancement pour un laboratoire de recuperation de donnees et forensique numerique.
 

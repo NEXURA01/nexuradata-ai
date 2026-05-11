@@ -1,8 +1,8 @@
 ---
-description: "Use when writing HTML, CSS, or JS for the NEXURADATA site. Covers design tokens, typography, layout, forms, animation, and editorial rules. Triggers on: styling, CSS, layout, new page, component, section, form, animation."
+description: "Use when writing HTML, CSS, or JS for the NEXURA site. Covers design tokens, typography, layout, forms, animation, and editorial rules. Triggers on: styling, CSS, layout, new page, component, section, form, animation."
 applyTo: "**/*.{html,css,js}"
 ---
-# NEXURADATA Design System
+# NEXURA Design System
 
 ## Structure
 - Semantic HTML only — `<main>`, `<section>`, `<nav>`, `<footer>`. No unnecessary `<div>`.

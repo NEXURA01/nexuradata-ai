@@ -1,14 +1,14 @@
-# NEXURADATA Doctrine
+# NEXURA Doctrine
 
 ## Purpose
 
-This document is the single source of truth for the NEXURADATA transition from legacy service positioning to a unified operational intelligence infrastructure platform.
+This document is the single source of truth for the NEXURA transition from legacy service positioning to a unified operational intelligence infrastructure platform.
 
 The objective is systemic coherence: every page, visual element, workflow, integration, legal layer, and technical decision should reinforce operational maturity.
 
 ## Mission
 
-NEXURADATA builds operational intelligence infrastructure for organizations that need clearer execution, structured workflows, controlled routing, and reliable operational visibility.
+NEXURA builds operational intelligence infrastructure for organizations that need clearer execution, structured workflows, controlled routing, and reliable operational visibility.
 
 The platform exists to turn fragmented coordination into structured execution systems.
 
@@ -16,9 +16,9 @@ The long-term ecosystem vision is defined in `docs/ECOSYSTEM-VISION.md`. That do
 
 ## Positioning
 
-NEXURADATA is not a generic AI agency, chatbot setup offer, low-ticket automation shop, or legacy recovery storefront.
+NEXURA is not a generic AI agency, chatbot setup offer, low-ticket automation shop, or legacy recovery storefront.
 
-NEXURADATA is positioned as:
+NEXURA is positioned as:
 
 ```txt
 operational intelligence infrastructure
@@ -171,7 +171,7 @@ Rules:
 
 Trust must come from clarity, not claims.
 
-NEXURADATA treats privacy as operational infrastructure.
+NEXURA treats privacy as operational infrastructure.
 
 Legal and data-handling layers must align with:
 
@@ -252,7 +252,7 @@ Data recovery and forensics pages should not be deleted abruptly if they carry s
 
 ## Success State
 
-NEXURADATA succeeds when it feels like:
+NEXURA succeeds when it feels like:
 
 ```txt
 a living operational intelligence infrastructure environment

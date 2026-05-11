@@ -2,7 +2,7 @@
 
 ## Overview
 
-NEXURADATA — bilingual (FR primary, EN secondary) marketing site and operational platform for a data-recovery / digital-forensics lab in Montreal. Stack: Cloudflare Pages + Pages Functions, Neon Postgres, Stripe, Resend.
+NEXURA — bilingual (FR primary, EN secondary) marketing site and operational platform for a data-recovery / digital-forensics lab in Montreal. Stack: Cloudflare Pages + Pages Functions, Neon Postgres, Stripe, Resend.
 
 See `README.md` for full architecture, prerequisites, and Cloudflare Pages setup.
 

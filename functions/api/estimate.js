@@ -65,11 +65,32 @@ export const onRequestPost = async (context) => {
       confidence_score: estimate.confidence_score,
       final_status: "draft"
     });
+    const aiEstimate = estimateInsert?.[0] || null;
+    const recommendedSolution = Array.isArray(estimate.infrastructure_scope)
+      ? estimate.infrastructure_scope.join(", ")
+      : "Workflow centralise avec automatisations et dashboard operationnel";
+    const workflowCaseInsert = await supabaseInsert(context.env, "workflow_cases", {
+      lead_id: lead.id,
+      ai_estimate_id: aiEstimate?.id || null,
+      organization: payload.organization,
+      contact_email: payload.email,
+      workflow_summary: payload.workflow_summary,
+      recommended_solution: recommendedSolution,
+      current_stage: "estimate_generated",
+      payment_status: "pending",
+      workflow_status: "pending_activation",
+      dashboard_status: "not_started",
+      metadata: {
+        next: "human_validation",
+        source: "api_estimate"
+      }
+    });
 
     return json({
       ok: true,
       lead,
-      estimate: estimateInsert?.[0] || null,
+      estimate: aiEstimate,
+      workflow_case: workflowCaseInsert?.[0] || null,
       next: "human_validation"
     });
   } catch (err) {

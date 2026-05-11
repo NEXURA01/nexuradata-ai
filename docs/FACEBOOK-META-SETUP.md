@@ -1,4 +1,4 @@
-# Facebook / Meta setup — NEXURADATA
+# Facebook / Meta setup — NEXURA
 
 ## Current repo status
 
@@ -14,12 +14,12 @@ Prepared assets:
 - Intake QR image: `assets/icons/contact-qr.png`
 - Open Graph fallback: `assets/icons/og-default.png`
 
-Recommended account owner: `olivier@nexuradata.ca` or a Meta Business account controlled by NEXURADATA.
+Recommended account owner: `olivier@nexuradata.ca` or a Meta Business account controlled by NEXURA.
 
 ## 1. Create or claim the Facebook Page
 
 1. Go to https://business.facebook.com/ or https://www.facebook.com/pages/create.
-2. Create page name: `NEXURADATA`.
+2. Create page name: `NEXURA`.
 3. Category: `Data Recovery Service`.
 4. Secondary categories if available:
    - `Computer Repair Service`
@@ -83,14 +83,14 @@ Do not enable messaging if nobody owns daily response time. A slow inbox damages
 
 ## 5. First posts and launch content
 
-Use French first. Add an English version only when the post is targeted to bilingual or English-speaking audiences. The objective is not to entertain casually; it is to make a stressed client understand that NEXURADATA has a controlled path and that they should open a qualified request.
+Use French first. Add an English version only when the post is targeted to bilingual or English-speaking audiences. The objective is not to entertain casually; it is to make a stressed client understand that NEXURA has a controlled path and that they should open a qualified request.
 
 Post 1 — launch / pinned intake post:
 
 ```text
 Un disque qui clique, un RAID dégradé, un SSD non reconnu ou un téléphone inaccessible ne se règle pas à coups d'essais répétés.
 
-NEXURADATA accompagne les dossiers de récupération de données, RAID, SSD, mobile et forensique numérique à Montréal avec une démarche structurée: qualification, autorisation, intervention contrôlée et suivi sécurisé.
+NEXURA accompagne les dossiers de récupération de données, RAID, SSD, mobile et forensique numérique à Montréal avec une démarche structurée: qualification, autorisation, intervention contrôlée et suivi sécurisé.
 
 Ouvrir une demande: https://nexuradata.ca/#contact
 ```
@@ -102,7 +102,7 @@ Post 2 — what not to do / urgency without fear:
 ```text
 Si le support contient des données importantes, le premier objectif n'est pas d'essayer plus fort. C'est d'éviter d'aggraver l'état du dossier.
 
-Évitez les redémarrages en boucle, les reconstructions RAID improvisées et les outils lancés sans diagnostic clair. NEXURADATA qualifie le contexte avant de recommander la suite.
+Évitez les redémarrages en boucle, les reconstructions RAID improvisées et les outils lancés sans diagnostic clair. NEXURA qualifie le contexte avant de recommander la suite.
 
 https://nexuradata.ca/processus-recuperation-donnees-montreal.html
 ```
@@ -114,7 +114,7 @@ Post 3 — enterprise / RAID:
 ```text
 RAID, NAS, serveur ou poste critique: un dossier d'entreprise doit être cadré avant intervention.
 
-NEXURADATA documente la demande, confirme les autorisations, limite les manipulations inutiles et garde un suivi clair par numéro de dossier.
+NEXURA documente la demande, confirme les autorisations, limite les manipulations inutiles et garde un suivi clair par numéro de dossier.
 
 https://nexuradata.ca/mandats-entreprise.html
 ```
@@ -124,7 +124,7 @@ Asset: `assets/icons/social-banner.png`.
 Post 4 — client portal / trust:
 
 ```text
-Chaque dossier NEXURADATA peut être suivi avec un numéro de dossier et un code d'accès.
+Chaque dossier NEXURA peut être suivi avec un numéro de dossier et un code d'accès.
 
 Le portail client affiche le statut, les prochaines étapes, les paiements ou autorisations applicables et l'espace de travail guidé après validation. L'objectif: moins d'aller-retour, plus de clarté, un dossier mieux contrôlé.
 
@@ -147,7 +147,7 @@ Mobile-focused post:
 ```text
 Téléphone endommagé, verrouillé ou données importantes à préserver?
 
-NEXURADATA qualifie les demandes mobile avant intervention: contexte, limites réalistes, autorisation et confidentialité.
+NEXURA qualifie les demandes mobile avant intervention: contexte, limites réalistes, autorisation et confidentialité.
 
 https://nexuradata.ca/recuperation-telephone-montreal.html
 ```
@@ -157,7 +157,7 @@ Forensics/confidentiality post:
 ```text
 Les dossiers sensibles demandent une intervention documentée et confidentielle.
 
-NEXURADATA accompagne les besoins de forensique numérique, préservation de données et récupération contrôlée pour Montréal et le Grand Montréal.
+NEXURA accompagne les besoins de forensique numérique, préservation de données et récupération contrôlée pour Montréal et le Grand Montréal.
 
 https://nexuradata.ca/forensique-numerique-montreal.html
 ```
@@ -172,7 +172,7 @@ After page creation:
 4. Set page notifications to an actively monitored inbox.
 5. Connect Instagram only if the account will be maintained.
 6. Do not launch ads until the website, phone, email and Google Business Profile are stable.
-7. Structured data `sameAs` entries already include `https://www.facebook.com/nexuradata`; keep them only if the Page remains controlled by NEXURADATA.
+7. Structured data `sameAs` entries already include `https://www.facebook.com/nexuradata`; keep them only if the Page remains controlled by NEXURA.
 
 ## 7. Verification and security
 

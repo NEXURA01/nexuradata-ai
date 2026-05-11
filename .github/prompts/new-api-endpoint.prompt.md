@@ -3,7 +3,7 @@ description: "Scaffold a new Cloudflare Pages Function API endpoint with standar
 agent: "agent"
 argument-hint: "Endpoint path and purpose, e.g. 'ops/notes — add internal notes to a case'"
 ---
-Create a new API endpoint for the NEXURADATA platform.
+Create a new API endpoint for the NEXURA platform.
 
 Ask for anything not provided: path under `functions/api/`, HTTP methods, purpose, whether it requires Cloudflare Access.
 

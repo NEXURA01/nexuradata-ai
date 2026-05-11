@@ -20,7 +20,7 @@ const normalizeEstimate = (value) => {
   const scope = estimate.infrastructure_scope && typeof estimate.infrastructure_scope === "object"
     ? estimate.infrastructure_scope
     : {
-      layer: "Operational workflow system",
+      layer: "Centralized operational workflow system",
       components: ["intake", "routing", "dashboard", "activation"],
       validation: "human review required"
     };
@@ -33,7 +33,7 @@ const normalizeEstimate = (value) => {
     estimated_min: estimatedMin,
     estimated_max: estimatedMax,
     ai_summary: normalizeText(
-      estimate.ai_summary || "Initial operational scope requires human validation before activation.",
+      estimate.ai_summary || "Initial workflow scope requires human validation before activation.",
       1200
     ),
     infrastructure_scope: scope,
@@ -67,8 +67,8 @@ export async function generateEstimate(env, workflowSummary) {
         {
           role: "system",
           content: [
-            "You are an operational infrastructure estimation engine for NEXURA Analytics.",
-            "Analyze workflow complexity, orchestration depth, integration surface, and urgency.",
+            "You are an operational workflow estimation engine for NEXURA.",
+            "Analyze workflow complexity, automation potential, integration surface, dashboard needs, and urgency.",
             "Return JSON only with these keys: complexity_score, orchestration_score, integration_score, urgency_score, estimated_min, estimated_max, ai_summary, infrastructure_scope, confidence_score.",
             "Scores are 1-10. Amounts are integer CAD cents. Keep estimates sober and require human validation."
           ].join(" ")

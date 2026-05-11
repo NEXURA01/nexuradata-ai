@@ -1,9 +1,9 @@
 ---
-description: "Integrate a NEXURADATA doctrine into the bilingual site as premium copy, UI behavior, legal/trust structure, and verification."
+description: "Integrate a NEXURA doctrine into the bilingual site as premium copy, UI behavior, legal/trust structure, and verification."
 agent: "agent"
 argument-hint: "Doctrine text and target area, e.g. 'Quebec compliance layer for homepage, privacy, footer, intake'"
 ---
-Integrate the provided NEXURADATA doctrine into the site.
+Integrate the provided NEXURA doctrine into the site.
 
 Use this when a doctrine, positioning note, compliance rule, design direction, or narrative layer needs to become real site behavior and copy. Treat the doctrine as product architecture, not decorative text.
 
@@ -16,7 +16,7 @@ Use this when a doctrine, positioning note, compliance rule, design direction, o
 
 ## Principles
 
-- Keep NEXURADATA positioned as operational intelligence infrastructure, not a generic AI startup.
+- Keep NEXURA positioned as operational intelligence infrastructure, not a generic AI startup.
 - Maintain a Quebec professional tone: calm authority, legal clarity, operational accountability, secure handling practices.
 - Keep AI and automation behind the scenes unless transparency requires mention; prefer terms like operational evaluation, recommendation, routing, workflow, execution system, traceability, and human validation.
 - Do not expose personal names, personal addresses, or private contact details in public copy or structured data. Use business contact language such as `privacy@nexuradata.ca`, `operations@nexuradata.ca`, and `contact@nexuradata.ca`.

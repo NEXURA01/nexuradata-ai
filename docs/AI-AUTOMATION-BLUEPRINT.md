@@ -1,8 +1,8 @@
-# NEXURADATA AI Automation Blueprint
+# NEXURA AI Automation Blueprint
 
 This document maps what already exists in the platform, what can be automated now, and what should become AI-assisted once the operational guardrails are in place.
 
-The goal is not to make clients diagnose their own incident. The goal is to let NEXURADATA qualify faster, package the right paid intervention, and send the client a controlled link that moves the case forward.
+The goal is not to make clients diagnose their own incident. The goal is to let NEXURA qualify faster, package the right paid intervention, and send the client a controlled link that moves the case forward.
 
 ## Current Automation Base
 
@@ -62,7 +62,7 @@ This runs after payment or authorization.
 - generate a transfer package request for drives, RAID metadata, evidence context or mobile details
 - generate a concise operator briefing before the remote call
 
-This should still avoid pretending the client can solve the whole case alone. The language should position the link as a guided NEXURADATA intervention.
+This should still avoid pretending the client can solve the whole case alone. The language should position the link as a guided NEXURA intervention.
 
 ### Level 4: External Tool Orchestration
 
@@ -160,7 +160,7 @@ Never let AI automatically:
 - expose internal notes to the client
 - bypass Cloudflare Access or access-code checks
 
-AI can draft, classify, summarize and prepare. NEXURADATA authorizes.
+AI can draft, classify, summarize and prepare. NEXURA authorizes.
 
 ## Implementation Phases
 

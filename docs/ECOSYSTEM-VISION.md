@@ -1,10 +1,10 @@
-# NEXURADATA Ecosystem Vision
+# NEXURA Ecosystem Vision
 
 ## Purpose
 
-This document defines the extreme expansion layer for NEXURADATA.
+This document defines the extreme expansion layer for NEXURA.
 
-NEXURADATA is no longer only a website, automation business, AI interface, or dashboard platform. The long-term evolution is:
+NEXURA is no longer only a website, automation business, AI interface, or dashboard platform. The long-term evolution is:
 
 ```txt
 an operational intelligence ecosystem
@@ -18,9 +18,9 @@ an operational operating environment
 
 ## True Category
 
-NEXURADATA is not building software as the final category.
+NEXURA is not building software as the final category.
 
-NEXURADATA is building:
+NEXURA is building:
 
 ```txt
 organizational infrastructure
@@ -46,7 +46,7 @@ the nervous system of operations
 
 Most businesses forget operational history. Knowledge lives in employees, emails, chat tools, fragmented systems, and undocumented workflows. When people leave, operations can collapse.
 
-NEXURADATA should build persistent operational memory by tracking:
+NEXURA should build persistent operational memory by tracking:
 
 - workflow decisions
 - escalation history
@@ -67,7 +67,7 @@ organizational memory infrastructure
 
 Most systems display tasks, tickets, or workflows. Organizations are living operational networks.
 
-NEXURADATA should eventually visualize:
+NEXURA should eventually visualize:
 
 - teams
 - workflow dependencies
@@ -85,7 +85,7 @@ an organization that feels alive at operational scale
 
 ## Execution Intelligence Engine
 
-Most systems track work. NEXURADATA should track execution quality.
+Most systems track work. NEXURA should track execution quality.
 
 Future metrics:
 
@@ -107,7 +107,7 @@ execution intelligence infrastructure
 
 Every organization slowly degrades operationally. Fragmentation, coordination decay, process instability, and workflow drift are rarely measured.
 
-NEXURADATA should detect:
+NEXURA should detect:
 
 - workflow chaos
 - increasing manual intervention
@@ -157,7 +157,7 @@ AI should never feel like a consumer-facing gimmick. It should feel deeply embed
 
 ## Operational Digital Twin
 
-Long term, NEXURADATA should become a live operational mirror of the organization.
+Long term, NEXURA should become a live operational mirror of the organization.
 
 It should model:
 
@@ -179,7 +179,7 @@ an operational simulation environment
 
 Most companies make reactive decisions because they lack execution visibility.
 
-NEXURADATA should surface:
+NEXURA should surface:
 
 - execution risks
 - workflow pressure
@@ -230,7 +230,7 @@ an operational intelligence layer observing systems quietly
 
 ## Operational Language Engine
 
-NEXURADATA should own an operational vocabulary.
+NEXURA should own an operational vocabulary.
 
 Examples:
 
@@ -264,7 +264,7 @@ The platform should feel:
 - layered
 - infrastructural
 
-Instead of dashboard screenshots, NEXURADATA should create living infrastructure environments.
+Instead of dashboard screenshots, NEXURA should create living infrastructure environments.
 
 ## Multi-Layered Operational UI
 
@@ -293,15 +293,15 @@ a workflow app
 
 ## True Competition
 
-NEXURADATA is not primarily competing with AI startups, automation agencies, or SaaS dashboards.
+NEXURA is not primarily competing with AI startups, automation agencies, or SaaS dashboards.
 
-NEXURADATA is competing against:
+NEXURA is competing against:
 
 ```txt
 organizational chaos itself
 ```
 
-Most companies optimize productivity. NEXURADATA optimizes organizational coherence.
+Most companies optimize productivity. NEXURA optimizes organizational coherence.
 
 ## Infrastructure Consciousness
 
@@ -315,9 +315,9 @@ That is the philosophy, product, UX, AI layer, and infrastructure vision.
 
 ## Final Category
 
-NEXURADATA is not building AI tools.
+NEXURA is not building AI tools.
 
-NEXURADATA is building:
+NEXURA is building:
 
 ```txt
 Operational Intelligence Infrastructure
@@ -351,4 +351,4 @@ optimizes,
 and stabilizes organizational execution
 ```
 
-That is the real scale of what NEXURADATA can become.
+That is the real scale of what NEXURA can become.

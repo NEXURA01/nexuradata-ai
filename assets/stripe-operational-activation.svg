@@ -1,13 +1,13 @@
 ﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
-  <title id="title">NEXURA Analytics Operational Assessment</title>
+  <title id="title">NEXURA Operational Assessment</title>
   <desc id="desc">Dark structured operational infrastructure visual for secure Stripe checkout.</desc>
   <rect width="1200" height="1200" fill="#10100e"/>
   <rect x="72" y="72" width="1056" height="1056" fill="#151512" stroke="#e8e4dc" stroke-opacity="0.14" stroke-width="2"/>
   <path d="M72 230H1128M72 386H1128M72 542H1128M72 698H1128M72 854H1128M72 1010H1128" stroke="#e8e4dc" stroke-opacity="0.055" stroke-width="2"/>
   <path d="M230 72V1128M386 72V1128M542 72V1128M698 72V1128M854 72V1128M1010 72V1128" stroke="#e8e4dc" stroke-opacity="0.055" stroke-width="2"/>
   <rect x="150" y="156" width="900" height="132" fill="#0d0d0b" stroke="#e8e4dc" stroke-opacity="0.18" stroke-width="2"/>
-  <text x="190" y="232" fill="#e8e4dc" font-family="IBM Plex Sans, Arial, sans-serif" font-size="54" font-weight="700" letter-spacing="2">NEXURA Analytics</text>
-  <text x="190" y="260" fill="#d7c9ad" font-family="IBM Plex Mono, Consolas, monospace" font-size="18" letter-spacing="5">OPERATIONAL INTELLIGENCE INFRASTRUCTURE</text>
+  <text x="190" y="232" fill="#e8e4dc" font-family="IBM Plex Sans, Arial, sans-serif" font-size="54" font-weight="700" letter-spacing="2">NEXURA</text>
+  <text x="190" y="260" fill="#d7c9ad" font-family="IBM Plex Mono, Consolas, monospace" font-size="18" letter-spacing="5">CENTRALIZED OPERATIONAL SYSTEMS</text>
   <rect x="150" y="362" width="900" height="420" fill="#181814" stroke="#e8e4dc" stroke-opacity="0.14" stroke-width="2"/>
   <rect x="190" y="410" width="250" height="96" fill="#0f0f0d" stroke="#a85c48" stroke-opacity="0.8" stroke-width="2"/>
   <rect x="474" y="410" width="250" height="96" fill="#0f0f0d" stroke="#d7c9ad" stroke-opacity="0.44" stroke-width="2"/>

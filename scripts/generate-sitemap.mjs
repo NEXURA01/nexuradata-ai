@@ -9,6 +9,21 @@ const SITE_ORIGIN = "https://nexadura.com";
 const LASTMOD = "2026-05-11";
 const includedDirs = [".", "en"];
 const excludedFiles = new Set(["404.html"]);
+const cleanRouteFiles = new Set([
+  "operational-assessment.html",
+  "services.html",
+  "workflow-automation.html",
+  "operational-dashboard.html",
+  "ai-operational-analysis.html",
+  "pricing.html",
+  "portal.html",
+  "faq.html",
+  "contact.html",
+  "privacy.html",
+  "terms.html",
+  "status.html",
+  "insights.html"
+]);
 
 const escapeXml = (value) => value
   .replaceAll("&", "&amp;")
@@ -19,6 +34,10 @@ const escapeXml = (value) => value
 const routeFor = (dir, file) => {
   if (file === "index.html") {
     return dir === "." ? "/" : `/${dir}/`;
+  }
+
+  if (dir === "." && cleanRouteFiles.has(file)) {
+    return `/${file.replace(/\.html$/, "")}`;
   }
 
   return dir === "." ? `/${file}` : `/${dir}/${file}`;

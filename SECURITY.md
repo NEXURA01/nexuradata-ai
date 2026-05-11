@@ -2,7 +2,7 @@
 
 ## Scope
 
-This policy applies to the NEXURADATA website and operational platform hosted at `nexuradata.ca`.
+This policy applies to the NEXURA website and operational platform hosted at `nexuradata.ca`.
 
 In scope:
 

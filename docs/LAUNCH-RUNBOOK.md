@@ -1,9 +1,9 @@
-# Runbook Lancement NEXURADATA
+# Runbook Lancement NEXURA
 
 ## 1. Cloudflare Pages et Supabase Postgres
 
 1. Connecter le repo a Cloudflare Pages si ce n'est pas deja fait.
-2. Provisionner un projet Supabase pour NEXURADATA.
+2. Provisionner un projet Supabase pour NEXURA.
 3. Recuperer l'URL Postgres pooled compatible Cloudflare depuis Supabase.
 4. Declarer cette URL comme secret Cloudflare Pages sous `DATABASE_URL` pendant la transition legacy.
 5. Copier `.dev.vars.example` vers `.dev.vars` pour le dev local et y placer l'URL Supabase locale ou pooled.
@@ -32,7 +32,7 @@ Creer ces adresses et les faire suivre vers une seule inbox verifiee au lancemen
 2. Creer une cle API transactionnelle.
 3. Declarer dans Cloudflare Pages:
    - `RESEND_API_KEY` comme secret
-   - `RESEND_FROM_EMAIL` comme variable, par exemple `NEXURADATA <dossiers@nexuradata.ca>`
+   - `RESEND_FROM_EMAIL` comme variable, par exemple `NEXURA <dossiers@nexuradata.ca>`
    - `LAB_INBOX_EMAIL` comme variable cible de l'equipe
    - `ACCESS_CODE_SECRET` comme secret
 

@@ -84,6 +84,12 @@ const injectGa4 = async (dir) => {
   }
 };
 
+const normalizeXmlOutput = async () => {
+  const sitemapPath = path.join(releaseDir, "sitemap.xml");
+  const sitemap = await readFile(sitemapPath, "utf8");
+  await writeFile(sitemapPath, sitemap.replace(/^\uFEFF/, ""), "utf8");
+};
+
 await rm(releaseDir, { recursive: true, force: true });
 await mkdir(releaseDir, { recursive: true });
 
@@ -101,5 +107,6 @@ for (const entry of entries) {
 }
 
 await injectGa4(releaseDir);
+await normalizeXmlOutput();
 
 console.log("Generated release-cloudflare/ from the tracked site source.");

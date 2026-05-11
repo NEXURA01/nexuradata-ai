@@ -21,7 +21,12 @@ export const onRequestPost = async (context) => {
   }
 
   // Validate event type
-  const allowedEvents = ["checkout.session.completed", "async_payment_succeeded", "async_payment_failed"];
+  const allowedEvents = [
+    "checkout.session.completed",
+    "checkout.session.async_payment_succeeded",
+    "checkout.session.async_payment_failed",
+    "checkout.session.expired"
+  ];
   if (!allowedEvents.includes(event.type)) {
     console.error(JSON.stringify({
       timestamp: new Date().toISOString(),

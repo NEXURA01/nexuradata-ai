@@ -1,13 +1,13 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "nexuradata",
+  "name": "nexuradata-ai",
   "pages_build_output_dir": "./release-cloudflare",
   "compatibility_date": "2026-04-04",
   "compatibility_flags": [
     "nodejs_compat"
   ],
   "vars": {
-    "PUBLIC_SITE_ORIGIN": "https://nexuradata.ca",
+    "PUBLIC_SITE_ORIGIN": "https://nexuradata-ai.pages.dev",
     "LAB_INBOX_EMAIL": "o.blanchet13@gmail.com",
     "RESEND_FROM_EMAIL": "NEXURADATA <dossiers@nexuradata.ca>",
     "OPS_ACCESS_ALLOWED_DOMAIN": "nexuradata.ca"

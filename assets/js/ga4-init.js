@@ -23,6 +23,29 @@
 		window[`ga-disable-${GA_MEASUREMENT_ID}`] = consent?.analytics !== true;
 	};
 
+	const getCanonicalPageLocation = () => {
+		const canonicalHref = document.querySelector('link[rel="canonical"]')?.href;
+		if (!canonicalHref) return window.location.href;
+
+		try {
+			const canonicalUrl = new URL(canonicalHref);
+			const currentUrl = new URL(window.location.href);
+			canonicalUrl.hash = currentUrl.hash;
+			return canonicalUrl.href;
+		} catch {
+			return window.location.href;
+		}
+	};
+
+	const getCanonicalPagePath = () => {
+		try {
+			const canonicalUrl = new URL(getCanonicalPageLocation());
+			return `${canonicalUrl.pathname}${canonicalUrl.search}${canonicalUrl.hash}`;
+		} catch {
+			return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+		}
+	};
+
 	const loadGa4 = (consent = readConsent()) => {
 		applyGaDisable(consent);
 
@@ -34,7 +57,12 @@
 		document.head.appendChild(script);
 
 		window.gtag("js", new Date());
-		window.gtag("config", GA_MEASUREMENT_ID, { anonymize_ip: true });
+		window.gtag("config", GA_MEASUREMENT_ID, {
+			anonymize_ip: true,
+			page_location: getCanonicalPageLocation(),
+			page_path: getCanonicalPagePath(),
+			transport_type: "beacon"
+		});
 		ga4Loaded = true;
 	};
 

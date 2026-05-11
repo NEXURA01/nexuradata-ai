@@ -3708,3 +3708,196 @@ select {
   text-decoration: underline;
   opacity: 0.85;
 }
+
+/* Repositioning layer: AI implementation homepage */
+body.ai-positioning {
+  --color-accent: #b56f3f;
+  --color-accent-strong: #e8e4dc;
+  --color-accent-ink: #0d0d0b;
+  --color-highlight: #c56f42;
+  background:
+    linear-gradient(90deg, rgba(232, 228, 220, 0.028) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(232, 228, 220, 0.028) 1px, transparent 1px),
+    radial-gradient(circle at 18% 8%, rgba(181, 111, 63, 0.13), transparent 26rem),
+    radial-gradient(circle at 82% 12%, rgba(138, 63, 39, 0.11), transparent 24rem),
+    linear-gradient(180deg, #080806 0%, #11100d 48%, #080806 100%);
+  background-size: 88px 88px, 88px 88px, auto, auto, auto;
+}
+
+body.ai-positioning::before,
+body.ai-positioning::after {
+  opacity: 0.28;
+}
+
+body.ai-positioning .site-header {
+  background: linear-gradient(180deg, rgba(8, 8, 6, 0.96), rgba(8, 8, 6, 0.86));
+}
+
+body.ai-positioning .brand-logo,
+body.ai-positioning .footer-logo {
+  filter: sepia(0.18) saturate(0.9);
+}
+
+body.ai-positioning .eyebrow,
+body.ai-positioning .service-index,
+body.ai-positioning .tier-label,
+body.ai-positioning .process-num,
+body.ai-positioning .panel-label {
+  color: #b56f3f;
+}
+
+body.ai-positioning .hero h1,
+body.ai-positioning .section-heading h2,
+body.ai-positioning .section-header h2 {
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+
+body.ai-positioning .hero-lead,
+body.ai-positioning .section-intro,
+body.ai-positioning .page-card p,
+body.ai-positioning .faq-item p,
+body.ai-positioning .form-note {
+  color: rgba(232, 228, 220, 0.68);
+}
+
+body.ai-positioning .page-card,
+body.ai-positioning .panel-card,
+body.ai-positioning .contact-card,
+body.ai-positioning .contact-form,
+body.ai-positioning .faq-item,
+body.ai-positioning .field input,
+body.ai-positioning .field select,
+body.ai-positioning .field textarea,
+body.ai-positioning .button,
+body.ai-positioning .trust-tags span {
+  border-radius: 0;
+}
+
+body.ai-positioning .page-card,
+body.ai-positioning .hero-panel,
+body.ai-positioning .contact-shell,
+body.ai-positioning .contact-card,
+body.ai-positioning .faq-item {
+  background: linear-gradient(180deg, rgba(232, 228, 220, 0.035), rgba(232, 228, 220, 0.012)), #11100d;
+  border-color: rgba(232, 228, 220, 0.13);
+}
+
+body.ai-positioning .button-primary {
+  background: #b56f3f;
+  color: #080806;
+  border-color: #b56f3f;
+}
+
+body.ai-positioning .button-primary:hover {
+  background: #e8e4dc;
+  border-color: #e8e4dc;
+  color: #080806;
+}
+
+body.ai-positioning .button-secondary,
+body.ai-positioning .button-outline {
+  background: rgba(8, 8, 6, 0.5);
+  border-color: rgba(232, 228, 220, 0.18);
+}
+
+.ai-hero {
+  border-bottom: 1px solid rgba(232, 228, 220, 0.1);
+}
+
+.ai-console {
+  display: grid;
+  gap: 1rem;
+}
+
+.ai-console-header .panel-value {
+  color: #e8e4dc;
+  font-family: var(--font-mono);
+  letter-spacing: 0.22em;
+}
+
+.ai-flow {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid rgba(232, 228, 220, 0.12);
+  background: rgba(232, 228, 220, 0.1);
+}
+
+.ai-flow div {
+  display: grid;
+  grid-template-columns: 3.25rem 1fr;
+  gap: 1rem;
+  align-items: center;
+  min-height: 5.25rem;
+  padding: 1rem;
+  background: #080806;
+}
+
+.ai-flow span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgba(181, 111, 63, 0.52);
+  color: #b56f3f;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.ai-flow strong,
+.ai-flow small {
+  display: block;
+}
+
+.ai-flow strong {
+  color: #e8e4dc;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.ai-flow small {
+  margin-top: 0.2rem;
+  color: rgba(232, 228, 220, 0.46);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: lowercase;
+}
+
+body.ai-positioning .trust-tags span {
+  border-color: rgba(181, 111, 63, 0.34);
+  color: rgba(232, 228, 220, 0.72);
+}
+
+body.ai-positioning .field input,
+body.ai-positioning .field select,
+body.ai-positioning .field textarea {
+  background: #080806;
+  border-color: rgba(232, 228, 220, 0.14);
+}
+
+body.ai-positioning .field input:focus,
+body.ai-positioning .field select:focus,
+body.ai-positioning .field textarea:focus {
+  border-color: rgba(181, 111, 63, 0.78);
+  box-shadow: 0 0 0 3px rgba(181, 111, 63, 0.12);
+}
+
+body.ai-positioning .whatsapp-fab,
+body.ai-positioning .whatsapp-inline-link {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  body.ai-positioning .hero-copy h1 {
+    letter-spacing: -0.03em;
+    text-transform: none;
+  }
+
+  .ai-flow div {
+    min-height: auto;
+  }
+}

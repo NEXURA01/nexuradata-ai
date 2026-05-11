@@ -18,6 +18,14 @@ describe("inferCaseCategory()", () => {
   it("detects mobile cases", () => {
     expect(inferCaseCategory("Téléphone / mobile", "iPhone verrouillé après plusieurs essais")).toBe("mobile");
   });
+
+  it("keeps forensic priority when evidence and device signals overlap", () => {
+    expect(inferCaseCategory("Téléphone mobile", "iPhone remis comme preuve dans un litige avec assurance")).toBe("forensic");
+  });
+
+  it("prefers continuity cases when NAS and generic drive signals overlap", () => {
+    expect(inferCaseCategory("Disque externe", "NAS QNAP avec volume degraded et opérations bloquées")).toBe("raid");
+  });
 });
 
 describe("inferRiskFlags()", () => {
@@ -73,7 +81,11 @@ describe("buildCaseAutomationDraft()", () => {
     expect(draft.category).toBe("raid");
     expect(draft.riskLevel).toBe("high");
     expect(draft.recommendedPath).toBe("Intervention continuité d'activité");
+    expect(draft.confidenceScore).toBeGreaterThan(0.5);
+    expect(draft.categoryEvidence.length).toBeGreaterThan(0);
     expect(draft.qualificationSummary).toContain("Catégorie:");
+    expect(draft.qualificationSummary).toContain("Confiance:");
+    expect(draft.qualificationSummary).toContain("Évidence:");
     expect(draft.handlingFlags).toContain("raid");
   });
 });

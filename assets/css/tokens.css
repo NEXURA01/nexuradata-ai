@@ -1,4 +1,4 @@
-/* NEXURADATA design tokens: operational infrastructure system */
+/* NEXURA design tokens: operational infrastructure system */
 :root {
   color-scheme: dark;
 
@@ -36,8 +36,8 @@
   --color-highlight: #b87333;
   --color-copper: #b87333;
   --color-copper-soft: rgba(184, 115, 51, 0.18);
-  --color-error: #8f3f2f;
-  --color-warning: #e4b7aa;
+  --color-error: #b87333;
+  --color-warning: #c4b8a8;
   --color-info: #c4b8a8;
 
   /* Spacing and layout */

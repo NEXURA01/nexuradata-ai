@@ -1,4 +1,5 @@
-﻿<svg viewBox="0 0 500 90" xmlns="http://www.w3.org/2000/svg" width="500" height="90" role="img" aria-labelledby="title desc">
+﻿<svg viewBox="0 0 500 90"
+  xmlns="http://www.w3.org/2000/svg" width="500" height="90" role="img" aria-labelledby="title desc">
   <title id="title">NEXURA</title>
   <desc id="desc">Structural NX monogram and NEXURA wordmark.</desc>
   <g transform="translate(28, 18)">

@@ -24,6 +24,36 @@ const readTrackingConsent = () => {
 let trackingConsent = readTrackingConsent();
 let metaPixelLoaded = false;
 
+const getCanonicalPageLocation = () => {
+  const canonicalHref = document.querySelector('link[rel="canonical"]')?.href;
+  if (!canonicalHref) return window.location.href;
+
+  try {
+    const canonicalUrl = new URL(canonicalHref);
+    const currentUrl = new URL(window.location.href);
+    canonicalUrl.hash = currentUrl.hash;
+    return canonicalUrl.href;
+  } catch {
+    return window.location.href;
+  }
+};
+
+const getCanonicalPagePath = () => {
+  try {
+    const canonicalUrl = new URL(getCanonicalPageLocation());
+    return `${canonicalUrl.pathname}${canonicalUrl.search}${canonicalUrl.hash}`;
+  } catch {
+    return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  }
+};
+
+const getMetaEventPayload = (extra = {}) => ({
+  page_location: getCanonicalPageLocation(),
+  page_path: getCanonicalPagePath(),
+  current_location: window.location.href,
+  ...extra
+});
+
 const loadMetaPixel = () => {
   if (metaPixelLoaded || trackingConsent?.marketing !== true) return;
 
@@ -40,7 +70,7 @@ const loadMetaPixel = () => {
 
   fbq("consent", "grant");
   fbq("init", META_PIXEL_ID);
-  fbq("track", "PageView");
+  fbq("track", "PageView", getMetaEventPayload());
   metaPixelLoaded = true;
 };
 
@@ -154,7 +184,7 @@ bindCookiePreferenceTriggers();
 
 const trackContactIntent = (method) => {
   if (trackingConsent?.marketing === true && typeof fbq === "function") {
-    fbq("track", "Contact", { content_name: method });
+    fbq("track", "Contact", getMetaEventPayload({ content_name: method }));
   }
 
   if (trackingConsent?.analytics === true && typeof window.gtag === "function") {
@@ -1412,7 +1442,7 @@ if (intakeForm) {
       if (response.ok && data?.ok) {
         intakeForm.reset();
         if (trackingConsent?.marketing === true && typeof fbq === "function") {
-          fbq("track", "Lead", { content_name: "intake_form" });
+          fbq("track", "Lead", getMetaEventPayload({ content_name: "intake_form" }));
         }
         setMessage(
           statusTarget,

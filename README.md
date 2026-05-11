@@ -27,6 +27,10 @@ Le depot couvre:
 - `wrangler.jsonc` : configuration Pages/Functions, source de verite
 - `.dev.vars.example` : variables locales a copier vers `.dev.vars`
 
+## Note de transition stack
+
+Supabase est la pile cible pour les nouveaux developpements. Le depot conserve temporairement des chemins Neon existants, notamment `functions/_lib/db.js`, `migrations/neon/0001_full_schema.sql` et la dependance `@neondatabase/serverless`. La migration doit rester progressive, non destructive, et preserver le comportement actuel jusqu'a ce que les equivalents Supabase soient prets, testes et valides.
+
 ## Prerequis de lancement
 
 1. Provisionner une base Neon Postgres et recuperer son `DATABASE_URL`.

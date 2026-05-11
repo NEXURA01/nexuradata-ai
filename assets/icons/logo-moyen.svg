@@ -1,14 +1,11 @@
-<svg viewBox="0 0 310 56" xmlns="http://www.w3.org/2000/svg" width="310" height="56">
-  <g transform="translate(18, 14)">
-    <rect x="0" y="0" width="2" height="28" fill="#e8e4dc" opacity="1"/>
-    <rect x="6" y="0" width="2" height="28" fill="#e8e4dc" opacity="0.55"/>
-    <rect x="12" y="0" width="2" height="28" fill="#e8e4dc" opacity="0.22"/>
-    <rect x="18" y="0" width="2" height="28" fill="#e8e4dc" opacity="0.08"/>
-    <line x1="0" y1="0" x2="22" y2="28" stroke="#e8e4dc" stroke-width="1.6" stroke-linecap="butt"/>
-    <rect x="20" y="0" width="2" height="28" fill="#e8e4dc" opacity="1"/>
-    <text x="32" y="26" font-family="'Georgia', 'Times New Roman', serif" font-size="28" font-weight="400" letter-spacing="4" fill="#e8e4dc">EXURA</text>
-    <text x="201" y="26" font-family="'Georgia', 'Times New Roman', serif" font-size="10" font-weight="400" letter-spacing="5" fill="#e8e4dc" opacity="0.35">DATA</text>
-    <line x1="0" y1="34" x2="260" y2="34" stroke="#e8e4dc" stroke-width="0.4" opacity="0.12"/>
-    <text x="0" y="46" font-family="'Georgia', 'Times New Roman', serif" font-size="7" letter-spacing="3" fill="#e8e4dc" opacity="0.22">Récupération · RAID · Forensique · Montréal</text>
+<svg viewBox="0 0 310 56" xmlns="http://www.w3.org/2000/svg" width="310" height="56" role="img" aria-labelledby="title desc">
+  <title id="title">NEXURADATA</title>
+  <desc id="desc">Structural NX monogram and NEXURADATA wordmark.</desc>
+  <g transform="translate(16, 8)">
+    <path d="M0 0H40V40H0Z" fill="#0A0A0B"/>
+    <path d="M0 0H40M0 0V40M40 0V40M0 40H40" fill="none" stroke="#F5F1E8" stroke-width="0.8" opacity="0.3"/>
+    <path d="M9 31V9H14L27 31H31V9" fill="none" stroke="#F5F1E8" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="M27 9L36 20L27 31M36 9L27 20L36 31" fill="none" stroke="#B87333" stroke-width="2.8" stroke-linecap="square" stroke-linejoin="miter"/>
   </g>
+  <text x="68" y="36" font-family="'Inter Tight', 'IBM Plex Sans', Inter, Arial, sans-serif" font-size="24" font-weight="800" letter-spacing="3" fill="#F5F1E8">NEXURADATA</text>
 </svg>

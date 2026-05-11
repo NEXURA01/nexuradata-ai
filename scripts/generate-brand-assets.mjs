@@ -1,21 +1,22 @@
 #!/usr/bin/env node
 /**
- * Generate all NEXURADATA PNG brand assets from source SVGs.
+ * Generate NEXURADATA raster brand assets from the source SVG identity.
  * Run: node scripts/generate-brand-assets.mjs
  */
 import sharp from 'sharp';
 import QRCode from 'qrcode';
-import { readFileSync, mkdirSync } from 'fs';
+import { readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 
-// Brand colors
-const NOIR = '#0d0d0b';
-const OS = '#e8e4dc';
-const OS_DIM = 'rgba(232, 228, 220, 0.35)';
+const NOIR = '#0A0A0B';
+const OS = '#F5F1E8';
+const COPPER = '#B87333';
+const GRAPHITE = '#17191D';
+const FONT = "'Inter Tight', 'IBM Plex Sans', Arial, sans-serif";
 const CONTACT_URL = 'https://nexuradata.ca/#contact';
 
 async function qrDataUri(size = 220) {
@@ -33,7 +34,7 @@ async function qrDataUri(size = 220) {
   return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
 }
 
-function ruleGrid(w, h, step = 72) {
+function ruleGrid(w, h, step = 80) {
   let lines = '';
   for (let x = step; x < w; x += step) {
     lines += `<line x1="${x}" y1="0" x2="${x}" y2="${h}" stroke="${OS}" stroke-width="0.5" opacity="0.035"/>`;
@@ -44,278 +45,200 @@ function ruleGrid(w, h, step = 72) {
   return lines;
 }
 
-function servicePills(x, y, labels, gap = 14) {
+function nxMark(size = 120, framed = true) {
+  const scale = size / 64;
+  return `<g transform="scale(${scale})">
+    <rect width="64" height="64" rx="0" fill="${NOIR}"/>
+    ${framed ? `<path d="M8 8H56M8 8V56M56 8V56M8 56H56" fill="none" stroke="${OS}" stroke-width="1.5" opacity="0.32"/>` : ''}
+    <path d="M19 47V17H24L40 47H45V17" fill="none" stroke="${OS}" stroke-width="5.8" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="M40 17L52 32L40 47M52 17L40 32L52 47" fill="none" stroke="${COPPER}" stroke-width="4.8" stroke-linecap="square" stroke-linejoin="miter"/>
+  </g>`;
+}
+
+function wordmark(x, y, size = 72, spacing = 7, anchor = 'start') {
+  return `<text x="${x}" y="${y}" font-family="${FONT}" font-size="${size}" font-weight="800" letter-spacing="${spacing}" fill="${OS}" text-anchor="${anchor}">NEXURADATA</text>`;
+}
+
+function systemPills(x, y, labels, gap = 14) {
   let cursor = x;
   return labels.map((label) => {
-    const width = label.length * 10 + 34;
+    const width = label.length * 11 + 34;
     const pill = `<g transform="translate(${cursor}, ${y})">
-      <rect width="${width}" height="38" rx="0" fill="${NOIR}" stroke="${OS}" stroke-width="0.5" opacity="0.95"/>
-      <text x="17" y="25" font-family="Georgia, 'Times New Roman', serif" font-size="13" letter-spacing="2" fill="${OS}" opacity="0.58">${label}</text>
+      <rect width="${width}" height="40" rx="0" fill="${GRAPHITE}" stroke="${OS}" stroke-width="0.6" opacity="0.94"/>
+      <text x="17" y="26" font-family="${FONT}" font-size="13" font-weight="700" letter-spacing="2" fill="${OS}" opacity="0.68">${label}</text>
     </g>`;
     cursor += width + gap;
     return pill;
   }).join('');
 }
 
-// ─── N Mark (the data-bar glyph) ───
-function nMark(size, pad) {
-  const s = size - pad * 2;
-  const bw = s * 0.08; // bar width
-  const gap = s * 0.25;
-  return `
-    <rect x="${pad}" y="${pad}" width="${bw}" height="${s}" fill="${OS}" opacity="1"/>
-    <rect x="${pad + gap}" y="${pad}" width="${bw}" height="${s}" fill="${OS}" opacity="0.55"/>
-    <rect x="${pad + gap * 2}" y="${pad}" width="${bw}" height="${s}" fill="${OS}" opacity="0.22"/>
-    <rect x="${pad + gap * 3}" y="${pad}" width="${bw}" height="${s}" fill="${OS}" opacity="0.08"/>
-    <line x1="${pad}" y1="${pad}" x2="${pad + s}" y2="${pad + s}" stroke="${OS}" stroke-width="${bw * 0.7}" stroke-linecap="butt"/>
-    <rect x="${pad + s - bw}" y="${pad}" width="${bw}" height="${s}" fill="${OS}" opacity="1"/>`;
-}
-
-// ─── 1. Favicon ICO / Apple Touch Icon ───
 async function generateIcons() {
   const faviconSvg = readFileSync(resolve(ROOT, 'assets/icons/favicon.svg'));
 
-  // Apple touch icon (180x180)
   await sharp(faviconSvg).resize(180, 180).png().toFile(resolve(ROOT, 'assets/icons/apple-touch-icon.png'));
-  console.log('  ✓ apple-touch-icon.png (180×180)');
+  console.log('  - apple-touch-icon.png (180x180)');
 
-  // PWA icons
   for (const size of [192, 512]) {
     await sharp(faviconSvg).resize(size, size).png().toFile(resolve(ROOT, `assets/icons/icon-${size}.png`));
-    console.log(`  ✓ icon-${size}.png`);
+    console.log(`  - icon-${size}.png`);
   }
 
-  // nexuradata-icon.png (referenced in branding doc)
   await sharp(faviconSvg).resize(512, 512).png().toFile(resolve(ROOT, 'assets/nexuradata-icon.png'));
-  console.log('  ✓ nexuradata-icon.png (512×512)');
+  console.log('  - nexuradata-icon.png (512x512)');
 }
 
-// ─── 2. Master logo PNG ───
 async function generateMasterPng() {
   const masterSvg = readFileSync(resolve(ROOT, 'assets/nexuradata-master.svg'));
-  // 2x resolution for crisp rendering
   await sharp(masterSvg).resize(1000, 180).png().toFile(resolve(ROOT, 'assets/nexuradata-master.png'));
-  console.log('  ✓ nexuradata-master.png (1000×180)');
+  console.log('  - nexuradata-master.png (1000x180)');
 }
 
-// ─── 3. OG Default Image (1200×630, on-brand) ───
 async function generateOgDefault() {
   const w = 1200, h = 630;
-  // N mark parameters
-  const markSize = 120;
-  const markPad = 0;
-  const markX = 100;
-  const markY = 180;
-
   const svg = `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${w}" height="${h}" fill="${NOIR}"/>
-  <!-- Subtle rule line at top -->
-  <line x1="80" y1="60" x2="${w - 80}" y2="60" stroke="${OS}" stroke-width="0.5" opacity="0.12"/>
-  <!-- N mark -->
-  <g transform="translate(${markX}, ${markY})">
-    ${nMark(markSize, markPad)}
-  </g>
-  <!-- NEXURADATA text -->
-  <text x="240" y="280" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="400" letter-spacing="8" fill="${OS}">NEXURA</text>
-  <text x="240" y="280" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="400" letter-spacing="8" fill="${OS}" dx="420">
-    <tspan fill="${OS}" opacity="0.35" font-size="28" letter-spacing="10" dy="-2">DATA</tspan>
-  </text>
-  <!-- Tagline -->
-  <text x="240" y="340" font-family="Georgia, 'Times New Roman', serif" font-size="18" letter-spacing="4" fill="${OS}" opacity="0.45">Récupération de données · Forensique numérique · Montréal</text>
-  <!-- Bottom rule -->
-  <line x1="80" y1="560" x2="${w - 80}" y2="560" stroke="${OS}" stroke-width="0.5" opacity="0.12"/>
-  <!-- Bottom info -->
-  <text x="80" y="590" font-family="Georgia, 'Times New Roman', serif" font-size="13" letter-spacing="3" fill="${OS}" opacity="0.25">nexuradata.ca</text>
-  <text x="${w - 80}" y="590" font-family="Georgia, 'Times New Roman', serif" font-size="13" letter-spacing="3" fill="${OS}" opacity="0.25" text-anchor="end">7/7 · 9h – 18h · Urgences 24/7</text>
+  ${ruleGrid(w, h, 96)}
+  <line x1="80" y1="72" x2="${w - 80}" y2="72" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <line x1="80" y1="558" x2="${w - 80}" y2="558" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <g transform="translate(96, 204)">${nxMark(150)}</g>
+  ${wordmark(286, 284, 76, 7)}
+  <text x="286" y="346" font-family="${FONT}" font-size="23" font-weight="700" letter-spacing="2.2" fill="${OS}" opacity="0.68">OPERATIONAL INTELLIGENCE INFRASTRUCTURE</text>
+  <text x="286" y="400" font-family="${FONT}" font-size="20" font-weight="600" letter-spacing="0.5" fill="${OS}" opacity="0.5">Systems for control, execution and operational trust.</text>
+  <rect x="80" y="500" width="220" height="6" fill="${COPPER}"/>
+  <text x="80" y="590" font-family="${FONT}" font-size="14" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.34">nexuradata.ca</text>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/og-default.png'));
-  console.log('  ✓ og-default.png (1200×630, on-brand)');
+  console.log('  - og-default.png (1200x630)');
 }
 
-// ─── 4. OG English variant ───
 async function generateOgEn() {
   const w = 1200, h = 630;
-  const markSize = 120;
-  const markX = 100;
-  const markY = 180;
-
   const svg = `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${w}" height="${h}" fill="${NOIR}"/>
-  <line x1="80" y1="60" x2="${w - 80}" y2="60" stroke="${OS}" stroke-width="0.5" opacity="0.12"/>
-  <g transform="translate(${markX}, ${markY})">
-    ${nMark(markSize, 0)}
-  </g>
-  <text x="240" y="280" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="400" letter-spacing="8" fill="${OS}">NEXURA</text>
-  <text x="240" y="280" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="400" letter-spacing="8" fill="${OS}" dx="420">
-    <tspan fill="${OS}" opacity="0.35" font-size="28" letter-spacing="10" dy="-2">DATA</tspan>
-  </text>
-  <text x="240" y="340" font-family="Georgia, 'Times New Roman', serif" font-size="18" letter-spacing="4" fill="${OS}" opacity="0.45">Data Recovery · Digital Forensics · Montreal</text>
-  <line x1="80" y1="560" x2="${w - 80}" y2="560" stroke="${OS}" stroke-width="0.5" opacity="0.12"/>
-  <text x="80" y="590" font-family="Georgia, 'Times New Roman', serif" font-size="13" letter-spacing="3" fill="${OS}" opacity="0.25">nexuradata.ca</text>
-  <text x="${w - 80}" y="590" font-family="Georgia, 'Times New Roman', serif" font-size="13" letter-spacing="3" fill="${OS}" opacity="0.25" text-anchor="end">7/7 · 9 AM – 6 PM · Emergencies 24/7</text>
+  ${ruleGrid(w, h, 96)}
+  <line x1="80" y1="72" x2="${w - 80}" y2="72" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <line x1="80" y1="558" x2="${w - 80}" y2="558" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <g transform="translate(96, 204)">${nxMark(150)}</g>
+  ${wordmark(286, 284, 76, 7)}
+  <text x="286" y="346" font-family="${FONT}" font-size="23" font-weight="700" letter-spacing="2.2" fill="${OS}" opacity="0.68">OPERATIONAL INTELLIGENCE INFRASTRUCTURE</text>
+  <text x="286" y="400" font-family="${FONT}" font-size="20" font-weight="600" letter-spacing="0.5" fill="${OS}" opacity="0.5">Systems for control, execution and operational trust.</text>
+  <rect x="80" y="500" width="220" height="6" fill="${COPPER}"/>
+  <text x="80" y="590" font-family="${FONT}" font-size="14" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.34">nexuradata.ca</text>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/og-en.png'));
-  console.log('  ✓ og-en.png (1200×630, EN variant)');
+  console.log('  - og-en.png (1200x630)');
 }
 
-// ─── 5. Email signature image ───
 async function generateSignature() {
   const w = 500, h = 100;
   const svg = `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${w}" height="${h}" fill="${NOIR}"/>
-  <g transform="translate(16, 18)">
-    <rect x="0" y="0" width="2" height="30" fill="${OS}" opacity="1"/>
-    <rect x="6" y="0" width="2" height="30" fill="${OS}" opacity="0.55"/>
-    <rect x="12" y="0" width="2" height="30" fill="${OS}" opacity="0.22"/>
-    <rect x="18" y="0" width="2" height="30" fill="${OS}" opacity="0.08"/>
-    <line x1="0" y1="0" x2="24" y2="30" stroke="${OS}" stroke-width="1.6" stroke-linecap="butt"/>
-    <rect x="22" y="0" width="2" height="30" fill="${OS}" opacity="1"/>
-  </g>
-  <text x="50" y="40" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="400" letter-spacing="4" fill="${OS}">NEXURA</text>
-  <text x="236" y="40" font-family="Georgia, 'Times New Roman', serif" font-size="11" font-weight="400" letter-spacing="6" fill="${OS}" opacity="0.35">DATA</text>
-  <line x1="16" y1="60" x2="${w - 16}" y2="60" stroke="${OS}" stroke-width="0.5" opacity="0.12"/>
-  <text x="16" y="80" font-family="Georgia, 'Times New Roman', serif" font-size="8.5" letter-spacing="3" fill="${OS}" opacity="0.22">Récupération · RAID · Forensique · Montréal</text>
-  <text x="${w - 16}" y="80" font-family="Georgia, 'Times New Roman', serif" font-size="8.5" letter-spacing="2" fill="${OS}" opacity="0.22" text-anchor="end">nexuradata.ca</text>
+  <g transform="translate(18, 20)">${nxMark(58)}</g>
+  ${wordmark(96, 58, 30, 3.2)}
+  <line x1="96" y1="70" x2="${w - 22}" y2="70" stroke="${OS}" stroke-width="0.8" opacity="0.14"/>
+  <text x="96" y="88" font-family="${FONT}" font-size="10" font-weight="700" letter-spacing="2.2" fill="${OS}" opacity="0.38">nexuradata.ca</text>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/nexuradata-signature.png'));
-  console.log('  ✓ nexuradata-signature.png (500×100)');
+  console.log('  - nexuradata-signature.png (500x100)');
 }
 
-// ─── 6. Social profile square (800×800) ───
 async function generateSocialProfile() {
   const s = 800;
   const svg = `<svg width="${s}" height="${s}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${s}" height="${s}" rx="0" fill="${NOIR}"/>
   ${ruleGrid(s, s, 80)}
-  <line x1="96" y1="96" x2="704" y2="96" stroke="${OS}" stroke-width="0.5" opacity="0.16"/>
-  <line x1="96" y1="704" x2="704" y2="704" stroke="${OS}" stroke-width="0.5" opacity="0.16"/>
-  <g transform="translate(${s / 2 - 116}, ${s / 2 - 190})">
-    ${nMark(232, 0)}
-  </g>
-  <text x="${s / 2}" y="${s / 2 + 92}" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="400" letter-spacing="6" fill="${OS}" text-anchor="middle">NEXURADATA</text>
-  <text x="${s / 2}" y="${s / 2 + 138}" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="5" fill="${OS}" opacity="0.42" text-anchor="middle">RAID · SSD · MOBILE · FORENSIQUE</text>
-  <text x="${s / 2}" y="${s / 2 + 204}" font-family="Georgia, 'Times New Roman', serif" font-size="21" letter-spacing="1.5" fill="${OS}" opacity="0.72" text-anchor="middle">Qualification avant intervention</text>
-  <text x="${s / 2}" y="${s / 2 + 244}" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="4" fill="${OS}" opacity="0.38" text-anchor="middle">MONTRÉAL · GRAND MONTRÉAL</text>
+  <line x1="96" y1="96" x2="704" y2="96" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <line x1="96" y1="704" x2="704" y2="704" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <g transform="translate(${s / 2 - 130}, 176)">${nxMark(260)}</g>
+  ${wordmark(s / 2, 526, 48, 5, 'middle')}
+  <text x="${s / 2}" y="584" font-family="${FONT}" font-size="15" font-weight="700" letter-spacing="3.4" fill="${OS}" opacity="0.42" text-anchor="middle">OPERATIONAL COMMAND SYSTEMS</text>
+  <rect x="300" y="634" width="200" height="6" fill="${COPPER}"/>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/social-profile.png'));
-  console.log('  ✓ social-profile.png (800×800)');
+  console.log('  - social-profile.png (800x800)');
 }
 
-// ─── 7. Social banner (1500×500 for LinkedIn/Twitter) ───
 async function generateSocialBanner() {
   const w = 1500, h = 500;
-  const qr = await qrDataUri(190);
   const svg = `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${w}" height="${h}" fill="${NOIR}"/>
-  ${ruleGrid(w, h, 80)}
-  <line x1="60" y1="50" x2="${w - 60}" y2="50" stroke="${OS}" stroke-width="0.5" opacity="0.14"/>
-  <line x1="60" y1="${h - 50}" x2="${w - 60}" y2="${h - 50}" stroke="${OS}" stroke-width="0.5" opacity="0.14"/>
-  <g transform="translate(92, 122)">
-    ${nMark(126, 0)}
-  </g>
-  <text x="260" y="184" font-family="Georgia, 'Times New Roman', serif" font-size="78" font-weight="400" letter-spacing="8" fill="${OS}">NEXURA</text>
-  <text x="820" y="184" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="400" letter-spacing="11" fill="${OS}" opacity="0.38">DATA</text>
-  <text x="260" y="235" font-family="Georgia, 'Times New Roman', serif" font-size="24" letter-spacing="2" fill="${OS}" opacity="0.76">Récupération de données et forensique numérique</text>
-  <text x="260" y="280" font-family="Georgia, 'Times New Roman', serif" font-size="16" letter-spacing="4" fill="${OS}" opacity="0.42">MONTRÉAL · GRAND MONTRÉAL · DOSSIER QUALIFIÉ</text>
-  ${servicePills(260, 326, ['RAID', 'SSD', 'MOBILE', 'SERVEUR', 'FORENSIQUE'])}
-  <g transform="translate(1230, 112)">
-    <rect x="-18" y="-18" width="226" height="262" fill="${NOIR}" stroke="${OS}" stroke-width="0.5" opacity="0.96"/>
-    <image href="${qr}" x="0" y="0" width="190" height="190"/>
-    <text x="95" y="226" font-family="Georgia, 'Times New Roman', serif" font-size="12" letter-spacing="2.6" fill="${OS}" opacity="0.48" text-anchor="middle">DEMANDER UNE QUALIFICATION</text>
-  </g>
+  ${ruleGrid(w, h, 90)}
+  <line x1="72" y1="56" x2="${w - 72}" y2="56" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <line x1="72" y1="444" x2="${w - 72}" y2="444" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <g transform="translate(98, 144)">${nxMark(148)}</g>
+  ${wordmark(292, 222, 78, 7)}
+  <text x="292" y="286" font-family="${FONT}" font-size="22" font-weight="700" letter-spacing="2.5" fill="${OS}" opacity="0.58">OPERATIONAL INTELLIGENCE INFRASTRUCTURE</text>
+  ${systemPills(292, 336, ['CONTROL', 'EXECUTION', 'SYSTEMS', 'TRUST'])}
+  <rect x="72" y="390" width="220" height="6" fill="${COPPER}"/>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/social-banner.png'));
-  console.log('  ✓ social-banner.png (1500×500)');
+  console.log('  - social-banner.png (1500x500)');
 }
 
-// ─── 8. Facebook cover photo (1640×624) ───
 async function generateFacebookCover() {
   const w = 1640, h = 624;
-  const qr = await qrDataUri(210);
   const svg = `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${w}" height="${h}" fill="${NOIR}"/>
-  ${ruleGrid(w, h, 82)}
-  <line x1="80" y1="56" x2="${w - 80}" y2="56" stroke="${OS}" stroke-width="0.5" opacity="0.16"/>
-  <line x1="80" y1="${h - 56}" x2="${w - 80}" y2="${h - 56}" stroke="${OS}" stroke-width="0.5" opacity="0.16"/>
-  <g transform="translate(118, 168)">
-    ${nMark(152, 0)}
-  </g>
-  <text x="300" y="230" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="400" letter-spacing="8" fill="${OS}">NEXURA</text>
-  <text x="934" y="230" font-family="Georgia, 'Times New Roman', serif" font-size="29" font-weight="400" letter-spacing="12" fill="${OS}" opacity="0.38">DATA</text>
-  <text x="300" y="291" font-family="Georgia, 'Times New Roman', serif" font-size="26" letter-spacing="2" fill="${OS}" opacity="0.78">Récupération de données · RAID · SSD · mobile</text>
-  <text x="300" y="337" font-family="Georgia, 'Times New Roman', serif" font-size="17" letter-spacing="4" fill="${OS}" opacity="0.46">FORENSIQUE NUMÉRIQUE · MONTRÉAL · DOSSIER SÉCURISÉ</text>
-  ${servicePills(300, 398, ['Qualification', 'Autorisation', 'Suivi sécurisé'])}
-  <g transform="translate(1310, 140)">
-    <rect x="-20" y="-20" width="250" height="288" fill="${NOIR}" stroke="${OS}" stroke-width="0.5" opacity="0.96"/>
-    <image href="${qr}" x="0" y="0" width="210" height="210"/>
-    <text x="105" y="250" font-family="Georgia, 'Times New Roman', serif" font-size="13" letter-spacing="2.4" fill="${OS}" opacity="0.5" text-anchor="middle">SCAN · OUVRIR UN DOSSIER</text>
-  </g>
-  <text x="80" y="604" font-family="Georgia, 'Times New Roman', serif" font-size="13" letter-spacing="3" fill="${OS}" opacity="0.28">nexuradata.ca</text>
+  ${ruleGrid(w, h, 92)}
+  <line x1="88" y1="64" x2="${w - 88}" y2="64" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <line x1="88" y1="560" x2="${w - 88}" y2="560" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <g transform="translate(124, 190)">${nxMark(172)}</g>
+  ${wordmark(340, 274, 88, 8)}
+  <text x="340" y="342" font-family="${FONT}" font-size="24" font-weight="700" letter-spacing="2.8" fill="${OS}" opacity="0.58">OPERATIONAL COMMAND SYSTEMS</text>
+  ${systemPills(340, 408, ['INFRASTRUCTURE', 'ORCHESTRATION', 'CONTROL'])}
+  <rect x="88" y="500" width="240" height="7" fill="${COPPER}"/>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/facebook-cover.png'));
-  console.log('  ✓ facebook-cover.png (1640×624)');
+  console.log('  - facebook-cover.png (1640x624)');
 }
 
-// ─── 9. Google Business Profile photo (720×720) ───
 async function generateGbpPhoto() {
   const s = 720;
-  const qr = await qrDataUri(150);
   const svg = `<svg width="${s}" height="${s}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${s}" height="${s}" fill="${NOIR}"/>
-  ${ruleGrid(s, s, 72)}
-  <line x1="72" y1="72" x2="648" y2="72" stroke="${OS}" stroke-width="0.5" opacity="0.16"/>
-  <line x1="72" y1="648" x2="648" y2="648" stroke="${OS}" stroke-width="0.5" opacity="0.16"/>
-  <g transform="translate(${s / 2 - 88}, 94)">
-    ${nMark(176, 0)}
-  </g>
-  <text x="${s / 2}" y="334" font-family="Georgia, 'Times New Roman', serif" font-size="39" font-weight="400" letter-spacing="5" fill="${OS}" text-anchor="middle">NEXURADATA</text>
-  <text x="${s / 2}" y="381" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="4" fill="${OS}" opacity="0.48" text-anchor="middle">RAID · SSD · MOBILE · FORENSIQUE</text>
-  <text x="${s / 2}" y="430" font-family="Georgia, 'Times New Roman', serif" font-size="21" letter-spacing="1" fill="${OS}" opacity="0.72" text-anchor="middle">Dossier qualifié à Montréal</text>
-  <g transform="translate(${s / 2 - 75}, 470)">
-    <image href="${qr}" x="0" y="0" width="150" height="150"/>
-  </g>
-  <text x="${s / 2}" y="642" font-family="Georgia, 'Times New Roman', serif" font-size="11" letter-spacing="2.4" fill="${OS}" opacity="0.42" text-anchor="middle">SCAN · DEMANDE SÉCURISÉE</text>
+  ${ruleGrid(s, s, 80)}
+  <line x1="72" y1="72" x2="648" y2="72" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <line x1="72" y1="648" x2="648" y2="648" stroke="${OS}" stroke-width="0.8" opacity="0.16"/>
+  <g transform="translate(${s / 2 - 108}, 140)">${nxMark(216)}</g>
+  ${wordmark(s / 2, 438, 42, 4.5, 'middle')}
+  <text x="${s / 2}" y="496" font-family="${FONT}" font-size="14" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.42" text-anchor="middle">INFRASTRUCTURE · CONTROL · EXECUTION</text>
+  <rect x="260" y="548" width="200" height="6" fill="${COPPER}"/>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/gbp-profile.png'));
-  console.log('  ✓ gbp-profile.png (720×720)');
+  console.log('  - gbp-profile.png (720x720)');
 }
 
-// ─── 10. Standalone QR intake card ───
 async function generateContactQr() {
   const s = 1080;
   const qr = await qrDataUri(520);
   const svg = `<svg width="${s}" height="${s}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${s}" height="${s}" fill="${NOIR}"/>
-  ${ruleGrid(s, s, 90)}
-  <line x1="110" y1="110" x2="970" y2="110" stroke="${OS}" stroke-width="0.5" opacity="0.18"/>
-  <line x1="110" y1="970" x2="970" y2="970" stroke="${OS}" stroke-width="0.5" opacity="0.18"/>
-  <g transform="translate(110, 132)">
-    ${nMark(92, 0)}
-  </g>
-  <text x="226" y="197" font-family="Georgia, 'Times New Roman', serif" font-size="54" font-weight="400" letter-spacing="6" fill="${OS}">NEXURA</text>
-  <text x="614" y="197" font-family="Georgia, 'Times New Roman', serif" font-size="19" font-weight="400" letter-spacing="9" fill="${OS}" opacity="0.38">DATA</text>
-  <text x="110" y="304" font-family="Georgia, 'Times New Roman', serif" font-size="34" letter-spacing="1" fill="${OS}" opacity="0.82">Ouvrir une demande de qualification</text>
-  <text x="110" y="354" font-family="Georgia, 'Times New Roman', serif" font-size="18" letter-spacing="3" fill="${OS}" opacity="0.42">RÉCUPÉRATION DE DONNÉES · FORENSIQUE · MONTRÉAL</text>
+  ${ruleGrid(s, s, 96)}
+  <line x1="110" y1="110" x2="970" y2="110" stroke="${OS}" stroke-width="0.8" opacity="0.18"/>
+  <line x1="110" y1="970" x2="970" y2="970" stroke="${OS}" stroke-width="0.8" opacity="0.18"/>
+  <g transform="translate(110, 136)">${nxMark(92)}</g>
+  ${wordmark(230, 198, 54, 6)}
+  <text x="110" y="314" font-family="${FONT}" font-size="32" font-weight="700" letter-spacing="0.8" fill="${OS}" opacity="0.82">Plan an operational architecture audit</text>
+  <text x="110" y="360" font-family="${FONT}" font-size="17" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.44">SYSTEMS · CONTROL · EXECUTION</text>
   <g transform="translate(280, 420)">
-    <rect x="-26" y="-26" width="572" height="572" fill="${NOIR}" stroke="${OS}" stroke-width="0.5" opacity="0.96"/>
+    <rect x="-26" y="-26" width="572" height="572" fill="${NOIR}" stroke="${OS}" stroke-width="0.8" opacity="0.96"/>
     <image href="${qr}" x="0" y="0" width="520" height="520"/>
   </g>
-  <text x="540" y="1010" font-family="Georgia, 'Times New Roman', serif" font-size="17" letter-spacing="3" fill="${OS}" opacity="0.44" text-anchor="middle">nexuradata.ca/#contact</text>
+  <text x="540" y="1010" font-family="${FONT}" font-size="17" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.44" text-anchor="middle">nexuradata.ca/#contact</text>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/contact-qr.png'));
-  console.log('  ✓ contact-qr.png (1080×1080)');
+  console.log('  - contact-qr.png (1080x1080)');
 }
 
-// ─── Run all ───
-console.log('Generating NEXURADATA brand assets…\n');
+console.log('Generating NEXURADATA brand assets...\n');
 
 try {
   await generateIcons();
@@ -328,7 +251,7 @@ try {
   await generateFacebookCover();
   await generateGbpPhoto();
   await generateContactQr();
-  console.log('\nDone — all brand assets generated.');
+  console.log('\nDone - all brand assets generated.');
 } catch (err) {
   console.error('Error:', err);
   process.exit(1);

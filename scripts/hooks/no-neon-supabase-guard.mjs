@@ -4,14 +4,16 @@ for await (const chunk of process.stdin) {
   input += chunk;
 }
 
-if (!input.trim()) {
+const normalizedInput = input.replace(/^\uFEFF/, "").replace(/\u0000/g, "").trim();
+
+if (!normalizedInput) {
   process.exit(0);
 }
 
 let payload;
 
 try {
-  payload = JSON.parse(input);
+  payload = JSON.parse(normalizedInput);
 } catch {
   process.exit(0);
 }

@@ -1,25 +1,164 @@
 const yearTarget = document.querySelector("[data-year]");
 const documentLanguage = document.documentElement.lang?.toLowerCase() || "fr-ca";
 const isEnglishDocument = documentLanguage.startsWith("en");
+const CONSENT_STORAGE_KEY = "nexuradata_cookie_consent_v1";
+const CONSENT_VERSION = 1;
+const META_PIXEL_ID = "751859640106935";
 
-// ── Meta Pixel ────────────────────────────────────────────────
-(function (f, b, e, v, n, t, s) {
-  if (f.fbq) return;
-  n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
-  if (!f._fbq) f._fbq = n;
-  n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
-  t = b.createElement(e); t.async = !0;
-  t.src = v;
-  s = b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t, s);
-}(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js"));
-fbq("init", "751859640106935");
-fbq("track", "PageView");
+const readTrackingConsent = () => {
+  try {
+    const stored = localStorage.getItem(CONSENT_STORAGE_KEY);
+    if (!stored) return null;
+    const parsed = JSON.parse(stored);
+    if (parsed?.version !== CONSENT_VERSION) return null;
+    return {
+      version: CONSENT_VERSION,
+      analytics: parsed.analytics === true,
+      marketing: parsed.marketing === true
+    };
+  } catch {
+    return null;
+  }
+};
+
+let trackingConsent = readTrackingConsent();
+let metaPixelLoaded = false;
+
+const loadMetaPixel = () => {
+  if (metaPixelLoaded || trackingConsent?.marketing !== true) return;
+
+  (function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+    if (!f._fbq) f._fbq = n;
+    n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
+    t = b.createElement(e); t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js"));
+
+  fbq("consent", "grant");
+  fbq("init", META_PIXEL_ID);
+  fbq("track", "PageView");
+  metaPixelLoaded = true;
+};
+
+const applyTrackingConsent = () => {
+  if (typeof window.nexuraApplyTrackingConsent === "function") {
+    window.nexuraApplyTrackingConsent(trackingConsent);
+  }
+
+  if (typeof fbq === "function") {
+    fbq("consent", trackingConsent?.marketing ? "grant" : "revoke");
+  }
+
+  loadMetaPixel();
+};
+
+const saveTrackingConsent = (choices) => {
+  trackingConsent = {
+    version: CONSENT_VERSION,
+    analytics: choices.analytics === true,
+    marketing: choices.marketing === true
+  };
+
+  try {
+    localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(trackingConsent));
+  } catch {
+    // Consent still applies for the current page even if persistence is unavailable.
+  }
+
+  applyTrackingConsent();
+};
+
+const cookieI18n = isEnglishDocument
+  ? {
+    title: "Cookie preferences",
+    copy: "NEXURADATA uses essential site storage and, only with consent, analytics or marketing measurement to improve operational reliability and communication paths.",
+    analytics: "Analytics measurement",
+    marketing: "Marketing measurement",
+    reject: "Reject optional",
+    save: "Save choices",
+    accept: "Accept optional",
+    privacy: "Privacy policy"
+  }
+  : {
+    title: "Préférences témoins",
+    copy: "NEXURADATA utilise le stockage essentiel du site et, seulement avec consentement, des mesures analytiques ou marketing afin d'améliorer la fiabilité opérationnelle et les parcours de communication.",
+    analytics: "Mesure analytique",
+    marketing: "Mesure marketing",
+    reject: "Refuser l'optionnel",
+    save: "Enregistrer",
+    accept: "Accepter l'optionnel",
+    privacy: "Politique de confidentialité"
+  };
+
+const renderCookieConsent = (force = false) => {
+  const existing = document.querySelector("[data-cookie-consent]");
+  if (existing) existing.remove();
+  if (trackingConsent && !force) return;
+
+  const privacyHref = isEnglishDocument ? "/en/politique-confidentialite.html" : "/politique-confidentialite.html";
+  const banner = document.createElement("aside");
+  banner.className = "cookie-consent";
+  banner.setAttribute("data-cookie-consent", "");
+  banner.setAttribute("aria-label", cookieI18n.title);
+  banner.innerHTML = `
+    <div class="cookie-consent-panel">
+      <div class="cookie-consent-copy">
+        <p class="cookie-kicker">NEXURADATA</p>
+        <h2>${cookieI18n.title}</h2>
+        <p>${cookieI18n.copy} <a href="${privacyHref}">${cookieI18n.privacy}</a>.</p>
+      </div>
+      <div class="cookie-consent-options">
+        <label><input type="checkbox" name="analytics" ${trackingConsent?.analytics ? "checked" : ""}> <span>${cookieI18n.analytics}</span></label>
+        <label><input type="checkbox" name="marketing" ${trackingConsent?.marketing ? "checked" : ""}> <span>${cookieI18n.marketing}</span></label>
+      </div>
+      <div class="cookie-consent-actions">
+        <button type="button" class="button button-outline" data-cookie-choice="reject">${cookieI18n.reject}</button>
+        <button type="button" class="button button-secondary" data-cookie-choice="save">${cookieI18n.save}</button>
+        <button type="button" class="button button-primary" data-cookie-choice="accept">${cookieI18n.accept}</button>
+      </div>
+    </div>`;
+
+  banner.querySelectorAll("[data-cookie-choice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const choice = button.dataset.cookieChoice;
+      const form = banner.querySelector(".cookie-consent-options");
+      const choices = choice === "accept"
+        ? { analytics: true, marketing: true }
+        : choice === "reject"
+          ? { analytics: false, marketing: false }
+          : {
+            analytics: form.querySelector('[name="analytics"]')?.checked === true,
+            marketing: form.querySelector('[name="marketing"]')?.checked === true
+          };
+      saveTrackingConsent(choices);
+      banner.remove();
+    });
+  });
+
+  document.body.appendChild(banner);
+};
+
+const bindCookiePreferenceTriggers = () => {
+  document.querySelectorAll("[data-cookie-preferences]").forEach((button) => {
+    button.addEventListener("click", () => renderCookieConsent(true));
+  });
+};
+
+applyTrackingConsent();
+renderCookieConsent();
+bindCookiePreferenceTriggers();
 
 const trackContactIntent = (method) => {
-  if (typeof fbq === "function") fbq("track", "Contact", { content_name: method });
-  if (typeof gtag === "function") {
-    gtag("event", "generate_lead", {
+  if (trackingConsent?.marketing === true && typeof fbq === "function") {
+    fbq("track", "Contact", { content_name: method });
+  }
+
+  if (trackingConsent?.analytics === true && typeof window.gtag === "function") {
+    window.gtag("event", "generate_lead", {
       method,
       event_category: "contact"
     });
@@ -679,6 +818,134 @@ const setButtonBusy = (button, busy, busyLabel) => {
   }
 
   if (busy) {
+
+const initializeWorkflowSimulator = () => {
+  const simulator = document.querySelector("[data-workflow-simulator]");
+  if (!simulator) return;
+
+  const states = isEnglishDocument
+    ? {
+      lead: {
+        classification: "Classification: commercial opportunity",
+        routing: "Routing: operations + sales",
+        task: "Task: qualify need, budget, timeline",
+        dashboard: "Dashboard: pipeline updated",
+        status: "Queue stable",
+        metrics: [18, 7, 42],
+        feed: ["Lead classified and assigned", "Owner notified", "Dashboard updated"]
+      },
+      task: {
+        classification: "Classification: internal execution task",
+        routing: "Routing: operations owner",
+        task: "Task: assign due date and dependency",
+        dashboard: "Dashboard: execution lane refreshed",
+        status: "Execution layer stable",
+        metrics: [21, 9, 47],
+        feed: ["Internal task normalized", "Dependency mapped", "Execution lane refreshed"]
+      },
+      client: {
+        classification: "Classification: client request",
+        routing: "Routing: service desk + account owner",
+        task: "Task: create response path and SLA",
+        dashboard: "Dashboard: client queue synchronized",
+        status: "Client queue synchronized",
+        metrics: [16, 5, 38],
+        feed: ["Client request structured", "SLA path assigned", "Queue synchronized"]
+      },
+      support: {
+        classification: "Classification: support issue",
+        routing: "Routing: support + escalation rule",
+        task: "Task: collect context and trigger follow-up",
+        dashboard: "Dashboard: support load nominal",
+        status: "Operational load nominal",
+        metrics: [24, 11, 53],
+        feed: ["Support issue classified", "Escalation rule checked", "Load remains nominal"]
+      }
+    }
+    : {
+      lead: {
+        classification: "Classification: opportunite commerciale",
+        routing: "Routage: operations + ventes",
+        task: "Tache: qualifier besoin, budget, echeance",
+        dashboard: "Dashboard: pipeline mis a jour",
+        status: "File stable",
+        metrics: [18, 7, 42],
+        feed: ["Lead classe et assigne", "Responsable notifie", "Tableau de bord actualise"]
+      },
+      task: {
+        classification: "Classification: tache d'execution interne",
+        routing: "Routage: responsable operations",
+        task: "Tache: assigner echeance et dependance",
+        dashboard: "Dashboard: voie d'execution actualisee",
+        status: "Couche d'execution stable",
+        metrics: [21, 9, 47],
+        feed: ["Tache interne normalisee", "Dependance cartographiee", "Voie d'execution actualisee"]
+      },
+      client: {
+        classification: "Classification: demande client",
+        routing: "Routage: support + responsable compte",
+        task: "Tache: creer parcours de reponse et SLA",
+        dashboard: "Dashboard: file client synchronisee",
+        status: "File client synchronisee",
+        metrics: [16, 5, 38],
+        feed: ["Demande client structuree", "Parcours SLA assigne", "File synchronisee"]
+      },
+      support: {
+        classification: "Classification: enjeu support",
+        routing: "Routage: support + regle d'escalade",
+        task: "Tache: collecter contexte et declencher suivi",
+        dashboard: "Dashboard: charge support nominale",
+        status: "Charge operationnelle nominale",
+        metrics: [24, 11, 53],
+        feed: ["Enjeu support classe", "Regle d'escalade verifiee", "Charge nominale"]
+      }
+    };
+
+  const targets = {
+    classification: simulator.querySelector("[data-sim-classification]"),
+    routing: simulator.querySelector("[data-sim-routing]"),
+    task: simulator.querySelector("[data-sim-task]"),
+    dashboard: simulator.querySelector("[data-sim-dashboard]"),
+    status: document.querySelector("[data-dashboard-state]"),
+    workflows: document.querySelector("[data-metric-workflows]"),
+    tasks: document.querySelector("[data-metric-tasks]"),
+    events: document.querySelector("[data-metric-events]"),
+    feed: document.querySelector("[data-activity-feed]")
+  };
+
+  const applyState = (type) => {
+    const state = states[type] || states.lead;
+    targets.classification.textContent = state.classification;
+    targets.routing.textContent = state.routing;
+    targets.task.textContent = state.task;
+    targets.dashboard.textContent = state.dashboard;
+    if (targets.status) targets.status.textContent = state.status;
+    if (targets.workflows) targets.workflows.textContent = state.metrics[0];
+    if (targets.tasks) targets.tasks.textContent = state.metrics[1];
+    if (targets.events) targets.events.textContent = state.metrics[2];
+    if (targets.feed) {
+      targets.feed.replaceChildren(...state.feed.map((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        return li;
+      }));
+    }
+
+    simulator.classList.remove("is-updating");
+    void simulator.offsetWidth;
+    simulator.classList.add("is-updating");
+  };
+
+  simulator.querySelectorAll("[data-sim-type]").forEach((button) => {
+    button.addEventListener("click", () => {
+      simulator.querySelectorAll("[data-sim-type]").forEach((option) => option.classList.remove("is-active"));
+      button.classList.add("is-active");
+      applyState(button.dataset.simType);
+    });
+  });
+};
+
+initializeWorkflowSimulator();
     if (!button.dataset.defaultLabel) {
       button.dataset.defaultLabel = button.textContent || "";
     }
@@ -1119,6 +1386,11 @@ if (intakeForm) {
       consentement: formData.get("consentement") === "on",
       website: `${formData.get("website") || ""}`.trim(),
       "cf-turnstile-response": formData.get("cf-turnstile-response") || "",
+      source: "public_site",
+      page: window.location.pathname,
+      intent: "operational_assessment",
+      timestamp: new Date().toISOString(),
+      status: "new",
       sourcePath: window.location.pathname
     };
 
@@ -1139,7 +1411,9 @@ if (intakeForm) {
 
       if (response.ok && data?.ok) {
         intakeForm.reset();
-        if (typeof fbq === "function") fbq("track", "Lead", { content_name: "intake_form" });
+        if (trackingConsent?.marketing === true && typeof fbq === "function") {
+          fbq("track", "Lead", { content_name: "intake_form" });
+        }
         setMessage(
           statusTarget,
           "success",

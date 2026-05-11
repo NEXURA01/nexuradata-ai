@@ -46,11 +46,9 @@ const shouldCopyRootEntry = (entry) => {
   return false;
 };
 
-const GA4_ID = "G-TC31YSS01P";
 const GA4_INIT_PATH = "/assets/js/ga4-init.js";
 const LEGACY_GA_SNIPPET = /\s*<script async src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-TC31YSS01P"><\/script>\s*<script>window\.dataLayer=window\.dataLayer\|\|\[\];function gtag\(\)\{dataLayer\.push\(arguments\);\}gtag\('js',new Date\(\)\);gtag\('config','G-TC31YSS01P'\);<\/script>/g;
-const GA4_SNIPPET = `  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=${GA4_ID}"></script>
+const GA4_SNIPPET = `  <!-- Consent-gated analytics -->
   <script src="${GA4_INIT_PATH}" defer></script>
 </head>`;
 
@@ -61,8 +59,8 @@ const injectGa4 = async (dir) => {
     const fullPath = path.join(dir, entry.name);
 
     if (entry.isDirectory()) {
-      // Skip the operator console — it is internal and not tracked
-      if (entry.name === "operations") continue;
+      // Skip internal tooling and asset templates; they are not public page flows.
+      if (entry.name === "operations" || entry.name === "assets") continue;
       await injectGa4(fullPath);
       continue;
     }

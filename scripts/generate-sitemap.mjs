@@ -7,8 +7,37 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const SITE_ORIGIN = "https://nexadura.com";
 const LASTMOD = "2026-05-11";
-const includedDirs = [".", "en"];
-const excludedFiles = new Set(["404.html"]);
+const includedFilesByDir = new Map([
+  [".", new Set([
+    "index.html",
+    "ai-operational-analysis.html",
+    "conditions-intervention-paiement.html",
+    "contact.html",
+    "engagements-conformite-quebec.html",
+    "faq.html",
+    "insights.html",
+    "mentions-legales.html",
+    "operational-assessment.html",
+    "operational-dashboard.html",
+    "politique-confidentialite.html",
+    "pricing.html",
+    "privacy.html",
+    "portal.html",
+    "services.html",
+    "status.html",
+    "statut-services-montreal.html",
+    "terms.html",
+    "workflow-automation.html"
+  ])],
+  ["en", new Set([
+    "index.html",
+    "conditions-intervention-paiement.html",
+    "engagements-conformite-quebec.html",
+    "mentions-legales.html",
+    "politique-confidentialite.html",
+    "statut-services-montreal.html"
+  ])]
+]);
 const cleanRouteFiles = new Set([
   "operational-assessment.html",
   "services.html",
@@ -46,12 +75,12 @@ const routeFor = (dir, file) => {
 const collectRoutes = async () => {
   const routes = [];
 
-  for (const dir of includedDirs) {
+  for (const [dir, indexedFiles] of includedFilesByDir) {
     const absoluteDir = path.join(ROOT, dir);
     const entries = await readdir(absoluteDir, { withFileTypes: true });
 
     for (const entry of entries) {
-      if (!entry.isFile() || !entry.name.endsWith(".html") || excludedFiles.has(entry.name)) continue;
+      if (!entry.isFile() || !indexedFiles.has(entry.name)) continue;
       routes.push(routeFor(dir, entry.name));
     }
   }

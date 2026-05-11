@@ -878,8 +878,8 @@ const initializeWorkflowSimulator = () => {
     ? {
       lead: {
         classification: "Form: operational problem received",
-        routing: "AI: complexity and solution recommended",
-        task: "Stripe: assessment or setup ready to pay",
+        routing: "Analysis: complexity and solution recommended",
+        task: "Stripe: assessment ready to activate",
         dashboard: "Dashboard: workflow and progress visible",
         status: "Workflow active",
         metrics: [18, 7, 42],
@@ -916,8 +916,8 @@ const initializeWorkflowSimulator = () => {
     : {
       lead: {
         classification: "Formulaire: probleme operationnel recu",
-        routing: "AI: complexite et solution recommandees",
-        task: "Stripe: assessment ou setup pret a payer",
+        routing: "Analyse: complexite et solution recommandees",
+        task: "Stripe: assessment pret a activer",
         dashboard: "Dashboard: workflow et progression visibles",
         status: "Workflow actif",
         metrics: [18, 7, 42],
@@ -1036,7 +1036,7 @@ async function startOperationalCheckout(options = {}) {
         accept: "application/json"
       },
       body: JSON.stringify({
-        amount: 75000,
+        amount: 25000,
         source: "operational_assessment",
         page: window.location.pathname,
         ...(options.payload || {})
@@ -1049,7 +1049,7 @@ async function startOperationalCheckout(options = {}) {
         window.gtag("event", "begin_checkout", {
           event_category: "operational_activation",
           currency: "CAD",
-          value: 750
+          value: ((Number(options.payload?.amount) || 25000) / 100)
         });
       }
 
@@ -1076,12 +1076,18 @@ const estimateForm = document.getElementById("estimate-form");
 if (estimateForm) {
   const statusTarget = document.querySelector("[data-estimate-status]");
   const resultPanel = document.querySelector("[data-estimate-result]");
+  const scopeTarget = document.querySelector("[data-estimate-scope]");
   const rangeTarget = document.querySelector("[data-estimate-range]");
   const complexityTarget = document.querySelector("[data-estimate-complexity]");
   const orchestrationTarget = document.querySelector("[data-estimate-orchestration]");
   const integrationTarget = document.querySelector("[data-estimate-integration]");
   const urgencyTarget = document.querySelector("[data-estimate-urgency]");
+  const workflowCountTarget = document.querySelector("[data-estimate-workflow-count]");
+  const teamComplexityTarget = document.querySelector("[data-estimate-team-complexity]");
+  const dashboardNeedTarget = document.querySelector("[data-estimate-dashboard-need]");
+  const analysisNeedTarget = document.querySelector("[data-estimate-analysis-need]");
   const summaryTarget = document.querySelector("[data-estimate-summary]");
+  const missingTarget = document.querySelector("[data-estimate-missing]");
   const confidenceTarget = document.querySelector("[data-estimate-confidence]");
   const paymentButton = document.querySelector("[data-estimate-payment]");
   const submitButton = estimateForm.querySelector('button[type="submit"]');
@@ -1094,7 +1100,11 @@ if (estimateForm) {
       running: "Analyzing operational scope...",
       ready: "NEXURA estimate prepared. Human validation remains required.",
       error: "The estimate could not be generated.",
-      paymentBusy: "Initializing..."
+      paymentBusy: "Initializing...",
+      scopeFallback: "Estimated operational scope",
+      missingPrefix: "Missing details",
+      humanValidation: "Human validation required before final proposal.",
+      confidenceLabel: "confidence"
     }
     : {
       required: "Completez les champs d'estimation operationnelle.",
@@ -1102,7 +1112,11 @@ if (estimateForm) {
       running: "Analyse du perimetre operationnel...",
       ready: "Estimation NEXURA preparee. Une validation humaine reste requise.",
       error: "L'estimation n'a pas pu etre generee.",
-      paymentBusy: "Initialisation..."
+      paymentBusy: "Initialisation...",
+      scopeFallback: "Perimetre operationnel estime",
+      missingPrefix: "Details manquants",
+      humanValidation: "Validation humaine requise avant la proposition finale.",
+      confidenceLabel: "confiance"
     };
 
   const renderEstimate = (data) => {
@@ -1110,23 +1124,36 @@ if (estimateForm) {
 
     if (!estimate) return;
 
+    const assessmentAmount = Math.min(
+      150000,
+      Math.max(25000, Number(estimate.estimated_min) || 75000)
+    );
+
     latestEstimate = {
       leadId: data?.lead?.id || "",
       email: data?.lead?.email || "",
-      amount: 75000
+      amount: assessmentAmount
     };
 
+    if (scopeTarget) scopeTarget.textContent = estimate.recommended_scope || copy.scopeFallback;
     if (rangeTarget) {
       rangeTarget.textContent = `${formatCurrency(estimate.estimated_min)} - ${formatCurrency(estimate.estimated_max)}`;
     }
-    if (complexityTarget) complexityTarget.textContent = `${estimate.complexity_score}/10`;
-    if (orchestrationTarget) orchestrationTarget.textContent = `${estimate.orchestration_score}/10`;
-    if (integrationTarget) integrationTarget.textContent = `${estimate.integration_score}/10`;
-    if (urgencyTarget) urgencyTarget.textContent = `${estimate.urgency_score}/10`;
-    if (summaryTarget) summaryTarget.textContent = estimate.ai_summary || "";
+    if (workflowCountTarget) workflowCountTarget.textContent = `${estimate.scores?.workflow_count || 1}/5`;
+    if (integrationTarget) integrationTarget.textContent = `${estimate.scores?.integration_count || 1}/5`;
+    if (teamComplexityTarget) teamComplexityTarget.textContent = `${estimate.scores?.team_complexity || 1}/5`;
+    if (orchestrationTarget) orchestrationTarget.textContent = `${estimate.scores?.automation_depth || 1}/5`;
+    if (dashboardNeedTarget) dashboardNeedTarget.textContent = `${estimate.scores?.dashboard_need || 1}/5`;
+    if (analysisNeedTarget) analysisNeedTarget.textContent = `${estimate.scores?.ai_need || 1}/5`;
+    if (urgencyTarget) urgencyTarget.textContent = `${estimate.scores?.urgency_risk || 1}/5`;
+    if (complexityTarget) complexityTarget.textContent = `${estimate.scores?.total || "-"}/35`;
+    if (summaryTarget) summaryTarget.textContent = estimate.client_facing_summary || estimate.ai_summary || "";
+    if (missingTarget) {
+      const missing = Array.isArray(estimate.missing_information) ? estimate.missing_information : [];
+      missingTarget.textContent = missing.length ? `${copy.missingPrefix}: ${missing.join(", ")}` : copy.humanValidation;
+    }
     if (confidenceTarget) {
-      const confidence = Math.round((Number(estimate.confidence_score) || 0) * 100);
-      confidenceTarget.textContent = confidence ? `${confidence}% confidence` : "Draft";
+      confidenceTarget.textContent = estimate.confidence ? `${estimate.confidence} ${copy.confidenceLabel}` : "Draft";
     }
     if (paymentButton) paymentButton.hidden = false;
     if (resultPanel) resultPanel.hidden = false;
@@ -1146,7 +1173,16 @@ if (estimateForm) {
       organization: `${formData.get("organization") || ""}`.trim(),
       contact_name: `${formData.get("contact_name") || ""}`.trim(),
       email: `${formData.get("email") || ""}`.trim(),
-      workflow_summary: `${formData.get("workflow_summary") || ""}`.trim()
+      workflow_summary: `${formData.get("workflow_summary") || ""}`.trim(),
+      current_tools: `${formData.get("current_tools") || ""}`.trim(),
+      workflow_count: `${formData.get("workflow_count") || ""}`.trim(),
+      teams_involved: `${formData.get("teams_involved") || ""}`.trim(),
+      dashboard_visibility: `${formData.get("dashboard_visibility") || ""}`.trim(),
+      ai_routing: `${formData.get("ai_routing") || ""}`.trim(),
+      payment_portal: `${formData.get("payment_portal") || ""}`.trim(),
+      urgency: `${formData.get("urgency") || ""}`.trim(),
+      budget_expectation: `${formData.get("budget_expectation") || ""}`.trim(),
+      preferred_language: `${formData.get("preferred_language") || ""}`.trim()
     };
 
     setButtonBusy(submitButton, true, copy.busy);

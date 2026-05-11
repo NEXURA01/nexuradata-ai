@@ -1,8 +1,8 @@
 {
-  "name": "nexuradata-site",
+  "name": "nexuradata-ai",
   "private": true,
   "config": {
-    "pagesProjectName": "nexuradata"
+    "pagesProjectName": "nexuradata-ai"
   },
   "scripts": {
     "build": "node ./scripts/sync-release.mjs",

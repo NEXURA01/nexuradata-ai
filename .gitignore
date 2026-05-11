@@ -21,3 +21,6 @@ node_modules/
 .wrangler/
 release-cloudflare/
 *.zip
+
+# Supabase local metadata
+supabase/.temp/

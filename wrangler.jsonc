@@ -7,9 +7,9 @@
     "nodejs_compat"
   ],
   "vars": {
-    "PUBLIC_SITE_ORIGIN": "https://nexuradata-ai.pages.dev",
+    "PUBLIC_SITE_ORIGIN": "https://nexadura.com",
     "LAB_INBOX_EMAIL": "o.blanchet13@gmail.com",
-    "RESEND_FROM_EMAIL": "NEXURADATA <dossiers@nexuradata.ca>",
-    "OPS_ACCESS_ALLOWED_DOMAIN": "nexuradata.ca"
+    "RESEND_FROM_EMAIL": "NEXURA Analytics <dossiers@nexuradata.ca>",
+    "OPS_ACCESS_ALLOWED_DOMAIN": "nexadura.com"
   }
 }

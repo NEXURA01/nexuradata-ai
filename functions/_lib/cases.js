@@ -1,4 +1,4 @@
-import { getDb } from "./db.js";
+﻿import { getDb } from "./db.js";
 import { createHostedCheckoutSession } from "./stripe.js";
 import { buildCaseAutomationDraft } from "./automation.js";
 import {
@@ -632,7 +632,7 @@ export const approveCaseAuthorization = async (env, payload) => {
 
   const timestamp = nowIso();
   const status = "Intervention autorisée";
-  const nextStep = "NEXURADATA prépare les consignes et la séquence de traitement confirmées.";
+  const nextStep = "NEXURA Analytics prépare les consignes et la séquence de traitement confirmées.";
   const clientSummary = "Votre autorisation a été reçue. Le laboratoire peut maintenant poursuivre selon le cadre transmis et préparer les prochaines actions nécessaires.";
 
   await sql`UPDATE cases

@@ -9,7 +9,10 @@
 5. Copier `.dev.vars.example` vers `.dev.vars` pour le dev local et y placer l'URL Supabase locale ou pooled.
 6. Appliquer le schema consolide via Supabase CLI ou SQL Editor:
    - `npx supabase db push`
-   - ou executer `supabase/migrations/20260511191000_initial_operational_schema.sql` dans le SQL Editor.
+   - ou executer les migrations `supabase/migrations/20260511191000_initial_operational_schema.sql`, `supabase/migrations/20260511205000_add_stripe_payments.sql` et `supabase/migrations/20260511213000_ai_estimate_engine.sql` dans le SQL Editor.
+7. Declarer pour le moteur REST Supabase:
+   - `SUPABASE_URL` comme variable, par exemple `https://project-ref.supabase.co`
+   - `SUPABASE_SERVICE_ROLE_KEY` comme secret
 
 Note: `functions/_lib/db.js` conserve encore l'adaptateur legacy. Ne pas reutiliser l'ancienne URL Neon. Le secret `DATABASE_URL` doit pointer vers Supabase jusqu'au remplacement complet de l'adaptateur DB.
 
@@ -40,7 +43,10 @@ Creer ces adresses et les faire suivre vers une seule inbox verifiee au lancemen
 Declarer dans Cloudflare Pages:
 
 - `STRIPE_SECRET_KEY` comme secret
+- `STRIPE_PUBLISHABLE_KEY` comme variable ou secret reservee aux futurs composants publics
 - `STRIPE_WEBHOOK_SECRET` comme secret
+
+Compatibilite temporaire: si le secret webhook a deja ete cree sous `AI_AGENT_STRIPE`, le runtime l'accepte comme alias. Garder `STRIPE_WEBHOOK_SECRET` comme nom cible pour les prochaines configurations.
 
 ### Webhook Stripe
 
@@ -61,6 +67,23 @@ Evenements minimum:
 - types prevus: acompte, solde final, paiement ponctuel
 - chaque lien de paiement Stripe est rattache a un `caseId`
 - le webhook met a jour le statut du paiement dans Supabase et l'historique du dossier
+- `/api/create-checkout-session` cree la session Stripe de l'Operational Assessment public, ajoute une entree `stripe_payments`, puis renvoie vers `paiement-reussi.html` ou `paiement-annule.html`
+- `/api/create-checkout` cree la session Stripe apres estimation AI et ajoute une entree `payments`
+- l'activation publique reste positionnee comme infrastructure operationnelle securisee, pas comme bouton ecommerce
+
+## 2.2 Moteur AI Estimate
+
+Declarer dans Cloudflare Pages:
+
+- `OPENAI_API_KEY` comme secret
+- `OPENAI_ESTIMATE_MODEL` comme variable optionnelle, par defaut `gpt-4o-mini`
+
+Flux:
+
+- `/api/estimate` insere le lead dans `leads`
+- le moteur OpenAI produit scores, fourchette CAD, resume et scope JSON
+- l'estimation est stockee dans `ai_estimates` avec `final_status = draft`
+- l'interface publique affiche l'analyse et conserve la validation humaine avant activation Stripe
 
 ## 3. Protection de la console interne
 

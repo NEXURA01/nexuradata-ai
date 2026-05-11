@@ -1,8 +1,8 @@
-import { getPublicCaseByCredentials, validateStatusLookup } from "../_lib/cases.js";
+﻿import { getPublicCaseByCredentials, validateStatusLookup } from "../_lib/cases.js";
 import { json, methodNotAllowed, onOptions, parsePayload } from "../_lib/http.js";
 import { checkRateLimit, tooManyRequests } from "../_lib/rate-limit.js";
 
-const genericErrorMessage = "Aucun dossier n'a été trouvé avec cet accès. Vérifiez les identifiants transmis par NEXURADATA ou demandez une mise à jour.";
+const genericErrorMessage = "Aucun dossier n'a été trouvé avec cet accès. Vérifiez les identifiants transmis par NEXURA Analytics ou demandez une mise à jour.";
 
 export const onRequestOptions = (context) => onOptions(context.env, "POST, OPTIONS");
 

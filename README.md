@@ -22,7 +22,8 @@ Le depot couvre:
 - `functions/api/status.js` : suivi client par numero + code
 - `functions/api/ops/cases.js` : recherche et actions operateur
 - `functions/_lib/` : logique partagee (DB, auth, emails, Stripe, rate-limit)
-- `supabase/migrations/` : migrations Supabase cible
+- `supabase/migrations/` : migrations Supabase cible pour le projet `amddiekyhrvxnzszugxb`
+- `supabase/migrations/20260511220000_enable_pg_cron.sql` : active `pg_cron` sans planifier de job par defaut
 - `migrations/neon/0001_full_schema.sql` : schema Postgres historique conserve temporairement
 - `migrations/d1-archive/` : ancienne base D1 (archive historique uniquement)
 - `wrangler.jsonc` : configuration Pages/Functions, source de verite
@@ -34,13 +35,14 @@ Supabase est la pile cible pour les nouveaux developpements. Le depot conserve t
 
 ## Prerequis de lancement
 
-1. Provisionner un projet Supabase et recuperer l'URL Postgres pooled compatible Cloudflare.
-2. Appliquer les migrations `supabase/migrations/` avec Supabase CLI ou SQL Editor.
-3. Declarer l'URL Postgres Supabase comme secret Cloudflare Pages sous le nom `DATABASE_URL` tant que l'adaptateur legacy reste actif.
-4. Creer un secret fort `ACCESS_CODE_SECRET`.
-5. Configurer les alias `contact@`, `urgence@`, `dossiers@` dans Cloudflare Email Routing.
-6. Verifier le domaine d'envoi dans Resend et fournir `RESEND_API_KEY`.
-7. Proteger `/operations/*` et `/api/ops/*` avec Cloudflare Access.
+1. Lier Supabase au projet `amddiekyhrvxnzszugxb` avec `npm run supabase:link`.
+2. Appliquer les migrations `supabase/migrations/` avec `npm run supabase:db:push` ou SQL Editor.
+3. Verifier que l'extension `pg_cron` est active avant d'ajouter des jobs planifies.
+4. Declarer l'URL Postgres Supabase comme secret Cloudflare Pages sous le nom `DATABASE_URL` tant que l'adaptateur legacy reste actif.
+5. Creer un secret fort `ACCESS_CODE_SECRET`.
+6. Configurer les alias `contact@`, `urgence@`, `dossiers@` dans Cloudflare Email Routing.
+7. Verifier le domaine d'envoi dans Resend et fournir `RESEND_API_KEY`.
+8. Proteger `/operations/*` et `/api/ops/*` avec Cloudflare Access.
 
 Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md). Voir aussi [`docs/`](docs/) pour la checklist de lancement, le guide de deploiement rapide et les notes de recherche concurrentielle / tarifaire.
 
@@ -53,6 +55,9 @@ Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md).
 - `npm run cf:check`
 - `npm run cf:deploy`
 - `npm run cf:deploy:staging`
+- `npm run supabase:link`
+- `npm run supabase:db:dry-run`
+- `npm run supabase:db:push`
 - `npm test`
 
 `release-cloudflare/` est regenere a chaque build pour les assets statiques. Les `functions/` restent a la racine du projet pour Cloudflare Pages Functions.

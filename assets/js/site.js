@@ -1,4 +1,4 @@
-const yearTarget = document.querySelector("[data-year]");
+﻿const yearTarget = document.querySelector("[data-year]");
 const documentLanguage = document.documentElement.lang?.toLowerCase() || "fr-ca";
 const isEnglishDocument = documentLanguage.startsWith("en");
 const CONSENT_STORAGE_KEY = "nexuradata_cookie_consent_v1";
@@ -105,7 +105,7 @@ const saveTrackingConsent = (choices) => {
 const cookieI18n = isEnglishDocument
   ? {
     title: "Cookie preferences",
-    copy: "NEXURADATA uses essential site storage and, only with consent, analytics or marketing measurement to improve operational reliability and communication paths.",
+    copy: "NEXURA Analytics uses essential site storage and, only with consent, analytics or marketing measurement to improve operational reliability and communication paths.",
     analytics: "Analytics measurement",
     marketing: "Marketing measurement",
     reject: "Reject optional",
@@ -115,7 +115,7 @@ const cookieI18n = isEnglishDocument
   }
   : {
     title: "Préférences témoins",
-    copy: "NEXURADATA utilise le stockage essentiel du site et, seulement avec consentement, des mesures analytiques ou marketing afin d'améliorer la fiabilité opérationnelle et les parcours de communication.",
+    copy: "NEXURA Analytics utilise le stockage essentiel du site et, seulement avec consentement, des mesures analytiques ou marketing afin d'améliorer la fiabilité opérationnelle et les parcours de communication.",
     analytics: "Mesure analytique",
     marketing: "Mesure marketing",
     reject: "Refuser l'optionnel",
@@ -137,7 +137,7 @@ const renderCookieConsent = (force = false) => {
   banner.innerHTML = `
     <div class="cookie-consent-panel">
       <div class="cookie-consent-copy">
-        <p class="cookie-kicker">NEXURADATA</p>
+        <p class="cookie-kicker">NEXURA Analytics</p>
         <h2>${cookieI18n.title}</h2>
         <p>${cookieI18n.copy} <a href="${privacyHref}">${cookieI18n.privacy}</a>.</p>
       </div>
@@ -204,8 +204,8 @@ const trackContactIntent = (method) => {
   const waLabel = isEnglishDocument ? "Chat on WhatsApp" : "Écrire sur WhatsApp";
   const waAriaLabel = isEnglishDocument ? "Contact us on WhatsApp" : "Nous contacter sur WhatsApp";
   const waMsg = isEnglishDocument
-    ? "Hello, I found you on nexuradata.ca and I have a question."
-    : "Bonjour, j'ai trouvé votre site nexuradata.ca et j'ai une question.";
+    ? "Hello, I found you on nexadura.com and I have a question."
+    : "Bonjour, j'ai trouvé votre site nexadura.com et j'ai une question.";
 
   const btn = document.createElement("a");
   btn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`;
@@ -240,7 +240,7 @@ const publicI18n = isEnglishDocument
     navClose: "Close navigation",
     navMenu: "Menu",
     navCloseLabel: "Close",
-    intakeSubjectPrefix: "NEXURADATA inquiry",
+    intakeSubjectPrefix: "NEXURA Analytics inquiry",
     fieldName: "Name",
     fieldEmail: "Email",
     fieldPhone: "Phone",
@@ -259,7 +259,7 @@ const publicI18n = isEnglishDocument
     intakeError: "The request could not be processed.",
     intakeOffline: "The backend is unreachable. Your email application is opening with a prefilled message.",
     statusRequired: "Enter a valid case number and access code.",
-    statusNotFound: "No case matched this access. Check the credentials provided by NEXURADATA or request an update.",
+    statusNotFound: "No case matched this access. Check the credentials provided by NEXURA Analytics or request an update.",
     statusFound: "Case found.",
     statusBusy: "Searching...",
     statusSearching: "Searching for your case...",
@@ -288,7 +288,7 @@ const publicI18n = isEnglishDocument
     workroomLocked: "The lab is still qualifying the case. The guided workroom opens after payment or authorization.",
     workroomOpen: "Workroom open",
     workroomAwaiting: "Awaiting payment or authorization",
-    workroomMailSubject: (caseId) => `NEXURADATA workroom - ${caseId}`,
+    workroomMailSubject: (caseId) => `NEXURA Analytics workroom - ${caseId}`,
     demoCaseOne: {
       status: "Assessment in progress",
       updatedAt: "April 4, 2026 11:40 AM",
@@ -356,7 +356,7 @@ const publicI18n = isEnglishDocument
     navClose: "Fermer la navigation",
     navMenu: "Menu",
     navCloseLabel: "Fermer",
-    intakeSubjectPrefix: "Demande NEXURADATA",
+    intakeSubjectPrefix: "Demande NEXURA Analytics",
     fieldName: "Nom",
     fieldEmail: "Courriel",
     fieldPhone: "Téléphone",
@@ -375,7 +375,7 @@ const publicI18n = isEnglishDocument
     intakeError: "La demande n'a pas pu être traitée.",
     intakeOffline: "Le backend n'est pas joignable. Votre application courriel s'ouvre avec un message prérempli.",
     statusRequired: "Entrez un numéro de dossier et un code d'accès valides.",
-    statusNotFound: "Aucun dossier n'a été trouvé avec cet accès. Vérifiez les identifiants transmis par NEXURADATA ou demandez une mise à jour.",
+    statusNotFound: "Aucun dossier n'a été trouvé avec cet accès. Vérifiez les identifiants transmis par NEXURA Analytics ou demandez une mise à jour.",
     statusFound: "Dossier trouvé.",
     statusBusy: "Recherche...",
     statusSearching: "Recherche du dossier en cours...",
@@ -404,7 +404,7 @@ const publicI18n = isEnglishDocument
     workroomLocked: "Le laboratoire qualifie encore le dossier. L'espace guidé s'ouvre après paiement ou autorisation.",
     workroomOpen: "Espace de travail ouvert",
     workroomAwaiting: "En attente du paiement ou de l'autorisation",
-    workroomMailSubject: (caseId) => `Espace de travail NEXURADATA - ${caseId}`,
+    workroomMailSubject: (caseId) => `Espace de travail NEXURA Analytics - ${caseId}`,
     demoCaseOne: {
       status: "Évaluation en cours",
       updatedAt: "4 avril 2026 à 11 h 40",
@@ -478,8 +478,8 @@ if (footerNote) {
   copyrightDiv.className = "footer-bottom";
   const year = new Date().getFullYear();
   copyrightDiv.innerHTML = isEnglishDocument
-    ? `<p>&copy; ${year} NEXURA DATA. All rights reserved.</p>`
-    : `<p>&copy; ${year} NEXURA DATA. Tous droits r\u00e9serv\u00e9s.</p>`;
+    ? `<p>&copy; ${year} NEXURA Analytics. All rights reserved.</p>`
+    : `<p>&copy; ${year} NEXURA Analytics. Tous droits r\u00e9serv\u00e9s.</p>`;
   footerNote.insertAdjacentElement("afterend", copyrightDiv);
 }
 
@@ -707,7 +707,8 @@ const paymentFeedback = document.querySelector("[data-payment-feedback]");
 if (paymentFeedback) {
   const params = new URLSearchParams(window.location.search);
   const caseId = params.get("caseId") || "";
-  const paymentRequestId = params.get("paymentRequestId") || "";
+  const activationId = params.get("activationId") || "";
+  const paymentRequestId = params.get("paymentRequestId") || activationId;
   const caseTarget = paymentFeedback.querySelector("[data-payment-feedback-case]");
   const requestTarget = paymentFeedback.querySelector("[data-payment-feedback-request]");
   const followLink = paymentFeedback.querySelector("[data-payment-feedback-follow]");
@@ -738,7 +739,7 @@ document.querySelectorAll("[data-paid-path-app]").forEach((app) => {
       recovery: {
         title: "Media intervention deposit",
         price: "From $350",
-        summary: "For physical media, NEXURADATA confirms the safest handling path before work begins and tells you exactly what to send or avoid doing.",
+        summary: "For physical media, NEXURA Analytics confirms the safest handling path before work begins and tells you exactly what to send or avoid doing.",
         steps: ["Open the case and confirm the deposit.", "Prepare the media using the reception instructions.", "Receive the next handling or lab treatment step."]
       },
       forensic: {
@@ -764,7 +765,7 @@ document.querySelectorAll("[data-paid-path-app]").forEach((app) => {
       recovery: {
         title: "Acompte d'intervention support",
         price: "À partir de 350 $",
-        summary: "Pour un support physique, NEXURADATA confirme la voie de manipulation la plus sûre avant le traitement et indique exactement quoi transmettre ou éviter.",
+        summary: "Pour un support physique, NEXURA Analytics confirme la voie de manipulation la plus sûre avant le traitement et indique exactement quoi transmettre ou éviter.",
         steps: ["Ouvrir le dossier et confirmer l'acompte.", "Préparer le support selon les consignes de réception.", "Recevoir la prochaine étape de manipulation ou de traitement."]
       },
       forensic: {
@@ -807,7 +808,7 @@ document.querySelectorAll("[data-paid-path-app]").forEach((app) => {
   form.addEventListener("change", updateRecommendation);
   updateRecommendation();
 });
-    caseTarget.textContent = caseId || "Non précisé";
+    caseTarget.textContent = caseId || (activationId ? "Activation opérationnelle" : "Non précisé");
   }
 
   if (requestTarget) {
@@ -821,10 +822,10 @@ document.querySelectorAll("[data-paid-path-app]").forEach((app) => {
   if (mailLink) {
     const subject = caseId
       ? `Dossier ${caseId} - suivi paiement`
-      : "Suivi paiement NEXURADATA";
+      : "Suivi activation NEXURA Analytics";
     const body = [
       caseId ? `Numéro de dossier: ${caseId}` : "",
-      paymentRequestId ? `Référence de paiement: ${paymentRequestId}` : "",
+      paymentRequestId ? `Référence d'activation: ${paymentRequestId}` : "",
       "",
       "Message:"
     ].filter(Boolean).join("\n");
@@ -1004,6 +1005,192 @@ const parseJsonResponse = async (response) => {
     return null;
   }
 };
+
+const operationalCheckoutCopy = isEnglishDocument
+  ? {
+    busy: "Initializing...",
+    opening: "Opening the secure activation layer...",
+    unavailable: "Secure activation is temporarily unavailable. Operations can issue the activation link manually.",
+    failed: "The secure activation could not be initialized."
+  }
+  : {
+    busy: "Initialisation...",
+    opening: "Ouverture de la couche d'activation sécurisée...",
+    unavailable: "L'activation sécurisée est temporairement indisponible. Les opérations peuvent émettre le lien manuellement.",
+    failed: "L'activation sécurisée n'a pas pu être initialisée."
+  };
+
+async function startOperationalCheckout(options = {}) {
+  const trigger = options.trigger || null;
+  const panel = trigger?.closest("[data-operational-checkout-panel]") || document;
+  const statusTarget = panel.querySelector("[data-operational-checkout-status]");
+
+  setButtonBusy(trigger, true, operationalCheckoutCopy.busy);
+  setMessage(statusTarget, "success", operationalCheckoutCopy.opening);
+
+  try {
+    const response = await fetch("/api/create-checkout", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json"
+      },
+      body: JSON.stringify({
+        amount: 75000,
+        source: "operational_assessment",
+        page: window.location.pathname,
+        ...(options.payload || {})
+      })
+    });
+    const data = await parseJsonResponse(response);
+
+    if (response.ok && data?.url) {
+      if (trackingConsent?.analytics === true && typeof window.gtag === "function") {
+        window.gtag("event", "begin_checkout", {
+          event_category: "operational_activation",
+          currency: "CAD",
+          value: 750
+        });
+      }
+
+      window.location.href = data.url;
+      return;
+    }
+
+    setMessage(statusTarget, "error", data?.message || operationalCheckoutCopy.failed);
+  } catch {
+    setMessage(statusTarget, "error", operationalCheckoutCopy.unavailable);
+  } finally {
+    setButtonBusy(trigger, false);
+  }
+}
+
+window.startOperationalCheckout = startOperationalCheckout;
+
+document.querySelectorAll("[data-operational-checkout]").forEach((button) => {
+  button.addEventListener("click", () => startOperationalCheckout({ trigger: button }));
+});
+
+const estimateForm = document.getElementById("estimate-form");
+
+if (estimateForm) {
+  const statusTarget = document.querySelector("[data-estimate-status]");
+  const resultPanel = document.querySelector("[data-estimate-result]");
+  const rangeTarget = document.querySelector("[data-estimate-range]");
+  const complexityTarget = document.querySelector("[data-estimate-complexity]");
+  const orchestrationTarget = document.querySelector("[data-estimate-orchestration]");
+  const integrationTarget = document.querySelector("[data-estimate-integration]");
+  const urgencyTarget = document.querySelector("[data-estimate-urgency]");
+  const summaryTarget = document.querySelector("[data-estimate-summary]");
+  const confidenceTarget = document.querySelector("[data-estimate-confidence]");
+  const paymentButton = document.querySelector("[data-estimate-payment]");
+  const submitButton = estimateForm.querySelector('button[type="submit"]');
+  let latestEstimate = null;
+
+  const copy = isEnglishDocument
+    ? {
+      required: "Complete the operational estimate fields.",
+      busy: "Analyzing...",
+      running: "Analyzing operational scope...",
+      ready: "Nexura Analytics assessment prepared. Human validation remains required.",
+      error: "The estimate could not be generated.",
+      paymentBusy: "Initializing..."
+    }
+    : {
+      required: "Completez les champs d'estimation operationnelle.",
+      busy: "Analyse...",
+      running: "Analyse du perimetre operationnel...",
+      ready: "Evaluation Nexura Analytics preparee. Une validation humaine reste requise.",
+      error: "L'estimation n'a pas pu etre generee.",
+      paymentBusy: "Initialisation..."
+    };
+
+  const renderEstimate = (data) => {
+    const estimate = data?.estimate;
+
+    if (!estimate) return;
+
+    latestEstimate = {
+      leadId: data?.lead?.id || "",
+      email: data?.lead?.email || "",
+      amount: 75000
+    };
+
+    if (rangeTarget) {
+      rangeTarget.textContent = `${formatCurrency(estimate.estimated_min)} - ${formatCurrency(estimate.estimated_max)}`;
+    }
+    if (complexityTarget) complexityTarget.textContent = `${estimate.complexity_score}/10`;
+    if (orchestrationTarget) orchestrationTarget.textContent = `${estimate.orchestration_score}/10`;
+    if (integrationTarget) integrationTarget.textContent = `${estimate.integration_score}/10`;
+    if (urgencyTarget) urgencyTarget.textContent = `${estimate.urgency_score}/10`;
+    if (summaryTarget) summaryTarget.textContent = estimate.ai_summary || "";
+    if (confidenceTarget) {
+      const confidence = Math.round((Number(estimate.confidence_score) || 0) * 100);
+      confidenceTarget.textContent = confidence ? `${confidence}% confidence` : "Draft";
+    }
+    if (paymentButton) paymentButton.hidden = false;
+    if (resultPanel) resultPanel.hidden = false;
+  };
+
+  estimateForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!estimateForm.checkValidity()) {
+      estimateForm.reportValidity();
+      setMessage(statusTarget, "error", copy.required);
+      return;
+    }
+
+    const formData = new FormData(estimateForm);
+    const payload = {
+      organization: `${formData.get("organization") || ""}`.trim(),
+      contact_name: `${formData.get("contact_name") || ""}`.trim(),
+      email: `${formData.get("email") || ""}`.trim(),
+      workflow_summary: `${formData.get("workflow_summary") || ""}`.trim()
+    };
+
+    setButtonBusy(submitButton, true, copy.busy);
+    setMessage(statusTarget, "success", copy.running);
+
+    try {
+      const response = await fetch("/api/estimate", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await parseJsonResponse(response);
+
+      if (response.ok && data?.ok) {
+        renderEstimate(data);
+        setMessage(statusTarget, "success", copy.ready);
+        return;
+      }
+
+      setMessage(statusTarget, "error", data?.message || copy.error);
+    } catch {
+      setMessage(statusTarget, "error", copy.error);
+    } finally {
+      setButtonBusy(submitButton, false);
+    }
+  });
+
+  if (paymentButton) {
+    paymentButton.addEventListener("click", () => {
+      setButtonBusy(paymentButton, true, copy.paymentBusy);
+      startOperationalCheckout({
+        trigger: paymentButton,
+        payload: {
+          lead_id: latestEstimate?.leadId || "",
+          email: latestEstimate?.email || "",
+          amount: latestEstimate?.amount || 75000
+        }
+      });
+    });
+  }
+}
 
 const formatTimestamp = (value) => {
   const date = new Date(value);
@@ -1190,7 +1377,7 @@ const workroomCopy = isEnglishDocument
       note: "Use this path when the lab can safely guide actions before deeper handling.",
       prepare: ["Keep the device powered as-is unless the lab asks otherwise.", "Prepare screenshots, error messages, account notices or file names.", "Write down what changed just before the issue appeared."],
       avoid: ["Do not install random recovery utilities.", "Do not reset, reinstall or overwrite the affected data.", "Do not send passwords through chat or email."],
-      transfer: "Send the symptoms and screenshots first. If remote assistance is useful, NEXURADATA will confirm a supervised session with your consent."
+      transfer: "Send the symptoms and screenshots first. If remote assistance is useful, NEXURA Analytics will confirm a supervised session with your consent."
     },
     media: {
       title: "Media intervention workroom",
@@ -1204,14 +1391,14 @@ const workroomCopy = isEnglishDocument
       note: "Use this path for RAID, NAS, server and operations-blocking incidents.",
       prepare: ["List the number of disks and any disk labels or slot positions.", "Export screenshots of the storage dashboard if accessible.", "Identify the last known healthy state and any rebuild attempt."],
       avoid: ["Do not rebuild, initialize or replace disks blindly.", "Do not force-mount affected volumes in write mode.", "Do not change disk order."],
-      transfer: "Send architecture details and business impact. NEXURADATA will confirm whether the next step is remote review, image capture or lab handling."
+      transfer: "Send architecture details and business impact. NEXURA Analytics will confirm whether the next step is remote review, image capture or lab handling."
     },
     forensic: {
       title: "Evidence and incident workroom",
       note: "Use this path when traceability, dispute, insurer, HR or legal context matters.",
       prepare: ["Preserve the original device or account state.", "Write a timeline of events and involved parties.", "Collect reference numbers, insurer notes or mandate context."],
       avoid: ["Do not modify, clean or reorganize evidence.", "Do not share sensitive material through informal channels.", "Do not let multiple people handle the same device without tracking."],
-      transfer: "Send only the context first. NEXURADATA will confirm the controlled transfer method and the evidence-handling boundary."
+      transfer: "Send only the context first. NEXURA Analytics will confirm the controlled transfer method and the evidence-handling boundary."
     },
     mobile: {
       title: "Mobile case workroom",
@@ -1227,7 +1414,7 @@ const workroomCopy = isEnglishDocument
       note: "Utilisez ce parcours lorsque le laboratoire peut guider des actions sécuritaires avant une prise en charge plus lourde.",
       prepare: ["Gardez l'appareil dans son état actuel sauf consigne contraire.", "Préparez captures, messages d'erreur, avis de compte ou noms de fichiers.", "Notez ce qui a changé juste avant l'apparition du problème."],
       avoid: ["N'installez pas d'utilitaires de récupération au hasard.", "Ne réinitialisez pas, ne réinstallez pas et n'écrasez pas les données touchées.", "N'envoyez pas de mots de passe par clavardage ou courriel."],
-      transfer: "Envoyez d'abord les symptômes et captures. Si une assistance à distance est utile, NEXURADATA confirme une session supervisée avec votre consentement."
+      transfer: "Envoyez d'abord les symptômes et captures. Si une assistance à distance est utile, NEXURA Analytics confirme une session supervisée avec votre consentement."
     },
     media: {
       title: "Espace d'intervention support",
@@ -1241,14 +1428,14 @@ const workroomCopy = isEnglishDocument
       note: "Utilisez ce parcours pour RAID, NAS, serveurs et incidents qui bloquent les opérations.",
       prepare: ["Listez le nombre de disques et les positions ou étiquettes visibles.", "Exportez des captures de la console de stockage si elle est accessible.", "Indiquez le dernier état sain connu et toute tentative de reconstruction."],
       avoid: ["Ne reconstruisez pas, n'initialisez pas et ne remplacez pas des disques à l'aveugle.", "Ne forcez pas le montage en écriture.", "Ne changez pas l'ordre des disques."],
-      transfer: "Envoyez l'architecture et l'impact d'affaires. NEXURADATA confirme si la suite passe par revue distante, image disque ou laboratoire."
+      transfer: "Envoyez l'architecture et l'impact d'affaires. NEXURA Analytics confirme si la suite passe par revue distante, image disque ou laboratoire."
     },
     forensic: {
       title: "Espace preuve et incident",
       note: "Utilisez ce parcours lorsque la traçabilité, un litige, un assureur, RH ou un contexte juridique compte.",
       prepare: ["Préservez l'appareil ou le compte dans son état original.", "Rédigez une chronologie des événements et parties impliquées.", "Rassemblez numéros de référence, notes d'assureur ou contexte de mandat."],
       avoid: ["Ne modifiez pas, ne nettoyez pas et ne réorganisez pas la preuve.", "Ne partagez pas de matériel sensible par des canaux informels.", "Ne laissez pas plusieurs personnes manipuler le même support sans suivi."],
-      transfer: "Envoyez d'abord le contexte. NEXURADATA confirme la méthode de transmission contrôlée et la limite de traitement probatoire."
+      transfer: "Envoyez d'abord le contexte. NEXURA Analytics confirme la méthode de transmission contrôlée et la limite de traitement probatoire."
     },
     mobile: {
       title: "Espace dossier mobile",
@@ -1537,8 +1724,8 @@ if (statusForm) {
           status: isEnglishDocument ? "Intervention authorized" : "Intervention autorisée",
           updatedAt: timestamp,
           nextStep: isEnglishDocument
-            ? "NEXURADATA prepares the confirmed instructions and treatment sequence."
-            : "NEXURADATA prépare les consignes et la séquence de traitement confirmées.",
+            ? "NEXURA Analytics prepares the confirmed instructions and treatment sequence."
+            : "NEXURA Analytics prépare les consignes et la séquence de traitement confirmées.",
           summary: isEnglishDocument
             ? "Authorization has been received. The lab can continue according to the transmitted scope."
             : "Votre autorisation a été reçue. Le laboratoire peut poursuivre selon le cadre transmis.",

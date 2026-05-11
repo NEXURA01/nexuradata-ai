@@ -1,0 +1,29 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">NEXURA Analytics Operational Assessment</title>
+  <desc id="desc">Dark structured operational infrastructure visual for secure Stripe checkout.</desc>
+  <rect width="1200" height="1200" fill="#10100e"/>
+  <rect x="72" y="72" width="1056" height="1056" fill="#151512" stroke="#e8e4dc" stroke-opacity="0.14" stroke-width="2"/>
+  <path d="M72 230H1128M72 386H1128M72 542H1128M72 698H1128M72 854H1128M72 1010H1128" stroke="#e8e4dc" stroke-opacity="0.055" stroke-width="2"/>
+  <path d="M230 72V1128M386 72V1128M542 72V1128M698 72V1128M854 72V1128M1010 72V1128" stroke="#e8e4dc" stroke-opacity="0.055" stroke-width="2"/>
+  <rect x="150" y="156" width="900" height="132" fill="#0d0d0b" stroke="#e8e4dc" stroke-opacity="0.18" stroke-width="2"/>
+  <text x="190" y="232" fill="#e8e4dc" font-family="IBM Plex Sans, Arial, sans-serif" font-size="54" font-weight="700" letter-spacing="2">NEXURA Analytics</text>
+  <text x="190" y="260" fill="#d7c9ad" font-family="IBM Plex Mono, Consolas, monospace" font-size="18" letter-spacing="5">OPERATIONAL INTELLIGENCE INFRASTRUCTURE</text>
+  <rect x="150" y="362" width="900" height="420" fill="#181814" stroke="#e8e4dc" stroke-opacity="0.14" stroke-width="2"/>
+  <rect x="190" y="410" width="250" height="96" fill="#0f0f0d" stroke="#a85c48" stroke-opacity="0.8" stroke-width="2"/>
+  <rect x="474" y="410" width="250" height="96" fill="#0f0f0d" stroke="#d7c9ad" stroke-opacity="0.44" stroke-width="2"/>
+  <rect x="758" y="410" width="250" height="96" fill="#0f0f0d" stroke="#d7c9ad" stroke-opacity="0.26" stroke-width="2"/>
+  <text x="220" y="455" fill="#e8e4dc" font-family="IBM Plex Mono, Consolas, monospace" font-size="22" font-weight="700">SCOPE</text>
+  <text x="504" y="455" fill="#e8e4dc" font-family="IBM Plex Mono, Consolas, monospace" font-size="22" font-weight="700">ROUTING</text>
+  <text x="788" y="455" fill="#e8e4dc" font-family="IBM Plex Mono, Consolas, monospace" font-size="22" font-weight="700">WORKFLOW</text>
+  <path d="M440 458H474M724 458H758" stroke="#a85c48" stroke-width="4"/>
+  <rect x="190" y="578" width="818" height="128" fill="#10100e" stroke="#e8e4dc" stroke-opacity="0.1" stroke-width="2"/>
+  <path d="M230 644H398L438 604L502 684L562 616L620 644H970" fill="none" stroke="#d7c9ad" stroke-width="5" stroke-linecap="square"/>
+  <circle cx="438" cy="604" r="8" fill="#a85c48"/>
+  <circle cx="502" cy="684" r="8" fill="#a85c48"/>
+  <circle cx="562" cy="616" r="8" fill="#a85c48"/>
+  <rect x="150" y="842" width="900" height="202" fill="#0d0d0b" stroke="#e8e4dc" stroke-opacity="0.14" stroke-width="2"/>
+  <text x="190" y="912" fill="#e8e4dc" font-family="IBM Plex Sans, Arial, sans-serif" font-size="46" font-weight="700">Operational Assessment</text>
+  <text x="190" y="964" fill="#d7c9ad" font-family="IBM Plex Mono, Consolas, monospace" font-size="24" letter-spacing="2">SECURE ACTIVATION LAYER</text>
+  <rect x="858" y="894" width="150" height="54" fill="#a85c48"/>
+  <text x="892" y="930" fill="#10100e" font-family="IBM Plex Mono, Consolas, monospace" font-size="20" font-weight="700">CAD</text>
+</svg>

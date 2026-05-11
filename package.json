@@ -15,7 +15,12 @@
     "cf:pages:project:create": "node ./scripts/pages-cli.mjs create",
     "cf:pages:deploy:prod": "npm run build && node ./scripts/pages-cli.mjs deploy-prod",
     "cf:pages:deploy:staging": "npm run build && node ./scripts/pages-cli.mjs deploy-staging",
+    "cf:domains:sync": "node ./scripts/sync-cloudflare-domains.mjs",
     "cf:whoami": "wrangler whoami",
+    "seo:sitemap": "node ./scripts/generate-sitemap.mjs",
+    "supabase:link": "supabase link --project-ref amddiekyhrvxnzszugxb",
+    "supabase:db:push": "supabase db push --linked",
+    "supabase:db:dry-run": "supabase db push --linked --dry-run",
     "test": "vitest run",
     "test:watch": "vitest",
     "check": "node ./scripts/check.mjs",
@@ -29,6 +34,8 @@
     "wrangler": "^4.84.0"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.1.0"
+    "@neondatabase/serverless": "^1.1.0",
+    "postgres": "^3.4.9",
+    "stripe": "^22.1.1"
   }
 }

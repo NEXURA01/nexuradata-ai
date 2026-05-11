@@ -77,6 +77,7 @@ export const createHostedCheckoutSession = async (env, payload) => {
     ["line_items[0][price_data][unit_amount]", payload.amountCents],
     ["line_items[0][price_data][product_data][name]", payload.label],
     ["line_items[0][price_data][product_data][description]", payload.description],
+    ["line_items[0][price_data][product_data][images][0]", payload.imageUrl],
     ["metadata[case_id]", payload.caseId],
     ["metadata[payment_request_id]", payload.paymentRequestId],
     ["metadata[payment_kind]", payload.paymentKind],
@@ -142,7 +143,7 @@ const timingSafeEqual = (left, right) => {
 };
 
 export const verifyStripeWebhook = async (env, request) => {
-  const webhookSecret = ensureSecret(env?.STRIPE_WEBHOOK_SECRET, "Le secret webhook Stripe");
+  const webhookSecret = ensureSecret(env?.STRIPE_WEBHOOK_SECRET || env?.AI_AGENT_STRIPE, "Le secret webhook Stripe");
   const signatureHeader = request.headers.get("Stripe-Signature") || request.headers.get("stripe-signature");
   const { timestamp, signatures } = parseStripeSignature(signatureHeader);
 

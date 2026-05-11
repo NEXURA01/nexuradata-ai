@@ -1,4 +1,4 @@
-const normalizeText = (value, maxLength) => {
+﻿const normalizeText = (value, maxLength) => {
   if (typeof value !== "string") {
     return "";
   }
@@ -169,7 +169,7 @@ export const buildCaseAutomationDraft = (submission = {}) => {
     recommendedPath,
     nextStep,
     clientSummary: normalizeMultilineText(
-      `Votre demande a été reçue. NEXURADATA qualifie le dossier selon le parcours ${recommendedPath.toLowerCase()} et prépare la prochaine action utile.`,
+      `Votre demande a été reçue. NEXURA Analytics qualifie le dossier selon le parcours ${recommendedPath.toLowerCase()} et prépare la prochaine action utile.`,
       800
     ),
     qualificationSummary: normalizeMultilineText(qualificationLines.join("\n"), 1200),

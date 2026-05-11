@@ -1,4 +1,4 @@
-import {
+﻿import {
   formatCurrency,
   getCaseDetail,
   getPublicOrigin,
@@ -19,10 +19,10 @@ const escapeHtml = (value) =>
 
 const formatTextLines = (lines) => lines.filter(Boolean).join("\n");
 
-/** Wrap email content in the NEXURADATA branded shell. */
+/** Wrap email content in the NEXURA Analytics branded shell. */
 const buildEmailHtml = (content) => `<!DOCTYPE html>
 <html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NEXURADATA</title></head>
+<title>NEXURA Analytics</title></head>
 <body style="margin:0;padding:0;background:#f0ede8;">
 <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:100%;background:#f0ede8;">
 <tr><td align="center" style="padding:28px 16px;">
@@ -35,7 +35,7 @@ const buildEmailHtml = (content) => `<!DOCTYPE html>
   <tr><td style="padding:24px 28px;">${content}</td></tr>
   <tr><td style="padding:0 28px 22px;">
     <div style="height:1px;background:rgba(232,228,220,0.1);margin-bottom:16px;"></div>
-    <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#4a4540;line-height:1.7;">Ce message est confidentiel et destiné uniquement à son destinataire. Toute diffusion ou utilisation non autorisée est interdite.<br>NEXURADATA · Longueuil, QC, Canada · <a href="https://nexuradata.ca" style="color:#6a655e;text-decoration:none;">nexuradata.ca</a></p>
+    <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#4a4540;line-height:1.7;">Ce message est confidentiel et destiné uniquement à son destinataire. Toute diffusion ou utilisation non autorisée est interdite.<br>NEXURA Analytics · Longueuil, QC, Canada · <a href="https://nexuradata.ca" style="color:#6a655e;text-decoration:none;">nexuradata.ca</a></p>
   </td></tr>
 </table>
 </td></tr></table>
@@ -164,7 +164,7 @@ export const sendClientAccessEmail = async (env, record, requestUrl, reason = "i
       ? `Nouveau code d'accès pour votre dossier ${record.caseId}`
       : reason === "resent"
         ? `Rappel du code d'accès pour votre dossier ${record.caseId}`
-      : `Dossier ${record.caseId} ouvert chez NEXURADATA`;
+      : `Dossier ${record.caseId} ouvert chez NEXURA Analytics`;
   const intro =
     reason === "regenerated"
       ? "Un nouveau code d'accès a été généré pour votre dossier."
@@ -184,7 +184,7 @@ export const sendClientAccessEmail = async (env, record, requestUrl, reason = "i
     "",
     "Conservez ce courriel. Ce code permet d'afficher l'état utile du dossier sans exposer de détails sensibles.",
     "",
-    "NEXURADATA"
+    "NEXURA Analytics"
   ]);
   const html = buildEmailHtml(
     `<p style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#e8e4dc;line-height:1.6;">Bonjour ${escapeHtml(record.name || "")},</p>` +
@@ -241,7 +241,7 @@ export const sendClientStatusEmail = async (env, caseId, requestUrl, actor = "op
     "",
     `Portail client: ${statusUrl}`,
     "",
-    "NEXURADATA"
+    "NEXURA Analytics"
   ]);
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#e8e4dc;line-height:1.6;">Bonjour ${escapeHtml(detail.name)},</p>` +
@@ -295,7 +295,7 @@ export const sendClientPaymentLinkEmail = async (env, payment, requestUrl, actor
     `Paiement sécurisé: ${payment.checkoutUrl}`,
     `Suivi du dossier: ${statusUrl}`,
     "",
-    "NEXURADATA"
+    "NEXURA Analytics"
   ]);
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#e8e4dc;line-height:1.6;">Bonjour,</p>` +

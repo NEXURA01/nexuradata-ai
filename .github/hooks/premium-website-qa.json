@@ -1,0 +1,18 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "command": "node ./scripts/hooks/premium-website-qa.mjs --event=UserPromptSubmit",
+        "timeout": 5
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "node ./scripts/hooks/premium-website-qa.mjs --event=Stop",
+        "timeout": 5
+      }
+    ]
+  }
+}

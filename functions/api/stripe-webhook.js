@@ -171,6 +171,8 @@ const syncOperationalPayment = async (env, event) => {
     return null;
   }
 
+  const customerEmail = `${session.customer_details?.email || session.customer_email || ""}`.trim().toLowerCase();
+
   const rows = await supabaseUpdateByStripeSession(env, "payments", session.id, {
     amount: Number(session.amount_total || 0) || undefined,
     customer_email: customerEmail || undefined,

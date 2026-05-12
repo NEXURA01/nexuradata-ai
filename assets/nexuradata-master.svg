@@ -1,13 +1,30 @@
-﻿<svg viewBox="0 0 720 90"
-  xmlns="http://www.w3.org/2000/svg" width="720" height="90" role="img" aria-labelledby="title desc">
+﻿<svg viewBox="0 0 760 104"
+  xmlns="http://www.w3.org/2000/svg" width="760" height="104" role="img" aria-labelledby="title desc">
   <title id="title">NEXURA</title>
-  <desc id="desc">Structural NX monogram and NEXURA wordmark.</desc>
-  <g transform="translate(28, 18)">
-    <path d="M0 0H56V56H0Z" fill="#0A0A0B"/>
-    <path d="M0 0H56M0 0V56M56 0V56M0 56H56" fill="none" stroke="#F5F1E8" stroke-width="1" opacity="0.28"/>
-    <path d="M12 44V12H18L38 44H44V12" fill="none" stroke="#F5F1E8" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/>
-    <path d="M37 12L49 28L37 44M49 12L37 28L49 44" fill="none" stroke="#B87333" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"/>
+  <desc id="desc">NEXURA structural operational intelligence wordmark.</desc>
+  <defs>
+    <linearGradient id="nexura-copper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#D29A63"/>
+      <stop offset="0.45" stop-color="#B87333"/>
+      <stop offset="1" stop-color="#7D4A25"/>
+    </linearGradient>
+    <linearGradient id="nexura-bone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF8EA"/>
+      <stop offset="1" stop-color="#D8D1C4"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(24, 18)">
+    <path d="M0 0H68V68H0Z" fill="#0A0A0B"/>
+    <path d="M0 0H68V68H0Z" fill="none" stroke="#F5F1E8" stroke-width="1.2" opacity="0.26"/>
+    <path d="M10 10H58M10 58H58M10 10V58M58 10V58" fill="none" stroke="#F5F1E8" stroke-width="0.9" opacity="0.14"/>
+    <path d="M16 53V15H23L45 53H52V15" fill="none" stroke="url(#nexura-bone)" stroke-width="5.5" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="M44 15L58 34L44 53M58 15L44 34L58 53" fill="none" stroke="url(#nexura-copper)" stroke-width="4.6" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="M0 68H68" stroke="url(#nexura-copper)" stroke-width="2.4"/>
   </g>
-  <text x="104" y="55" font-family="'Inter Tight', 'IBM Plex Sans', Inter, Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="2.6" fill="#F5F1E8">NEXURA</text>
-  <line x1="104" y1="68" x2="648" y2="68" stroke="#F5F1E8" stroke-width="1" opacity="0.16"/>
+  <g transform="translate(114, 21)">
+    <text x="0" y="42" font-family="'Inter Tight', 'IBM Plex Sans', Inter, Arial, sans-serif" font-size="40" font-weight="800" letter-spacing="3.8" fill="url(#nexura-bone)">NEXURA</text>
+    <text x="2" y="69" font-family="'IBM Plex Mono', Consolas, monospace" font-size="9.5" font-weight="600" letter-spacing="5.8" fill="#B87333">OPERATIONAL INTELLIGENCE INFRASTRUCTURE</text>
+    <path d="M0 56H426" stroke="#F5F1E8" stroke-width="1" opacity="0.16"/>
+    <path d="M0 56H86" stroke="url(#nexura-copper)" stroke-width="1.6"/>
+  </g>
 </svg>

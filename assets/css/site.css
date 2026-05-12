@@ -106,7 +106,7 @@ select {
 .brand-logo {
   display: block;
   width: 100%;
-  max-width: 520px;
+  max-width: none;
   height: auto;
 }
 
@@ -133,6 +133,7 @@ select {
 .brand {
   display: inline-flex;
   align-items: center;
+  width: clamp(13rem, 19vw, 17rem);
   text-decoration: none;
 }
 
@@ -1494,6 +1495,553 @@ select {
   margin-top: 0.8rem;
 }
 
+/* ── NEXURA homepage ─────────────────────────────────────────── */
+
+.nexura-hero {
+  min-height: calc(100svh - 88px);
+  display: grid;
+  align-items: center;
+}
+
+.nexura-hero-grid,
+.platform-grid,
+.assessment-layout,
+.proof-layout,
+.offer-layout {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  align-items: start;
+}
+
+.nexura-hero-grid {
+  grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.95fr);
+}
+
+.nexura-hero-copy h1 {
+  max-width: 13ch;
+  font-size: clamp(2.8rem, 7vw, 6.4rem);
+  line-height: 0.92;
+}
+
+.nexura-hero-copy .hero-lead {
+  max-width: 48rem;
+  font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+}
+
+.nexura-proof-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  max-width: 52rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  border: 1px solid rgba(232, 228, 220, 0.1);
+  background: rgba(232, 228, 220, 0.08);
+  list-style: none;
+}
+
+.nexura-proof-strip li {
+  min-height: 3.4rem;
+  padding: 0.9rem 1rem;
+  background: rgba(12, 12, 10, 0.86);
+  color: rgba(232, 228, 220, 0.72);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nexura-topology {
+  position: relative;
+  min-height: clamp(30rem, 48vw, 42rem);
+  border: 1px solid rgba(232, 228, 220, 0.12);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(90deg, rgba(232, 228, 220, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(232, 228, 220, 0.045) 1px, transparent 1px),
+    radial-gradient(circle at 68% 28%, rgba(184, 115, 51, 0.12), transparent 18rem),
+    linear-gradient(180deg, rgba(28, 28, 24, 0.96), rgba(12, 12, 10, 0.98));
+  background-size: 4rem 4rem, 4rem 4rem, auto, auto;
+  box-shadow: 0 24px 60px -44px rgba(0, 0, 0, 0.86);
+  overflow: hidden;
+}
+
+.nexura-topology::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(125deg, transparent 0 44%, rgba(232, 228, 220, 0.065) 44% 44.25%, transparent 44.25% 100%),
+    linear-gradient(55deg, transparent 0 60%, rgba(184, 115, 51, 0.12) 60% 60.4%, transparent 60.4% 100%);
+  pointer-events: none;
+}
+
+.topology-grid {
+  position: absolute;
+  inset: 2rem;
+}
+
+.topology-node {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 7.25rem;
+  min-height: 3rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid rgba(232, 228, 220, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(15, 15, 13, 0.94);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  box-shadow: 0 18px 38px -30px rgba(0, 0, 0, 0.9);
+}
+
+.topology-node-intake { left: 4%; top: 11%; }
+.topology-node-ai { right: 10%; top: 18%; }
+.topology-node-routing { left: 34%; top: 43%; }
+.topology-node-dashboard { left: 8%; bottom: 18%; }
+.topology-node-control { right: 8%; bottom: 13%; }
+
+.topology-route {
+  position: absolute;
+  z-index: 1;
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(232, 228, 220, 0.08), rgba(232, 228, 220, 0.62), rgba(184, 115, 51, 0.4));
+  animation: route-sync 3.8s linear infinite;
+}
+
+.route-one { left: 24%; top: 23%; width: 44%; transform: rotate(7deg); }
+.route-two { left: 35%; top: 52%; width: 32%; transform: rotate(-38deg); animation-delay: 0.7s; }
+.route-three { left: 27%; bottom: 27%; width: 49%; transform: rotate(8deg); animation-delay: 1.25s; }
+
+.topology-pulse {
+  position: absolute;
+  z-index: 3;
+  width: 0.55rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 0 rgba(232, 228, 220, 0.32);
+  animation: topology-pulse 2.8s ease-out infinite;
+}
+
+.pulse-one { left: 42%; top: 25%; }
+.pulse-two { right: 28%; top: 50%; animation-delay: 0.8s; }
+.pulse-three { left: 30%; bottom: 29%; animation-delay: 1.45s; }
+
+.topology-dashboard {
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid rgba(232, 228, 220, 0.11);
+  background: rgba(232, 228, 220, 0.08);
+}
+
+.topology-dashboard div {
+  display: grid;
+  gap: 0.3rem;
+  min-height: 5rem;
+  padding: 0.85rem;
+  background: rgba(11, 11, 10, 0.9);
+}
+
+.topology-dashboard span,
+.nexura-card span,
+.platform-indicators span,
+.before-after span {
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.topology-dashboard strong {
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+}
+
+@keyframes route-sync {
+  0% { opacity: 0.3; filter: brightness(0.8); }
+  50% { opacity: 1; filter: brightness(1.35); }
+  100% { opacity: 0.3; filter: brightness(0.8); }
+}
+
+@keyframes topology-pulse {
+  0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(232, 228, 220, 0.32); }
+  70% { transform: scale(1); box-shadow: 0 0 0 1.2rem rgba(232, 228, 220, 0); }
+  100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(232, 228, 220, 0); }
+}
+
+.nexura-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.solution-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.nexura-card {
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+  min-height: 15rem;
+}
+
+.nexura-card h3,
+.platform-workflow-stack strong,
+.before-after p,
+.offer-list li,
+.final-cta-panel h2,
+.assessment-copy h2 {
+  margin: 0;
+}
+
+.nexura-card h3 {
+  font-family: var(--font-sans);
+  font-size: clamp(1.1rem, 1.6vw, 1.28rem);
+  letter-spacing: 0;
+}
+
+.nexura-card p {
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+.problem-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.nexura-split {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.nexura-steps {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.platform-grid {
+  grid-template-columns: minmax(0, 0.95fr) minmax(20rem, 1.05fr);
+}
+
+.platform-grid .section-heading {
+  grid-column: 1 / -1;
+}
+
+.platform-workflow,
+.platform-command {
+  min-height: 28rem;
+}
+
+.platform-workflow-stack {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.platform-workflow-stack article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.25rem 0.8rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid rgba(232, 228, 220, 0.1);
+  background: rgba(232, 228, 220, 0.04);
+}
+
+.platform-workflow-stack article>span {
+  width: 0.7rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 0.35rem rgba(232, 228, 220, 0.06);
+}
+
+.platform-workflow-stack small {
+  grid-column: 2;
+  color: var(--color-text-soft);
+  font-size: 0.86rem;
+}
+
+.platform-timeline {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.platform-timeline li {
+  padding: 0.8rem 0.9rem;
+  border-left: 2px solid rgba(232, 228, 220, 0.34);
+  background: rgba(232, 228, 220, 0.04);
+  color: var(--color-text-soft);
+}
+
+.platform-indicators {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 1.2rem;
+}
+
+.platform-indicators span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.55rem;
+  border: 1px solid rgba(232, 228, 220, 0.1);
+  background: rgba(12, 12, 10, 0.8);
+  text-align: center;
+}
+
+.assessment-layout,
+.proof-layout {
+  grid-template-columns: minmax(0, 0.78fr) minmax(20rem, 1.22fr);
+}
+
+.assessment-copy {
+  position: sticky;
+  top: 7rem;
+}
+
+.assessment-copy h2,
+.final-cta-panel h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.2vw, 3.45rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.assessment-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.assessment-list li,
+.offer-list li {
+  padding: 0.85rem 0.95rem;
+  border-left: 2px solid rgba(232, 228, 220, 0.3);
+  background: rgba(232, 228, 220, 0.04);
+  color: var(--color-text-soft);
+}
+
+.assessment-estimator .estimate-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.assessment-checkout {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(232, 228, 220, 0.1);
+}
+
+.proof-board {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.before-after {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid rgba(232, 228, 220, 0.1);
+  background: rgba(232, 228, 220, 0.08);
+}
+
+.before-after div {
+  display: grid;
+  gap: 0.7rem;
+  min-height: 11rem;
+  padding: 1.25rem;
+  background: rgba(12, 12, 10, 0.86);
+}
+
+.proof-board blockquote {
+  margin: 0;
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+  border: 1px solid rgba(232, 228, 220, 0.1);
+  background: linear-gradient(180deg, rgba(232, 228, 220, 0.05), rgba(232, 228, 220, 0.02));
+}
+
+.proof-board blockquote p {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+}
+
+.proof-board cite {
+  display: block;
+  margin-top: 0.85rem;
+  color: var(--color-text-muted);
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.results-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  border: 1px solid rgba(232, 228, 220, 0.1);
+  background: rgba(232, 228, 220, 0.08);
+}
+
+.results-strip div {
+  min-height: 5.5rem;
+  padding: 0.85rem;
+  background: rgba(12, 12, 10, 0.86);
+}
+
+.results-strip dt {
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.results-strip dd {
+  margin: 0.35rem 0 0;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+.offer-layout {
+  grid-template-columns: minmax(0, 0.6fr) minmax(20rem, 1.4fr);
+}
+
+.offer-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: clamp(1rem, 2vw, 1.4rem);
+  list-style: none;
+}
+
+.offer-list li::before {
+  content: "✓";
+  margin-right: 0.55rem;
+  color: var(--color-accent);
+  font-family: var(--font-sans);
+  font-weight: 800;
+}
+
+.final-cta-panel {
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 1px solid rgba(232, 228, 220, 0.14);
+  background:
+    linear-gradient(90deg, rgba(184, 115, 51, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(27, 27, 24, 0.96), rgba(13, 13, 11, 0.98));
+}
+
+.final-cta-panel p:not(.eyebrow) {
+  max-width: 44rem;
+  color: var(--color-text-soft);
+  font-size: 1.08rem;
+}
+
+@media (max-width: 1080px) {
+  .nexura-hero-grid,
+  .platform-grid,
+  .assessment-layout,
+  .proof-layout,
+  .offer-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .assessment-copy {
+    position: static;
+  }
+
+  .solution-grid,
+  .results-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .nexura-hero {
+    min-height: auto;
+  }
+
+  .nexura-proof-strip,
+  .problem-grid,
+  .solution-grid,
+  .nexura-steps,
+  .topology-dashboard,
+  .platform-indicators,
+  .before-after,
+  .results-strip,
+  .offer-list,
+  .assessment-estimator .estimate-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nexura-topology {
+    min-height: 31rem;
+  }
+
+  .topology-grid {
+    inset: 1rem;
+  }
+
+  .topology-node {
+    min-width: 6.2rem;
+    font-size: 0.64rem;
+  }
+
+  .topology-node-intake { left: 0; top: 4%; }
+  .topology-node-ai { right: 0; top: 16%; }
+  .topology-node-routing { left: 22%; top: 40%; }
+  .topology-node-dashboard { left: 0; bottom: 24%; }
+  .topology-node-control { right: 0; bottom: 13%; }
+
+  .route-one { left: 22%; top: 17%; width: 48%; }
+  .route-two { left: 30%; top: 48%; width: 34%; }
+  .route-three { left: 18%; bottom: 29%; width: 56%; }
+
+  .platform-workflow,
+  .platform-command {
+    min-height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topology-route,
+  .topology-pulse {
+    animation: none;
+  }
+}
+
 /* ── Locked branding: footer ─────────────────────────────────── */
 .site-footer {
   position: relative;
@@ -1511,8 +2059,8 @@ select {
 
 .footer-logo {
   display: block;
-  width: min(100%, 260px);
-  max-width: 260px;
+  width: min(100%, 21rem);
+  max-width: 21rem;
   height: auto;
   flex-shrink: 0;
 }
@@ -3352,7 +3900,7 @@ select {
   }
 
   .brand img {
-    width: min(46vw, 180px);
+    width: min(52vw, 220px);
     height: auto;
   }
 
@@ -3384,7 +3932,7 @@ select {
   }
 
   .site-nav .brand {
-    width: min(46vw, 180px);
+    width: min(52vw, 220px);
   }
 
   .site-nav .nav-links {
@@ -3718,8 +4266,8 @@ select {
   }
 
   .footer-logo {
-    width: min(100%, 220px);
-    max-width: 220px;
+    width: min(100%, 260px);
+    max-width: 260px;
   }
 
   .contact-form,
@@ -3862,7 +4410,7 @@ select {
 
   .site-nav.nav-enhanced .brand,
   .site-nav.nav-enhanced .brand img {
-    width: min(42vw, 166px);
+    width: min(48vw, 196px);
   }
 
   .hero {
@@ -3928,6 +4476,10 @@ select {
 }
 
 @media (max-width: 640px) {
+
+  .site-nav .brand {
+    width: min(52vw, 13.5rem);
+  }
 
   .brand-logo {
     width: 100%;
@@ -5215,6 +5767,21 @@ body.ai-positioning .whatsapp-inline-link {
     padding: 4.5rem 0;
   }
 
+  body.ai-positioning .nexura-hero {
+    padding-top: 2.4rem;
+  }
+
+  body.ai-positioning .nexura-hero-copy h1 {
+    max-width: 11ch;
+    font-size: clamp(2.05rem, 9.2vw, 3.15rem);
+    line-height: 0.96;
+  }
+
+  body.ai-positioning .nexura-hero-copy .hero-lead {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
   body.ai-positioning .hero-copy h1 {
     max-width: 100%;
     font-size: clamp(2.35rem, 10.8vw, 3.65rem);
@@ -5224,6 +5791,12 @@ body.ai-positioning .whatsapp-inline-link {
     overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
+  }
+
+  body.ai-positioning .nexura-hero-copy h1 {
+    max-width: 11ch;
+    font-size: clamp(2.05rem, 9.2vw, 3.15rem);
+    line-height: 0.96;
   }
 
   body.ai-positioning .ai-hero {

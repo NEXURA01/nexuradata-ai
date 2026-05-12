@@ -47,7 +47,7 @@ git diff --check
 Also run scoped scans for public exposure and tracking bypasses when relevant:
 
 ```powershell
-$root = "C:\Users\oblan\nexuradata-site"
+$root = (Get-Location).Path
 Get-ChildItem -Path $root -Filter *.html -Recurse | Select-String -Pattern "Giacomo|1102|Coteau-Rouge|ch\. du|Olivier"
 Get-ChildItem -Path $root -Filter *.html -Recurse | Select-String -SimpleMatch "googletagmanager.com/gtag/js","gtag("
 ```

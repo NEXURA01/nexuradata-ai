@@ -7,9 +7,9 @@
     "nodejs_compat"
   ],
   "vars": {
-    "PUBLIC_SITE_ORIGIN": "https://nexadura.com",
-    "LAB_INBOX_EMAIL": "o.blanchet13@gmail.com",
+    "PUBLIC_SITE_ORIGIN": "https://nexuradata.ca",
+    "LAB_INBOX_EMAIL": "operations@nexuradata.ca",
     "RESEND_FROM_EMAIL": "NEXURA <dossiers@nexuradata.ca>",
-    "OPS_ACCESS_ALLOWED_DOMAIN": "nexadura.com"
+    "OPS_ACCESS_ALLOWED_DOMAIN": "nexuradata.ca"
   }
 }

@@ -14,7 +14,7 @@ In scope:
 
 Out of scope:
 
-- Third-party services (Stripe, Resend, Neon, Cloudflare)
+- Third-party services (Stripe, Resend, Supabase, Neon, Cloudflare)
 - Social engineering or phishing
 - Physical infrastructure
 

@@ -7,8 +7,8 @@ const accountId = "a05bdd93563fd82b29effb6ebfa19fa7";
 const projectName = "nexuradata-ai";
 const pagesTarget = `${projectName}.pages.dev`;
 const domains = [
-  "nexadura.com",
-  "www.nexadura.com",
+  "nexuradata.ca",
+  "www.nexuradata.ca",
   "nexuradata.ca",
   "www.nexuradata.ca"
 ];
@@ -131,7 +131,7 @@ const sync = async () => {
 sync().catch((error) => {
   console.error(error.message);
   if (/Authentication error|permission|not authorized|forbidden|failed: auth/i.test(error.message)) {
-    console.error("This token can attach Pages domains but cannot edit DNS. Set CLOUDFLARE_API_TOKEN with Zone:DNS:Edit for nexadura.com and nexuradata.ca, then rerun npm run cf:domains:sync.");
+    console.error("This token can attach Pages domains but cannot edit DNS. Set CLOUDFLARE_API_TOKEN with Zone:DNS:Edit for nexuradata.ca and nexuradata.ca, then rerun npm run cf:domains:sync.");
   }
   process.exit(1);
 });

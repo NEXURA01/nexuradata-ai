@@ -2,7 +2,7 @@
 
 ## Production actuelle: Cloudflare Pages Direct Upload
 
-Le domaine `nexuradata.ca` pointe vers le projet Cloudflare Pages **`nexuradata`** (`nexuradata.pages.dev`). Ce projet est actuellement publie par deploiement ad hoc / Direct Upload, pas par le workflow GitHub.
+Le domaine `nexuradata.ca` pointe vers le projet Cloudflare Pages **`nexuradata-ai`** (`nexuradata-ai.pages.dev`). Ce projet est actuellement publie par deploiement ad hoc / Direct Upload, pas par le workflow GitHub.
 
 Commande verifiee pour publier la production depuis ce depot:
 
@@ -10,7 +10,7 @@ Commande verifiee pour publier la production depuis ce depot:
 npm run check
 npm run build
 npm test
-npx wrangler pages deploy ./release-cloudflare --project-name nexuradata --branch main
+npx wrangler pages deploy ./release-cloudflare --project-name nexuradata-ai --branch main
 ```
 
 Apres un deploiement, verifier au minimum:
@@ -25,10 +25,10 @@ Le workflow GitHub `deploy.yml` execute les controles, mais ne publie pas Cloudf
 
 ## Option future recommandee: GitHub + Cloudflare Pages
 
-Le site est purement statique. La voie la plus stable est un repo GitHub prive connecte a Cloudflare Pages, avec `main` en production et `staging` en preview si vous voulez une branche de previsualisation.
+Le site est purement statique. La voie la plus stable est le repo GitHub public `NEXURA01/nexuradata-ai` connecte a Cloudflare Pages, avec `main` en production et `staging` en preview si vous voulez une branche de previsualisation.
 
-1. Creer un repo GitHub prive.
-2. Pousser la branche `main`.
+1. Utiliser le repo GitHub `NEXURA01/nexuradata-ai`.
+2. Verifier que la branche `main` est a jour.
 3. Dans Cloudflare Pages, choisir `Connect to Git`.
 4. Selectionner le repo.
 5. Utiliser `main` comme branche de production.

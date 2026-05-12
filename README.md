@@ -1,6 +1,14 @@
 # NEXURA
 
+[![Deploy to Cloudflare Pages](https://github.com/NEXURA01/nexuradata-ai/actions/workflows/deploy.yml/badge.svg)](https://github.com/NEXURA01/nexuradata-ai/actions/workflows/deploy.yml)
+[![CodeQL](https://github.com/NEXURA01/nexuradata-ai/actions/workflows/codeql.yml/badge.svg)](https://github.com/NEXURA01/nexuradata-ai/actions/workflows/codeql.yml)
+[![njsscan sarif](https://github.com/NEXURA01/nexuradata-ai/actions/workflows/njsscan.yml/badge.svg)](https://github.com/NEXURA01/nexuradata-ai/actions/workflows/njsscan.yml)
+
 Site marketing et plateforme de lancement pour un laboratoire de recuperation de donnees et forensique numerique.
+
+- Depot public: https://github.com/NEXURA01/nexuradata-ai
+- Site canonique: https://nexuradata.ca
+- Cloudflare Pages: `nexuradata-ai.pages.dev`
 
 Le depot couvre:
 
@@ -45,6 +53,14 @@ Supabase est la pile cible pour les nouveaux developpements. Le depot conserve t
 8. Proteger `/operations/*` et `/api/ops/*` avec Cloudflare Access.
 
 Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md). Voir aussi [`docs/`](docs/) pour la checklist de lancement, le guide de deploiement rapide et les notes de recherche concurrentielle / tarifaire.
+
+## Securite GitHub
+
+- Le depot public GitHub est `NEXURA01/nexuradata-ai`.
+- Les alertes Dependabot, le secret scanning et la push protection sont actives dans GitHub.
+- La branche `main` est protegee: PR requise, historique lineaire, force-push et suppression bloques.
+- Les controles requis couvrent le build Cloudflare, `njsscan` et CodeQL.
+- Les vulnerabilites doivent etre rapportees en prive selon [`SECURITY.md`](SECURITY.md).
 
 ## Commandes
 

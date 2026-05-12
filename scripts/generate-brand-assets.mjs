@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 /**
  * Generate NEXURA Analytics raster brand assets from the source SVG identity.
  * Run: node scripts/generate-brand-assets.mjs
@@ -17,7 +17,7 @@ const OS = '#F5F1E8';
 const COPPER = '#B87333';
 const GRAPHITE = '#17191D';
 const FONT = "'Inter Tight', 'IBM Plex Sans', Arial, sans-serif";
-const CONTACT_URL = 'https://nexadura.com/#contact';
+const CONTACT_URL = 'https://nexuradata.ca/#contact';
 
 async function qrDataUri(size = 220) {
   const svg = await QRCode.toString(CONTACT_URL, {
@@ -105,7 +105,7 @@ async function generateOgDefault() {
   <text x="286" y="346" font-family="${FONT}" font-size="23" font-weight="700" letter-spacing="2.2" fill="${OS}" opacity="0.68">OPERATIONAL INTELLIGENCE INFRASTRUCTURE</text>
   <text x="286" y="400" font-family="${FONT}" font-size="20" font-weight="600" letter-spacing="0.5" fill="${OS}" opacity="0.5">Systems for control, execution and operational trust.</text>
   <rect x="80" y="500" width="220" height="6" fill="${COPPER}"/>
-  <text x="80" y="590" font-family="${FONT}" font-size="14" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.34">nexadura.com</text>
+  <text x="80" y="590" font-family="${FONT}" font-size="14" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.34">nexuradata.ca</text>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/og-default.png'));
@@ -124,7 +124,7 @@ async function generateOgEn() {
   <text x="286" y="346" font-family="${FONT}" font-size="23" font-weight="700" letter-spacing="2.2" fill="${OS}" opacity="0.68">OPERATIONAL INTELLIGENCE INFRASTRUCTURE</text>
   <text x="286" y="400" font-family="${FONT}" font-size="20" font-weight="600" letter-spacing="0.5" fill="${OS}" opacity="0.5">Systems for control, execution and operational trust.</text>
   <rect x="80" y="500" width="220" height="6" fill="${COPPER}"/>
-  <text x="80" y="590" font-family="${FONT}" font-size="14" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.34">nexadura.com</text>
+  <text x="80" y="590" font-family="${FONT}" font-size="14" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.34">nexuradata.ca</text>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/og-en.png'));
@@ -138,7 +138,7 @@ async function generateSignature() {
   <g transform="translate(18, 20)">${nxMark(58)}</g>
   ${wordmark(96, 58, 30, 3.2)}
   <line x1="96" y1="70" x2="${w - 22}" y2="70" stroke="${OS}" stroke-width="0.8" opacity="0.14"/>
-  <text x="96" y="88" font-family="${FONT}" font-size="10" font-weight="700" letter-spacing="2.2" fill="${OS}" opacity="0.38">nexadura.com</text>
+  <text x="96" y="88" font-family="${FONT}" font-size="10" font-weight="700" letter-spacing="2.2" fill="${OS}" opacity="0.38">nexuradata.ca</text>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/nexuradata-signature.png'));
@@ -231,7 +231,7 @@ async function generateContactQr() {
     <rect x="-26" y="-26" width="572" height="572" fill="${NOIR}" stroke="${OS}" stroke-width="0.8" opacity="0.96"/>
     <image href="${qr}" x="0" y="0" width="520" height="520"/>
   </g>
-  <text x="540" y="1010" font-family="${FONT}" font-size="17" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.44" text-anchor="middle">nexadura.com/#contact</text>
+  <text x="540" y="1010" font-family="${FONT}" font-size="17" font-weight="700" letter-spacing="3" fill="${OS}" opacity="0.44" text-anchor="middle">nexuradata.ca/#contact</text>
 </svg>`;
 
   await sharp(Buffer.from(svg)).png().toFile(resolve(ROOT, 'assets/icons/contact-qr.png'));

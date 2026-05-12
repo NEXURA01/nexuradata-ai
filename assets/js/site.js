@@ -204,8 +204,8 @@ const trackContactIntent = (method) => {
   const waLabel = isEnglishDocument ? "Chat on WhatsApp" : "Écrire sur WhatsApp";
   const waAriaLabel = isEnglishDocument ? "Contact us on WhatsApp" : "Nous contacter sur WhatsApp";
   const waMsg = isEnglishDocument
-    ? "Hello, I found you on nexadura.com and I have a question."
-    : "Bonjour, j'ai trouvé votre site nexadura.com et j'ai une question.";
+    ? "Hello, I found you on nexuradata.ca and I have a question."
+    : "Bonjour, j'ai trouvé votre site nexuradata.ca et j'ai une question.";
 
   const btn = document.createElement("a");
   btn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`;

@@ -3,4 +3,4 @@ Allow: /
 Disallow: /operations/
 Disallow: /api/ops/
 
-Sitemap: https://nexadura.com/sitemap.xml
+Sitemap: https://nexuradata.ca/sitemap.xml

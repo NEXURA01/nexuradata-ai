@@ -22,8 +22,6 @@ const mapSessionStatus = (eventType) => {
   return "open";
 };
 
-const getErrorName = (error) => error instanceof Error && error.name ? error.name : "Error";
-
 const syncStripePaymentLedger = async (env, event) => {
   const session = event?.data?.object;
 
@@ -112,26 +110,24 @@ export const onRequestPost = async (context) => {
     if (hasLegacyDatabaseUrl(context.env)) {
       try {
         ledgerPayment = await syncStripePaymentLedger(context.env, event);
-      } catch (ledgerErr) {
+      } catch {
         console.error(JSON.stringify({
           timestamp: new Date().toISOString(),
           context: "stripe_webhook_ledger_sync_error",
           eventId: event.id,
-          eventType: event.type,
-          errorName: getErrorName(ledgerErr)
+          eventType: event.type
         }));
       }
     }
 
     try {
       operationalPayment = await syncOperationalPayment(context.env, event);
-    } catch (operationalErr) {
+    } catch {
       console.error(JSON.stringify({
         timestamp: new Date().toISOString(),
         context: "stripe_webhook_operational_payment_sync_error",
         eventId: event.id,
-        eventType: event.type,
-        errorName: getErrorName(operationalErr)
+        eventType: event.type
       }));
     }
 
@@ -153,13 +149,12 @@ export const onRequestPost = async (context) => {
       paymentRequestId: payment?.paymentRequestId || null,
       stripePaymentId: ledgerPayment?.id || operationalPayment?.id || null
     });
-  } catch (err) {
+  } catch {
     console.error(JSON.stringify({
       timestamp: new Date().toISOString(),
       context: "stripe_webhook_processing_error",
       eventId: event.id,
-      eventType: event.type,
-      errorName: getErrorName(err)
+      eventType: event.type
     }));
 
     return json(

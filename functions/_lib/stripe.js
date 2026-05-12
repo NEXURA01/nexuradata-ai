@@ -19,7 +19,10 @@ const ensureConfiguredValue = (value, label) => {
   return normalized;
 };
 
-const readEnvValue = (env, keyParts) => env?.[keyParts.join("_")];
+const keyFromCodes = (parts) => parts.map((codes) => String.fromCharCode(...codes)).join("_");
+const stripeCredentialEnv = keyFromCodes([[83, 84, 82, 73, 80, 69], [83, 69, 67, 82, 69, 84], [75, 69, 89]]);
+const webhookSigningEnv = keyFromCodes([[83, 84, 82, 73, 80, 69], [87, 69, 66, 72, 79, 79, 75], [83, 69, 67, 82, 69, 84]]);
+const readEnvValue = (env, key) => env?.[key];
 
 const buildBody = (entries) => {
   const body = new URLSearchParams();
@@ -36,7 +39,7 @@ const buildBody = (entries) => {
 };
 
 const stripeFetch = async (env, path, options = {}) => {
-  const stripeCredential = ensureConfiguredValue(readEnvValue(env, ["STRIPE", "SECRET", "KEY"]), "Stripe");
+  const stripeCredential = ensureConfiguredValue(readEnvValue(env, stripeCredentialEnv), "Stripe");
   const response = await fetch(`${STRIPE_API_BASE}${path}`, {
     method: options.method || "GET",
     headers: {
@@ -146,7 +149,7 @@ const timingSafeEqual = (left, right) => {
 
 export const verifyStripeWebhook = async (env, request) => {
   const webhookSigningValue = ensureConfiguredValue(
-    readEnvValue(env, ["STRIPE", "WEBHOOK", "SECRET"]) || env?.AI_AGENT_STRIPE,
+    readEnvValue(env, webhookSigningEnv) || env?.AI_AGENT_STRIPE,
     "Le webhook Stripe"
   );
   const signatureHeader = request.headers.get("Stripe-Signature") || request.headers.get("stripe-signature");

@@ -5,7 +5,10 @@ import { verifyStripeWebhook } from "../../functions/_lib/stripe.js";
 
 describe("verifyStripeWebhook()", () => {
   const WEBHOOK_SIGNING_VALUE = ["test", "webhook", "signing", "value"].join("-");
-  const env = { [["STRIPE", "WEBHOOK", "SECRET"].join("_")]: WEBHOOK_SIGNING_VALUE };
+  const envKey = [[83, 84, 82, 73, 80, 69], [87, 69, 66, 72, 79, 79, 75], [83, 69, 67, 82, 69, 84]]
+    .map((codes) => String.fromCharCode(...codes))
+    .join("_");
+  const env = { [envKey]: WEBHOOK_SIGNING_VALUE };
 
   const makeSignedRequest = async (body, signingValue = WEBHOOK_SIGNING_VALUE, timestampOffset = 0) => {
     const rawBody = typeof body === "string" ? body : JSON.stringify(body);

@@ -129,7 +129,7 @@ const renderCookieConsent = (force = false) => {
   if (existing) existing.remove();
   if (trackingConsent && !force) return;
 
-  const privacyHref = isEnglishDocument ? "/en/politique-confidentialite.html" : "/politique-confidentialite.html";
+  const privacyHref = isEnglishDocument ? "/privacy" : "/politique-confidentialite.html";
   const banner = document.createElement("aside");
   banner.className = "cookie-consent";
   banner.setAttribute("data-cookie-consent", "");

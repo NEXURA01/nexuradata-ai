@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/NEXURA01/nexuradata-ai/security/policy
+    about: Please report vulnerabilities through the private security policy process.
+  - name: NEXURA operations contact
+    url: mailto:operations@nexuradata.ca
+    about: Use business contact for operational assessment or site inquiries.

@@ -21,7 +21,32 @@ const readWranglerOAuthToken = async () => {
   return match?.[1] || "";
 };
 
-const token = process.env.CLOUDFLARE_API_TOKEN || process.env.CF_API_TOKEN || await readWranglerOAuthToken();
+const normalizeCloudflareToken = (...values) => {
+  for (const value of values) {
+    const raw = String(value || "").trim();
+    if (!raw) continue;
+
+    const embeddedToken = raw.match(/cfut_[A-Za-z0-9_-]+/);
+    if (embeddedToken) return embeddedToken[0];
+
+    const assignment = raw.match(/(?:CLOUDFLARE_API_TOKEN|CF_API_TOKEN)\s*=\s*["']?([^"'\s;]+)/i);
+    const candidate = assignment?.[1] || raw;
+
+    return candidate
+      .replace(/^Bearer\s+/i, "")
+      .replace(/^['"]|['"]$/g, "")
+      .replace(/[\r\n\t]/g, "")
+      .trim();
+  }
+
+  return "";
+};
+
+const token = normalizeCloudflareToken(
+  process.env.CLOUDFLARE_API_TOKEN,
+  process.env.CF_API_TOKEN,
+  await readWranglerOAuthToken()
+);
 
 if (!token) {
   throw new Error("Missing Cloudflare token. Set CLOUDFLARE_API_TOKEN or run wrangler login.");

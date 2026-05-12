@@ -37,8 +37,8 @@ export const onRequestPost = async (context) => {
     const customerEmail = normalizeText(payload.email, 180).toLowerCase();
     const paymentRequestId = generatePaymentId();
     const origin = getPublicOrigin(context.env, context.request.url);
-    const successUrl = `${origin}/paiement-reussi.html?paymentRequestId=${encodeURIComponent(paymentRequestId)}`;
-    const cancelUrl = `${origin}/paiement-annule.html?paymentRequestId=${encodeURIComponent(paymentRequestId)}`;
+    const successUrl = `${origin}/payment-success?paymentRequestId=${encodeURIComponent(paymentRequestId)}`;
+    const cancelUrl = `${origin}/payment-cancelled?paymentRequestId=${encodeURIComponent(paymentRequestId)}`;
 
     const session = await createHostedCheckoutSession(context.env, {
       successUrl,
@@ -46,8 +46,8 @@ export const onRequestPost = async (context) => {
       customerEmail,
       paymentRequestId,
       caseId: leadId || paymentRequestId,
-      paymentKind: "operational_activation",
-      label: "Operational Infrastructure Assessment",
+      paymentKind: "operational_review",
+      label: "Operational Review Reservation",
       description: "Assessment payment before human validation, final proposal and any implementation invoice.",
       amountCents,
       currency: "cad",

@@ -105,9 +105,9 @@ const saveTrackingConsent = (choices) => {
 const cookieI18n = isEnglishDocument
   ? {
     title: "Cookie preferences",
-    copy: "Essential storage. Optional measurement only with consent.",
-    analytics: "Analytics measurement",
-    marketing: "Marketing measurement",
+    copy: "Essential storage keeps the site working. Google Analytics and Meta Pixel stay off unless you accept optional measurement.",
+    analytics: "Google Analytics",
+    marketing: "Meta Pixel",
     reject: "Reject optional",
     save: "Save choices",
     accept: "Accept optional",
@@ -115,9 +115,9 @@ const cookieI18n = isEnglishDocument
   }
   : {
     title: "Préférences témoins",
-    copy: "Stockage essentiel. Mesure optionnelle seulement avec consentement.",
-    analytics: "Mesure analytique",
-    marketing: "Mesure marketing",
+    copy: "Le stockage essentiel garde le site fonctionnel. Google Analytics et Meta Pixel restent désactivés sans votre consentement.",
+    analytics: "Google Analytics",
+    marketing: "Meta Pixel",
     reject: "Refuser l'optionnel",
     save: "Enregistrer",
     accept: "Accepter l'optionnel",

@@ -24,19 +24,28 @@ function isHtmlNavigation(request) {
   return request.method === "GET" && (accept.includes("text/html") || !hasFileExtension);
 }
 
+function isReleaseAsset(request) {
+  const url = new URL(request.url);
+  return request.method === "GET" && (
+    url.pathname === "/assets/css/site.css" ||
+    url.pathname === "/assets/js/site.js"
+  );
+}
+
 function buildUpstreamRequest(request) {
   const incomingUrl = new URL(request.url);
   const upstreamOrigin = getUpstreamOrigin(incomingUrl);
   const upstreamUrl = new URL(incomingUrl.pathname + incomingUrl.search, upstreamOrigin);
   const headers = new Headers(request.headers);
   const htmlNavigation = isHtmlNavigation(request);
+  const releaseAsset = isReleaseAsset(request);
 
   headers.delete("host");
   headers.delete("x-forwarded-host");
   headers.delete("x-forwarded-proto");
   headers.set("x-nexura-original-host", incomingUrl.host);
-  if (htmlNavigation) {
-    upstreamUrl.searchParams.set("__nexura_html", HTML_RELEASE_VERSION);
+  if (htmlNavigation || releaseAsset) {
+    upstreamUrl.searchParams.set(htmlNavigation ? "__nexura_html" : "__nexura_asset", HTML_RELEASE_VERSION);
     headers.set("cache-control", "no-cache");
     headers.set("pragma", "no-cache");
   }
@@ -48,7 +57,7 @@ function buildUpstreamRequest(request) {
     redirect: "manual"
   };
 
-  if (htmlNavigation) {
+  if (htmlNavigation || releaseAsset) {
     init.cf = {
       cacheTtl: 0,
       cacheEverything: false,
@@ -67,7 +76,7 @@ async function buildResponse(response, request) {
   const headers = new Headers(response.headers);
   const requestUrl = new URL(request.url);
   const contentType = headers.get("content-type") || "";
-  const shouldBypassCache = isHtmlNavigation(request) || contentType.includes("text/html");
+  const shouldBypassCache = isHtmlNavigation(request) || isReleaseAsset(request) || contentType.includes("text/html");
 
   if (location && [301, 302, 303, 307, 308].includes(response.status)) {
     const upstreamUrl = new URL(getUpstreamOrigin(requestUrl));

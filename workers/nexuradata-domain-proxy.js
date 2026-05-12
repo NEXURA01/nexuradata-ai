@@ -1,6 +1,12 @@
 const UPSTREAM_ORIGIN = "https://nexuradata-ai.vercel.app";
 const API_UPSTREAM_ORIGIN = "https://nexuradata-ai.pages.dev";
 const HTML_CACHE_CONTROL = "no-store, max-age=0, must-revalidate";
+const HTML_UPSTREAM_CACHE_BYPASS = "20260512-visual";
+const HTML_REPLACEMENTS = [
+  [/site\.css\?v=(?:20260503i|20260511-ai)/g, `site.css?v=${HTML_UPSTREAM_CACHE_BYPASS}`],
+  [/Queue Stable/g, "Synchronization Stable"],
+  [/Execution Online/g, "Infrastructure Online"]
+];
 
 function getUpstreamOrigin(url) {
   if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
@@ -23,12 +29,14 @@ function buildUpstreamRequest(request) {
   const upstreamOrigin = getUpstreamOrigin(incomingUrl);
   const upstreamUrl = new URL(incomingUrl.pathname + incomingUrl.search, upstreamOrigin);
   const headers = new Headers(request.headers);
+  const htmlNavigation = isHtmlNavigation(request);
 
   headers.delete("host");
   headers.delete("x-forwarded-host");
   headers.delete("x-forwarded-proto");
   headers.set("x-nexura-original-host", incomingUrl.host);
-  if (isHtmlNavigation(request)) {
+  if (htmlNavigation) {
+    upstreamUrl.searchParams.set("__nexura_html", HTML_UPSTREAM_CACHE_BYPASS);
     headers.set("cache-control", "no-cache");
     headers.set("pragma", "no-cache");
   }
@@ -40,8 +48,12 @@ function buildUpstreamRequest(request) {
     redirect: "manual"
   };
 
-  if (isHtmlNavigation(request)) {
-    init.cf = { cacheTtl: 0, cacheEverything: false };
+  if (htmlNavigation) {
+    init.cf = {
+      cacheTtl: 0,
+      cacheEverything: false,
+      cacheKey: `${upstreamUrl.toString()}::${HTML_UPSTREAM_CACHE_BYPASS}`
+    };
   }
 
   return {
@@ -50,7 +62,7 @@ function buildUpstreamRequest(request) {
   };
 }
 
-function buildResponse(response, request) {
+async function buildResponse(response, request) {
   const location = response.headers.get("location");
   const headers = new Headers(response.headers);
   const requestUrl = new URL(request.url);
@@ -69,13 +81,24 @@ function buildResponse(response, request) {
   }
 
   headers.set("x-nexura-domain-proxy", getUpstreamOrigin(requestUrl) === API_UPSTREAM_ORIGIN ? "pages-functions" : "vercel");
+  headers.set("x-nexura-proxy-version", HTML_UPSTREAM_CACHE_BYPASS);
   if (shouldBypassCache) {
     headers.set("cache-control", HTML_CACHE_CONTROL);
     headers.set("cdn-cache-control", HTML_CACHE_CONTROL);
     headers.set("cloudflare-cdn-cache-control", HTML_CACHE_CONTROL);
   }
 
-  return new Response(response.body, {
+  let body = response.body;
+  if (shouldBypassCache && contentType.includes("text/html") && body) {
+    let html = await response.text();
+    HTML_REPLACEMENTS.forEach(([pattern, replacement]) => {
+      html = html.replace(pattern, replacement);
+    });
+    body = html;
+    headers.delete("content-length");
+  }
+
+  return new Response(body, {
     status: response.status,
     statusText: response.statusText,
     headers

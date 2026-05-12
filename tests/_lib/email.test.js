@@ -81,7 +81,11 @@ describe("sendLabNotificationEmail()", () => {
 
     const body = JSON.parse(options.body);
     expect(body.to).toEqual(["lab@test.com"]);
+    expect(body.subject).toContain("Action équipe");
     expect(body.subject).toContain("NX-20260101-ABCD1234");
+    expect(body.text).toContain("ACTION EQUIPE");
+    expect(body.text).toContain("CLIENT");
+    expect(body.text).toContain("DEMANDE");
     expect(body.from).toBe("noreply@nexuradata.ca");
   });
 
@@ -155,6 +159,9 @@ describe("team notification emails", () => {
     const [, options] = fetchSpy.mock.calls[0];
     const body = JSON.parse(options.body);
     expect(body.to).toEqual(["ops@test.com", "dossiers@test.com"]);
+    expect(body.text).toContain("ACTION EQUIPE");
+    expect(body.text).toContain("ORGANISATION");
+    expect(body.text).toContain("ESTIMATION");
     expect(body.subject).toContain("NEXURA Client");
     expect(body.text).toContain("Workflow centralise");
   });
@@ -184,6 +191,9 @@ describe("team notification emails", () => {
     expect(options.headers["Idempotency-Key"]).toBe("team-payment-evt-1-payment-1-cs_test");
     const body = JSON.parse(options.body);
     expect(body.to).toEqual(["ops@test.com"]);
+    expect(body.subject).toContain("Paiement confirmé");
+    expect(body.text).toContain("ACTION EQUIPE");
+    expect(body.text).toContain("PAIEMENT");
     expect(body.text).toContain("PAY-1");
   });
 });

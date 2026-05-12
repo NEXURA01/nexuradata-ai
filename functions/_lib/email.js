@@ -57,6 +57,12 @@ const emailCta = (label, url) =>
 const emailBlock = (text) =>
   `<div style="background:rgba(232,228,220,0.05);border-left:2px solid rgba(232,228,220,0.18);padding:12px 16px;border-radius:0 3px 3px 0;margin:0 0 4px;"><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#c8c4bc;line-height:1.65;">${escapeHtml(text).replace(/\n/g, "<br>")}</p></div>`;
 
+const emailSectionTitle = (label) =>
+  `<p style="margin:22px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;">${escapeHtml(label)}</p>`;
+
+const emailActionBlock = (title, text) =>
+  `<div style="background:rgba(183,106,55,0.12);border:1px solid rgba(183,106,55,0.28);border-radius:4px;padding:14px 16px;margin:0 0 18px;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#b76a37;text-transform:uppercase;margin-bottom:6px;">Action équipe</span><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#e8e4dc;line-height:1.6;"><strong>${escapeHtml(title)}</strong><br>${escapeHtml(text)}</p></div>`;
+
 const sendResendEmail = async (env, payload, idempotencyKey) => {
   const apiKey = normalizeText(env?.RESEND_API_KEY, 256);
   const from = normalizeText(env?.RESEND_FROM_EMAIL, 200);
@@ -150,35 +156,45 @@ export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) =>
   }
 
   const portalUrl = `${getPublicOrigin(env, requestUrl)}/operations/`;
-  const subject = `Nouveau dossier ${intakeRecord.caseId} - ${intakeRecord.support} - ${intakeRecord.urgence}`;
+  const subject = `[NEXURA] Action équipe - Nouveau dossier ${intakeRecord.caseId} - ${intakeRecord.urgence}`;
   const text = formatTextLines([
+    "ACTION EQUIPE",
+    "Qualifier le dossier, confirmer la priorite et assigner la prochaine etape.",
+    `Console equipe: ${portalUrl}`,
+    "",
+    "CLIENT",
     `Dossier: ${intakeRecord.caseId}`,
     `Nom: ${intakeRecord.nom}`,
     `Courriel: ${intakeRecord.courriel}`,
     `Téléphone: ${intakeRecord.telephone || "Non fourni"}`,
+    "",
+    "DEMANDE",
     `Support: ${intakeRecord.support}`,
     `Urgence: ${intakeRecord.urgence}`,
-    `Code d'accès initial: ${intakeRecord.accessCode}`,
-    `Source: ${intakeRecord.sourcePath}`,
-    "",
     "Description du problème:",
     intakeRecord.message,
     "",
-    `Console interne: ${portalUrl}`
+    "SUIVI INTERNE",
+    `Code d'accès initial: ${intakeRecord.accessCode}`,
+    `Source: ${intakeRecord.sourcePath}`
   ]);
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Nouveau dossier pour l'equipe</p>` +
+    emailActionBlock("Dossier à qualifier", "Confirmer la priorité, assigner la prochaine étape et répondre depuis la console interne.") +
     emailBadge("Référence", intakeRecord.caseId) +
+    emailSectionTitle("Client") +
     emailRow("Nom", intakeRecord.nom) +
     emailRow("Courriel", intakeRecord.courriel) +
     emailRow("Téléphone", intakeRecord.telephone || "Non fourni") +
+    emailSectionTitle("Demande") +
     emailRow("Support", intakeRecord.support) +
     emailRow("Urgence", intakeRecord.urgence) +
+    emailSectionTitle("Description du problème") +
+    emailBlock(intakeRecord.message) +
+    emailSectionTitle("Suivi interne") +
     emailRow("Code d'accès initial", intakeRecord.accessCode) +
     emailRow("Source", intakeRecord.sourcePath) +
-    `<p style="margin:18px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;">Description du problème</p>` +
-    emailBlock(intakeRecord.message) +
-    emailCta("Ouvrir la console", portalUrl)
+    emailCta("Ouvrir la console équipe", portalUrl)
   );
 
   return sendResendEmail(
@@ -209,13 +225,20 @@ export const sendTeamOperationalAssessmentEmail = async (env, detail, requestUrl
   const workflowCase = detail?.workflowCase || detail?.workflow_case || {};
   const portalUrl = `${getPublicOrigin(env, requestUrl)}/operations/`;
   const estimateRange = formatRange(estimate.estimated_min, estimate.estimated_max);
-  const subject = `Nouvelle evaluation operationnelle - ${payload.organization || "Organisation"} - ${payload.urgency || "Urgence non precisee"}`;
+  const subject = `[NEXURA] Action équipe - Évaluation opérationnelle - ${payload.organization || "Organisation"}`;
   const text = formatTextLines([
+    "ACTION EQUIPE",
+    "Valider l'estimation, prioriser le dossier et preparer la recommandation humaine.",
+    `Console equipe: ${portalUrl}`,
+    "",
+    "ORGANISATION",
     `Organisation: ${payload.organization || "Non fournie"}`,
     `Contact: ${payload.contact_name || "Non fourni"}`,
     `Courriel: ${payload.email || "Non fourni"}`,
     `Urgence: ${payload.urgency || "Non precisee"}`,
     `Equipes impliquees: ${payload.teams_involved || "Non precise"}`,
+    "",
+    "ESTIMATION",
     `Fourchette indicative: ${estimateRange}`,
     `Confiance: ${estimate.confidence_score || estimate.confidence || "Non precisee"}`,
     `Lead Supabase: ${lead.id || "Non disponible"}`,
@@ -231,18 +254,21 @@ export const sendTeamOperationalAssessmentEmail = async (env, detail, requestUrl
   ]);
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Evaluation operationnelle recue</p>` +
+    emailActionBlock("Évaluation à valider", "Prioriser le dossier, vérifier la fourchette indicative et préparer la recommandation humaine.") +
     emailBadge("Organisation", payload.organization || "Non fournie") +
+    emailSectionTitle("Organisation") +
     emailRow("Contact", payload.contact_name || "Non fourni") +
     emailRow("Courriel", payload.email || "Non fourni") +
     emailRow("Urgence", payload.urgency || "Non precisee") +
     emailRow("Equipes impliquees", payload.teams_involved || "Non precise") +
+    emailSectionTitle("Estimation") +
     emailRow("Fourchette indicative", estimateRange) +
     emailRow("Confiance", estimate.confidence_score || estimate.confidence || "Non precisee") +
     emailRow("Lead Supabase", lead.id || "Non disponible") +
     emailRow("Workflow case", workflowCase.id || "Non disponible") +
-    `<p style="margin:18px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;">Resume operationnel</p>` +
+    emailSectionTitle("Resume operationnel") +
     emailBlock(payload.workflow_summary || "Non fourni") +
-    `<p style="margin:18px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;">Solution recommandee</p>` +
+    emailSectionTitle("Solution recommandee") +
     emailBlock(estimate.recommended_scope || workflowCase.recommended_solution || "Validation humaine requise") +
     emailCta("Ouvrir la console equipe", portalUrl)
   );
@@ -276,30 +302,31 @@ export const sendTeamPaymentCompletedEmail = async (env, detail, requestUrl) => 
   const portalUrl = `${getPublicOrigin(env, requestUrl)}/operations/`;
   const amount = formatAmount(payment.amount || session.amount_total, payment.currency || session.currency || "cad");
   const customerEmail = payment.customer_email || session.customer_details?.email || session.customer_email || "Non fourni";
-  const subject = `Paiement operationnel confirme - ${amount}`;
+  const subject = `[NEXURA] Paiement confirmé - ${amount} - revue à lancer`;
   const text = formatTextLines([
+    "ACTION EQUIPE",
+    "Lancer la revue humaine, valider l'estimation et preparer la prochaine recommandation.",
+    `Console equipe: ${portalUrl}`,
+    "",
+    "PAIEMENT",
     `Montant: ${amount}`,
     `Courriel client: ${customerEmail}`,
     `Paiement: ${payment.payment_request_id || payment.id || "Non disponible"}`,
     `Session Stripe: ${payment.stripe_session_id || session.id || "Non disponible"}`,
     `Workflow case: ${workflowCase.id || payment.workflow_case_id || "Non disponible"}`,
     `Evenement Stripe: ${event.type || "Non disponible"}`,
-    "",
-    "Action equipe:",
-    "Valider l'estimation, preparer la prochaine recommandation et lancer la revue humaine.",
-    "",
-    `Console equipe: ${portalUrl}`
+    ""
   ]);
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Paiement operationnel confirme</p>` +
+    emailActionBlock("Revue humaine à lancer", "Valider l'estimation, préparer la prochaine recommandation et activer le suivi opérationnel.") +
     emailBadge("Montant", amount) +
+    emailSectionTitle("Paiement") +
     emailRow("Courriel client", customerEmail) +
     emailRow("Paiement", payment.payment_request_id || payment.id || "Non disponible") +
     emailRow("Session Stripe", payment.stripe_session_id || session.id || "Non disponible") +
     emailRow("Workflow case", workflowCase.id || payment.workflow_case_id || "Non disponible") +
     emailRow("Evenement Stripe", event.type || "Non disponible") +
-    `<p style="margin:18px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;">Action equipe</p>` +
-    emailBlock("Valider l'estimation, preparer la prochaine recommandation et lancer la revue humaine.") +
     emailCta("Ouvrir la console equipe", portalUrl)
   );
 

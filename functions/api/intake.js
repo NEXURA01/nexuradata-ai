@@ -56,7 +56,7 @@ export const onRequestPost = async (context) => {
 
     const submission = validateSubmission(payload);
     const intakeRecord = await createCase(context.env, submission);
-    const [labDelivery, clientDelivery] = await Promise.all([
+    const [teamDelivery, clientDelivery] = await Promise.all([
       sendLabNotificationEmail(context.env, intakeRecord, context.request.url),
       sendClientAccessEmail(
         context.env,
@@ -77,9 +77,9 @@ export const onRequestPost = async (context) => {
       ok: true,
       caseId: intakeRecord.caseId,
       message: "Demande reçue. Un numéro de dossier initial a été généré.",
-      nextStep: "Le laboratoire peut maintenant qualifier le cas et préparer la suite.",
+      nextStep: "L'équipe opérationnelle peut maintenant qualifier le cas et préparer la suite.",
       delivery: {
-        lab: labDelivery.sent ? "sent" : labDelivery.reason,
+        team: teamDelivery.sent ? "sent" : teamDelivery.reason,
         client: clientDelivery.sent ? "sent" : clientDelivery.reason
       }
     });

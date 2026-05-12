@@ -1,5 +1,6 @@
 import { syncPaymentRequestFromStripe } from "../_lib/cases.js";
 import { getDb } from "../_lib/db.js";
+import { sendTeamPaymentCompletedEmail } from "../_lib/email.js";
 import { json, methodNotAllowed, onOptions } from "../_lib/http.js";
 import { hasSupabaseServiceKey, supabaseInsert, supabaseRequest, supabaseUpdateById, supabaseUpdateByStripeSession } from "../_lib/supabase.js";
 import { verifyStripeWebhook } from "../_lib/stripe.js";
@@ -242,6 +243,28 @@ export const onRequestPost = async (context) => {
     try {
       operationalPayment = await syncOperationalPayment(context.env, event);
       workflowCase = await syncWorkflowStatusFromPayment(context.env, event, operationalPayment);
+
+      if (operationalPayment?.id && isPaidEvent(event.type)) {
+        const teamDelivery = await sendTeamPaymentCompletedEmail(
+          context.env,
+          {
+            payment: operationalPayment,
+            workflowCase,
+            event
+          },
+          context.request.url
+        );
+
+        if (!teamDelivery.sent && teamDelivery.reason !== "not-configured" && teamDelivery.reason !== "missing-team-inbox") {
+          console.error(JSON.stringify({
+            timestamp: new Date().toISOString(),
+            context: "team_payment_notification_not_sent",
+            eventId: event.id,
+            eventType: event.type,
+            reason: teamDelivery.reason
+          }));
+        }
+      }
     } catch {
       console.error(JSON.stringify({
         timestamp: new Date().toISOString(),

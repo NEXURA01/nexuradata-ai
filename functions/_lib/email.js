@@ -103,13 +103,49 @@ const sendResendEmail = async (env, payload, idempotencyKey) => {
   }
 };
 
-export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) => {
-  const inbox = normalizeText(env?.LAB_INBOX_EMAIL, 200);
+const parseRecipientList = (value) => {
+  const rawValue = Array.isArray(value) ? value.join(",") : `${value || ""}`;
+  return [...new Set(
+    rawValue
+      .split(/[,;\s]+/)
+      .map((email) => normalizeText(email, 200))
+      .filter(Boolean)
+  )];
+};
 
-  if (!inbox) {
+const getTeamNotificationRecipients = (env) => parseRecipientList(
+  env?.TEAM_INBOX_EMAILS || env?.TEAM_INBOX_EMAIL || env?.LAB_INBOX_EMAIL
+);
+
+const emailKey = (...parts) => parts
+  .map((part) => normalizeText(`${part || ""}`, 120))
+  .filter(Boolean)
+  .join("-")
+  .replace(/[^a-zA-Z0-9_-]/g, "-")
+  .slice(0, 180);
+
+const formatAmount = (amountCents, currency = "cad") => {
+  const amount = Number(amountCents || 0);
+  return amount > 0 ? formatCurrency(amount, currency) : "Non precise";
+};
+
+const formatRange = (minCents, maxCents, currency = "cad") => {
+  const min = Number(minCents || 0);
+  const max = Number(maxCents || 0);
+
+  if (min > 0 && max > 0) return `${formatCurrency(min, currency)} - ${formatCurrency(max, currency)}`;
+  if (min > 0) return `A partir de ${formatCurrency(min, currency)}`;
+  if (max > 0) return `Jusqu'a ${formatCurrency(max, currency)}`;
+  return "Non precise";
+};
+
+export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) => {
+  const recipients = getTeamNotificationRecipients(env);
+
+  if (!recipients.length) {
     return {
       sent: false,
-      reason: "missing-lab-inbox"
+      reason: "missing-team-inbox"
     };
   }
 
@@ -131,7 +167,7 @@ export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) =>
     `Console interne: ${portalUrl}`
   ]);
   const html = buildEmailHtml(
-    `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Nouveau dossier entrant</p>` +
+    `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Nouveau dossier pour l'equipe</p>` +
     emailBadge("Référence", intakeRecord.caseId) +
     emailRow("Nom", intakeRecord.nom) +
     emailRow("Courriel", intakeRecord.courriel) +
@@ -148,12 +184,134 @@ export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) =>
   return sendResendEmail(
     env,
     {
-      to: [inbox],
+      to: recipients,
       subject,
       text,
       html
     },
     `lab-intake-${intakeRecord.caseId}`
+  );
+};
+
+export const sendTeamOperationalAssessmentEmail = async (env, detail, requestUrl) => {
+  const recipients = getTeamNotificationRecipients(env);
+
+  if (!recipients.length) {
+    return {
+      sent: false,
+      reason: "missing-team-inbox"
+    };
+  }
+
+  const payload = detail?.payload || {};
+  const lead = detail?.lead || {};
+  const estimate = detail?.estimate || {};
+  const workflowCase = detail?.workflowCase || detail?.workflow_case || {};
+  const portalUrl = `${getPublicOrigin(env, requestUrl)}/operations/`;
+  const estimateRange = formatRange(estimate.estimated_min, estimate.estimated_max);
+  const subject = `Nouvelle evaluation operationnelle - ${payload.organization || "Organisation"} - ${payload.urgency || "Urgence non precisee"}`;
+  const text = formatTextLines([
+    `Organisation: ${payload.organization || "Non fournie"}`,
+    `Contact: ${payload.contact_name || "Non fourni"}`,
+    `Courriel: ${payload.email || "Non fourni"}`,
+    `Urgence: ${payload.urgency || "Non precisee"}`,
+    `Equipes impliquees: ${payload.teams_involved || "Non precise"}`,
+    `Fourchette indicative: ${estimateRange}`,
+    `Confiance: ${estimate.confidence_score || estimate.confidence || "Non precisee"}`,
+    `Lead Supabase: ${lead.id || "Non disponible"}`,
+    `Workflow case: ${workflowCase.id || "Non disponible"}`,
+    "",
+    "Resume operationnel:",
+    payload.workflow_summary || "Non fourni",
+    "",
+    "Solution recommandee:",
+    estimate.recommended_scope || workflowCase.recommended_solution || "Validation humaine requise",
+    "",
+    `Console equipe: ${portalUrl}`
+  ]);
+  const html = buildEmailHtml(
+    `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Evaluation operationnelle recue</p>` +
+    emailBadge("Organisation", payload.organization || "Non fournie") +
+    emailRow("Contact", payload.contact_name || "Non fourni") +
+    emailRow("Courriel", payload.email || "Non fourni") +
+    emailRow("Urgence", payload.urgency || "Non precisee") +
+    emailRow("Equipes impliquees", payload.teams_involved || "Non precise") +
+    emailRow("Fourchette indicative", estimateRange) +
+    emailRow("Confiance", estimate.confidence_score || estimate.confidence || "Non precisee") +
+    emailRow("Lead Supabase", lead.id || "Non disponible") +
+    emailRow("Workflow case", workflowCase.id || "Non disponible") +
+    `<p style="margin:18px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;">Resume operationnel</p>` +
+    emailBlock(payload.workflow_summary || "Non fourni") +
+    `<p style="margin:18px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;">Solution recommandee</p>` +
+    emailBlock(estimate.recommended_scope || workflowCase.recommended_solution || "Validation humaine requise") +
+    emailCta("Ouvrir la console equipe", portalUrl)
+  );
+
+  return sendResendEmail(
+    env,
+    {
+      to: recipients,
+      subject,
+      text,
+      html
+    },
+    emailKey("team-assessment", lead.id, workflowCase.id, payload.email)
+  );
+};
+
+export const sendTeamPaymentCompletedEmail = async (env, detail, requestUrl) => {
+  const recipients = getTeamNotificationRecipients(env);
+
+  if (!recipients.length) {
+    return {
+      sent: false,
+      reason: "missing-team-inbox"
+    };
+  }
+
+  const payment = detail?.payment || {};
+  const workflowCase = detail?.workflowCase || {};
+  const event = detail?.event || {};
+  const session = event?.data?.object || {};
+  const portalUrl = `${getPublicOrigin(env, requestUrl)}/operations/`;
+  const amount = formatAmount(payment.amount || session.amount_total, payment.currency || session.currency || "cad");
+  const customerEmail = payment.customer_email || session.customer_details?.email || session.customer_email || "Non fourni";
+  const subject = `Paiement operationnel confirme - ${amount}`;
+  const text = formatTextLines([
+    `Montant: ${amount}`,
+    `Courriel client: ${customerEmail}`,
+    `Paiement: ${payment.payment_request_id || payment.id || "Non disponible"}`,
+    `Session Stripe: ${payment.stripe_session_id || session.id || "Non disponible"}`,
+    `Workflow case: ${workflowCase.id || payment.workflow_case_id || "Non disponible"}`,
+    `Evenement Stripe: ${event.type || "Non disponible"}`,
+    "",
+    "Action equipe:",
+    "Valider l'estimation, preparer la prochaine recommandation et lancer la revue humaine.",
+    "",
+    `Console equipe: ${portalUrl}`
+  ]);
+  const html = buildEmailHtml(
+    `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Paiement operationnel confirme</p>` +
+    emailBadge("Montant", amount) +
+    emailRow("Courriel client", customerEmail) +
+    emailRow("Paiement", payment.payment_request_id || payment.id || "Non disponible") +
+    emailRow("Session Stripe", payment.stripe_session_id || session.id || "Non disponible") +
+    emailRow("Workflow case", workflowCase.id || payment.workflow_case_id || "Non disponible") +
+    emailRow("Evenement Stripe", event.type || "Non disponible") +
+    `<p style="margin:18px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;">Action equipe</p>` +
+    emailBlock("Valider l'estimation, preparer la prochaine recommandation et lancer la revue humaine.") +
+    emailCta("Ouvrir la console equipe", portalUrl)
+  );
+
+  return sendResendEmail(
+    env,
+    {
+      to: recipients,
+      subject,
+      text,
+      html
+    },
+    emailKey("team-payment", event.id, payment.id, payment.stripe_session_id || session.id)
   );
 };
 

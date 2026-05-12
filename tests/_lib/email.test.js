@@ -11,6 +11,8 @@ vi.mock("@neondatabase/serverless", () => ({
 
 import {
   sendLabNotificationEmail,
+  sendTeamOperationalAssessmentEmail,
+  sendTeamPaymentCompletedEmail,
   sendClientAccessEmail,
   sendClientStatusEmail,
   sendClientPaymentLinkEmail
@@ -35,10 +37,10 @@ beforeEach(() => {
 describe("sendLabNotificationEmail()", () => {
   const minimalRecord = { caseId: "NX-1", support: "SSD", urgence: "Standard" };
 
-  it("returns missing-lab-inbox when LAB_INBOX_EMAIL is not set", async () => {
+  it("returns missing-team-inbox when no team inbox is set", async () => {
     const result = await sendLabNotificationEmail({}, minimalRecord, "https://nexuradata.ca/api");
     expect(result.sent).toBe(false);
-    expect(result.reason).toBe("missing-lab-inbox");
+    expect(result.reason).toBe("missing-team-inbox");
   });
 
   it("returns not-configured when RESEND_API_KEY is absent", async () => {
@@ -83,6 +85,17 @@ describe("sendLabNotificationEmail()", () => {
     expect(body.from).toBe("noreply@nexuradata.ca");
   });
 
+  it("sends intake notifications to every configured team recipient", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(RESEND_OK());
+    const env = { ...baseEnv, TEAM_INBOX_EMAILS: "dany@nexuradata.ca olivier@nexuradata.ca contact@nexuradata.ca dany@nexuradata.ca" };
+
+    await sendLabNotificationEmail(env, minimalRecord, "https://nexuradata.ca/api");
+
+    const [, options] = fetchSpy.mock.calls[0];
+    const body = JSON.parse(options.body);
+    expect(body.to).toEqual(["dany@nexuradata.ca", "olivier@nexuradata.ca", "contact@nexuradata.ca"]);
+  });
+
   it("returns api-XXX reason on non-2xx Resend response", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response("invalid api key", { status: 401 })
@@ -109,6 +122,69 @@ describe("sendLabNotificationEmail()", () => {
     expect(result.sent).toBe(false);
     expect(result.reason).toBe("network-error");
     expect(result.error).toBe("ECONNRESET");
+  });
+});
+
+describe("team notification emails", () => {
+  it("notifies the team when an operational assessment is generated", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(RESEND_OK());
+    const result = await sendTeamOperationalAssessmentEmail(
+      { ...baseEnv, TEAM_INBOX_EMAILS: "ops@test.com,dossiers@test.com" },
+      {
+        payload: {
+          organization: "NEXURA Client",
+          contact_name: "Marie",
+          email: "marie@test.com",
+          urgency: "Cette semaine",
+          teams_involved: "Operations, finance",
+          workflow_summary: "Le client veut centraliser les demandes et la validation interne."
+        },
+        lead: { id: "lead-1" },
+        estimate: {
+          estimated_min: 150000,
+          estimated_max: 300000,
+          confidence_score: "medium",
+          recommended_scope: "Workflow centralise"
+        },
+        workflowCase: { id: "workflow-1" }
+      },
+      "https://nexuradata.ca/api/estimate"
+    );
+
+    expect(result.sent).toBe(true);
+    const [, options] = fetchSpy.mock.calls[0];
+    const body = JSON.parse(options.body);
+    expect(body.to).toEqual(["ops@test.com", "dossiers@test.com"]);
+    expect(body.subject).toContain("NEXURA Client");
+    expect(body.text).toContain("Workflow centralise");
+  });
+
+  it("notifies the team when an operational payment is confirmed", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(RESEND_OK());
+    const result = await sendTeamPaymentCompletedEmail(
+      { ...baseEnv, TEAM_INBOX_EMAILS: "ops@test.com" },
+      {
+        payment: {
+          id: "payment-1",
+          payment_request_id: "PAY-1",
+          stripe_session_id: "cs_test",
+          amount: 25000,
+          currency: "cad",
+          customer_email: "client@test.com",
+          workflow_case_id: "workflow-1"
+        },
+        workflowCase: { id: "workflow-1" },
+        event: { id: "evt-1", type: "checkout.session.completed", data: { object: { id: "cs_test" } } }
+      },
+      "https://nexuradata.ca/api/stripe-webhook"
+    );
+
+    expect(result.sent).toBe(true);
+    const [, options] = fetchSpy.mock.calls[0];
+    expect(options.headers["Idempotency-Key"]).toBe("team-payment-evt-1-payment-1-cs_test");
+    const body = JSON.parse(options.body);
+    expect(body.to).toEqual(["ops@test.com"]);
+    expect(body.text).toContain("PAY-1");
   });
 });
 

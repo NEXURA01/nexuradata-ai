@@ -1,4 +1,5 @@
 import { generateEstimate } from "../_lib/ai-estimator.js";
+import { sendTeamOperationalAssessmentEmail } from "../_lib/email.js";
 import { json, methodNotAllowed, onOptions, parsePayload } from "../_lib/http.js";
 import { hasSupabaseServiceKey, supabaseInsert } from "../_lib/supabase.js";
 
@@ -122,6 +123,28 @@ export const onRequestPost = async (context) => {
         estimate: estimate.infrastructure_scope
       }
     });
+    const workflowCase = workflowCaseInsert?.[0] || null;
+    let teamDelivery = { sent: false, reason: "not-attempted" };
+
+    try {
+      teamDelivery = await sendTeamOperationalAssessmentEmail(
+        context.env,
+        {
+          payload,
+          lead,
+          estimate,
+          workflowCase
+        },
+        context.request.url
+      );
+    } catch (error) {
+      console.error(JSON.stringify({
+        timestamp: new Date().toISOString(),
+        context: "team_assessment_notification_error",
+        error: error.message
+      }));
+      teamDelivery = { sent: false, reason: "notification-error" };
+    }
 
     return json({
       ok: true,
@@ -131,7 +154,10 @@ export const onRequestPost = async (context) => {
         ...estimate,
         id: aiEstimate?.id || null
       },
-      workflow_case: workflowCaseInsert?.[0] || null,
+      workflow_case: workflowCase,
+      delivery: {
+        team: teamDelivery.sent ? "sent" : teamDelivery.reason
+      },
       next: "human_validation"
     });
   } catch (err) {

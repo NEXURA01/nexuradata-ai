@@ -49,7 +49,7 @@ Supabase est la pile cible pour les nouveaux developpements. Le depot conserve t
 4. Declarer l'URL Postgres Supabase comme secret Cloudflare Pages sous le nom `DATABASE_URL` tant que l'adaptateur legacy reste actif.
 5. Creer un secret fort `ACCESS_CODE_SECRET`.
 6. Configurer les alias `contact@`, `urgence@`, `dossiers@` dans Cloudflare Email Routing.
-7. Verifier le domaine d'envoi dans Resend et fournir `RESEND_API_KEY`.
+7. Verifier le domaine d'envoi dans Resend et fournir `RESEND_API_KEY`, `RESEND_FROM_EMAIL` et `TEAM_INBOX_EMAILS` pour les notifications d'equipe.
 8. Proteger `/operations/*` et `/api/ops/*` avec Cloudflare Access.
 
 Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md). Voir aussi [`docs/`](docs/) pour la checklist de lancement, le guide de deploiement rapide et les notes de recherche concurrentielle / tarifaire.

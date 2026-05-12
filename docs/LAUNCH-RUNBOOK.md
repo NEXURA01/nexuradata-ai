@@ -20,7 +20,7 @@ Note: `functions/_lib/db.js` conserve encore l'adaptateur legacy. Ne pas reutili
 
 ### Cloudflare Email Routing
 
-Creer ces adresses et les faire suivre vers une seule inbox verifiee au lancement:
+Creer ces adresses et les faire suivre vers une boite d'equipe ou une liste de distribution verifiee au lancement:
 
 - `contact@nexuradata.ca`
 - `urgence@nexuradata.ca`
@@ -33,8 +33,10 @@ Creer ces adresses et les faire suivre vers une seule inbox verifiee au lancemen
 3. Declarer dans Cloudflare Pages:
    - `RESEND_API_KEY` comme secret
    - `RESEND_FROM_EMAIL` comme variable, par exemple `NEXURA <dossiers@nexuradata.ca>`
-   - `LAB_INBOX_EMAIL` comme variable cible de l'equipe
+   - `TEAM_INBOX_EMAILS` comme variable cible de l'equipe, par exemple `dany@nexuradata.ca,olivier@nexuradata.ca,contact@nexuradata.ca`
    - `ACCESS_CODE_SECRET` comme secret
+
+`LAB_INBOX_EMAIL` reste accepte comme variable legacy, mais les nouveaux environnements doivent utiliser `TEAM_INBOX_EMAILS` pour garder les notifications operationnelles partagees par l'equipe.
 
 ## 2.1 Paiements Stripe
 

@@ -1,9 +1,9 @@
 const UPSTREAM_ORIGIN = "https://nexuradata-ai.vercel.app";
 const API_UPSTREAM_ORIGIN = "https://nexuradata-ai.pages.dev";
 const HTML_CACHE_CONTROL = "no-store, max-age=0, must-revalidate";
-const HTML_RELEASE_VERSION = "20260512-mobile";
+const HTML_RELEASE_VERSION = "20260512-flow";
 const HTML_REPLACEMENTS = [
-  [/site\.css\?v=(?:20260503i|20260511-ai|20260512-visual)/g, `site.css?v=${HTML_RELEASE_VERSION}`],
+  [/site\.css\?v=(?:20260503i|20260511-ai|20260512-visual|20260512-mobile)/g, `site.css?v=${HTML_RELEASE_VERSION}`],
   [/Queue Stable/g, "Synchronization Stable"],
   [/Execution Online/g, "Infrastructure Online"]
 ];

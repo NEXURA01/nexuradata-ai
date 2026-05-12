@@ -816,7 +816,7 @@ document.querySelectorAll("[data-paid-path-app]").forEach((app) => {
   }
 
   if (followLink && caseId) {
-    followLink.href = `suivi-dossier-client-montreal.html?caseId=${encodeURIComponent(caseId)}`;
+    followLink.href = `/portal?caseId=${encodeURIComponent(caseId)}`;
   }
 
   if (mailLink) {
@@ -1077,6 +1077,7 @@ if (estimateForm) {
   const statusTarget = document.querySelector("[data-estimate-status]");
   const resultPanel = document.querySelector("[data-estimate-result]");
   const scopeTarget = document.querySelector("[data-estimate-scope]");
+  const problemTarget = document.querySelector("[data-estimate-problem]");
   const rangeTarget = document.querySelector("[data-estimate-range]");
   const complexityTarget = document.querySelector("[data-estimate-complexity]");
   const orchestrationTarget = document.querySelector("[data-estimate-orchestration]");
@@ -1092,6 +1093,7 @@ if (estimateForm) {
   const paymentButton = document.querySelector("[data-estimate-payment]");
   const submitButton = estimateForm.querySelector('button[type="submit"]');
   let latestEstimate = null;
+  let latestProblem = "";
 
   const copy = isEnglishDocument
     ? {
@@ -1104,7 +1106,10 @@ if (estimateForm) {
       scopeFallback: "Estimated operational scope",
       missingPrefix: "Missing details",
       humanValidation: "Human validation required before final proposal.",
-      confidenceLabel: "confidence"
+      confidenceLabel: "confidence",
+      complexityLow: "Low",
+      complexityMedium: "Medium",
+      complexityHigh: "High"
     }
     : {
       required: "Completez les champs d'estimation operationnelle.",
@@ -1116,8 +1121,18 @@ if (estimateForm) {
       scopeFallback: "Perimetre operationnel estime",
       missingPrefix: "Details manquants",
       humanValidation: "Validation humaine requise avant la proposition finale.",
-      confidenceLabel: "confiance"
+      confidenceLabel: "confiance",
+      complexityLow: "Faible",
+      complexityMedium: "Moyenne",
+      complexityHigh: "Elevee"
     };
+
+  const getComplexityLevel = (total) => {
+    const score = Number(total || 0);
+    if (score >= 26) return copy.complexityHigh;
+    if (score >= 16) return copy.complexityMedium;
+    return copy.complexityLow;
+  };
 
   const renderEstimate = (data) => {
     const estimate = data?.estimate;
@@ -1135,6 +1150,7 @@ if (estimateForm) {
       amount: assessmentAmount
     };
 
+    if (problemTarget) problemTarget.textContent = latestProblem || "Pending";
     if (scopeTarget) scopeTarget.textContent = estimate.recommended_scope || copy.scopeFallback;
     if (rangeTarget) {
       rangeTarget.textContent = `${formatCurrency(estimate.estimated_min)} - ${formatCurrency(estimate.estimated_max)}`;
@@ -1146,7 +1162,7 @@ if (estimateForm) {
     if (dashboardNeedTarget) dashboardNeedTarget.textContent = `${estimate.scores?.dashboard_need || 1}/5`;
     if (analysisNeedTarget) analysisNeedTarget.textContent = `${estimate.scores?.ai_need || 1}/5`;
     if (urgencyTarget) urgencyTarget.textContent = `${estimate.scores?.urgency_risk || 1}/5`;
-    if (complexityTarget) complexityTarget.textContent = `${estimate.scores?.total || "-"}/35`;
+    if (complexityTarget) complexityTarget.textContent = getComplexityLevel(estimate.scores?.total);
     if (summaryTarget) summaryTarget.textContent = estimate.client_facing_summary || estimate.ai_summary || "";
     if (missingTarget) {
       const missing = Array.isArray(estimate.missing_information) ? estimate.missing_information : [];
@@ -1184,6 +1200,8 @@ if (estimateForm) {
       budget_expectation: `${formData.get("budget_expectation") || ""}`.trim(),
       preferred_language: `${formData.get("preferred_language") || ""}`.trim()
     };
+
+    latestProblem = payload.workflow_summary;
 
     setButtonBusy(submitButton, true, copy.busy);
     setMessage(statusTarget, "success", copy.running);
@@ -1226,6 +1244,84 @@ if (estimateForm) {
       });
     });
   }
+}
+
+const contactInquiryForm = document.querySelector("[data-contact-form]");
+
+if (contactInquiryForm) {
+  const statusTarget = contactInquiryForm.querySelector("[data-contact-status]");
+  const submitButton = contactInquiryForm.querySelector('button[type="submit"]');
+  const endpoint = contactInquiryForm.getAttribute("data-contact-endpoint") || "/api/intake";
+  const copy = {
+    required: "Complete the inquiry fields.",
+    busy: "Sending...",
+    sending: "Sending operational inquiry...",
+    received: "Inquiry received. We will review your request and respond through the provided contact email.",
+    error: "The inquiry could not be sent. Please try again."
+  };
+
+  contactInquiryForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!contactInquiryForm.checkValidity()) {
+      contactInquiryForm.reportValidity();
+      setMessage(statusTarget, "error", copy.required);
+      return;
+    }
+
+    const formData = new FormData(contactInquiryForm);
+    const organization = `${formData.get("organization") || ""}`.trim();
+    const contactName = `${formData.get("contact_name") || ""}`.trim();
+    const email = `${formData.get("email") || ""}`.trim();
+    const urgency = `${formData.get("urgency") || "Standard"}`.trim();
+    const message = `${formData.get("message") || ""}`.trim();
+    const payload = {
+      nom: contactName,
+      courriel: email,
+      telephone: "",
+      support: "Mandat entreprise / juridique",
+      urgence: urgency,
+      profil: "Entreprise / TI",
+      impact: urgency === "Urgent" ? "Opérations bloquées" : "Planifié / non urgent",
+      sensibilite: "Confidentiel",
+      message: [`Company: ${organization}`, "Inquiry type: Operational inquiry", "", message].join("\n"),
+      consentement: formData.get("consentement") === "on",
+      website: `${formData.get("website") || ""}`.trim(),
+      source: "manual_operational_inquiry",
+      page: window.location.pathname,
+      intent: "manual_operational_inquiry",
+      timestamp: new Date().toISOString(),
+      status: "new",
+      sourcePath: window.location.pathname
+    };
+
+    setButtonBusy(submitButton, true, copy.busy);
+    setMessage(statusTarget, "success", copy.sending);
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await parseJsonResponse(response);
+
+      if (response.ok && data?.ok) {
+        contactInquiryForm.reset();
+        setMessage(statusTarget, "success", copy.received);
+        return;
+      }
+
+      setMessage(statusTarget, "error", data?.message || copy.error);
+    } catch {
+      setMessage(statusTarget, "error", copy.error);
+    } finally {
+      setButtonBusy(submitButton, false);
+    }
+  });
 }
 
 const formatTimestamp = (value) => {

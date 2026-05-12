@@ -37,7 +37,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/site.css?v=20260512-mobile">
+  <link rel="stylesheet" href="assets/css/site.css?v=20260512-flow">
   <script src="assets/js/site.js" defer></script>
   <script src="/assets/js/ga4-init.js" defer></script>
 </head>
@@ -53,16 +53,11 @@
             translate="no">
         </a>
         <div class="nav-links">
+          <a href="/#platform">Platform</a>
           <a href="/services">Services</a>
-          <a href="/workflow-automation">Workflows</a>
-          <a href="/operational-dashboard">Dashboard</a>
-          <a href="/pricing">Prix</a>
-          <a href="/portal">Portail</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/operational-assessment">Assessment</a>
           <a href="/contact">Contact</a>
-          <div class="language-switcher" aria-label="Langue">
-            <a href="/" class="lang-switch is-active" lang="fr" aria-current="page">FR</a>
-            <a href="/en/" class="lang-switch" lang="en" hreflang="en">EN</a>
-          </div>
         </div>
       </nav>
     </div>
@@ -80,8 +75,8 @@
             automatisés et centralisés.
           </p>
           <div class="hero-actions">
-            <a href="/operational-assessment" class="button button-primary">Démarrer l’évaluation opérationnelle</a>
-            <a href="#workflows" class="button button-secondary">Voir les workflows</a>
+            <a href="/operational-assessment" class="button button-primary">Start Operational Assessment</a>
+            <a href="#how-it-works" class="button button-secondary">See How It Works</a>
           </div>
           <ul class="nexura-proof-strip" aria-label="Capacites principales" role="list">
             <li>Workflow Automation</li>
@@ -143,7 +138,7 @@
       </div>
     </section>
 
-    <section id="workflows" class="section section-lined nexura-solution" aria-labelledby="solution-title">
+    <section class="section section-lined nexura-solution" aria-labelledby="solution-title">
       <div class="container nexura-split">
         <div class="section-heading">
           <p class="eyebrow">Solution</p>
@@ -175,7 +170,7 @@
       </div>
     </section>
 
-    <section class="section nexura-method" aria-labelledby="method-title">
+    <section id="how-it-works" class="section nexura-method" aria-labelledby="method-title">
       <div class="container">
         <div class="section-heading">
           <p class="eyebrow">Methode</p>
@@ -202,7 +197,7 @@
       </div>
     </section>
 
-    <section id="platform-preview" class="section section-lined nexura-dashboard-preview" aria-labelledby="dashboard-title">
+    <section id="platform" class="section section-lined nexura-dashboard-preview" aria-labelledby="dashboard-title">
       <div class="container platform-grid">
         <div class="section-heading">
           <p class="eyebrow">Platform preview</p>
@@ -252,175 +247,14 @@
     <section id="assessment" class="section nexura-assessment" aria-labelledby="assessment-title">
       <div class="container assessment-layout">
         <div class="assessment-copy">
-          <p class="eyebrow">AI-Powered Operational Assessment</p>
-          <h2 id="assessment-title">Transformez un probleme operationnel en estimation exploitable.</h2>
-          <p class="section-intro">Decrivez l'entreprise, les outils, les equipes et les defis de workflow. L'estimateur prepare une lecture initiale avec fourchette, complexite, informations manquantes et prochaine etape.</p>
-          <ul class="assessment-list" role="list">
-            <li>Company, email et contexte operationnel</li>
-            <li>Current operational problems et current tools used</li>
-            <li>Number of teams, workflow challenges et besoin de dashboard</li>
-          </ul>
+          <p class="eyebrow">Operational Assessment</p>
+          <h2 id="assessment-title">One focused intake before any estimate or payment.</h2>
+          <p class="section-intro">The assessment page collects the operational problem, generates the AI estimate, and shows the next review action in one place.</p>
         </div>
-
-        <article class="contact-card operational-estimate-card assessment-estimator">
-          <p class="estimate-kicker">NEXURA</p>
-          <h3>Estimation AI operationnelle</h3>
-          <p class="estimate-card-copy">Les champs supplementaires restent disponibles pour la logique backend et la validation humaine.</p>
-          <form id="estimate-form" class="estimate-form" data-estimate-form novalidate>
-            <div class="estimate-form-grid">
-              <label class="field">
-                <span>Entreprise</span>
-                <input name="organization" autocomplete="organization" required>
-              </label>
-
-              <label class="field">
-                <span>Contact</span>
-                <input name="contact_name" autocomplete="name" required>
-              </label>
-
-              <label class="field">
-                <span>Courriel</span>
-                <input type="email" name="email" autocomplete="email" required>
-              </label>
-
-              <label class="field field-full">
-                <span>Problemes operationnels actuels / defis de workflow</span>
-                <textarea name="workflow_summary" rows="5" placeholder="Exemple : les suivis client dependent de Slack, courriels, Notion et rappels manuels." required></textarea>
-              </label>
-
-              <label class="field field-full">
-                <span>Outils actuellement utilises</span>
-                <textarea name="current_tools" rows="3" placeholder="Exemple : Slack, HubSpot, Gmail, Notion, Stripe" required></textarea>
-              </label>
-
-              <label class="field">
-                <span>Nombre de workflows touches</span>
-                <select name="workflow_count" required>
-                  <option value="">Choisir</option>
-                  <option>1 workflow</option>
-                  <option>2-3 workflows</option>
-                  <option>4-6 workflows</option>
-                  <option>7-10 workflows</option>
-                  <option>10+ workflows</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Nombre d'equipes</span>
-                <select name="teams_involved" required>
-                  <option value="">Choisir</option>
-                  <option>Solo / 1 responsable</option>
-                  <option>Petite equipe</option>
-                  <option>2-3 equipes</option>
-                  <option>4-6 equipes</option>
-                  <option>Multi-departement / entreprise</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Visibilite dashboard</span>
-                <select name="dashboard_visibility" required>
-                  <option value="">Choisir</option>
-                  <option>Aucun dashboard</option>
-                  <option>Page de statut simple</option>
-                  <option>Dashboard interne</option>
-                  <option>Dashboard live avec alertes</option>
-                  <option>Command dashboard avec permissions</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>AI / routage assiste</span>
-                <select name="ai_routing" required>
-                  <option value="">Choisir</option>
-                  <option>Non requis</option>
-                  <option>Resume AI seulement</option>
-                  <option>Classification des demandes</option>
-                  <option>Routage ou estimation AI</option>
-                  <option>Couche AI operationnelle</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Paiement / portail client</span>
-                <select name="payment_portal" required>
-                  <option value="">Choisir</option>
-                  <option>Non requis</option>
-                  <option>Paiement d'assessment seulement</option>
-                  <option>Liens Stripe ou factures</option>
-                  <option>Portail client simple</option>
-                  <option>Portail avec paiements et statuts</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Urgence</span>
-                <select name="urgency" required>
-                  <option value="">Choisir</option>
-                  <option>Basse</option>
-                  <option>Normale</option>
-                  <option>Inefficacite active</option>
-                  <option>Impact revenu</option>
-                  <option>Operations critiques</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Budget attendu</span>
-                <input name="budget_expectation" placeholder="Optionnel">
-              </label>
-
-              <label class="field">
-                <span>Langue preferee</span>
-                <select name="preferred_language" required>
-                  <option value="">Choisir</option>
-                  <option>FR</option>
-                  <option>EN</option>
-                  <option>Bilingue FR / EN</option>
-                </select>
-              </label>
-            </div>
-
-            <button type="submit" class="button button-secondary button-small">Generer l'estimation</button>
-            <p class="form-status" data-estimate-status aria-live="polite"></p>
-          </form>
-
-          <div class="estimate-result" data-estimate-result hidden>
-            <div class="estimate-result-head">
-              <p class="guide-meta" data-estimate-scope>Perimetre estime</p>
-              <span data-estimate-confidence></span>
-            </div>
-            <p class="estimate-range" data-estimate-range></p>
-            <div class="estimate-score-grid">
-              <span>Total <strong data-estimate-complexity></strong></span>
-              <span>Workflows <strong data-estimate-workflow-count></strong></span>
-              <span>Integrations <strong data-estimate-integration></strong></span>
-              <span>Equipes <strong data-estimate-team-complexity></strong></span>
-              <span>Automatisation <strong data-estimate-orchestration></strong></span>
-              <span>Dashboard <strong data-estimate-dashboard-need></strong></span>
-              <span>AI <strong data-estimate-analysis-need></strong></span>
-              <span>Urgence <strong data-estimate-urgency></strong></span>
-            </div>
-            <p class="estimate-summary" data-estimate-summary></p>
-            <p class="estimate-summary estimate-missing" data-estimate-missing></p>
-            <div class="estimate-activation-strip" aria-label="Statut d'activation">
-              <span>01 Formulaire recu</span>
-              <span>02 Estimation AI</span>
-              <span>03 Paiement assessment</span>
-              <span>04 Validation humaine</span>
-            </div>
-            <p class="form-note">Statut: validation humaine requise avant activation du workflow.</p>
-            <button type="button" class="button button-primary button-small" data-estimate-payment hidden>Initialiser le paiement</button>
-          </div>
-
-          <div class="operational-activation assessment-checkout" data-operational-checkout-panel>
-            <h3>Paiement Stripe</h3>
-            <button type="button" class="button button-secondary button-small" data-operational-checkout>
-              Payer l'evaluation operationnelle
-            </button>
-            <p class="form-note">Disponible apres validation du perimetre ou recommandation operationnelle.</p>
-            <p class="form-status" data-operational-checkout-status aria-live="polite"></p>
-          </div>
+        <article class="page-card nexura-card">
+          <h3>Assessment flow</h3>
+          <p>Company context, current tools, team scope, urgency, AI estimate, then secure operational review.</p>
+          <a href="/operational-assessment" class="button button-primary">Start Operational Assessment</a>
         </article>
       </div>
     </section>
@@ -481,7 +315,7 @@
         <p class="eyebrow">Prochaine etape</p>
         <h2 id="final-cta-title">Reprenez le controle de vos operations.</h2>
         <p>Transformez des operations fragmentées en système intelligent, centralisé et automatisé.</p>
-        <a href="/operational-assessment" class="button button-primary">Démarrer l’évaluation opérationnelle</a>
+        <a href="/operational-assessment" class="button button-primary">Start Operational Assessment</a>
       </div>
     </section>
   </main>

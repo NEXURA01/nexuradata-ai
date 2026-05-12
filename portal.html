@@ -1,4 +1,81 @@
 <!DOCTYPE html>
 <html lang="fr-CA">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>Portail client | NEXURA</title><meta name="description" content="Portail client NEXURA pour suivre les dossiers, workflows, paiements, statuts et prochaines actions."><meta name="robots" content="index, follow"><meta name="author" content="NEXURA"><link rel="canonical" href="https://nexuradata.ca/portal"><link rel="stylesheet" href="/assets/css/site.css?v=20260512-mobile"><script src="/assets/js/site.js" defer></script></head>
-<body class="ai-positioning"><header class="site-header"><div class="container"><nav class="site-nav"><a class="brand" href="/"><img src="/assets/nexuradata-master.svg" alt="NEXURA" class="brand-logo" width="200" height="24"></a><div class="nav-links"><a href="/operational-dashboard">Dashboard</a><a href="/status">Statut</a><a href="/contact">Contact</a></div></nav></div></header><main class="page-shell"><div class="container"><section class="page-card page-content"><p class="eyebrow">Portail client</p><h1>Un espace simple pour suivre vos operations NEXURA.</h1><p>Le portail client sert a suivre les dossiers, paiements, workflows, statuts, actions en attente et prochaines etapes.</p><div class="page-links"><a class="button button-primary" href="/suivi-dossier-client-montreal.html">Acceder au suivi client</a><a class="button button-secondary" href="/contact">Demander un acces</a></div></section></div></main></body></html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Assessment Status | NEXURA</title>
+  <meta name="description" content="NEXURA operational assessment status page.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="NEXURA">
+  <link rel="canonical" href="https://nexuradata.ca/portal">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260512-flow">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+
+<body class="ai-positioning">
+  <header class="site-header">
+    <div class="container">
+      <nav class="site-nav" aria-label="Navigation principale">
+        <a class="brand" href="/" aria-label="Accueil NEXURA"><img src="/assets/nexuradata-master.svg" alt="NEXURA" class="brand-logo" width="200" height="24"></a>
+        <div class="nav-links">
+          <a href="/#platform">Platform</a>
+          <a href="/services">Services</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/operational-assessment">Assessment</a>
+          <a href="/contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell" id="contenu">
+    <div class="container">
+      <section class="page-card page-content">
+        <p class="eyebrow">Assessment Status</p>
+        <h1>Operational review status.</h1>
+        <dl class="status-grid">
+          <div><dt>Assessment Status</dt><dd>Received</dd></div>
+          <div><dt>AI Analysis</dt><dd>Completed</dd></div>
+          <div><dt>Human Review</dt><dd>Pending</dd></div>
+          <div><dt>Next Step</dt><dd>Workflow recommendation</dd></div>
+        </dl>
+      </section>
+
+      <section class="page-grid two-column-grid" aria-label="Status sections">
+        <article class="page-card">
+          <h2>Timeline</h2>
+          <ol class="offer-points">
+            <li>Assessment received</li>
+            <li>AI estimate generated</li>
+            <li>Human review pending</li>
+            <li>Workflow recommendation next</li>
+          </ol>
+        </article>
+
+        <article class="page-card">
+          <h2>Estimate</h2>
+          <p>Initial AI estimate prepared. Final scope remains pending human validation.</p>
+        </article>
+
+        <article class="page-card">
+          <h2>Messages</h2>
+          <p>No additional client message is required at this stage.</p>
+        </article>
+
+        <article class="page-card">
+          <h2>Payment Status</h2>
+          <p>Operational review reservation pending or processing through Stripe.</p>
+        </article>
+
+        <article class="page-card">
+          <h2>Next Actions</h2>
+          <p>NEXURA will review the assessment and prepare the next workflow recommendation.</p>
+          <a class="button button-primary" href="/contact">Contact Operations</a>
+        </article>
+      </section>
+    </div>
+  </main>
+</body>
+
+</html>

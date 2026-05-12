@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Evaluation operationnelle AI | NEXURA</title>
-  <meta name="description" content="Demarrez une evaluation operationnelle NEXURA: formulaire intelligent, analyse AI, estimation indicative, validation humaine et activation Stripe.">
+  <title>Operational Assessment | NEXURA</title>
+  <meta name="description" content="Start a focused NEXURA operational assessment: describe the problem, generate an AI estimate, and reserve the secure operational review.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="NEXURA">
   <link rel="canonical" href="https://nexuradata.ca/operational-assessment">
-  <link rel="stylesheet" href="/assets/css/site.css?v=20260512-mobile">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260512-flow">
   <script src="/assets/js/site.js" defer></script>
 </head>
 
@@ -20,10 +20,10 @@
       <nav class="site-nav" aria-label="Navigation principale">
         <a class="brand" href="/" aria-label="Accueil NEXURA"><img src="/assets/nexuradata-master.svg" alt="NEXURA" class="brand-logo" width="200" height="24" translate="no"></a>
         <div class="nav-links">
+          <a href="/#platform">Platform</a>
           <a href="/services">Services</a>
-          <a href="/workflow-automation">Workflows</a>
-          <a href="/operational-dashboard">Dashboard</a>
-          <a href="/pricing">Prix</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/operational-assessment">Assessment</a>
           <a href="/contact">Contact</a>
         </div>
       </nav>
@@ -33,34 +33,107 @@
   <main id="contenu" class="page-shell">
     <div class="container">
       <section class="page-card page-content">
-        <p class="eyebrow">Evaluation operationnelle</p>
-        <h1>Decrivez votre chaos operationnel. NEXURA prepare une estimation.</h1>
-        <p>NEXURA analyse vos operations, vos outils, vos suivis et vos taches repetitives pour recommander un premier systeme centralise.</p>
-        <div class="page-links">
-          <a class="button button-primary" href="/#contact">Demarrer l'evaluation operationnelle</a>
-          <a class="button button-secondary" href="/pricing">Voir les fourchettes de prix</a>
-        </div>
+        <p class="eyebrow">Operational Assessment</p>
+        <h1>Tell NEXURA what is operationally broken.</h1>
+        <p>This page has one job: collect the operational problem, generate an AI estimate, and show the secure review step on the same page.</p>
       </section>
 
-      <section class="page-grid two-column-grid">
-        <article class="page-card">
-          <h2>Ce que le client envoie</h2>
-          <ul class="offer-points">
-            <li>Le probleme operationnel actuel</li>
-            <li>Les outils utilises: Slack, courriels, Notion, CRM, fichiers</li>
-            <li>Les suivis difficiles, taches repetitives et blocages</li>
-            <li>L'impact: temps perdu, lenteur, manque de visibilite</li>
-          </ul>
+      <section class="assessment-layout" aria-labelledby="assessment-form-title">
+        <article class="page-card operational-estimate-card assessment-estimator">
+          <p class="estimate-kicker">NEXURA</p>
+          <h2 id="assessment-form-title">Operational intake</h2>
+          <form id="estimate-form" class="estimate-form" data-estimate-form novalidate>
+            <div class="estimate-form-grid">
+              <label class="field">
+                <span>Company</span>
+                <input name="organization" autocomplete="organization" required>
+              </label>
+
+              <label class="field">
+                <span>Name</span>
+                <input name="contact_name" autocomplete="name" required>
+              </label>
+
+              <label class="field">
+                <span>Email</span>
+                <input type="email" name="email" autocomplete="email" required>
+              </label>
+
+              <label class="field field-full">
+                <span>Current tools</span>
+                <textarea name="current_tools" rows="3" placeholder="Slack, email, Notion, CRM, spreadsheets, Stripe, internal tools" required></textarea>
+              </label>
+
+              <label class="field field-full">
+                <span>Main operational problem</span>
+                <textarea name="workflow_summary" rows="6" placeholder="Describe the broken workflow, handoff, visibility gap, manual work, or execution bottleneck." required></textarea>
+              </label>
+
+              <label class="field">
+                <span>Number of teams</span>
+                <select name="teams_involved" required>
+                  <option value="">Choose</option>
+                  <option>Solo / 1 owner</option>
+                  <option>Small team</option>
+                  <option>2-3 teams</option>
+                  <option>4-6 teams</option>
+                  <option>Multi-department / enterprise</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Urgency</span>
+                <select name="urgency" required>
+                  <option value="">Choose</option>
+                  <option>Low urgency</option>
+                  <option>Normal</option>
+                  <option>Active inefficiency</option>
+                  <option>Revenue-impacting</option>
+                  <option>Critical operations</option>
+                </select>
+              </label>
+            </div>
+
+            <input type="hidden" name="workflow_count" value="2-3 workflows">
+            <input type="hidden" name="dashboard_visibility" value="Internal dashboard">
+            <input type="hidden" name="ai_routing" value="AI routing or estimate">
+            <input type="hidden" name="payment_portal" value="Assessment payment only">
+            <input type="hidden" name="budget_expectation" value="Human validation required">
+            <input type="hidden" name="preferred_language" value="Bilingual FR / EN">
+
+            <button type="submit" class="button button-primary">Generate Operational Estimate</button>
+            <p class="form-status" data-estimate-status aria-live="polite"></p>
+          </form>
         </article>
-        <article class="page-card">
-          <h2>Ce que NEXURA prepare</h2>
-          <ul class="offer-points">
-            <li>Analyse AI de la complexite</li>
-            <li>Recommandation de workflow</li>
-            <li>Estimation indicative</li>
-            <li>Prochaine etape avant activation Stripe</li>
-          </ul>
-        </article>
+
+        <aside class="page-card estimate-result" data-estimate-result hidden aria-live="polite">
+          <p class="estimate-kicker">AI estimate</p>
+          <h2>Operational estimate</h2>
+          <dl class="status-grid">
+            <div>
+              <dt>Operational problem</dt>
+              <dd data-estimate-problem>Pending</dd>
+            </div>
+            <div>
+              <dt>Complexity level</dt>
+              <dd data-estimate-complexity>Pending</dd>
+            </div>
+            <div>
+              <dt>Recommended solution</dt>
+              <dd data-estimate-scope>Pending</dd>
+            </div>
+            <div>
+              <dt>Estimated range</dt>
+              <dd class="estimate-range" data-estimate-range>Pending</dd>
+            </div>
+            <div>
+              <dt>Next step</dt>
+              <dd>Secure operational review</dd>
+            </div>
+          </dl>
+          <button type="button" class="button button-primary" data-estimate-payment hidden>Reserve Operational Review</button>
+          <p class="form-status" data-operational-checkout-status aria-live="polite"></p>
+        </aside>
       </section>
     </div>
   </main>

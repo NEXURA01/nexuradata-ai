@@ -1,5 +1,6 @@
-Contact: mailto:privacy@nexuradata.ca
+Contact: mailto:security@nexuradata.ca
 Expires: 2027-04-20T00:00:00.000Z
 Canonical: https://nexuradata.ca/.well-known/security.txt
-Policy: https://nexuradata.ca/politique-confidentialite.html
+Policy: https://nexuradata.ca/ai-trust-security
+Policy: https://nexuradata.ca/privacy
 Preferred-Languages: fr, en

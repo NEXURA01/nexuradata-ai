@@ -88,6 +88,7 @@
 .master-home .workflow-simulator,
 .master-home .ops-dashboard,
 .master-home .final-cta-panel,
+.master-home .trust-certificate-strip,
 .master-home .hero-workflow-preview {
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -273,6 +274,39 @@
   line-height: 0.95;
 }
 
+.master-home .trust-certificate-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr) auto;
+  align-items: center;
+  gap: 16px;
+  max-width: 760px;
+  padding: 16px 18px;
+  background: rgba(11, 13, 16, 0.58);
+}
+
+.master-home .trust-certificate-strip span,
+.trust-certificate-id,
+.trust-control-kicker {
+  color: #c17c45;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.master-home .trust-certificate-strip strong {
+  color: #f5f7fa;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.master-home .trust-certificate-strip a {
+  color: #f5f7fa;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
 @media (max-width: 1040px) {
 
   .master-home .problem-grid,
@@ -310,6 +344,10 @@
   .master-home .hero-workflow-preview,
   .master-home .final-cta-panel {
     padding: 24px;
+  }
+
+  .master-home .trust-certificate-strip {
+    grid-template-columns: 1fr;
   }
 }
 html {
@@ -3347,6 +3385,113 @@ body.ai-positioning .hero h1 {
   color: rgba(238, 231, 218, 0.92);
   font-weight: 700;
   font-family: var(--font-sans);
+}
+
+.trust-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+  gap: 1.35rem;
+  align-items: start;
+}
+
+.trust-certificate-card {
+  position: sticky;
+  top: 6rem;
+  overflow: hidden;
+}
+
+.trust-certificate-card::after {
+  content: "";
+  position: absolute;
+  inset: auto -20% -35% 42%;
+  height: 12rem;
+  background: radial-gradient(circle, rgba(193, 124, 69, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+.trust-certificate-mark {
+  display: grid;
+  place-items: center;
+  width: 5.25rem;
+  height: 5.25rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(193, 124, 69, 0.42);
+  border-radius: 50%;
+  color: var(--nx-copper);
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.trust-certificate-card h2 {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1;
+}
+
+.trust-signal-list,
+.trust-standard-list {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0;
+  margin: 1.35rem 0 0;
+  list-style: none;
+}
+
+.trust-signal-list li,
+.trust-standard-list li {
+  padding: 0.9rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.trust-signal-list span,
+.trust-standard-list span {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--nx-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.trust-signal-list strong,
+.trust-standard-list strong {
+  color: var(--nx-bone);
+}
+
+.trust-control-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.35rem;
+}
+
+.trust-control-card h3 {
+  margin-top: 0.45rem;
+}
+
+.trust-disclosure {
+  margin-top: 1.35rem;
+}
+
+.trust-verification-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1.35rem;
+}
+
+@media (max-width: 920px) {
+  .trust-layout,
+  .trust-control-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-certificate-card {
+    position: relative;
+    top: auto;
+  }
 }
 
 .page-links {

@@ -10,6 +10,7 @@ const LASTMOD = "2026-05-12";
 const includedFilesByDir = new Map([
   [".", new Set([
     "index.html",
+    "ai-trust-security.html",
     "ai-operational-analysis.html",
     "conditions-intervention-paiement.html",
     "contact.html",
@@ -40,6 +41,7 @@ const includedFilesByDir = new Map([
 ]);
 const cleanRouteFiles = new Set([
   "operational-assessment.html",
+  "ai-trust-security.html",
   "services.html",
   "workflow-automation.html",
   "operational-dashboard.html",

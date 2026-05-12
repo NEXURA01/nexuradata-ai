@@ -4,6 +4,12 @@
 /paiement-reussi.html /payment-success 301
 /paiement-annule.html /payment-cancelled 301
 /en/services.html /en/ 301
+/trust /ai-trust-security 301
+/security /ai-trust-security 301
+/web-protection /ai-trust-security 301
+/cipher /ai-trust-security 301
+/certificate /ai-trust-security 301
+/ai-certificate /ai-trust-security 301
 /intelligence-artificielle-laboratoire.html /le-laboratoire.html 301
 /en/intelligence-artificielle-laboratoire.html /en/le-laboratoire.html 301
 

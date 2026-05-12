@@ -490,6 +490,90 @@ document.querySelectorAll(".site-nav .brand-logo").forEach((logo) => {
   }
 });
 
+const premiumNavigationItems = [
+  { label: "Offers", href: "/services", matches: ["/services"] },
+  { label: "Pricing", href: "/pricing", matches: ["/pricing"] },
+  { label: "Assessment", href: "/operational-assessment", matches: ["/operational-assessment"], className: "nav-cta-link", primary: true },
+  { label: "Trust", href: "/ai-trust-security", matches: ["/ai-trust-security", "/trust", "/security", "/web-protection", "/cipher", "/certificate", "/ai-certificate"], className: "nav-trust-link" },
+  { label: "Contact", href: "/contact", matches: ["/contact"] }
+];
+
+const wayfinderItems = [
+  { label: "Home", href: "/", matches: ["/", "/en"] },
+  ...premiumNavigationItems
+];
+
+const normalizeRoute = (value) => {
+  try {
+    const route = new URL(value, window.location.origin);
+    let path = route.pathname.replace(/index\.html$/i, "").replace(/\.html$/i, "");
+    if (path.length > 1 && path.endsWith("/")) {
+      path = path.slice(0, -1);
+    }
+    return path || "/";
+  } catch {
+    return "/";
+  }
+};
+
+const isPublicAiSurface = () => document.body.classList.contains("ai-positioning") && !window.location.pathname.startsWith("/operations");
+
+const isCurrentNavigationItem = (item, currentRoute) => item.matches.some((match) => normalizeRoute(match) === currentRoute);
+
+const buildNavigationLink = (item, currentRoute, extraClassName = "") => {
+  const link = document.createElement("a");
+  link.href = item.href;
+  link.textContent = item.label;
+  const classNames = [item.className, extraClassName].filter(Boolean);
+  if (classNames.length > 0) {
+    link.className = classNames.join(" ");
+  }
+  if (isCurrentNavigationItem(item, currentRoute)) {
+    link.setAttribute("aria-current", "page");
+  }
+  return link;
+};
+
+const normalizePremiumNavigation = () => {
+  if (!isPublicAiSurface()) return;
+
+  const currentRoute = normalizeRoute(window.location.pathname);
+  document.querySelectorAll(".site-nav .nav-links").forEach((navLinks) => {
+    navLinks.dataset.premiumNav = "true";
+    navLinks.replaceChildren(...premiumNavigationItems.map((item) => buildNavigationLink(item, currentRoute)));
+  });
+};
+
+const renderPremiumWayfinder = () => {
+  if (!isPublicAiSurface() || document.querySelector(".nexura-wayfinder")) return;
+
+  const header = document.querySelector(".site-header");
+  if (!header) return;
+
+  const currentRoute = normalizeRoute(window.location.pathname);
+  const wayfinder = document.createElement("nav");
+  wayfinder.className = "nexura-wayfinder";
+  wayfinder.setAttribute("aria-label", "NEXURA path");
+
+  const inner = document.createElement("div");
+  inner.className = "container nexura-wayfinder-inner";
+
+  const label = document.createElement("span");
+  label.className = "wayfinder-label";
+  label.textContent = "NEXURA path";
+  inner.appendChild(label);
+
+  wayfinderItems.forEach((item) => {
+    inner.appendChild(buildNavigationLink(item, currentRoute, item.primary ? "wayfinder-link wayfinder-link-primary" : "wayfinder-link"));
+  });
+
+  wayfinder.appendChild(inner);
+  header.insertAdjacentElement("afterend", wayfinder);
+};
+
+normalizePremiumNavigation();
+renderPremiumWayfinder();
+
 const revealElements = document.querySelectorAll("[data-reveal]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 

@@ -105,7 +105,7 @@ const saveTrackingConsent = (choices) => {
 const cookieI18n = isEnglishDocument
   ? {
     title: "Cookie preferences",
-    copy: "NEXURA uses essential site storage and, only with consent, analytics or marketing measurement to improve operational reliability and communication paths.",
+    copy: "Essential site storage. Analytics or marketing measurement only with consent.",
     analytics: "Analytics measurement",
     marketing: "Marketing measurement",
     reject: "Reject optional",
@@ -115,7 +115,7 @@ const cookieI18n = isEnglishDocument
   }
   : {
     title: "Préférences témoins",
-    copy: "NEXURA utilise le stockage essentiel du site et, seulement avec consentement, des mesures analytiques ou marketing afin d'améliorer la fiabilité opérationnelle et les parcours de communication.",
+    copy: "Stockage essentiel du site. Mesures analytiques ou marketing seulement avec consentement.",
     analytics: "Mesure analytique",
     marketing: "Mesure marketing",
     reject: "Refuser l'optionnel",

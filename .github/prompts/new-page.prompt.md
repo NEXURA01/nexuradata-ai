@@ -11,7 +11,7 @@ Ask for anything not provided: slug, French title, English title, FR/EN meta des
 
 1. Create `{{slug}}.html` (FR, `lang="fr-CA"`) and `en/{{slug}}.html` (EN, `lang="en-CA"`).
 2. Copy the full `<head>` structure from `mentions-legales.html` as a reference — include all OG, Twitter, canonical, and hreflang tags. EN pages use `../` relative paths for assets.
-3. Apply the design system (loaded automatically via `applyTo` on `.html` files).
+3. Apply the master visual style system from `docs/VISUAL-STYLE-SYSTEM.md` and the tokens in `assets/css/tokens.css`.
 4. For legal/shell pages use `.page-shell` / `.page-hero` / `.page-grid` / `.page-card` / `.page-content`.
 5. Include skip-link, `<header class="site-header">`, `<main>`, and `<footer>` matching existing pages.
 6. Add both URLs to `sitemap.xml`.

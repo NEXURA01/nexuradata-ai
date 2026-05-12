@@ -136,13 +136,19 @@ Avoid:
 - noisy effects
 - visual clutter
 
+The master visual execution contract lives in:
+
+```txt
+docs/VISUAL-STYLE-SYSTEM.md
+```
+
 Design tokens live in:
 
 ```txt
 assets/css/tokens.css
 ```
 
-This file is the source of truth for colors, spacing, typography, radii, shadows, and motion timing.
+These files are the source of truth for colors, spacing, typography, radii, shadows, and motion timing.
 
 ## AI Philosophy
 

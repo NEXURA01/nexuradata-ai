@@ -3,42 +3,42 @@
   color-scheme: dark;
 
   /* Locked identity */
-  --noir: #0d0d0b;
-  --os: #e8e4dc;
-  --os-dim: rgba(232, 228, 220, 0.22);
-  --os-ghost: rgba(232, 228, 220, 0.08);
-  --rule: 0.5px solid rgba(232, 228, 220, 0.1);
+  --noir: #0b0d10;
+  --os: #f5f7fa;
+  --os-dim: rgba(245, 247, 250, 0.22);
+  --os-ghost: rgba(245, 247, 250, 0.08);
+  --rule: 1px solid rgba(255, 255, 255, 0.06);
 
   /* Typography */
-  --serif: "Georgia", "Times New Roman", serif;
-  --font-display: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-sans: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --serif: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Inter Tight", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --tracking-wide: 0.35em;
   --tracking-xwide: 0.55em;
 
   /* Color system */
-  --color-bg: #0d0d0b;
-  --color-bg-soft: #151513;
-  --color-surface: rgba(20, 20, 18, 0.94);
-  --color-surface-strong: #1a1a17;
-  --color-surface-elevated: rgba(22, 22, 19, 0.98);
-  --color-panel: #131311;
-  --color-panel-soft: #1a1a17;
-  --color-line: rgba(232, 228, 220, 0.08);
-  --color-line-strong: rgba(232, 228, 220, 0.22);
-  --color-text: #e8e4dc;
-  --color-text-soft: rgba(232, 228, 220, 0.65);
-  --color-text-muted: rgba(232, 228, 220, 0.38);
-  --color-accent: #e8e4dc;
-  --color-accent-strong: rgba(232, 228, 220, 0.82);
-  --color-accent-ink: #0d0d0b;
-  --color-highlight: #b87333;
-  --color-copper: #b87333;
-  --color-copper-soft: rgba(184, 115, 51, 0.18);
-  --color-error: #b87333;
-  --color-warning: #c4b8a8;
-  --color-info: #c4b8a8;
+  --color-bg: #0b0d10;
+  --color-bg-soft: #13161b;
+  --color-surface: #13161b;
+  --color-surface-strong: #1b2027;
+  --color-surface-elevated: #1b2027;
+  --color-panel: #13161b;
+  --color-panel-soft: #1b2027;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.12);
+  --color-text: #f5f7fa;
+  --color-text-soft: #a7b0bc;
+  --color-text-muted: #6b7280;
+  --color-accent: #c17c45;
+  --color-accent-strong: #c17c45;
+  --color-accent-ink: #0b0d10;
+  --color-highlight: #c17c45;
+  --color-copper: #c17c45;
+  --color-copper-soft: rgba(193, 124, 69, 0.18);
+  --color-error: #c17c45;
+  --color-warning: #a7b0bc;
+  --color-info: #a7b0bc;
 
   /* Spacing and layout */
   --space-2xs: 0.25rem;
@@ -49,17 +49,21 @@
   --space-xl: 2rem;
   --space-2xl: 3rem;
   --space-3xl: 4.5rem;
-  --width-content: min(1160px, calc(100% - 3rem));
+  --section-padding: 140px;
+  --card-padding: 32px;
+  --grid-gap: 32px;
+  --width-content: min(1280px, calc(100% - 3rem));
 
   /* Depth */
-  --shadow-soft: 0 14px 32px -28px rgba(0, 0, 0, 0.48);
-  --shadow-strong: 0 24px 56px -40px rgba(0, 0, 0, 0.62);
-  --shadow-operational: 0 20px 42px -34px rgba(0, 0, 0, 0.72);
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.35);
+  --shadow-strong: 0 18px 50px rgba(0, 0, 0, 0.42);
+  --shadow-operational: 0 10px 40px rgba(0, 0, 0, 0.35);
 
-  /* Minimal radii. Keep the system sharp. */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
+  /* Premium operational radii. */
+  --radius-sm: 0.875rem;
+  --radius-md: 1.5rem;
+  --radius-lg: 1.5rem;
+  --radius-button: 0.875rem;
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

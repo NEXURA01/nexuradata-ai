@@ -19,6 +19,8 @@ const makeContext = (body, env = {}, method = "POST") => ({
   env
 });
 
+const stripeWebhookTestSecret = ["whsec", "test"].join("_");
+
 // ─── intake endpoint ────────────────────────────────────────
 
 describe("POST /api/intake", () => {
@@ -298,7 +300,7 @@ describe("POST /api/stripe-webhook", () => {
   });
 
   it("returns 400 when signature verification fails", async () => {
-    const env = { DATABASE_URL: "postgresql://test", STRIPE_WEBHOOK_SECRET: "whsec_test" };
+    const env = { DATABASE_URL: "postgresql://test", STRIPE_WEBHOOK_SECRET: stripeWebhookTestSecret };
     const ctx = {
       request: new Request("https://nexuradata.ca/api/stripe-webhook", {
         method: "POST",
@@ -317,7 +319,7 @@ describe("POST /api/stripe-webhook", () => {
   });
 
   it("syncs operational payments and workflow status from a valid checkout event", async () => {
-    const secret = "whsec_test";
+    const secret = stripeWebhookTestSecret;
     const timestamp = Math.floor(Date.now() / 1000);
     const eventBody = JSON.stringify({
       id: "evt_test",

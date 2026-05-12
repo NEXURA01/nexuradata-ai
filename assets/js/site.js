@@ -1,4 +1,4 @@
-﻿const yearTarget = document.querySelector("[data-year]");
+const yearTarget = document.querySelector("[data-year]");
 const documentLanguage = document.documentElement.lang?.toLowerCase() || "fr-ca";
 const isEnglishDocument = documentLanguage.startsWith("en");
 const CONSENT_STORAGE_KEY = "nexuradata_cookie_consent_v1";
@@ -878,12 +878,12 @@ const initializeWorkflowSimulator = () => {
     ? {
       lead: {
         classification: "Form: operational problem received",
-        routing: "Analysis: complexity and solution recommended",
+        routing: "AI: complexity and solution recommended",
         task: "Stripe: assessment ready to activate",
         dashboard: "Dashboard: workflow and progress visible",
         status: "Workflow active",
         metrics: [18, 7, 42],
-        feed: ["Client problem analyzed", "Estimate generated", "Workflow created in dashboard"]
+        feed: ["Client problem analyzed by AI", "AI estimate generated", "Workflow created in dashboard"]
       },
       task: {
         classification: "Task: repetitive internal work detected",
@@ -916,12 +916,12 @@ const initializeWorkflowSimulator = () => {
     : {
       lead: {
         classification: "Formulaire: probleme operationnel recu",
-        routing: "Analyse: complexite et solution recommandees",
+        routing: "AI: complexite et solution recommandees",
         task: "Stripe: assessment pret a activer",
         dashboard: "Dashboard: workflow et progression visibles",
         status: "Workflow actif",
         metrics: [18, 7, 42],
-        feed: ["Probleme client analyse", "Estimation generee", "Workflow cree dans le dashboard"]
+        feed: ["Probleme client analyse par AI", "Estimation AI generee", "Workflow cree dans le dashboard"]
       },
       task: {
         classification: "Tache: travail repetitif detecte",

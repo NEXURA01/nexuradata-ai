@@ -102,7 +102,7 @@ const normalizeEstimate = (value) => {
   const confidence = normalizeConfidence(estimate.confidence);
   const reasoning = normalizeList(estimate.reasoning, [
     "The request requires operational scoping before implementation pricing is confirmed.",
-    "The estimate is based on workflow count, integrations, team complexity, automation depth, dashboard need, assisted analysis need and urgency."
+    "The estimate is based on workflow count, integrations, team complexity, automation depth, dashboard need, AI need and urgency."
   ]);
   const includedLayers = normalizeList(estimate.included_layers, [
     "Workflow mapping",

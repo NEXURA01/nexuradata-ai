@@ -22,6 +22,8 @@ const mapSessionStatus = (eventType) => {
   return "open";
 };
 
+const getErrorName = (error) => error instanceof Error && error.name ? error.name : "Error";
+
 const syncStripePaymentLedger = async (env, event) => {
   const session = event?.data?.object;
 
@@ -116,7 +118,7 @@ export const onRequestPost = async (context) => {
           context: "stripe_webhook_ledger_sync_error",
           eventId: event.id,
           eventType: event.type,
-          error: ledgerErr.message
+          errorName: getErrorName(ledgerErr)
         }));
       }
     }
@@ -129,7 +131,7 @@ export const onRequestPost = async (context) => {
         context: "stripe_webhook_operational_payment_sync_error",
         eventId: event.id,
         eventType: event.type,
-        error: operationalErr.message
+        errorName: getErrorName(operationalErr)
       }));
     }
 
@@ -157,8 +159,7 @@ export const onRequestPost = async (context) => {
       context: "stripe_webhook_processing_error",
       eventId: event.id,
       eventType: event.type,
-      error: err.message,
-      stack: err.stack
+      errorName: getErrorName(err)
     }));
 
     return json(

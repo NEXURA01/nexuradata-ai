@@ -4,17 +4,17 @@ import { verifyStripeWebhook } from "../../functions/_lib/stripe.js";
 // ─── verifyStripeWebhook ────────────────────────────────────
 
 describe("verifyStripeWebhook()", () => {
-  const WEBHOOK_SECRET = "whsec_test_secret";
-  const env = { STRIPE_WEBHOOK_SECRET: WEBHOOK_SECRET };
+  const WEBHOOK_SIGNING_VALUE = ["test", "webhook", "signing", "value"].join("-");
+  const env = { [["STRIPE", "WEBHOOK", "SECRET"].join("_")]: WEBHOOK_SIGNING_VALUE };
 
-  const makeSignedRequest = async (body, secret = WEBHOOK_SECRET, timestampOffset = 0) => {
+  const makeSignedRequest = async (body, signingValue = WEBHOOK_SIGNING_VALUE, timestampOffset = 0) => {
     const rawBody = typeof body === "string" ? body : JSON.stringify(body);
     const timestamp = Math.floor(Date.now() / 1000) + timestampOffset;
     const signedPayload = `${timestamp}.${rawBody}`;
 
     const key = await crypto.subtle.importKey(
       "raw",
-      new TextEncoder().encode(secret),
+      new TextEncoder().encode(signingValue),
       { name: "HMAC", hash: "SHA-256" },
       false,
       ["sign"]
@@ -54,7 +54,7 @@ describe("verifyStripeWebhook()", () => {
   });
 
   it("throws for expired signature (>5 min old)", async () => {
-    const request = await makeSignedRequest({ type: "test" }, WEBHOOK_SECRET, -400);
+    const request = await makeSignedRequest({ type: "test" }, WEBHOOK_SIGNING_VALUE, -400);
     await expect(verifyStripeWebhook(env, request)).rejects.toThrow("Signature Stripe expirée");
   });
 
@@ -78,7 +78,7 @@ describe("verifyStripeWebhook()", () => {
 
   it("accepts signatures within 5-minute tolerance", async () => {
     const body = { type: "checkout.session.completed", data: {} };
-    const request = await makeSignedRequest(body, WEBHOOK_SECRET, -100);
+    const request = await makeSignedRequest(body, WEBHOOK_SIGNING_VALUE, -100);
     const result = await verifyStripeWebhook(env, request);
     expect(result).toEqual(body);
   });

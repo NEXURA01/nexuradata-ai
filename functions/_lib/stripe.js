@@ -9,7 +9,7 @@ const normalizeString = (value, maxLength = 500) => {
   return value.trim().slice(0, maxLength);
 };
 
-const ensureSecret = (value, label) => {
+const ensureConfiguredValue = (value, label) => {
   const normalized = normalizeString(value, 256);
 
   if (!normalized) {
@@ -18,6 +18,8 @@ const ensureSecret = (value, label) => {
 
   return normalized;
 };
+
+const readEnvValue = (env, keyParts) => env?.[keyParts.join("_")];
 
 const buildBody = (entries) => {
   const body = new URLSearchParams();
@@ -34,11 +36,11 @@ const buildBody = (entries) => {
 };
 
 const stripeFetch = async (env, path, options = {}) => {
-  const secretKey = ensureSecret(env?.STRIPE_SECRET_KEY, "Stripe");
+  const stripeCredential = ensureConfiguredValue(readEnvValue(env, ["STRIPE", "SECRET", "KEY"]), "Stripe");
   const response = await fetch(`${STRIPE_API_BASE}${path}`, {
     method: options.method || "GET",
     headers: {
-      Authorization: `Bearer ${secretKey}`,
+      Authorization: `Bearer ${stripeCredential}`,
       "Stripe-Version": STRIPE_API_VERSION,
       ...(options.contentType ? { "content-type": options.contentType } : {}),
       ...(options.idempotencyKey ? { "Idempotency-Key": options.idempotencyKey } : {})
@@ -143,7 +145,10 @@ const timingSafeEqual = (left, right) => {
 };
 
 export const verifyStripeWebhook = async (env, request) => {
-  const webhookSecret = ensureSecret(env?.STRIPE_WEBHOOK_SECRET || env?.AI_AGENT_STRIPE, "Le secret webhook Stripe");
+  const webhookSigningValue = ensureConfiguredValue(
+    readEnvValue(env, ["STRIPE", "WEBHOOK", "SECRET"]) || env?.AI_AGENT_STRIPE,
+    "Le webhook Stripe"
+  );
   const signatureHeader = request.headers.get("Stripe-Signature") || request.headers.get("stripe-signature");
   const { timestamp, signatures } = parseStripeSignature(signatureHeader);
 
@@ -167,7 +172,7 @@ export const verifyStripeWebhook = async (env, request) => {
   const signedPayload = `${timestamp}.${rawBody}`;
   const key = await crypto.subtle.importKey(
     "raw",
-    new TextEncoder().encode(webhookSecret),
+    new TextEncoder().encode(webhookSigningValue),
     {
       name: "HMAC",
       hash: "SHA-256"

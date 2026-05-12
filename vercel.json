@@ -4,6 +4,38 @@
     "installCommand": "npm ci",
     "cleanUrls": true,
     "trailingSlash": false,
+    "redirects": [
+        {
+            "source": "/trust",
+            "destination": "/ai-trust-security",
+            "permanent": true
+        },
+        {
+            "source": "/security",
+            "destination": "/ai-trust-security",
+            "permanent": true
+        },
+        {
+            "source": "/web-protection",
+            "destination": "/ai-trust-security",
+            "permanent": true
+        },
+        {
+            "source": "/cipher",
+            "destination": "/ai-trust-security",
+            "permanent": true
+        },
+        {
+            "source": "/certificate",
+            "destination": "/ai-trust-security",
+            "permanent": true
+        },
+        {
+            "source": "/ai-certificate",
+            "destination": "/ai-trust-security",
+            "permanent": true
+        }
+    ],
     "rewrites": [
         {
             "source": "/api/:path*",

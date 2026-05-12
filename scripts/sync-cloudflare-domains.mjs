@@ -8,9 +8,10 @@ const projectName = "nexuradata-ai";
 const pagesTarget = `${projectName}.pages.dev`;
 const domains = [
   "nexuradata.ca",
-  "www.nexuradata.ca",
-  "nexuradata.ca",
   "www.nexuradata.ca"
+];
+const zoneOverrides = [
+  { name: "nexuradata.ca", id: process.env.CLOUDFLARE_ZONE_ID || "cd0e99a07eca01f763bea338bb537cfb" }
 ];
 
 const readWranglerOAuthToken = async () => {
@@ -50,15 +51,27 @@ const requestCloudflare = async (resource, options = {}) => {
 };
 
 const listZones = async () => {
-  const data = await requestCloudflare(`/zones?per_page=100`);
-  return data.result || [];
+  try {
+    const data = await requestCloudflare(`/zones?per_page=100`);
+    return data.result || [];
+  } catch (error) {
+    if (/Authentication error|permission|not authorized|forbidden|unauthorized|failed: auth/i.test(error.message)) {
+      console.log("Cloudflare zone listing unavailable; using configured zone overrides.");
+      return [];
+    }
+    throw error;
+  }
 };
 
 const findZone = (zones, domain) => {
   const matches = zones
     .filter((zone) => domain === zone.name || domain.endsWith(`.${zone.name}`))
     .sort((left, right) => right.name.length - left.name.length);
-  return matches[0] || null;
+  if (matches[0]) return matches[0];
+
+  return zoneOverrides
+    .filter((zone) => domain === zone.name || domain.endsWith(`.${zone.name}`))
+    .sort((left, right) => right.name.length - left.name.length)[0] || null;
 };
 
 const attachPagesDomain = async (domain) => {

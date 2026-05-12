@@ -168,6 +168,35 @@ select {
   padding-left: 24px;
 }
 
+.nav-links .language-switcher {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 24px;
+  border-left: var(--rule);
+}
+
+.nav-links .language-switcher .lang-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.45rem;
+  min-height: 2rem;
+  padding: 0 0.58rem;
+  border: 1px solid rgba(232, 228, 220, 0.12);
+  color: var(--os);
+  opacity: 0.52;
+}
+
+.nav-links .language-switcher .lang-switch + .lang-switch {
+  margin-left: -1px;
+}
+
+.nav-links .language-switcher .lang-switch.is-active {
+  background: rgba(232, 228, 220, 0.06);
+  color: var(--color-accent);
+  opacity: 1;
+}
+
 /* Legacy .navbar support for operations pages */
 .navbar {
   display: flex;
@@ -3967,6 +3996,25 @@ select {
     padding-left: 0.9rem;
   }
 
+  .site-nav .nav-links .language-switcher {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    padding-left: 0;
+    border-left: 0;
+    gap: 0.35rem;
+  }
+
+  .site-nav .nav-links .language-switcher .lang-switch {
+    width: 100%;
+    min-height: 2.85rem;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .site-nav .nav-links .language-switcher .lang-switch + .lang-switch {
+    margin-left: 0;
+  }
+
   .nav-links a {
     display: flex;
     align-items: center;
@@ -4396,6 +4444,10 @@ select {
 
   .site-nav .nav-links .lang-switch {
     padding-left: 0.75rem;
+  }
+
+  .site-nav .nav-links .language-switcher .lang-switch {
+    padding-inline: 0.75rem;
   }
 }
 

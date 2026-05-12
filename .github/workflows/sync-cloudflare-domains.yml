@@ -7,7 +7,7 @@ jobs:
   sync-domains:
     name: Sync Pages custom domains
     runs-on: ubuntu-latest
-    environment: "env:CLOUDFLARE_API_TOKEN"
+    environment: "CLOUDFLARE_API_TOKEN"
     permissions:
       contents: read
 

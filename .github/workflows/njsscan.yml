@@ -18,10 +18,10 @@ jobs:
     name: njsscan code scanning
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install njsscan
         run: pip install njsscan
 
       - name: Run njsscan
-        run: njsscan . || true
+        run: njsscan .

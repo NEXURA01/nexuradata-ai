@@ -24,3 +24,5 @@ release-cloudflare/
 
 # Supabase local metadata
 supabase/.temp/
+.vercel
+.env*.local

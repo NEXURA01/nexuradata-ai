@@ -1,0 +1,7 @@
+{
+    "buildCommand": "npm run build",
+    "outputDirectory": "release-cloudflare",
+    "installCommand": "npm ci",
+    "cleanUrls": true,
+    "trailingSlash": false
+}

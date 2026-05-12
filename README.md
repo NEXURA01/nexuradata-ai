@@ -6,8 +6,8 @@
 
 Site marketing et plateforme de lancement pour un laboratoire de recuperation de donnees et forensique numerique.
 
-- Depot public: https://github.com/NEXURA01/nexuradata-ai
-- Site canonique: https://nexuradata.ca
+- Depot public: [NEXURA01/nexuradata-ai](https://github.com/NEXURA01/nexuradata-ai)
+- Site canonique: [nexuradata.ca](https://nexuradata.ca)
 - Cloudflare Pages: `nexuradata-ai.pages.dev`
 
 Le depot couvre:

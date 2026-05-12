@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXURA DATA — Read-Only Branding System</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        :root {
+            --noir: #0d0d0b;
+            --os: #e8e4dc;
+            --os-dim: rgba(232, 228, 220, 0.22);
+            --os-ghost: rgba(232, 228, 220, 0.08);
+            --rule: 0.5px solid rgba(232, 228, 220, 0.1);
+            --serif: 'Georgia', 'Times New Roman', serif;
+            --tracking-wide: 0.35em;
+            --tracking-xwide: 0.55em;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            margin: 0;
+            background: var(--noir);
+            color: var(--os);
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .site-header {
+            border-bottom: var(--rule);
+            background: var(--noir);
+        }
+
+        .site-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            padding: 28px 0;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .brand-logo,
+        .footer-logo {
+            display: block;
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a,
+        .footer-legal a,
+        .footer-block a {
+            color: var(--os);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: var(--tracking-xwide);
+            opacity: 0.38;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-links a:hover,
+        .footer-legal a:hover,
+        .footer-block a:hover {
+            opacity: 1;
+        }
+
+        main {
+            padding: 56px 0 72px;
+        }
+
+        .document-shell {
+            border: var(--rule);
+            background: var(--os-ghost);
+        }
+
+        .document-top {
+            padding: 32px;
+            border-bottom: var(--rule);
+        }
+
+        .document-top small {
+            display: block;
+            margin-bottom: 18px;
+            font-size: 0.72rem;
+            letter-spacing: var(--tracking-xwide);
+            opacity: 0.42;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            max-width: 820px;
+            margin: 0;
+            font-family: var(--serif);
+            font-size: clamp(2.2rem, 6vw, 5rem);
+            font-weight: 400;
+            line-height: 1.05;
+        }
+
+        .source-text {
+            overflow: auto;
+            margin: 0;
+            padding: 32px;
+            color: var(--os);
+            font-family: Consolas, Monaco, 'Courier New', monospace;
+            font-size: clamp(0.78rem, 1.6vw, 0.95rem);
+            line-height: 1.75;
+            white-space: pre-wrap;
+        }
+
+        .site-footer {
+            border-top: var(--rule);
+            background: var(--noir);
+        }
+
+        .footer-top {
+            padding: 56px 0 32px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 32px;
+            padding: 32px 0;
+            border-top: var(--rule);
+        }
+
+        .footer-block small {
+            display: block;
+            margin-bottom: 14px;
+            font-size: 0.7rem;
+            letter-spacing: var(--tracking-xwide);
+            text-transform: uppercase;
+            opacity: 0.35;
+        }
+
+        .footer-block p {
+            max-width: none;
+            font-size: 0.95rem;
+            line-height: 1.85;
+            opacity: 0.65;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            padding: 24px 0;
+            border-top: var(--rule);
+        }
+
+        .footer-note {
+            padding: 24px 0 64px;
+            border-top: var(--rule);
+        }
+
+        .footer-note p {
+            max-width: 72ch;
+            font-size: 0.95rem;
+            line-height: 1.85;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 980px) {
+            .site-nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                gap: 16px 20px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                width: min(100% - 28px, 1120px);
+            }
+
+            .brand-logo,
+            .footer-logo {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-legal {
+                flex-direction: column;
+                gap: 14px;
+            }
+        }
+
+        @media print {
+
+            html,
+            body {
+                background: #fff;
+                color: #111;
+            }
+
+            .site-header,
+            .site-footer {
+                display: none;
+            }
+
+            main {
+                padding: 0;
+            }
+
+            .container {
+                width: 100%;
+            }
+
+            .document-shell {
+                border: 0;
+                background: transparent;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <nav class="site-nav" aria-label="Navigation principale">
+                <a class="brand" href="/" aria-label="Accueil NEXURA DATA">
+                    <img src="../assets/nexuradata-master.svg" alt="NEXURA DATA" class="brand-logo">
+                </a>
+                <div class="nav-links">
+                    <a href="/services.html">Services</a>
+                    <a href="/tarifs-recuperation-donnees-montreal.html">Tarifs</a>
+                    <a href="/politique-confidentialite.html">Confidentialité</a>
+                    <a href="/conditions-intervention-paiement.html">Conditions</a>
+                    <a href="/#contact">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <article class="document-shell" aria-labelledby="document-title">
+                <div class="document-top">
+                    <small>Version production</small>
+                    <h1 id="document-title">NEXURA DATA — Read-Only Branding System</h1>
+                </div>
+                <pre class="source-text">NEXURA DATA — READ-ONLY BRANDING SYSTEM
+VERSION PRODUCTION
+NE JAMAIS MODIFIER LES BLOCS MARQUÉS "LOCKED"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+A. SOURCE OF TRUTH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+Le branding NEXURA DATA repose sur une source unique :
+
+* logo master SVG
+* tokens visuels
+* header officiel
+* footer officiel
+* signature email officielle
+
+Aucune équipe, aucun employé, aucun prestataire ne doit :
+
+* redessiner le logo
+* changer les proportions
+* changer les espacements
+* remplacer la typographie
+* réécrire les textes officiels
+* créer des variantes non approuvées
+
+Toute adaptation doit être :
+
+* technique
+* réversible
+* fidèle à la source
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+B. REPOSITORY STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+/assets/
+  nexuradata-master.svg
+  nexuradata-master.png
+  nexuradata-signature.png
+  nexuradata-icon.png
+
+/styles/
+  site.css
+
+/includes/
+  header.html
+  footer.html
+
+/docs/
+  branding-read-only.txt
+
+Règles :
+
+* nexuradata-master.svg = source graphique unique
+* nexuradata-master.png = export technique
+* nexuradata-signature.png = export email
+* nexuradata-icon.png = favicon / icône
+* site.css = feuille unique
+* header.html et footer.html = blocs de référence
+* aucune duplication sauvage dans plusieurs fichiers
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+C. LOCKED LOGO POLICY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+1. Logo master
+   Usage :
+   * header site
+   * footer site
+   * documents
+   * pages institutionnelles
+   * présentation
+   Fichier : /assets/nexuradata-master.svg
+
+2. Logo image
+   Usage :
+   * environnements qui ne gèrent pas bien le SVG
+   * export documentaire
+   * intégrations techniques spécifiques
+   Fichier : /assets/nexuradata-master.png
+
+3. Logo signature
+   Usage :
+   * Gmail
+   * signature employés
+   * communication email
+   Fichier : /assets/nexuradata-signature.png
+
+4. Logo icon
+   Usage :
+   * favicon
+   * icône réduite
+   Fichier : /assets/nexuradata-icon.png
+
+Interdictions :
+
+* ne jamais étirer
+* ne jamais comprimer
+* ne jamais changer les couleurs
+* ne jamais utiliser une autre police
+* ne jamais réorganiser les blocs internes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+D. LOCKED VISUAL TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+:root {
+  --noir: #0d0d0b;
+  --os: #e8e4dc;
+  --os-dim: rgba(232, 228, 220, 0.22);
+  --os-ghost: rgba(232, 228, 220, 0.08);
+  --rule: 0.5px solid rgba(232, 228, 220, 0.1);
+  --serif: 'Georgia', 'Times New Roman', serif;
+  --tracking-wide: 0.35em;
+  --tracking-xwide: 0.55em;
+}
+
+Règles :
+
+* ces valeurs sont fixes
+* pas de substitution couleur
+* pas de remplacement typographique
+* pas de framework de design par-dessus
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E. LOCKED HEADER BLOCK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+&lt;header class="site-header"&gt;
+  &lt;div class="container"&gt;
+    &lt;nav class="site-nav" aria-label="Navigation principale"&gt;
+      &lt;a class="brand" href="/" aria-label="Accueil NEXURA DATA"&gt;
+        &lt;img src="/assets/nexuradata-master.svg" alt="NEXURA DATA" class="brand-logo"&gt;
+      &lt;/a&gt;
+      &lt;div class="nav-links"&gt;
+        &lt;a href="/services.html"&gt;Services&lt;/a&gt;
+        &lt;a href="/tarifs-recuperation-donnees-montreal.html"&gt;Tarifs&lt;/a&gt;
+        &lt;a href="/politique-confidentialite.html"&gt;Confidentialité&lt;/a&gt;
+        &lt;a href="/conditions-intervention-paiement.html"&gt;Conditions&lt;/a&gt;
+        &lt;a href="/#contact"&gt;Contact&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+
+Règles :
+
+* même header sur toutes les pages publiques FR
+* même structure sur les pages EN, avec liens adaptés
+* ne pas déplacer le logo
+* ne pas casser la hiérarchie nav / brand
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+F. LOCKED FOOTER BLOCK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+&lt;footer class="site-footer"&gt;
+  &lt;div class="container"&gt;
+    &lt;section class="footer-top" aria-label="Identité et informations"&gt;
+      &lt;img src="/assets/nexuradata-master.svg" alt="NEXURA DATA" class="footer-logo"&gt;
+    &lt;/section&gt;
+
+    &lt;section class="footer-grid" aria-label="Informations du site"&gt;
+      &lt;div class="footer-block"&gt;
+        &lt;small&gt;ACTIVITÉ&lt;/small&gt;
+        &lt;p&gt;Récupération de données, RAID, NAS, serveurs et forensique numérique.&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;div class="footer-block"&gt;
+        &lt;small&gt;LOCALISATION&lt;/small&gt;
+        &lt;p&gt;Montréal, Québec, Canada&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;div class="footer-block"&gt;
+        &lt;small&gt;COURRIEL&lt;/small&gt;
+        &lt;p&gt;&lt;a href="mailto:contact@nexuradata.ca"&gt;contact@nexuradata.ca&lt;/a&gt;&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;div class="footer-block"&gt;
+        &lt;small&gt;CONFIDENTIALITÉ&lt;/small&gt;
+        &lt;p&gt;&lt;a href="mailto:privacy@nexuradata.ca"&gt;privacy@nexuradata.ca&lt;/a&gt;&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class="footer-legal" aria-label="Liens légaux"&gt;
+      &lt;a href="/mentions-legales.html"&gt;Mentions légales&lt;/a&gt;
+      &lt;a href="/politique-confidentialite.html"&gt;Politique de confidentialité&lt;/a&gt;
+      &lt;a href="/engagements-conformite-quebec.html"&gt;Engagements Québec&lt;/a&gt;
+      &lt;a href="/conditions-intervention-paiement.html"&gt;Conditions d'intervention&lt;/a&gt;
+    &lt;/section&gt;
+
+    &lt;section class="footer-note" aria-label="Note d'exploitation"&gt;
+      &lt;p&gt;
+        NEXURA DATA opère au Canada en récupération de données et en analyse spécialisée.
+        Les interventions sont réalisées à la suite d'une évaluation préalable et après
+        validation des conditions applicables.
+      &lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;
+
+Règles :
+
+* même footer partout
+* ne pas supprimer les liens légaux
+* ne pas réécrire la note d'exploitation sans validation
+* ne pas remplacer le logo footer par une autre version
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+G. LOCKED CSS BLOCK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+.brand-logo,
+.footer-logo {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+}
+
+.site-header {
+  border-bottom: var(--rule);
+  background: var(--noir);
+}
+
+.site-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 28px 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.nav-links a,
+.footer-legal a,
+.footer-block a {
+  color: var(--os);
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-xwide);
+  opacity: 0.38;
+  transition: opacity 0.2s ease;
+}
+
+.nav-links a:hover,
+.footer-legal a:hover,
+.footer-block a:hover {
+  opacity: 1;
+}
+
+.site-footer {
+  border-top: var(--rule);
+  background: var(--noir);
+}
+
+.footer-top {
+  padding: 56px 0 32px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+  padding: 32px 0;
+  border-top: var(--rule);
+}
+
+.footer-block small {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 0.7rem;
+  letter-spacing: var(--tracking-xwide);
+  text-transform: uppercase;
+  opacity: 0.35;
+}
+
+.footer-block p {
+  max-width: none;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  opacity: 0.65;
+}
+
+.footer-legal {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 24px 0;
+  border-top: var(--rule);
+}
+
+.footer-note {
+  padding: 24px 0 64px;
+  border-top: var(--rule);
+}
+
+.footer-note p {
+  max-width: 72ch;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  opacity: 0.5;
+}
+
+@media (max-width: 980px) {
+  .site-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    gap: 16px 20px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .brand-logo,
+  .footer-logo {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-legal {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+
+Règles :
+
+* ce bloc ne se modifie pas sans décision branding
+* aucune surcharge locale non justifiée
+* pas de composants concurrents pour le header/footer
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+H. LOCKED EMPLOYEE EMAIL SIGNATURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+Bloc officiel :
+
+&lt;img src="https://nexuradata.ca/assets/nexuradata-signature.png" height="60"&gt;&lt;br&gt;&lt;br&gt;
+Nom Prénom&lt;br&gt;
+Titre / Fonction&lt;br&gt;
+prenom.nom@nexuradata.ca&lt;br&gt;&lt;br&gt;
+
+Ce courriel, ainsi que toute pièce jointe, peut contenir des renseignements
+confidentiels et est destiné exclusivement au(x) destinataire(s) indiqué(s).
+
+Si vous n'êtes pas le destinataire prévu, veuillez nous en aviser immédiatement
+en répondant à ce message, puis supprimer ce courriel et toute copie de votre
+système. Toute utilisation, diffusion, reproduction ou communication non
+autorisée est strictement interdite.
+
+Dans le cadre de nos services, certaines communications sont nécessaires au
+traitement et au suivi de votre dossier (évaluations, soumissions, paiements,
+logistique). Ces communications ne constituent pas des messages promotionnels.
+
+NEXURA DATA opère au Canada en récupération de données et en analyse spécialisée.
+Les interventions sont réalisées à la suite d'une évaluation préalable et après
+validation des conditions applicables.
+
+Seuls les champs suivants sont modifiables :
+
+* Nom Prénom
+* Titre / Fonction
+* prenom.nom@nexuradata.ca
+
+Interdictions :
+
+* ne pas réécrire le texte de confidentialité
+* ne pas changer l'image
+* ne pas changer l'ordre
+* ne pas ajouter d'éléments promotionnels
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+I. PAGE SCOPE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+Ces blocs s'appliquent obligatoirement à :
+
+* index.html
+* mentions-legales.html
+* politique-confidentialite.html
+* engagements-conformite-quebec.html
+* tarifs-recuperation-donnees-montreal.html
+* conditions-intervention-paiement.html
+* toutes les versions anglaises équivalentes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+J. CHANGE POLICY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+Toute demande de changement doit être classée dans une seule catégorie :
+
+1. Technique
+   * export PNG
+   * ajustement de taille d'affichage
+   * intégration responsive
+   * correction de chemin de fichier
+
+2. Structurelle
+   * ajout d'un nouveau lien de navigation
+   * ajout d'une nouvelle page légale
+   * extension EN
+
+3. Créative
+   * changer le logo
+   * changer la typo
+   * changer les espacements
+   * changer la composition
+
+Règle :
+
+* changement technique = autorisé si fidèle
+* changement structurel = autorisé si cohérent
+* changement créatif = interdit sans validation explicite
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+K. FINAL RULE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCKED
+
+Le branding NEXURA DATA est figé dans ce document.
+On adapte les formats.
+On ne change pas l'identité.</pre>
+            </article>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <section class="footer-top" aria-label="Identité et informations">
+                <img src="../assets/nexuradata-master.svg" alt="NEXURA DATA" class="footer-logo">
+            </section>
+
+            <section class="footer-grid" aria-label="Informations du site">
+                <div class="footer-block">
+                    <small>ACTIVITÉ</small>
+                    <p>Récupération de données, RAID, NAS, serveurs et forensique numérique.</p>
+                </div>
+
+                <div class="footer-block">
+                    <small>LOCALISATION</small>
+                    <p>Montréal, Québec, Canada</p>
+                </div>
+
+                <div class="footer-block">
+                    <small>COURRIEL</small>
+                    <p><a href="mailto:contact@nexuradata.ca">contact@nexuradata.ca</a></p>
+                </div>
+
+                <div class="footer-block">
+                    <small>CONFIDENTIALITÉ</small>
+                    <p><a href="mailto:privacy@nexuradata.ca">privacy@nexuradata.ca</a></p>
+                </div>
+            </section>
+
+            <section class="footer-legal" aria-label="Liens légaux">
+                <a href="/mentions-legales.html">Mentions légales</a>
+                <a href="/politique-confidentialite.html">Politique de confidentialité</a>
+                <a href="/engagements-conformite-quebec.html">Engagements Québec</a>
+                <a href="/conditions-intervention-paiement.html">Conditions d'intervention</a>
+            </section>
+
+            <section class="footer-note" aria-label="Note d'exploitation">
+                <p>
+                    NEXURA DATA opère au Canada en récupération de données et en analyse spécialisée.
+                    Les interventions sont réalisées à la suite d'une évaluation préalable et après
+                    validation des conditions applicables.
+                </p>
+            </section>
+        </div>
+    </footer>
+</body>
+
+</html>

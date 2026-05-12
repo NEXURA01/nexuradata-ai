@@ -28,8 +28,15 @@
     <div class="container">
       <nav class="site-nav" aria-label="Navigation principale">
         <a class="brand" href="/" aria-label="Accueil NEXURA">
-          <img src="/assets/nexuradata-master.svg" alt="NEXURA" class="brand-logo" width="200" height="24"
-            translate="no">
+          <span class="brand-glyph" aria-hidden="true">
+            <span class="brand-glyph-axis brand-glyph-axis-horizontal"></span>
+            <span class="brand-glyph-axis brand-glyph-axis-vertical"></span>
+            <span class="brand-glyph-core"></span>
+          </span>
+          <span class="brand-copy">
+            <span class="brand-name">NEXURA</span>
+            <span class="brand-subtitle">Operational Systems</span>
+          </span>
         </a>
         <div class="nav-links">
           <a href="/#platform">Platform</a>
@@ -59,21 +66,77 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <section class="footer-top" aria-label="Identité">
-        <img src="/assets/nexuradata-master.svg" alt="NEXURA" class="footer-logo">
-      </section>
-      <section class="footer-legal" aria-label="Liens légaux">
-        <a href="/mentions-legales.html">Mentions légales</a>
-        <a href="/privacy">Confidentialite</a>
-        <a href="/terms">Conditions</a>
-      </section>
-      <section class="footer-note" aria-label="Note">
-        <p>NEXURA aide les entreprises a centraliser leurs operations, automatiser leurs workflows et reprendre le controle.</p>
-        <p>© 2026 NEXURA. Tous droits reserves.</p>
-      </section>
-    </div>
-  </footer>
+  <div class="footer-system">
+    <section class="footer-brand-block" aria-label="NEXURA operational identity">
+      <a class="footer-brand-row" href="/" aria-label="NEXURA home">
+        <span class="brand-glyph" aria-hidden="true">
+          <span class="brand-glyph-axis brand-glyph-axis-horizontal"></span>
+          <span class="brand-glyph-axis brand-glyph-axis-vertical"></span>
+          <span class="brand-glyph-core"></span>
+        </span>
+        <span class="footer-brand-copy">
+          <span class="footer-brand-name">NEXURA</span>
+          <span class="footer-brand-subtitle">Operational Systems</span>
+        </span>
+      </a>
+      <p class="footer-description">NEXURA centralizes operations, automates workflows and improves operational visibility through intelligent systems.</p>
+      <a class="footer-status" href="/status" aria-label="Operational Status: Systems Online">
+        <span class="footer-status-dot" aria-hidden="true"></span>
+        <span class="footer-status-copy">
+          <span class="footer-status-label">Operational Status</span>
+          <span class="footer-status-state">Systems Online</span>
+        </span>
+      </a>
+    </section>
+
+    <nav class="footer-link-column" aria-label="Platform">
+      <h2 class="footer-column-title">Platform</h2>
+      <div class="footer-link-list">
+        <a href="/operational-assessment">Operational Assessment</a>
+        <a href="/workflow-automation">Workflow Automation</a>
+        <a href="/operational-dashboard">Operational Dashboard</a>
+        <a href="/ai-operational-analysis">AI Analysis</a>
+        <a href="/operational-assessment?scope=infrastructure">Infrastructure</a>
+      </div>
+    </nav>
+
+    <nav class="footer-link-column" aria-label="Company">
+      <h2 class="footer-column-title">Company</h2>
+      <div class="footer-link-list">
+        <a href="/le-laboratoire.html">About</a>
+        <a href="/services">Services</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/contact">Contact</a>
+        <a href="/faq">FAQ</a>
+      </div>
+    </nav>
+
+    <nav class="footer-link-column" aria-label="Operations">
+      <h2 class="footer-column-title">Operations</h2>
+      <div class="footer-link-list">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms</a>
+        <a href="/status">Status</a>
+        <a href="mailto:operations@nexuradata.ca">operations@nexuradata.ca</a>
+        <span>Montreal, Quebec</span>
+      </div>
+      <div class="footer-socials" aria-label="Social channels">
+        <span>LinkedIn</span>
+        <span>GitHub</span>
+        <span>X</span>
+      </div>
+    </nav>
+
+    <section class="footer-bottom-layer" aria-label="Operational footer indicators">
+      <p>© 2026 NEXURA. Operational Systems Infrastructure.</p>
+      <ul class="footer-indicators">
+        <li>Workflow Systems</li>
+        <li>AI Infrastructure</li>
+        <li>Operational Routing</li>
+      </ul>
+    </section>
+  </div>
+</footer>
 </body>
 
 </html>

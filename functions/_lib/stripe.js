@@ -38,6 +38,17 @@ const buildBody = (entries) => {
   return body;
 };
 
+const appendMetadata = (entries, prefix, metadata = {}) => {
+  for (const [key, value] of Object.entries(metadata)) {
+    const safeKey = normalizeString(key, 40).replace(/[^a-zA-Z0-9_]/g, "_");
+    const safeValue = normalizeString(`${value ?? ""}`, 500);
+
+    if (safeKey && safeValue) {
+      entries.push([`${prefix}[${safeKey}]`, safeValue]);
+    }
+  }
+};
+
 const stripeFetch = async (env, path, options = {}) => {
   const stripeCredential = ensureConfiguredValue(readEnvValue(env, stripeCredentialEnv), "Stripe");
   const response = await fetch(`${STRIPE_API_BASE}${path}`, {
@@ -69,7 +80,7 @@ const stripeFetch = async (env, path, options = {}) => {
 };
 
 export const createHostedCheckoutSession = async (env, payload) => {
-  const body = buildBody([
+  const entries = [
     ["mode", "payment"],
     ["locale", "fr"],
     ["success_url", payload.successUrl],
@@ -91,7 +102,12 @@ export const createHostedCheckoutSession = async (env, payload) => {
     ["payment_intent_data[metadata][case_id]", payload.caseId],
     ["payment_intent_data[metadata][payment_request_id]", payload.paymentRequestId],
     ["payment_intent_data[metadata][payment_kind]", payload.paymentKind]
-  ]);
+  ];
+
+  appendMetadata(entries, "metadata", payload.metadata);
+  appendMetadata(entries, "payment_intent_data[metadata]", payload.metadata);
+
+  const body = buildBody(entries);
 
   return stripeFetch(env, "/checkout/sessions", {
     method: "POST",

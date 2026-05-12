@@ -3,6 +3,15 @@
   color-scheme: dark;
 
   /* Locked identity */
+  --nx-black: #0b0d10;
+    --nx-obsidian: #0b0d10;
+    --nx-carbon: #13161b;
+    --nx-iron: #181c22;
+    --nx-bone: #f5f7fa;
+    --nx-muted: #a7b0bc;
+    --nx-line: rgba(255, 255, 255, 0.08);
+    --nx-copper: #c17c45;
+    --nx-ember: #c45b3e;
   --noir: #0b0d10;
   --os: #f5f7fa;
   --os-dim: rgba(245, 247, 250, 0.22);
@@ -10,45 +19,45 @@
   --rule: 1px solid rgba(255, 255, 255, 0.06);
 
   /* Typography */
-  --serif: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-display: "Inter Tight", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --serif: "Inter", "Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-display: "Inter Tight", "Satoshi", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-sans: "Inter", "Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --tracking-wide: 0.35em;
   --tracking-xwide: 0.55em;
 
   /* Color system */
-  --color-bg: #0b0d10;
-  --color-bg-soft: #13161b;
-  --color-surface: #13161b;
-  --color-surface-strong: #1b2027;
-  --color-surface-elevated: #1b2027;
-  --color-panel: #13161b;
-  --color-panel-soft: #1b2027;
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-line-strong: rgba(255, 255, 255, 0.12);
-  --color-text: #f5f7fa;
-  --color-text-soft: #a7b0bc;
-  --color-text-muted: #6b7280;
-  --color-accent: #c17c45;
-  --color-accent-strong: #c17c45;
-  --color-accent-ink: #0b0d10;
-  --color-highlight: #c17c45;
-  --color-copper: #c17c45;
-  --color-copper-soft: rgba(193, 124, 69, 0.18);
-  --color-error: #c17c45;
-  --color-warning: #a7b0bc;
-  --color-info: #a7b0bc;
+  --color-bg: var(--nx-black);
+    --color-bg-soft: var(--nx-obsidian);
+    --color-surface: var(--nx-carbon);
+    --color-surface-strong: var(--nx-iron);
+    --color-surface-elevated: var(--nx-iron);
+    --color-panel: var(--nx-carbon);
+    --color-panel-soft: var(--nx-iron);
+    --color-line: var(--nx-line);
+    --color-line-strong: rgba(238, 231, 218, 0.2);
+    --color-text: var(--nx-bone);
+    --color-text-soft: rgba(238, 231, 218, 0.72);
+    --color-text-muted: var(--nx-muted);
+    --color-accent: var(--nx-copper);
+    --color-accent-strong: var(--nx-copper);
+    --color-accent-ink: var(--nx-black);
+    --color-highlight: var(--nx-copper);
+    --color-copper: var(--nx-copper);
+    --color-copper-soft: rgba(166, 106, 63, 0.18);
+    --color-error: var(--nx-ember);
+    --color-warning: var(--nx-muted);
+    --color-info: var(--nx-muted);
 
   /* Spacing and layout */
-  --space-2xs: 0.25rem;
-  --space-xs: 0.5rem;
-  --space-sm: 0.75rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  --space-2xl: 3rem;
-  --space-3xl: 4.5rem;
+  --space-2xs: 0.5rem;
+    --space-xs: 0.75rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    --space-2xl: 4.5rem;
+    --space-3xl: 6rem;
   --section-padding: 140px;
   --card-padding: 32px;
   --grid-gap: 32px;
@@ -59,11 +68,11 @@
   --shadow-strong: 0 18px 50px rgba(0, 0, 0, 0.42);
   --shadow-operational: 0 10px 40px rgba(0, 0, 0, 0.35);
 
-  /* Premium operational radii. */
-  --radius-sm: 0.875rem;
-  --radius-md: 1.5rem;
-  --radius-lg: 1.5rem;
-  --radius-button: 0.875rem;
+  /* Premium operational system radii. */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-button: 8px;
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

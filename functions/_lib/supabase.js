@@ -5,7 +5,7 @@ const normalizeString = (value, maxLength = 500) => {
 
 const getSupabaseConfig = (env) => {
   const url = normalizeString(env?.SUPABASE_URL, 300).replace(/\/+$/, "");
-  const serviceRoleKey = normalizeString(env?.SUPABASE_SERVICE_ROLE_KEY || env?.SUBABASE_SECRET_KEY, 1200);
+  const serviceRoleKey = normalizeString(env?.SUPABASE_SERVICE_ROLE_KEY || env?.SUPABASE_SECRET_KEY || env?.SUBABASE_SECRET_KEY, 1200);
 
   if (!url || !serviceRoleKey) {
     throw new Error("Supabase n'est pas encore configuré.");
@@ -19,7 +19,7 @@ const getSupabaseConfig = (env) => {
 };
 
 export const hasSupabaseServiceKey = (env) =>
-  Boolean(normalizeString(env?.SUPABASE_SERVICE_ROLE_KEY || env?.SUBABASE_SECRET_KEY, 1200));
+  Boolean(normalizeString(env?.SUPABASE_SERVICE_ROLE_KEY || env?.SUPABASE_SECRET_KEY || env?.SUBABASE_SECRET_KEY, 1200));
 
 const parseSupabaseResponse = async (response) => {
   const text = await response.text();
@@ -80,6 +80,21 @@ export const supabaseUpdateByStripeSession = (env, table, stripeSessionId, paylo
   return supabaseRequest(env, table, {
     method: "PATCH",
     query: `?stripe_session_id=eq.${encodeURIComponent(normalizedSessionId)}`,
+    body: payload,
+    prefer: "return=representation"
+  });
+};
+
+export const supabaseUpdateById = (env, table, id, payload) => {
+  const normalizedId = normalizeString(id, 160);
+
+  if (!normalizedId) {
+    return null;
+  }
+
+  return supabaseRequest(env, table, {
+    method: "PATCH",
+    query: `?id=eq.${encodeURIComponent(normalizedId)}`,
     body: payload,
     prefer: "return=representation"
   });

@@ -17,3 +17,7 @@ enabled = false
 
 [realtime]
 enabled = false
+
+[functions.estimate]
+enabled = true
+verify_jwt = false

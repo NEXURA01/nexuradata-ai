@@ -877,40 +877,40 @@ const initializeWorkflowSimulator = () => {
   const states = isEnglishDocument
     ? {
       lead: {
-        classification: "Form: operational problem received",
-        routing: "AI: complexity and solution recommended",
-        task: "Stripe: assessment ready to activate",
-        dashboard: "Dashboard: workflow and progress visible",
-        status: "Workflow active",
-        metrics: [18, 7, 42],
-        feed: ["Client problem analyzed by AI", "AI estimate generated", "Workflow created in dashboard"]
+        classification: "Assessment: company, tools and problem saved",
+        routing: "AI: complexity, recommendation and range generated",
+        task: "Status: estimate ready for review payment",
+        dashboard: "Human review pending",
+        status: "Assessment received",
+        metrics: [1, 0, 3],
+        feed: ["Lead saved in Supabase", "AI estimate completed", "Assessment result displayed"]
       },
       task: {
-        classification: "Task: repetitive internal work detected",
-        routing: "Workflow: owner and next step assigned",
-        task: "Automation: reminder and follow-up created",
-        dashboard: "Dashboard: internal task visible",
-        status: "Task routed",
-        metrics: [21, 9, 47],
-        feed: ["Task captured", "Owner assigned", "Follow-up automated"]
+        classification: "Stripe: review payment started",
+        routing: "Checkout: lead and estimate IDs attached",
+        task: "Payment: operational review fee confirmed",
+        dashboard: "Workflow status created",
+        status: "Payment confirmed",
+        metrics: [2, 1, 5],
+        feed: ["Checkout session created", "Payment metadata saved", "Webhook confirmed payment"]
       },
       client: {
-        classification: "Request: client follow-up needed",
-        routing: "Workflow: support + account owner",
-        task: "Automation: response path and SLA created",
-        dashboard: "Dashboard: client queue synchronized",
-        status: "Client request tracked",
-        metrics: [16, 5, 38],
-        feed: ["Client request structured", "SLA path assigned", "Queue synchronized"]
+        classification: "Review: estimate and context queued",
+        routing: "Human check: scope, risk and sequence verified",
+        task: "Recommendation: next workflow action prepared",
+        dashboard: "Review queue visible",
+        status: "Review pending",
+        metrics: [3, 1, 7],
+        feed: ["Estimate assigned for review", "Operational notes prepared", "Next action queued"]
       },
       support: {
-        classification: "Support: issue categorized",
-        routing: "Workflow: support + escalation rule",
-        task: "Automation: context collected and follow-up triggered",
-        dashboard: "Dashboard: support load visible",
-        status: "Support workflow active",
-        metrics: [24, 11, 53],
-        feed: ["Support issue categorized", "Escalation rule checked", "Follow-up triggered"]
+        classification: "Workflow: assessment converted to case",
+        routing: "Portal: status, events and next steps synchronized",
+        task: "Automation: workflow milestones tracked",
+        dashboard: "Operational progression visible",
+        status: "Workflow active",
+        metrics: [4, 1, 9],
+        feed: ["Workflow case created", "Portal status updated", "Human review remains visible"]
       }
     }
     : {
@@ -1092,6 +1092,9 @@ if (estimateForm) {
   const confidenceTarget = document.querySelector("[data-estimate-confidence]");
   const paymentButton = document.querySelector("[data-estimate-payment]");
   const submitButton = estimateForm.querySelector('button[type="submit"]');
+  const estimateEndpoint = estimateForm.getAttribute("data-estimate-endpoint") || "/api/estimate";
+  const estimateFallbackEndpoint = estimateForm.getAttribute("data-estimate-fallback-endpoint") || "";
+  const estimateAuthToken = estimateForm.getAttribute("data-estimate-auth-token") || "";
   let latestEstimate = null;
   let latestProblem = "";
 
@@ -1102,7 +1105,7 @@ if (estimateForm) {
       running: "Analyzing operational scope...",
       ready: "NEXURA estimate prepared. Human validation remains required.",
       error: "The estimate could not be generated.",
-      paymentBusy: "Initializing...",
+      paymentBusy: "Opening...",
       scopeFallback: "Estimated operational scope",
       missingPrefix: "Missing details",
       humanValidation: "Human validation required before final proposal.",
@@ -1117,7 +1120,7 @@ if (estimateForm) {
       running: "Analyse du perimetre operationnel...",
       ready: "Estimation NEXURA preparee. Une validation humaine reste requise.",
       error: "L'estimation n'a pas pu etre generee.",
-      paymentBusy: "Initialisation...",
+      paymentBusy: "Ouverture...",
       scopeFallback: "Perimetre operationnel estime",
       missingPrefix: "Details manquants",
       humanValidation: "Validation humaine requise avant la proposition finale.",
@@ -1139,21 +1142,24 @@ if (estimateForm) {
 
     if (!estimate) return;
 
-    const assessmentAmount = Math.min(
-      150000,
-      Math.max(25000, Number(estimate.estimated_min) || 75000)
-    );
-
     latestEstimate = {
-      leadId: data?.lead?.id || "",
+      leadId: data?.lead?.id || estimate.lead_id || "",
+      estimateId: estimate.id || "",
       email: data?.lead?.email || "",
-      amount: assessmentAmount
+      recommendedScope: estimate.recommended_scope || copy.scopeFallback,
+      amount: 25000
     };
 
     if (problemTarget) problemTarget.textContent = latestProblem || "Pending";
     if (scopeTarget) scopeTarget.textContent = estimate.recommended_scope || copy.scopeFallback;
     if (rangeTarget) {
-      rangeTarget.textContent = `${formatCurrency(estimate.estimated_min)} - ${formatCurrency(estimate.estimated_max)}`;
+      const estimatedMin = Number.isFinite(Number(estimate.estimated_min))
+        ? Number(estimate.estimated_min)
+        : Number(estimate.estimated_min_cad || 0) * 100;
+      const estimatedMax = Number.isFinite(Number(estimate.estimated_max))
+        ? Number(estimate.estimated_max)
+        : Number(estimate.estimated_max_cad || 0) * 100;
+      rangeTarget.textContent = `${formatCurrency(estimatedMin)} - ${formatCurrency(estimatedMax)}`;
     }
     if (workflowCountTarget) workflowCountTarget.textContent = `${estimate.scores?.workflow_count || 1}/5`;
     if (integrationTarget) integrationTarget.textContent = `${estimate.scores?.integration_count || 1}/5`;
@@ -1162,7 +1168,7 @@ if (estimateForm) {
     if (dashboardNeedTarget) dashboardNeedTarget.textContent = `${estimate.scores?.dashboard_need || 1}/5`;
     if (analysisNeedTarget) analysisNeedTarget.textContent = `${estimate.scores?.ai_need || 1}/5`;
     if (urgencyTarget) urgencyTarget.textContent = `${estimate.scores?.urgency_risk || 1}/5`;
-    if (complexityTarget) complexityTarget.textContent = getComplexityLevel(estimate.scores?.total);
+    if (complexityTarget) complexityTarget.textContent = estimate.complexity || getComplexityLevel(estimate.scores?.total);
     if (summaryTarget) summaryTarget.textContent = estimate.client_facing_summary || estimate.ai_summary || "";
     if (missingTarget) {
       const missing = Array.isArray(estimate.missing_information) ? estimate.missing_information : [];
@@ -1171,8 +1177,50 @@ if (estimateForm) {
     if (confidenceTarget) {
       confidenceTarget.textContent = estimate.confidence ? `${estimate.confidence} ${copy.confidenceLabel}` : "Draft";
     }
-    if (paymentButton) paymentButton.hidden = false;
+    if (paymentButton) paymentButton.hidden = !latestEstimate.leadId || !latestEstimate.estimateId;
     if (resultPanel) resultPanel.hidden = false;
+  };
+
+  const postEstimate = (endpoint, payload) => {
+    const headers = {
+      "content-type": "application/json",
+      accept: "application/json"
+    };
+
+    if (estimateAuthToken) {
+      headers.authorization = `Bearer ${estimateAuthToken}`;
+    }
+
+    return fetch(endpoint, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload)
+    });
+  };
+
+  const requestEstimate = async (payload) => {
+    try {
+      const response = await postEstimate(estimateEndpoint, payload);
+      const data = await parseJsonResponse(response);
+
+      if (!response.ok && estimateFallbackEndpoint && response.status >= 500) {
+        return requestEstimateFallback(payload);
+      }
+
+      return { response, data };
+    } catch (error) {
+      if (estimateFallbackEndpoint) {
+        return requestEstimateFallback(payload);
+      }
+
+      throw error;
+    }
+  };
+
+  const requestEstimateFallback = async (payload) => {
+    const response = await postEstimate(estimateFallbackEndpoint, payload);
+    const data = await parseJsonResponse(response);
+    return { response, data };
   };
 
   estimateForm.addEventListener("submit", async (event) => {
@@ -1202,20 +1250,14 @@ if (estimateForm) {
     };
 
     latestProblem = payload.workflow_summary;
+    latestEstimate = null;
+    if (paymentButton) paymentButton.hidden = true;
 
     setButtonBusy(submitButton, true, copy.busy);
     setMessage(statusTarget, "success", copy.running);
 
     try {
-      const response = await fetch("/api/estimate", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-      const data = await parseJsonResponse(response);
+      const { response, data } = await requestEstimate(payload);
 
       if (response.ok && data?.ok) {
         renderEstimate(data);
@@ -1233,17 +1275,25 @@ if (estimateForm) {
 
   if (paymentButton) {
     paymentButton.addEventListener("click", () => {
+      if (!latestEstimate?.leadId || !latestEstimate?.estimateId) {
+        setMessage(statusTarget, "error", copy.error);
+        return;
+      }
+
       setButtonBusy(paymentButton, true, copy.paymentBusy);
       startOperationalCheckout({
         trigger: paymentButton,
         payload: {
-          lead_id: latestEstimate?.leadId || "",
-          email: latestEstimate?.email || "",
-          amount: latestEstimate?.amount || 75000
+          lead_id: latestEstimate.leadId,
+          ai_estimate_id: latestEstimate.estimateId,
+          email: latestEstimate.email,
+          recommended_scope: latestEstimate.recommendedScope,
+          amount: latestEstimate.amount
         }
       });
     });
   }
+
 }
 
 const contactInquiryForm = document.querySelector("[data-contact-form]");

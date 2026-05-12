@@ -105,7 +105,7 @@ const saveTrackingConsent = (choices) => {
 const cookieI18n = isEnglishDocument
   ? {
     title: "Cookie preferences",
-    copy: "Essential site storage. Analytics or marketing measurement only with consent.",
+    copy: "Essential storage. Optional measurement only with consent.",
     analytics: "Analytics measurement",
     marketing: "Marketing measurement",
     reject: "Reject optional",
@@ -115,7 +115,7 @@ const cookieI18n = isEnglishDocument
   }
   : {
     title: "Préférences témoins",
-    copy: "Stockage essentiel du site. Mesures analytiques ou marketing seulement avec consentement.",
+    copy: "Stockage essentiel. Mesure optionnelle seulement avec consentement.",
     analytics: "Mesure analytique",
     marketing: "Mesure marketing",
     reject: "Refuser l'optionnel",

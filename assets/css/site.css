@@ -2282,23 +2282,68 @@ select {
     bottom: 12px;
     left: 12px;
     width: auto;
+    max-width: calc(100vw - 24px);
   }
 
   .cookie-consent-panel {
-    max-height: min(72svh, 520px);
+    width: 100%;
+    max-width: 100%;
+    gap: 0.55rem;
+    max-height: min(64svh, 430px);
+    padding: 0.75rem;
     border-radius: var(--radius-sm);
+  }
+
+  .cookie-consent-copy,
+  .cookie-consent p,
+  .cookie-consent-options,
+  .cookie-consent-actions {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .cookie-kicker {
+    margin-bottom: 0.15rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+  }
+
+  .cookie-consent h2 {
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
+  }
+
+  .cookie-consent p {
+    font-size: 0.86rem;
+    line-height: 1.4;
   }
 
   .cookie-consent-options {
     grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+
+  .cookie-consent-options label {
+    width: 100%;
+    max-width: 100%;
+    min-height: 40px;
+    padding: 0.52rem 0.65rem;
+    font-size: 0.9rem;
   }
 
   .cookie-consent-actions {
     justify-content: stretch;
+    gap: 0.45rem;
   }
 
   .cookie-consent-actions .button {
     flex: 1 1 100%;
+    width: 100%;
+    max-width: 100%;
+    min-height: 42px;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -5891,40 +5936,97 @@ body.ai-positioning .whatsapp-inline-link {
 }
 
 @media (max-width: 720px) {
+  body.ai-positioning {
+    --width-content: min(1280px, calc(100% - 2rem));
+  }
+
+  body.ai-positioning .container {
+    width: var(--width-content);
+    max-width: calc(100vw - 2rem);
+  }
+
   body.ai-positioning .section {
     padding: var(--section-padding) 0;
   }
 
   body.ai-positioning .nexura-hero {
-    padding-top: 2.4rem;
+    padding-top: 2rem;
+    overflow-x: clip;
   }
 
-  body.ai-positioning .nexura-hero-copy h1 {
-    max-width: 12ch;
-    font-size: 2.375rem;
-    line-height: 0.95;
+  body.ai-positioning .nexura-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  body.ai-positioning .nexura-hero-copy {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  body.ai-positioning .nexura-hero-copy h1,
+  body.ai-positioning .hero-copy h1 {
+    max-width: min(100%, 11ch);
+    font-size: clamp(1.85rem, 7.4vw, 2.2rem);
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    hyphens: auto;
   }
 
   body.ai-positioning .nexura-hero-copy .hero-lead {
-    font-size: 1rem;
+    min-width: 0;
+    width: 100%;
+    max-width: min(100%, 37ch);
+    font-size: 0.96rem;
     line-height: 1.55;
+    overflow-wrap: anywhere;
   }
 
-  body.ai-positioning .hero-copy h1 {
+  body.ai-positioning .hero-actions {
+    min-width: 0;
+    width: 100%;
     max-width: 100%;
-    font-size: 2.375rem;
-    line-height: 0.95;
-    letter-spacing: 0;
-    text-transform: none;
-    overflow-wrap: normal;
-    word-break: normal;
-    hyphens: none;
+    gap: 0.75rem;
   }
 
-  body.ai-positioning .nexura-hero-copy h1 {
-    max-width: 12ch;
-    font-size: 2.375rem;
-    line-height: 0.95;
+  body.ai-positioning .hero-actions .button {
+    min-width: 0;
+    padding-inline: 0.95rem;
+    line-height: 1.22;
+    text-align: center;
+    white-space: normal;
+  }
+
+  body.ai-positioning .nexura-proof-strip {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  body.ai-positioning .nexura-proof-strip li {
+    min-width: 0;
+    min-height: 3rem;
+    padding: 0.75rem 0.85rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    overflow-wrap: anywhere;
+  }
+
+  body.ai-positioning .nexura-topology {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  body.ai-positioning .cookie-consent,
+  body.ai-positioning .cookie-consent-panel {
+    max-width: calc(100vw - 24px);
+    overflow-x: hidden;
   }
 
   body.ai-positioning .ai-hero {
@@ -5951,5 +6053,64 @@ body.ai-positioning .whatsapp-inline-link {
 
   .ai-flow div {
     min-height: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  body.ai-positioning {
+    --width-content: min(1280px, calc(100% - 1.5rem));
+  }
+
+  body.ai-positioning .container {
+    max-width: calc(100vw - 1.5rem);
+  }
+
+  body.ai-positioning .nexura-hero {
+    padding-top: 1.6rem;
+  }
+
+  body.ai-positioning .ai-hero.nexura-hero {
+    padding-top: 1.6rem;
+    padding-bottom: 3rem;
+  }
+
+  body.ai-positioning .nexura-hero-copy h1,
+  body.ai-positioning .hero-copy h1 {
+    max-width: min(100%, 10.8ch);
+    font-size: clamp(1.5rem, 6.4vw, 1.72rem);
+    line-height: 1.04;
+  }
+
+  body.ai-positioning .hero .eyebrow {
+    max-width: 100%;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    overflow-wrap: anywhere;
+  }
+
+  body.ai-positioning .nexura-hero-copy .hero-lead {
+    max-width: min(100%, 34ch);
+    font-size: 0.86rem;
+    line-height: 1.48;
+  }
+
+  body.ai-positioning .hero-actions .button {
+    min-height: 48px;
+    padding: 0.72rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  body.ai-positioning .nexura-proof-strip {
+    margin-top: 1.2rem;
+  }
+
+  body.ai-positioning .nexura-proof-strip li {
+    min-height: 2.65rem;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.6rem;
+  }
+
+  body.ai-positioning .nexura-topology {
+    display: none;
   }
 }

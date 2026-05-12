@@ -1,0 +1,15 @@
+{
+    "name": "nexuradata-domain-proxy",
+    "main": "./nexuradata-domain-proxy.js",
+    "compatibility_date": "2026-05-12",
+    "routes": [
+        {
+            "pattern": "nexuradata.ca/*",
+            "zone_name": "nexuradata.ca"
+        },
+        {
+            "pattern": "www.nexuradata.ca/*",
+            "zone_name": "nexuradata.ca"
+        }
+    ]
+}

@@ -63,6 +63,9 @@ const emailSectionTitle = (label) =>
 const emailActionBlock = (title, text) =>
   `<div style="background:rgba(183,106,55,0.12);border:1px solid rgba(183,106,55,0.28);border-radius:4px;padding:14px 16px;margin:0 0 18px;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#b76a37;text-transform:uppercase;margin-bottom:6px;">Action équipe</span><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#e8e4dc;line-height:1.6;"><strong>${escapeHtml(title)}</strong><br>${escapeHtml(text)}</p></div>`;
 
+const emailApprovalBlock = (primaryAction, secondaryAction, holdAction) =>
+  `<div style="background:rgba(232,228,220,0.07);border:1px solid rgba(232,228,220,0.14);border-radius:4px;padding:14px 16px;margin:0 0 18px;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#a09a90;text-transform:uppercase;margin-bottom:8px;">Approval rapide</span><p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#e8e4dc;line-height:1.55;"><strong>APPROVE</strong> — ${escapeHtml(primaryAction)}</p><p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#c8c4bc;line-height:1.55;"><strong>ADJUST</strong> — ${escapeHtml(secondaryAction)}</p><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#c8c4bc;line-height:1.55;"><strong>HOLD</strong> — ${escapeHtml(holdAction)}</p></div>`;
+
 const sendResendEmail = async (env, payload, idempotencyKey) => {
   const apiKey = normalizeText(env?.RESEND_API_KEY, 256);
   const from = normalizeText(env?.RESEND_FROM_EMAIL, 200);
@@ -161,6 +164,7 @@ export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) =>
     "ACTION EQUIPE",
     "Qualifier le dossier, confirmer la priorite et assigner la prochaine etape.",
     `Console equipe: ${portalUrl}`,
+    "Decision rapide: APPROVE = assigner et repondre; ADJUST = corriger priorite/scope; HOLD = demander plus d'information.",
     "",
     "CLIENT",
     `Dossier: ${intakeRecord.caseId}`,
@@ -181,6 +185,7 @@ export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) =>
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Nouveau dossier pour l'equipe</p>` +
     emailActionBlock("Dossier à qualifier", "Confirmer la priorité, assigner la prochaine étape et répondre depuis la console interne.") +
+    emailApprovalBlock("Assigner le dossier et répondre au client.", "Corriger la priorité, le support ou la prochaine étape.", "Demander les détails manquants avant de poursuivre.") +
     emailBadge("Référence", intakeRecord.caseId) +
     emailSectionTitle("Client") +
     emailRow("Nom", intakeRecord.nom) +
@@ -230,6 +235,8 @@ export const sendTeamOperationalAssessmentEmail = async (env, detail, requestUrl
     "ACTION EQUIPE",
     "Valider l'estimation, prioriser le dossier et preparer la recommandation humaine.",
     `Console equipe: ${portalUrl}`,
+    "Decision rapide: APPROVE = laisser le paiement Stripe de revue operationnelle avancer; ADJUST = modifier scope/montant avant suivi; HOLD = demander plus d'information.",
+    "Note: OpenAI prepare l'estimation. Stripe complete le paiement. La validation humaine reste obligatoire.",
     "",
     "ORGANISATION",
     `Organisation: ${payload.organization || "Non fournie"}`,
@@ -255,6 +262,7 @@ export const sendTeamOperationalAssessmentEmail = async (env, detail, requestUrl
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Evaluation operationnelle recue</p>` +
     emailActionBlock("Évaluation à valider", "Prioriser le dossier, vérifier la fourchette indicative et préparer la recommandation humaine.") +
+    emailApprovalBlock("Accepter l'estimation IA et laisser la revue Stripe avancer.", "Modifier le scope, la fourchette ou le niveau de revue avant le suivi.", "Bloquer la suite et demander les informations manquantes au client.") +
     emailBadge("Organisation", payload.organization || "Non fournie") +
     emailSectionTitle("Organisation") +
     emailRow("Contact", payload.contact_name || "Non fourni") +
@@ -307,6 +315,7 @@ export const sendTeamPaymentCompletedEmail = async (env, detail, requestUrl) => 
     "ACTION EQUIPE",
     "Lancer la revue humaine, valider l'estimation et preparer la prochaine recommandation.",
     `Console equipe: ${portalUrl}`,
+    "Decision rapide: APPROVE = lancer la revue; ADJUST = corriger le workflow interne; HOLD = verifier paiement/client avant action.",
     "",
     "PAIEMENT",
     `Montant: ${amount}`,
@@ -320,6 +329,7 @@ export const sendTeamPaymentCompletedEmail = async (env, detail, requestUrl) => 
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Paiement operationnel confirme</p>` +
     emailActionBlock("Revue humaine à lancer", "Valider l'estimation, préparer la prochaine recommandation et activer le suivi opérationnel.") +
+    emailApprovalBlock("Démarrer la revue humaine et activer le suivi du workflow.", "Corriger le workflow interne ou le montant de suivi si nécessaire.", "Vérifier le paiement ou l'identité client avant toute action.") +
     emailBadge("Montant", amount) +
     emailSectionTitle("Paiement") +
     emailRow("Courriel client", customerEmail) +

@@ -84,6 +84,7 @@ describe("sendLabNotificationEmail()", () => {
     expect(body.subject).toContain("Action équipe");
     expect(body.subject).toContain("NX-20260101-ABCD1234");
     expect(body.text).toContain("ACTION EQUIPE");
+    expect(body.text).toContain("Decision rapide: APPROVE");
     expect(body.text).toContain("CLIENT");
     expect(body.text).toContain("DEMANDE");
     expect(body.from).toBe("noreply@nexuradata.ca");
@@ -160,6 +161,9 @@ describe("team notification emails", () => {
     const body = JSON.parse(options.body);
     expect(body.to).toEqual(["ops@test.com", "dossiers@test.com"]);
     expect(body.text).toContain("ACTION EQUIPE");
+    expect(body.text).toContain("OpenAI prepare l'estimation");
+    expect(body.text).toContain("Stripe complete le paiement");
+    expect(body.text).toContain("Decision rapide: APPROVE");
     expect(body.text).toContain("ORGANISATION");
     expect(body.text).toContain("ESTIMATION");
     expect(body.subject).toContain("NEXURA Client");
@@ -193,6 +197,7 @@ describe("team notification emails", () => {
     expect(body.to).toEqual(["ops@test.com"]);
     expect(body.subject).toContain("Paiement confirmé");
     expect(body.text).toContain("ACTION EQUIPE");
+    expect(body.text).toContain("Decision rapide: APPROVE");
     expect(body.text).toContain("PAIEMENT");
     expect(body.text).toContain("PAY-1");
   });

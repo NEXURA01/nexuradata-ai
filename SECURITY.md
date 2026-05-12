@@ -22,7 +22,7 @@ Out of scope:
 
 Please report security vulnerabilities **privately** by email:
 
-**<privacy@nexuradata.ca>**
+**<security@nexuradata.ca>**
 
 Include:
 

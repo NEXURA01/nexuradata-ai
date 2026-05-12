@@ -57,9 +57,9 @@ Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md).
 ## Securite GitHub
 
 - Le depot public GitHub est `NEXURA01/nexuradata-ai`.
-- Les alertes Dependabot, le secret scanning et la push protection sont actives dans GitHub.
-- La branche `main` est protegee: PR requise, historique lineaire, force-push et suppression bloques.
-- Les controles requis couvrent le build Cloudflare, `njsscan` et CodeQL.
+- La configuration repo inclut CI, CodeQL, `njsscan`, Dependabot et dependency review.
+- Les protections GitHub a maintenir dans les regles du depot: PR requise vers `main`, historique lineaire, suppression/force-push bloques, required checks et bypass limite au mode break-glass.
+- Les controles requis recommandes couvrent `Tests + build`, `CodeQL`, `njsscan code scanning` et dependency review.
 - Les vulnerabilites doivent etre rapportees en prive selon [`SECURITY.md`](SECURITY.md).
 
 ## Commandes

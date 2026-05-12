@@ -11,6 +11,9 @@ on:
 jobs:
   create_neon_branch:
     name: Create Neon Branch
+    permissions:
+      contents: read
+      pull-requests: read
     concurrency:
       group: ${{ github.workflow }}-create-${{ github.ref }}
       cancel-in-progress: true
@@ -24,26 +27,46 @@ jobs:
         env:
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
           NEON_PROJECT_ID: ${{ vars.NEON_PROJECT_ID }}
+          PR_NUMBER: ${{ github.event.number }}
+          PR_HEAD_REF: ${{ github.head_ref }}
         run: |
-          BRANCH_NAME="preview/pr-${{ github.event.number }}-${{ github.head_ref }}"
+          set -euo pipefail
+          if [ -z "${NEON_API_KEY:-}" ] || [ -z "${NEON_PROJECT_ID:-}" ]; then
+            echo "Neon preview branch skipped: missing NEON_API_KEY or NEON_PROJECT_ID."
+            exit 0
+          fi
+          SAFE_HEAD_REF=$(printf '%s' "$PR_HEAD_REF" | tr -c 'A-Za-z0-9._-' '-' | cut -c1-80)
+          BRANCH_NAME="preview/pr-${PR_NUMBER}-${SAFE_HEAD_REF}"
           EXPIRES_AT=$(date -u --date '+14 days' +'%Y-%m-%dT%H:%M:%SZ')
+          PAYLOAD=$(jq -n --arg name "$BRANCH_NAME" --arg expires_at "$EXPIRES_AT" '{branch: {name: $name}, expires_at: $expires_at}')
           curl -s -X POST \
             "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches" \
             -H "Authorization: Bearer $NEON_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{\"branch\": {\"name\": \"$BRANCH_NAME\"}, \"expires_at\": \"$EXPIRES_AT\"}"
+            -d "$PAYLOAD"
 
   delete_neon_branch:
     name: Delete Neon Branch
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - name: Delete Neon Branch
         env:
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
           NEON_PROJECT_ID: ${{ vars.NEON_PROJECT_ID }}
+          PR_NUMBER: ${{ github.event.number }}
+          PR_HEAD_REF: ${{ github.head_ref }}
         run: |
-          BRANCH_NAME="preview/pr-${{ github.event.number }}-${{ github.head_ref }}"
+          set -euo pipefail
+          if [ -z "${NEON_API_KEY:-}" ] || [ -z "${NEON_PROJECT_ID:-}" ]; then
+            echo "Neon preview branch cleanup skipped: missing NEON_API_KEY or NEON_PROJECT_ID."
+            exit 0
+          fi
+          SAFE_HEAD_REF=$(printf '%s' "$PR_HEAD_REF" | tr -c 'A-Za-z0-9._-' '-' | cut -c1-80)
+          BRANCH_NAME="preview/pr-${PR_NUMBER}-${SAFE_HEAD_REF}"
           BRANCH_ID=$(curl -s \
             "https://console.neon.tech/api/v2/projects/$NEON_PROJECT_ID/branches" \
             -H "Authorization: Bearer $NEON_API_KEY" \

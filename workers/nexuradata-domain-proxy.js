@@ -1,9 +1,9 @@
 const UPSTREAM_ORIGIN = "https://nexuradata-ai.vercel.app";
 const API_UPSTREAM_ORIGIN = "https://nexuradata-ai.pages.dev";
 const HTML_CACHE_CONTROL = "no-store, max-age=0, must-revalidate";
-const HTML_UPSTREAM_CACHE_BYPASS = "20260512-mobile";
+const HTML_RELEASE_VERSION = "20260512-mobile";
 const HTML_REPLACEMENTS = [
-  [/site\.css\?v=(?:20260503i|20260511-ai|20260512-visual)/g, `site.css?v=${HTML_UPSTREAM_CACHE_BYPASS}`],
+  [/site\.css\?v=(?:20260503i|20260511-ai|20260512-visual)/g, `site.css?v=${HTML_RELEASE_VERSION}`],
   [/Queue Stable/g, "Synchronization Stable"],
   [/Execution Online/g, "Infrastructure Online"]
 ];
@@ -36,7 +36,7 @@ function buildUpstreamRequest(request) {
   headers.delete("x-forwarded-proto");
   headers.set("x-nexura-original-host", incomingUrl.host);
   if (htmlNavigation) {
-    upstreamUrl.searchParams.set("__nexura_html", HTML_UPSTREAM_CACHE_BYPASS);
+    upstreamUrl.searchParams.set("__nexura_html", HTML_RELEASE_VERSION);
     headers.set("cache-control", "no-cache");
     headers.set("pragma", "no-cache");
   }
@@ -52,7 +52,7 @@ function buildUpstreamRequest(request) {
     init.cf = {
       cacheTtl: 0,
       cacheEverything: false,
-      cacheKey: `${upstreamUrl.toString()}::${HTML_UPSTREAM_CACHE_BYPASS}`
+      cacheKey: `${upstreamUrl.toString()}::${HTML_RELEASE_VERSION}`
     };
   }
 
@@ -81,7 +81,7 @@ async function buildResponse(response, request) {
   }
 
   headers.set("x-nexura-domain-proxy", getUpstreamOrigin(requestUrl) === API_UPSTREAM_ORIGIN ? "pages-functions" : "vercel");
-  headers.set("x-nexura-proxy-version", HTML_UPSTREAM_CACHE_BYPASS);
+  headers.set("x-nexura-proxy-version", HTML_RELEASE_VERSION);
   if (shouldBypassCache) {
     headers.set("cache-control", HTML_CACHE_CONTROL);
     headers.set("cdn-cache-control", HTML_CACHE_CONTROL);

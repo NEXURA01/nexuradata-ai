@@ -18,9 +18,7 @@ jobs:
     name: njsscan code scanning
     steps:
       - name: Checkout the code
-        run: |
-          git clone https://github.com/${{ github.repository }}.git .
-          git checkout ${{ github.sha }}
+        uses: actions/checkout@v4
 
       - name: Install njsscan
         run: pip install njsscan

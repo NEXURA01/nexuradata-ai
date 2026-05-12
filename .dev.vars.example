@@ -1,15 +1,15 @@
-DATABASE_URL=postgresql://postgres.project-ref:password@aws-0-ca-central-1.pooler.supabase.com:6543/postgres?sslmode=require
+DATABASE_URL=replace-with-supabase-postgres-url
 SUPABASE_URL=https://project-ref.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=replace-with-service-role-key
 SUBABASE_SECRET_KEY=replace-with-service-role-key
 OPENAI_API_KEY=replace-with-openai-api-key
-RESEND_API_KEY=re_xxxxxxxxx
+RESEND_API_KEY=replace-with-resend-api-key
 RESEND_FROM_EMAIL=NEXURA <dossiers@nexuradata.ca>
 LAB_INBOX_EMAIL=operations@nexuradata.ca
-PUBLIC_SITE_ORIGIN=https://nexadura.com
+PUBLIC_SITE_ORIGIN=https://nexuradata.ca
 ACCESS_CODE_SECRET=replace-with-a-long-random-secret
-STRIPE_SECRET_KEY=sk_test_xxxxxxxxx
-STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxx
-STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxx
+STRIPE_SECRET_KEY=replace-with-stripe-secret-key
+STRIPE_PUBLISHABLE_KEY=replace-with-stripe-publishable-key
+STRIPE_WEBHOOK_SECRET=replace-with-stripe-webhook-secret
 OPS_ACCESS_ALLOWED_EMAILS=o.blanchet13@gmail.com
-OPS_ACCESS_ALLOWED_DOMAIN=nexadura.com
+OPS_ACCESS_ALLOWED_DOMAIN=nexuradata.ca

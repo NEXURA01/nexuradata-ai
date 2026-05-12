@@ -4,6 +4,8 @@ import { hasSupabaseServiceKey, supabaseInsert } from "../_lib/supabase.js";
 import { createHostedCheckoutSession } from "../_lib/stripe.js";
 
 const DEFAULT_ACTIVATION_AMOUNT_CENTS = 75000;
+const MIN_ASSESSMENT_AMOUNT_CENTS = 25000;
+const MAX_ASSESSMENT_AMOUNT_CENTS = 150000;
 
 const generatePaymentId = () => {
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
@@ -14,7 +16,7 @@ const generatePaymentId = () => {
 const normalizeAmount = (value) => {
   const amount = Math.round(Number(value || DEFAULT_ACTIVATION_AMOUNT_CENTS));
 
-  if (!Number.isFinite(amount) || amount < 100 || amount > 10000000) {
+  if (!Number.isFinite(amount) || amount < MIN_ASSESSMENT_AMOUNT_CENTS || amount > MAX_ASSESSMENT_AMOUNT_CENTS) {
     throw new Error("Montant invalide.");
   }
 
@@ -46,7 +48,7 @@ export const onRequestPost = async (context) => {
       caseId: leadId || paymentRequestId,
       paymentKind: "operational_activation",
       label: "Operational Infrastructure Assessment",
-      description: "Human-validated scope activation for operational infrastructure workflow initialization.",
+      description: "Assessment payment before human validation, final proposal and any implementation invoice.",
       amountCents,
       currency: "cad",
       imageUrl: `${origin}/assets/stripe-operational-activation.png`

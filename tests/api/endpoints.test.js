@@ -237,6 +237,22 @@ describe("POST /api/create-checkout", () => {
     expect(res.status).toBe(400);
   });
 
+  it("rejects implementation-sized checkout amounts before creating Stripe sessions", async () => {
+    const env = {
+      SUPABASE_URL: "https://project.supabase.co",
+      SUBABASE_SECRET_KEY: "service-role",
+      STRIPE_SECRET_KEY: "sk_test"
+    };
+    const ctx = makeContext({ amount: 2000000 }, env);
+    ctx.request = new Request("https://nexuradata.ca/api/create-checkout", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ amount: 2000000 })
+    });
+    const res = await activationCheckoutHandler(ctx);
+    expect(res.status).toBe(400);
+  });
+
   it("OPTIONS handler returns 204", () => {
     const res = activationCheckoutOptions({ env: {} });
     expect(res.status).toBe(204);

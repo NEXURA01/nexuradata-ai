@@ -43,6 +43,27 @@ describe("AI pricing estimator", () => {
     expect(estimate.estimated_max_cad).toBe(50000);
   });
 
+  it("derives scope from the score band instead of accepting mismatched AI labels", () => {
+    const estimate = normalizeEstimate({
+      recommended_scope: "This will cost exactly a dashboard",
+      estimated_min_cad: 7500,
+      estimated_max_cad: 15000,
+      scores: {
+        workflow_count: 3,
+        integration_count: 4,
+        team_complexity: 3,
+        automation_depth: 4,
+        dashboard_need: 3,
+        ai_need: 3,
+        urgency_risk: 3
+      }
+    });
+
+    expect(estimate.scores.total).toBe(23);
+    expect(estimate.recommended_scope).toBe("Cross-Team Workflow / Dashboard");
+    expect(estimate.client_facing_summary).toContain("$7,500-$15,000 CAD");
+  });
+
   it("rejects fixed-price language in the client-facing summary", () => {
     const estimate = normalizeEstimate({
       client_facing_summary: "This will cost exactly $20,000 CAD.",

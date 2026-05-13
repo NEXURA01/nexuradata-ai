@@ -3,202 +3,144 @@
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
-import { OrbitalDiagram } from "@/components/OrbitalDiagram";
+import { Logo, LogoMark } from "@/components/Logo";
 
 export function HomePage() {
   const t = useTranslations();
 
   return (
     <main className="min-h-screen">
-      {/* Hero - Plate I */}
-      <section className="relative min-h-screen flex flex-col">
-        {/* Technical frame - top */}
-        <div className="absolute top-0 left-0 right-0 h-12 border-b border-foreground/10 flex items-center justify-between px-6">
-          <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">
-            NXR · 0001 — QUIET MECHANISM
-          </span>
-          <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">
-            MMXXVI / FIG. I
-          </span>
-        </div>
+      {/* Hero — Clear value proposition */}
+      <section className="min-h-[85vh] flex items-center border-b border-foreground/10">
+        <div className="w-full max-w-5xl mx-auto px-8 py-24">
+          <div className="max-w-3xl">
+            {/* Logo */}
+            <div className="mb-12">
+              <Logo size={56} />
+            </div>
 
-        {/* Main content */}
-        <div className="flex-1 flex items-center pt-12">
-          <div className="w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left: Typography */}
-            <div className="lg:border-l-2 border-foreground/20 lg:pl-8">
-              <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-foreground/60 mb-6">
-                {t("hero.tagline")}
-              </p>
-              
-              <h1 className="font-serif text-6xl md:text-7xl lg:text-8xl font-normal tracking-tight text-foreground leading-[0.9] mb-2">
-                Nexura
-              </h1>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light italic text-foreground/70 mb-1">
-                Analytics
-              </h2>
-              <p className="font-serif text-lg md:text-xl italic text-foreground/60 mb-8">
-                AI automation, quietly engineered.
-              </p>
+            {/* Headline */}
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground mb-6">
+              We find what&apos;s slowing<br />
+              your company down.
+            </h1>
 
-              <div className="flex flex-wrap gap-4 font-mono text-[9px] tracking-[0.2em] uppercase text-foreground/50 mb-12">
-                <span>EST. 2026</span>
-                <span>·</span>
-                <span>AGENTS</span>
-                <span>·</span>
-                <span>PIPELINES</span>
-                <span>·</span>
-                <span>OBSERVABILITY</span>
-              </div>
+            {/* Subheadline */}
+            <p className="text-lg md:text-xl text-foreground/70 max-w-xl mb-10 leading-relaxed">
+              Operational assessments that expose inefficiencies, 
+              followed by automation that eliminates them.
+            </p>
 
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/operational-assessment"
-                className="inline-flex items-center justify-center px-8 py-4 bg-foreground text-background font-mono text-[10px] tracking-[0.2em] uppercase hover:bg-foreground/90 transition-colors"
+                className="inline-flex items-center justify-center px-8 py-4 bg-foreground text-background font-medium text-sm hover:bg-foreground/90 transition-colors"
               >
-                {t("hero.cta")} →
+                Start Free Assessment
+              </Link>
+              <Link
+                href="#how-it-works"
+                className="inline-flex items-center justify-center px-8 py-4 border border-foreground/20 text-foreground font-medium text-sm hover:bg-foreground/5 transition-colors"
+              >
+                See How It Works
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Right: Orbital Diagram */}
-            <div className="relative">
-              <div className="font-mono text-[9px] tracking-[0.2em] text-foreground/50 text-center mb-4">
-                FIG. II · ORCHESTRATION OF AGENTS
+      {/* What We Do — Three clear services */}
+      <section className="py-24 bg-surface">
+        <div className="max-w-5xl mx-auto px-8">
+          <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-16">
+            What we do
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-12">
+            <div>
+              <div className="w-12 h-12 border-2 border-foreground/20 flex items-center justify-center mb-6">
+                <span className="font-mono text-lg text-foreground">01</span>
               </div>
-              <OrbitalDiagram />
+              <h3 className="font-serif text-xl mb-3 text-foreground">
+                Operational Assessment
+              </h3>
+              <p className="text-foreground/70 leading-relaxed">
+                We analyze your workflows, tools, and team structure to identify exactly where time and money are being lost.
+              </p>
+            </div>
+
+            <div>
+              <div className="w-12 h-12 border-2 border-foreground/20 flex items-center justify-center mb-6">
+                <span className="font-mono text-lg text-foreground">02</span>
+              </div>
+              <h3 className="font-serif text-xl mb-3 text-foreground">
+                Workflow Automation
+              </h3>
+              <p className="text-foreground/70 leading-relaxed">
+                We build systems that handle repetitive tasks automatically. Your team focuses on work that matters.
+              </p>
+            </div>
+
+            <div>
+              <div className="w-12 h-12 border-2 border-foreground/20 flex items-center justify-center mb-6">
+                <span className="font-mono text-lg text-foreground">03</span>
+              </div>
+              <h3 className="font-serif text-xl mb-3 text-foreground">
+                Centralized Operations
+              </h3>
+              <p className="text-foreground/70 leading-relaxed">
+                One dashboard. One source of truth. No more switching between ten different tools to understand what&apos;s happening.
+              </p>
             </div>
           </div>
         </div>
-
-        {/* Technical frame - bottom */}
-        <div className="h-12 border-t border-foreground/10 flex items-center justify-between px-6">
-          <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">
-            AI AUTOMATION ATELIER
-          </span>
-          <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">
-            COVER PLATE
-          </span>
-        </div>
       </section>
 
-      {/* Dark Section - "Sovereign data" */}
-      <section className="bg-foreground text-background py-32">
-        <div className="max-w-5xl mx-auto px-6">
-          <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-background/50 mb-8">
-            CANADA — EST. 2026
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-normal leading-tight mb-8">
-            Sovereign data,<br />
-            engineered<br />
-            in silence.
-          </h2>
-          <p className="font-sans text-lg md:text-xl text-background/60 max-w-xl">
-            Private infrastructure for organizations that operate beyond the visible layer.
-          </p>
-        </div>
-      </section>
-
-      {/* Problem */}
-      <section className="py-24 border-t border-foreground/10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-baseline gap-4 mb-16">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">01</span>
-            <h2 className="font-mono text-[11px] tracking-[0.25em] uppercase text-foreground">
-              {t("problem.title")}
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-5 gap-8">
-            {(t.raw("problem.items") as Array<{ label: string; desc: string }>).map(
-              (item, i) => (
-                <div key={i} className="border-t border-foreground/15 pt-6">
-                  <div className="font-mono text-[9px] tracking-[0.2em] text-foreground/50 mb-3">
-                    P-0{i + 1}
-                  </div>
-                  <h3 className="font-serif text-xl mb-2 text-foreground">{item.label}</h3>
-                  <p className="text-sm leading-relaxed text-foreground/70">{item.desc}</p>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Solution */}
-      <section id="platform" className="py-24 border-t border-foreground/10 bg-surface">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-baseline gap-4 mb-16">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">02</span>
-            <h2 className="font-mono text-[11px] tracking-[0.25em] uppercase text-foreground">
-              {t("solution.title")}
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-4 gap-8">
-            {(t.raw("solution.items") as Array<{ label: string; desc: string }>).map(
-              (item, i) => (
-                <div key={i} className="border-l-2 border-foreground/20 pl-6">
-                  <div className="font-mono text-[9px] tracking-[0.2em] text-foreground/50 mb-3">
-                    S-0{i + 1}
-                  </div>
-                  <h3 className="font-serif text-xl mb-2 text-foreground">{item.label}</h3>
-                  <p className="text-sm leading-relaxed text-foreground/70">{item.desc}</p>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
+      {/* How It Works — Simple 4-step process */}
       <section id="how-it-works" className="py-24 border-t border-foreground/10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-baseline gap-4 mb-16">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">03</span>
-            <h2 className="font-mono text-[11px] tracking-[0.25em] uppercase text-foreground">
-              {t("howItWorks.title")}
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-4 gap-12">
-            {(
-              t.raw("howItWorks.steps") as Array<{
-                num: string;
-                label: string;
-                desc: string;
-              }>
-            ).map((step, i) => (
+        <div className="max-w-5xl mx-auto px-8">
+          <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-16">
+            How it works
+          </h2>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              { step: "1", title: "Submit assessment", desc: "Answer a few questions about your operations. Takes 5 minutes." },
+              { step: "2", title: "AI analysis", desc: "Our system identifies complexity and estimates scope." },
+              { step: "3", title: "Human review", desc: "We review the analysis and prepare recommendations." },
+              { step: "4", title: "Implementation", desc: "We build the automation. You see results." },
+            ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="relative"
               >
-                <div className="font-serif text-6xl text-foreground/10 mb-4">
-                  {step.num}
+                <div className="font-serif text-5xl text-foreground/15 mb-4">
+                  {item.step}
                 </div>
-                <h3 className="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 text-foreground">
-                  {step.label}
+                <h3 className="font-medium text-foreground mb-2">
+                  {item.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-foreground/70">{step.desc}</p>
+                <p className="text-sm text-foreground/70 leading-relaxed">
+                  {item.desc}
+                </p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Field Reports / Reviews */}
-      <section className="py-24 border-t border-foreground/10 bg-surface">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-baseline gap-4 mb-4">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">04</span>
-            <h2 className="font-mono text-[11px] tracking-[0.25em] uppercase text-foreground">
-              {t("reviews.title")}
-            </h2>
-          </div>
-          <p className="font-serif italic text-foreground/60 text-lg max-w-2xl mb-16 pl-10">
-            {t("reviews.subtitle")}
-          </p>
+      {/* Social Proof — Clean testimonials */}
+      <section className="py-24 bg-surface border-t border-foreground/10">
+        <div className="max-w-5xl mx-auto px-8">
+          <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-16">
+            What clients say
+          </h2>
 
-          <div className="grid md:grid-cols-3 gap-px bg-foreground/10 border-y border-foreground/10">
+          <div className="grid md:grid-cols-3 gap-8">
             {(
               t.raw("reviews.items") as Array<{
                 quote: string;
@@ -213,73 +155,46 @@ export function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-surface p-8 flex flex-col justify-between min-h-[280px]"
+                className="bg-background p-8 border border-foreground/10"
               >
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="font-mono text-[9px] tracking-[0.2em] text-foreground/50">
-                      R-0{i + 1}
-                    </span>
-                    <span className="font-mono text-[9px] tracking-[0.2em] text-foreground/30">
-                      ◆
-                    </span>
-                  </div>
-                  <blockquote className="font-serif text-lg leading-relaxed text-foreground/90 mb-6">
-                    <span className="text-foreground/30 mr-1">&ldquo;</span>
-                    {review.quote}
-                    <span className="text-foreground/30 ml-1">&rdquo;</span>
-                  </blockquote>
-                </div>
-                <figcaption className="pt-6 border-t border-foreground/10">
-                  <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-foreground mb-1">
+                <blockquote className="text-foreground/80 leading-relaxed mb-6">
+                  &ldquo;{review.quote}&rdquo;
+                </blockquote>
+                <figcaption>
+                  <div className="font-medium text-foreground">
                     {review.author}
                   </div>
-                  <div className="font-mono text-[9px] tracking-[0.15em] text-foreground/60 mb-1">
+                  <div className="text-sm text-foreground/60">
                     {review.role}
                   </div>
-                  <div className="font-mono text-[9px] tracking-[0.2em] text-foreground/40 uppercase">
+                  <div className="text-sm text-foreground/40">
                     {review.company}
                   </div>
                 </figcaption>
               </motion.figure>
             ))}
           </div>
-
-          {/* Bottom annotation strip */}
-          <div className="flex items-center justify-between mt-6 px-2">
-            <span className="font-mono text-[9px] tracking-[0.2em] text-foreground/40">
-              FIG. IV · CLIENT TESTIMONIES
-            </span>
-            <span className="font-mono text-[9px] tracking-[0.2em] text-foreground/40">
-              03 / 03 RECORDS
-            </span>
-          </div>
         </div>
       </section>
 
-      {/* Dark CTA - "l'accès se mérite" */}
-      <section className="bg-foreground text-background py-32">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <p className="font-mono text-[10px] tracking-[0.2em] text-background/40 mb-8">
-            NEXURA
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light italic leading-tight mb-4">
+      {/* Final CTA — Dark, clear */}
+      <section className="bg-foreground text-background py-24">
+        <div className="max-w-3xl mx-auto px-8 text-center">
+          <LogoMark size={48} className="mx-auto mb-8 text-background" />
+          
+          <h2 className="font-serif text-3xl md:text-4xl leading-tight mb-4">
             {t("finalCta.headline")}
           </h2>
-          <p className="text-background/50 text-sm mb-12">
+          <p className="text-background/60 mb-10 max-w-lg mx-auto">
             {t("finalCta.subheadline")}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/operational-assessment"
-              className="inline-flex items-center justify-center px-8 py-4 border border-background/30 text-background font-mono text-[10px] tracking-[0.2em] uppercase hover:bg-background/10 transition-colors"
-            >
-              {t("finalCta.cta")}
-            </Link>
-            <span className="font-mono text-[10px] tracking-[0.2em] text-background/30">
-              — NEXURA.CA
-            </span>
-          </div>
+          
+          <Link
+            href="/operational-assessment"
+            className="inline-flex items-center justify-center px-8 py-4 bg-background text-foreground font-medium text-sm hover:bg-background/90 transition-colors"
+          >
+            {t("finalCta.cta")}
+          </Link>
         </div>
       </section>
     </main>

@@ -293,6 +293,121 @@ export const sendTeamOperationalAssessmentEmail = async (env, detail, requestUrl
   );
 };
 
+const formatConfidence = (estimate) => {
+  const rawConfidence = estimate?.confidence || estimate?.confidence_score || "medium";
+  const normalized = normalizeText(`${rawConfidence}`, 40).toLowerCase();
+
+  if (normalized === "high") return "Élevée";
+  if (normalized === "low") return "Faible";
+  return "Moyenne";
+};
+
+const formatEstimateList = (items, fallback) => {
+  const list = Array.isArray(items) ? items : [];
+  const lines = list
+    .map((item) => normalizeText(item, 260))
+    .filter(Boolean)
+    .slice(0, 6);
+
+  return lines.length ? lines.map((item) => `- ${item}`).join("\n") : fallback;
+};
+
+export const sendClientOperationalAssessmentEmail = async (env, detail, requestUrl) => {
+  const payload = detail?.payload || {};
+  const lead = detail?.lead || {};
+  const estimate = detail?.estimate || {};
+  const workflowCase = detail?.workflowCase || detail?.workflow_case || {};
+  const clientEmail = normalizeText(payload.email || lead.email || workflowCase.contact_email, 180).toLowerCase();
+
+  if (!clientEmail) {
+    return {
+      sent: false,
+      reason: "missing-client-email"
+    };
+  }
+
+  const organization = payload.organization || lead.organization || workflowCase.organization || "votre organisation";
+  const contactName = payload.contact_name || lead.contact_name || "";
+  const reportUrl = `${getPublicOrigin(env, requestUrl)}/operational-assessment.html`;
+  const estimateRange = formatRange(estimate.estimated_min, estimate.estimated_max);
+  const recommendedScope = estimate.recommended_scope || workflowCase.recommended_solution || "Validation opérationnelle requise";
+  const confidence = formatConfidence(estimate);
+  const reasoning = formatEstimateList(
+    estimate.reasoning || estimate.infrastructure_scope?.reasoning,
+    "- L'estimation est basée sur le nombre de workflows, les outils à intégrer, les équipes impliquées, le besoin de visibilité et le niveau d'urgence."
+  );
+  const includedLayers = formatEstimateList(
+    estimate.included_layers || estimate.infrastructure_scope?.included_layers,
+    "- Lecture du flux opérationnel\n- Validation humaine\n- Recommandation de prochaine étape"
+  );
+  const missingInformation = formatEstimateList(
+    estimate.missing_information || estimate.infrastructure_scope?.missing_information,
+    "- Aucun blocage majeur indiqué dans la demande initiale. L'équipe confirmera les détails avant toute proposition finale."
+  );
+  const subject = `[NEXURA] Rapport d'évaluation opérationnelle - ${organization}`;
+  const text = formatTextLines([
+    `Bonjour ${contactName || ""},`,
+    "",
+    "Votre demande d'évaluation opérationnelle a été reçue. Voici le rapport indicatif généré à partir des informations transmises.",
+    "",
+    "RAPPORT INDICATIF",
+    `Organisation: ${organization}`,
+    `Solution recommandée: ${recommendedScope}`,
+    `Fourchette indicative: ${estimateRange}`,
+    `Confiance: ${confidence}`,
+    "",
+    "Ce rapport ne constitue pas une proposition finale ni une autorisation de paiement de mise en oeuvre. L'équipe NEXURA valide le périmètre avant toute proposition, facture ou lien de paiement d'implémentation.",
+    "",
+    "POINTS PRIS EN COMPTE",
+    reasoning,
+    "",
+    "COUCHES INCLUSES DANS LA LECTURE INITIALE",
+    includedLayers,
+    "",
+    "INFORMATIONS À CONFIRMER",
+    missingInformation,
+    "",
+    "PROCHAINE ÉTAPE",
+    "L'équipe NEXURA relit l'estimation, confirme le périmètre et vous transmet la suite appropriée. Les paiements Stripe servent uniquement à réserver ou régler une revue opérationnelle approuvée, pas à lancer automatiquement une implémentation complète.",
+    "",
+    `Référence: ${workflowCase.id || lead.id || "évaluation opérationnelle"}`,
+    `Page d'évaluation: ${reportUrl}`,
+    "",
+    "NEXURA"
+  ]);
+  const html = buildEmailHtml(
+    `<p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#e8e4dc;line-height:1.6;">Bonjour ${escapeHtml(contactName || "")},</p>` +
+    `<p style="margin:0 0 22px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#a09a90;line-height:1.6;">Votre demande d'évaluation opérationnelle a été reçue. Voici le rapport indicatif généré à partir des informations transmises.</p>` +
+    emailBadge("Rapport", organization) +
+    emailSectionTitle("Synthèse") +
+    emailRow("Solution recommandée", recommendedScope) +
+    emailRow("Fourchette indicative", estimateRange) +
+    emailRow("Confiance", confidence) +
+    emailActionBlock("Validation humaine obligatoire", "Ce rapport ne constitue pas une proposition finale. L'équipe NEXURA valide le périmètre avant toute proposition, facture ou lien de paiement d'implémentation.") +
+    emailSectionTitle("Points pris en compte") +
+    emailBlock(reasoning) +
+    emailSectionTitle("Couches incluses dans la lecture initiale") +
+    emailBlock(includedLayers) +
+    emailSectionTitle("Informations à confirmer") +
+    emailBlock(missingInformation) +
+    emailSectionTitle("Prochaine étape") +
+    emailBlock("L'équipe NEXURA relit l'estimation, confirme le périmètre et vous transmet la suite appropriée. Les paiements Stripe servent uniquement à réserver ou régler une revue opérationnelle approuvée, pas à lancer automatiquement une implémentation complète.") +
+    emailRow("Référence", workflowCase.id || lead.id || "évaluation opérationnelle") +
+    emailCta("Revoir l'évaluation", reportUrl)
+  );
+
+  return sendResendEmail(
+    env,
+    {
+      to: [clientEmail],
+      subject,
+      text,
+      html
+    },
+    emailKey("client-assessment-report", lead.id, workflowCase.id, clientEmail)
+  );
+};
+
 export const sendTeamPaymentCompletedEmail = async (env, detail, requestUrl) => {
   const recipients = getTeamNotificationRecipients(env);
 
@@ -349,6 +464,71 @@ export const sendTeamPaymentCompletedEmail = async (env, detail, requestUrl) => 
       html
     },
     emailKey("team-payment", event.id, payment.id, payment.stripe_session_id || session.id)
+  );
+};
+
+export const sendClientOperationalPaymentFollowUpEmail = async (env, detail, requestUrl) => {
+  const payment = detail?.payment || {};
+  const workflowCase = detail?.workflowCase || {};
+  const event = detail?.event || {};
+  const session = event?.data?.object || {};
+  const clientEmail = normalizeText(
+    payment.customer_email || session.customer_details?.email || session.customer_email,
+    180
+  ).toLowerCase();
+
+  if (!clientEmail) {
+    return {
+      sent: false,
+      reason: "missing-client-email"
+    };
+  }
+
+  const amount = formatAmount(payment.amount || session.amount_total, payment.currency || session.currency || "cad");
+  const reference = payment.payment_request_id || payment.id || session.id || "revue opérationnelle";
+  const statusUrl = `${getPublicOrigin(env, requestUrl)}/operational-dashboard.html`;
+  const subject = `[NEXURA] Paiement confirmé - revue opérationnelle en file`;
+  const text = formatTextLines([
+    "Bonjour,",
+    "",
+    "Votre paiement de revue opérationnelle a été confirmé.",
+    "",
+    "SUIVI AUTOMATISÉ",
+    `Référence: ${reference}`,
+    `Montant confirmé: ${amount}`,
+    `Workflow case: ${workflowCase.id || payment.workflow_case_id || "en validation"}`,
+    "",
+    "Ce paiement place votre dossier en revue humaine. Il ne lance pas automatiquement une implémentation complète.",
+    "",
+    "PROCHAINE ÉTAPE",
+    "L'équipe NEXURA valide le périmètre, relit l'estimation et prépare la recommandation ou la proposition appropriée. Toute mise en oeuvre, facture d'implémentation ou paiement additionnel doit être confirmé séparément.",
+    "",
+    `Suivi: ${statusUrl}`,
+    "",
+    "NEXURA"
+  ]);
+  const html = buildEmailHtml(
+    `<p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#e8e4dc;line-height:1.6;">Bonjour,</p>` +
+    `<p style="margin:0 0 22px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#a09a90;line-height:1.6;">Votre paiement de revue opérationnelle a été confirmé.</p>` +
+    emailBadge("Paiement confirmé", amount) +
+    emailSectionTitle("Suivi automatisé") +
+    emailRow("Référence", reference) +
+    emailRow("Workflow case", workflowCase.id || payment.workflow_case_id || "en validation") +
+    emailActionBlock("Revue humaine en file", "Ce paiement place votre dossier en revue humaine. Il ne lance pas automatiquement une implémentation complète.") +
+    emailSectionTitle("Prochaine étape") +
+    emailBlock("L'équipe NEXURA valide le périmètre, relit l'estimation et prépare la recommandation ou la proposition appropriée. Toute mise en oeuvre, facture d'implémentation ou paiement additionnel doit être confirmé séparément.") +
+    emailCta("Consulter le suivi", statusUrl)
+  );
+
+  return sendResendEmail(
+    env,
+    {
+      to: [clientEmail],
+      subject,
+      text,
+      html
+    },
+    emailKey("client-payment-follow-up", event.id, payment.id, payment.stripe_session_id || session.id, clientEmail)
   );
 };
 

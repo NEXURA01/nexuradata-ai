@@ -4,8 +4,9 @@ export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
 
 /**
- * Browser tab icon — the Nexus Mark.
- * Two pillars, one tensioned diagonal, a red node at the nexus point.
+ * Browser tab icon — the Punctum Mark.
+ * Two pillars · hairline diagonal · a solid square at the meeting point.
+ * Pure monochrome.
  */
 export default function Icon() {
   return new ImageResponse(
@@ -20,15 +21,14 @@ export default function Icon() {
           justifyContent: "center",
         }}
       >
-        <svg width="48" height="48" viewBox="0 0 100 100">
-          <rect x="16" y="14" width="11" height="72" fill="#1A1A1A" />
-          <rect x="73" y="14" width="11" height="72" fill="#1A1A1A" />
+        <svg width="52" height="52" viewBox="0 0 100 100">
+          <rect x="14" y="12" width="10" height="76" fill="#1A1A1A" />
+          <rect x="76" y="12" width="10" height="76" fill="#1A1A1A" />
           <line
-            x1="27" y1="14" x2="73" y2="86"
-            stroke="#1A1A1A" strokeWidth="3"
+            x1="24" y1="12" x2="76" y2="88"
+            stroke="#1A1A1A" strokeWidth="2"
           />
-          <circle cx="50" cy="50" r="7" fill="#C8472E" />
-          <circle cx="50" cy="50" r="2.5" fill="#EDE7DA" />
+          <rect x="44" y="44" width="12" height="12" fill="#1A1A1A" />
         </svg>
       </div>
     ),

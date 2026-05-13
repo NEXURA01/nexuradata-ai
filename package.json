@@ -26,6 +26,7 @@
     "vercel:pull": "vercel pull --yes",
     "vercel:deploy": "npm run build && vercel deploy --prod",
     "seo:sitemap": "node ./scripts/generate-sitemap.mjs",
+    "seo:og": "node ./scripts/generate-og-images.mjs",
     "supabase:link": "supabase link --project-ref amddiekyhrvxnzszugxb",
     "supabase:status": "supabase status",
     "supabase:start": "supabase start",

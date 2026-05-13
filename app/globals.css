@@ -4,27 +4,26 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Technical Instrument Theme - "Quiet Mechanism" */
+/* NEXURA design tokens: operational infrastructure system */
 @theme {
-  --color-background: oklch(0.93 0.012 75);
-  --color-foreground: oklch(0.12 0.01 75);
-  --color-surface: oklch(0.95 0.01 75);
-  --color-muted: oklch(0.50 0.02 55);
-  --color-muted-foreground: oklch(0.35 0.02 55);
-  --color-accent: #9b4635;
-  --color-accent-foreground: oklch(0.95 0.01 75);
-  --color-border: oklch(0.12 0.01 75 / 0.12);
-  --color-input: oklch(0.95 0.01 75);
-  --color-ring: #9b4635;
+  --color-background: var(--nx-black);
+  --color-foreground: var(--nx-bone);
+  --color-surface: var(--nx-carbon);
+  --color-muted: var(--nx-iron);
+  --color-muted-foreground: var(--nx-muted);
+  --color-accent: var(--nx-copper);
+  --color-accent-foreground: var(--nx-black);
+  --color-border: var(--nx-line);
+  --color-input: var(--nx-iron);
+  --color-ring: var(--nx-copper);
 
-  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-serif: var(--font-display), var(--font-inter), system-ui, sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-mono: var(--font-ibm-plex-mono), monospace;
 
-  /* Sharp corners - no rounding */
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
 
   --animate-orbit-slow: orbit 90s linear infinite;
   --animate-orbit-medium: orbit 60s linear infinite;
@@ -200,38 +199,112 @@ body {
 }
 
 :root {
-  --background: oklch(0.93 0.012 75);
-  --foreground: oklch(0.12 0.01 75);
-  --card: oklch(0.95 0.01 75);
-  --card-foreground: oklch(0.12 0.01 75);
-  --popover: oklch(0.93 0.012 75);
-  --popover-foreground: oklch(0.12 0.01 75);
-  --primary: oklch(0.12 0.01 75);
-  --primary-foreground: oklch(0.93 0.012 75);
-  --secondary: oklch(0.88 0.01 75);
-  --secondary-foreground: oklch(0.12 0.01 75);
-  --muted: oklch(0.88 0.01 75);
-  --muted-foreground: oklch(0.50 0.02 55);
-  --accent: #9b4635;
-  --accent-foreground: oklch(0.95 0.01 75);
+  color-scheme: dark;
+
+  --nx-black: #0b0d10;
+  --nx-obsidian: #0b0d10;
+  --nx-carbon: #13161b;
+  --nx-iron: #181c22;
+  --nx-bone: #f5f7fa;
+  --nx-muted: #a7b0bc;
+  --nx-line: rgba(255, 255, 255, 0.08);
+  --nx-copper: #c17c45;
+  --nx-ember: #c45b3e;
+  --noir: #0b0d10;
+  --os: #f5f7fa;
+  --os-dim: rgba(245, 247, 250, 0.22);
+  --os-ghost: rgba(245, 247, 250, 0.08);
+  --rule: 1px solid rgba(255, 255, 255, 0.06);
+
+  --serif: var(--font-inter), "Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: var(--font-inter-tight), "Satoshi", var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: var(--font-inter), "Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), "SFMono-Regular", Consolas, monospace;
+  --tracking-wide: 0.35em;
+  --tracking-xwide: 0.55em;
+
+  --color-bg: var(--nx-black);
+  --color-bg-soft: var(--nx-obsidian);
+  --color-surface: var(--nx-carbon);
+  --color-surface-strong: var(--nx-iron);
+  --color-surface-elevated: var(--nx-iron);
+  --color-panel: var(--nx-carbon);
+  --color-panel-soft: var(--nx-iron);
+  --color-line: var(--nx-line);
+  --color-line-strong: rgba(245, 247, 250, 0.2);
+  --color-text: var(--nx-bone);
+  --color-text-soft: rgba(245, 247, 250, 0.72);
+  --color-text-muted: var(--nx-muted);
+  --color-accent: var(--nx-copper);
+  --color-accent-strong: var(--nx-copper);
+  --color-accent-ink: var(--nx-black);
+  --color-highlight: var(--nx-copper);
+  --color-copper: var(--nx-copper);
+  --color-copper-soft: rgba(193, 124, 69, 0.18);
+  --color-error: var(--nx-ember);
+  --color-warning: var(--nx-muted);
+  --color-info: var(--nx-muted);
+
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 6rem;
+  --section-padding: 140px;
+  --card-padding: 32px;
+  --grid-gap: 32px;
+  --width-content: min(1280px, calc(100% - 3rem));
+
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.35);
+  --shadow-strong: 0 18px 50px rgba(0, 0, 0, 0.42);
+  --shadow-operational: 0 10px 40px rgba(0, 0, 0, 0.35);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-button: 8px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-system: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 160ms;
+  --duration-base: 220ms;
+  --duration-slow: 520ms;
+
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --card: var(--color-panel);
+  --card-foreground: var(--color-text);
+  --popover: var(--color-panel);
+  --popover-foreground: var(--color-text);
+  --primary: var(--color-text);
+  --primary-foreground: var(--color-bg);
+  --secondary: var(--color-panel-soft);
+  --secondary-foreground: var(--color-text);
+  --muted: var(--color-panel-soft);
+  --muted-foreground: var(--color-text-muted);
+  --accent: var(--color-accent);
+  --accent-foreground: var(--color-accent-ink);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.12 0.01 75 / 12%);
-  --input: oklch(0.95 0.01 75);
-  --ring: #9b4635;
+  --border: var(--color-line);
+  --input: var(--color-panel-soft);
+  --ring: var(--color-accent);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.93 0.012 75);
-  --sidebar-foreground: oklch(0.12 0.01 75);
-  --sidebar-primary: oklch(0.12 0.01 75);
-  --sidebar-primary-foreground: oklch(0.93 0.012 75);
-  --sidebar-accent: oklch(0.88 0.01 75);
-  --sidebar-accent-foreground: oklch(0.12 0.01 75);
-  --sidebar-border: oklch(0.12 0.01 75 / 12%);
-  --sidebar-ring: oklch(0.50 0.02 55);
+  --radius: var(--radius-md);
+  --sidebar: var(--color-panel);
+  --sidebar-foreground: var(--color-text);
+  --sidebar-primary: var(--color-text);
+  --sidebar-primary-foreground: var(--color-bg);
+  --sidebar-accent: var(--color-panel-soft);
+  --sidebar-accent-foreground: var(--color-text);
+  --sidebar-border: var(--color-line);
+  --sidebar-ring: var(--color-accent);
 }
 
 .dark {

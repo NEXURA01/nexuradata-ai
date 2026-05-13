@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "NEXURA Analytics",
-    short_name: "NEXURA",
+    name: "Nexura",
+    short_name: "Nexura",
     description: "Operational intelligence infrastructure for modern companies.",
     lang: "fr-CA",
     start_url: "/fr",

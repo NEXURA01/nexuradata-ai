@@ -139,15 +139,15 @@ export function HomePage() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* Hero — operational command surface */}
-      <section className="relative min-h-[100svh] overflow-hidden bg-[#080806] pt-20 text-[#f4efe4]">
-        <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(244,239,228,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(244,239,228,0.055)_1px,transparent_1px)] [background-size:56px_56px]" />
-        <div className="absolute inset-x-6 top-28 h-px bg-[#9b4635]/38 lg:inset-x-14" />
-        <div className="absolute inset-x-6 bottom-8 h-px bg-[#f4efe4]/14 lg:inset-x-14" />
-        <div className="absolute left-6 right-6 top-28 bottom-8 border-x border-[#f4efe4]/10 lg:left-14 lg:right-14" />
-        <div className="absolute left-8 top-24 font-mono text-[8px] uppercase tracking-[0.24em] text-[#f4efe4]/45 lg:left-16">NXR / 0002 / Quiet Mechanism</div>
-        <div className="absolute right-8 top-24 hidden font-mono text-[8px] uppercase tracking-[0.24em] text-[#f4efe4]/45 md:block lg:right-16">XXM 01 / Plate II / MMXXVI</div>
-        <div className="absolute left-8 bottom-3 hidden font-mono text-[8px] uppercase tracking-[0.2em] text-[#f4efe4]/34 md:block lg:left-16">NEXURA Analytics · Atelier</div>
-        <div className="absolute right-8 bottom-3 hidden font-mono text-[8px] uppercase tracking-[0.2em] text-[#f4efe4]/34 md:block lg:right-16">1008 X 1008 / Post</div>
+      <section className="relative min-h-[100svh] overflow-hidden bg-[var(--noir)] pt-24 text-[var(--os)]">
+        <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(245,247,250,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(245,247,250,0.045)_1px,transparent_1px)] [background-size:64px_64px]" />
+        <div className="absolute inset-x-6 top-28 h-px bg-[var(--os-ghost)] lg:inset-x-14" />
+        <div className="absolute inset-x-6 bottom-8 h-px bg-[var(--os-ghost)] lg:inset-x-14" />
+        <div className="absolute left-6 right-6 top-28 bottom-8 border-x border-[var(--os-ghost)] lg:left-14 lg:right-14" />
+        <div className="absolute left-8 top-24 font-mono text-[8px] uppercase tracking-[0.24em] text-[rgba(245,247,250,0.45)] lg:left-16">NXR / 0002 / Quiet Mechanism</div>
+        <div className="absolute right-8 top-24 hidden font-mono text-[8px] uppercase tracking-[0.24em] text-[rgba(245,247,250,0.45)] md:block lg:right-16">XXM 01 / Plate II / MMXXVI</div>
+        <div className="absolute left-8 bottom-3 hidden font-mono text-[8px] uppercase tracking-[0.2em] text-[rgba(245,247,250,0.34)] md:block lg:left-16">NEXURA Analytics · Atelier</div>
+        <div className="absolute right-8 bottom-3 hidden font-mono text-[8px] uppercase tracking-[0.2em] text-[rgba(245,247,250,0.34)] md:block lg:right-16">1008 X 1008 / Post</div>
         <div className="relative z-10 grid min-h-[calc(100svh-5rem)] w-full max-w-[1480px] grid-cols-1 items-center gap-16 px-6 py-20 mx-auto lg:grid-cols-12 lg:px-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -155,22 +155,21 @@ export function HomePage() {
             transition={{ duration: 0.8 }}
             className="lg:col-span-7"
           >
-            <div className="mb-8 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.34em] text-[#9b4635]">
-              <span className="h-px w-14 bg-[#9b4635]" />
-              <span>NEXURA ANALYTICS / PRIVATE OPS SYSTEMS</span>
+            <div className="mb-8 flex items-center gap-4 font-mono text-[15px] uppercase tracking-[0.38em] text-[var(--nx-muted)]">
+              <span>NEXURA ANALYTICS — MONTRÉAL</span>
             </div>
             
-            <h1 className="mb-10 max-w-[15ch] font-serif text-[clamp(3rem,8vw,7.6rem)] leading-[0.9] text-[#f4efe4]">
+            <h1 className="mb-10 max-w-[17ch] font-serif text-[clamp(4rem,8.8vw,9.3rem)] font-semibold leading-[0.88] text-[var(--os)]">
               {getText({
-                en: "Execution infrastructure for controlled growth.",
-                fr: "Infrastructure d'exécution pour croissance contrôlée."
+                en: "We find what's costing you money.",
+                fr: "On trouve ce qui vous coûte de l'argent."
               })}
             </h1>
             
-            <p className="mb-12 max-w-[55ch] text-lg leading-relaxed text-[#f4efe4]/62 md:text-2xl">
+            <p className="mb-12 max-w-[55ch] font-sans text-xl leading-relaxed text-[rgba(245,247,250,0.72)] md:text-3xl">
               {getText({
-                en: "NEXURA designs secure operational intelligence systems: workflow automation, agent-assisted analysis, dashboards, and private control layers for teams that need clarity before scale.",
-                fr: "NEXURA conçoit des systèmes sécurisés d'intelligence opérationnelle: automatisation de workflows, analyse assistée par agents, tableaux de bord et couches de contrôle privées pour les équipes qui veulent de la clarté avant l'échelle."
+                en: "Operational intelligence for mid-sized companies.",
+                fr: "Intelligence opérationnelle pour entreprises de taille moyenne."
               })}
             </p>
 

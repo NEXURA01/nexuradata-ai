@@ -3,8 +3,11 @@ import type { Metadata, MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 
 export const SITE_URL = "https://nexuradata.ca";
-export const SITE_NAME = "NEXURA Analytics";
-const OG_IMAGE_URL = "/assets/icons/og-default.png";
+export const SITE_NAME = "Nexura";
+const ogImageUrlByLocale: Record<Locale, string> = {
+  fr: "/assets/icons/og-default.png",
+  en: "/assets/icons/og-en.png",
+};
 
 type Locale = (typeof routing.locales)[number];
 
@@ -214,6 +217,7 @@ export function buildPageMetadata(page: SeoPage, locale: string): Metadata {
   const meta = pageMeta[page][normalizedLocale];
   const canonicalPath = getLocalizedPath(page, normalizedLocale);
   const isIndexed = indexedPages.includes(page);
+  const ogImageUrl = ogImageUrlByLocale[normalizedLocale];
 
   return {
     title: meta.title,
@@ -234,7 +238,7 @@ export function buildPageMetadata(page: SeoPage, locale: string): Metadata {
         .map((availableLocale) => openGraphLocales[availableLocale]),
       images: [
         {
-          url: OG_IMAGE_URL,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: "NEXURA operational intelligence infrastructure",
@@ -245,7 +249,7 @@ export function buildPageMetadata(page: SeoPage, locale: string): Metadata {
       card: "summary_large_image",
       title: meta.title,
       description: meta.description,
-      images: [OG_IMAGE_URL],
+      images: [ogImageUrl],
     },
     robots: isIndexed
       ? {

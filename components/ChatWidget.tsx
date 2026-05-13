@@ -57,8 +57,8 @@ export function ChatWidget() {
       {/* Floating trigger button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-foreground text-background rounded-full flex items-center justify-center shadow-2xl"
-        whileHover={{ scale: 1.08 }}
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center border border-[rgba(245,247,250,0.65)] bg-[var(--noir)] text-[var(--os)] shadow-2xl shadow-black/30"
+        whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.95 }}
         aria-label={isOpen ? "Close chat" : "Open chat"}
       >
@@ -75,7 +75,7 @@ export function ChatWidget() {
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         ) : (
-          <LogoMark size={26} />
+          <LogoMark size={34} />
         )}
       </motion.button>
 
@@ -87,12 +87,12 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed bottom-24 right-6 z-50 w-[400px] h-[560px] bg-background border-2 border-foreground/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-24 right-6 z-50 flex h-[560px] w-[400px] flex-col overflow-hidden border border-foreground/20 bg-background shadow-2xl"
           >
             {/* Header */}
-            <div className="px-5 py-4 border-b-2 border-foreground/10 flex items-center gap-3 shrink-0 bg-background">
-              <div className="w-10 h-10 bg-foreground rounded-full flex items-center justify-center shrink-0">
-                <LogoMark size={20} className="text-background" />
+            <div className="px-5 py-4 border-b border-foreground/10 flex items-center gap-3 shrink-0 bg-background">
+              <div className="flex h-10 w-10 items-center justify-center border border-foreground/70 text-foreground shrink-0">
+                <LogoMark size={26} />
               </div>
               <div className="min-w-0">
                 <h3 className="font-serif text-lg font-semibold text-foreground leading-tight">
@@ -103,7 +103,7 @@ export function ChatWidget() {
                 </p>
               </div>
               <div className="ml-auto flex items-center gap-1.5 shrink-0">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="w-2 h-2 bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] text-foreground/40 font-mono">
                   {isFr ? "En ligne" : "Online"}
                 </span>
@@ -117,7 +117,7 @@ export function ChatWidget() {
             >
               {messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center px-4">
-                  <div className="w-14 h-14 bg-foreground/5 rounded-full flex items-center justify-center mb-4">
+                  <div className="w-14 h-14 border border-foreground/25 flex items-center justify-center mb-4">
                     <LogoMark size={28} className="text-foreground/40" />
                   </div>
                   <h4 className="font-serif text-xl text-foreground mb-2">
@@ -148,7 +148,7 @@ export function ChatWidget() {
                         onClick={() => {
                           sendMessage({ text: prompt });
                         }}
-                        className="text-left text-xs font-mono text-foreground/60 hover:text-foreground hover:bg-foreground/5 px-3 py-2 rounded-lg transition-colors border border-foreground/10 hover:border-foreground/20"
+                        className="text-left text-xs font-mono text-foreground/60 hover:text-foreground hover:bg-foreground/5 px-3 py-2 transition-colors border border-foreground/10 hover:border-foreground/20"
                       >
                         {prompt}
                       </button>
@@ -174,10 +174,10 @@ export function ChatWidget() {
                       className={`flex ${isUser ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
+                        className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
                           isUser
-                            ? "bg-foreground text-background rounded-br-md"
-                            : "bg-foreground/5 text-foreground rounded-bl-md"
+                            ? "bg-foreground text-background"
+                            : "bg-foreground/5 text-foreground"
                         }`}
                       >
                         {text}
@@ -192,10 +192,10 @@ export function ChatWidget() {
                 messages.length > 0 &&
                 messages[messages.length - 1]?.role === "user" && (
                   <div className="flex justify-start">
-                    <div className="bg-foreground/5 rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-foreground/30 animate-bounce [animation-delay:0ms]" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-foreground/30 animate-bounce [animation-delay:150ms]" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-foreground/30 animate-bounce [animation-delay:300ms]" />
+                    <div className="bg-foreground/5 px-4 py-3 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 bg-foreground/30 animate-bounce [animation-delay:0ms]" />
+                      <span className="w-1.5 h-1.5 bg-foreground/30 animate-bounce [animation-delay:150ms]" />
+                      <span className="w-1.5 h-1.5 bg-foreground/30 animate-bounce [animation-delay:300ms]" />
                     </div>
                   </div>
                 )}
@@ -206,7 +206,7 @@ export function ChatWidget() {
               onSubmit={handleSubmit}
               className="px-4 pb-4 pt-2 shrink-0 border-t border-foreground/10"
             >
-              <div className="flex items-end gap-2 bg-foreground/5 rounded-xl px-3 py-2">
+              <div className="flex items-end gap-2 bg-foreground/5 px-3 py-2">
                 <textarea
                   ref={inputRef}
                   value={input}
@@ -224,7 +224,7 @@ export function ChatWidget() {
                   aria-label={isFr ? "Envoyer le message" : "Send message"}
                   title={isFr ? "Envoyer le message" : "Send message"}
                   disabled={!input.trim() || isLoading}
-                  className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-foreground text-background disabled:opacity-30 hover:opacity-80 transition-opacity"
+                  className="shrink-0 w-8 h-8 flex items-center justify-center bg-foreground text-background disabled:opacity-30 hover:opacity-80 transition-opacity"
                 >
                   <svg
                     width="14"

@@ -1,19 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Inter, IBM_Plex_Mono, Geist } from "next/font/google";
+import { Inter, Inter_Tight, IBM_Plex_Mono } from "next/font/google";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
-});
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  variable: "--font-inter-tight",
   display: "swap",
 });
 
@@ -43,7 +41,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#EDE7DA",
+  themeColor: "#0b0d10",
   width: "device-width",
   initialScale: 1,
 };

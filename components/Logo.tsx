@@ -28,33 +28,18 @@ export function LogoMark({ size = 32, className }: LogoBaseProps) {
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Nexura"
-      className={cn("inline-block shrink-0", markSizeClass(size), className)}
+      className={cn("inline-block shrink-0 text-current", markSizeClass(size), className)}
     >
       <rect
-        x="5"
-        y="5"
-        width="54"
-        height="54"
-        fill="#080808"
-        stroke="#5D5D58"
-        strokeWidth="2.8"
-      />
-      <path
-        d="M19 50V14H26.4L44.4 50H50V14"
+        x="7"
+        y="7"
+        width="50"
+        height="50"
         fill="none"
-        stroke="#F4EFE4"
-        strokeWidth="6.6"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
+        stroke="currentColor"
+        strokeWidth="2.6"
       />
-      <path
-        d="M41 14L54 32L41 50M54 14L41 32L54 50"
-        fill="none"
-        stroke="#9B4635"
-        strokeWidth="6.2"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
-      />
+      <rect x="25" y="25" width="14" height="14" fill="currentColor" />
     </svg>
   );
 }
@@ -64,10 +49,10 @@ export function LogoMark({ size = 32, className }: LogoBaseProps) {
 /* ---------------------------------------------------------------- */
 export function LogoWordmark({ size = 28, className }: LogoBaseProps) {
   return (
-    <div className={cn("inline-flex items-center gap-2.5", className)}>
+    <div className={cn("inline-flex items-center gap-3", className)}>
       <LogoMark size={size * 1.15} />
-      <span className="font-sans text-[18px] font-extrabold leading-none tracking-[0.11em] sm:text-[22px] lg:text-[30px]">
-        NEXURA Analytics
+      <span className="font-serif text-[30px] font-semibold leading-none tracking-normal sm:text-[38px] lg:text-[42px]">
+        Nexura
       </span>
     </div>
   );
@@ -81,8 +66,8 @@ export function Logo({ size = 44, className }: LogoBaseProps) {
     <div className={cn("inline-flex items-center gap-4", className)}>
       <LogoMark size={size * 1.1} />
       <div className="flex flex-col">
-        <span className="font-sans text-[44px] font-extrabold leading-none tracking-[0.1em]">
-          NEXURA Analytics
+        <span className="font-serif text-[44px] font-semibold leading-none tracking-normal">
+          Nexura
         </span>
         <span className="mt-2 font-mono text-[9px] uppercase leading-none tracking-[0.4em] opacity-[0.55]">
           Operational Intelligence Infrastructure
@@ -100,8 +85,8 @@ export function LogoDisplay({ size = 100, className }: LogoBaseProps) {
     <div className={cn("inline-flex flex-col items-center gap-8", className)}>
       <LogoMark size={size} />
       <div className="flex flex-col items-center gap-4">
-        <span className="font-sans text-[55px] font-extrabold leading-none tracking-[0.1em]">
-          NEXURA Analytics
+        <span className="font-serif text-[55px] font-semibold leading-none tracking-normal">
+          Nexura
         </span>
         <div className="flex items-center gap-4">
           <span className="block h-px w-[35px] bg-current opacity-[0.35]" />

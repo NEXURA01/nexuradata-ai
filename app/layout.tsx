@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Inter_Tight, Instrument_Serif, IBM_Plex_Mono } from "next/font/google";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
@@ -66,6 +67,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col font-sans antialiased">
         {children}
+        <GoogleAnalytics />
       </body>
     </html>
   );

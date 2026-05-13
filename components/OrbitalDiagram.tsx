@@ -18,8 +18,7 @@ export function OrbitalDiagram() {
     <div className="relative w-full aspect-square max-w-lg mx-auto">
       <svg
         viewBox="0 0 400 400"
-        className="w-full h-full"
-        style={{ overflow: "visible" }}
+        className="w-full h-full overflow-visible"
       >
         {/* Outer dashed guide circle */}
         <circle 
@@ -69,7 +68,7 @@ export function OrbitalDiagram() {
         <motion.g
           animate={{ rotate: 360 }}
           transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "200px 200px" }}
+          className="[transform-origin:200px_200px]"
         >
           {/* Ellipse 1 - outermost tilted */}
           <ellipse
@@ -88,7 +87,7 @@ export function OrbitalDiagram() {
         <motion.g
           animate={{ rotate: -360 }}
           transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "200px 200px" }}
+          className="[transform-origin:200px_200px]"
         >
           {/* Ellipse 2 - opposite tilt */}
           <ellipse
@@ -127,7 +126,7 @@ export function OrbitalDiagram() {
         <motion.g
           animate={{ rotate: 360 }}
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "200px 200px" }}
+          className="[transform-origin:200px_200px]"
         >
           {/* Inner dashed ellipse */}
           <ellipse
@@ -181,31 +180,28 @@ export function OrbitalDiagram() {
         <motion.g
           animate={{ rotate: 360 }}
           transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "200px 200px" }}
+          className="[transform-origin:200px_200px]"
         >
           <circle cx="280" cy="200" r="5" className="fill-foreground" />
         </motion.g>
 
         {/* Node annotations - positioned exactly like your image */}
-        <g 
-          style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.1em" }}
-          className="fill-foreground"
-        >
+        <g className="fill-foreground font-mono text-[9px] tracking-[0.1em]">
           {/* N-01 INGEST - right side */}
           <text x="320" y="170" textAnchor="start">N-01</text>
-          <text x="320" y="182" textAnchor="start" style={{ fontSize: "7px", letterSpacing: "0.15em" }} className="fill-foreground/60">
+          <text x="320" y="182" textAnchor="start" className="fill-foreground/60 text-[7px] tracking-[0.15em]">
             INGEST
           </text>
-          <text x="320" y="194" textAnchor="start" style={{ fontSize: "6px", letterSpacing: "0.12em" }} className="fill-foreground/40">
+          <text x="320" y="194" textAnchor="start" className="fill-foreground/40 text-[6px] tracking-[0.12em]">
             DATA / EVENTS / CALLS
           </text>
           
           {/* N-02 REASON - bottom left */}
           <text x="60" y="320" textAnchor="start">N-02</text>
-          <text x="60" y="332" textAnchor="start" style={{ fontSize: "7px", letterSpacing: "0.15em" }} className="fill-foreground/60">
+          <text x="60" y="332" textAnchor="start" className="fill-foreground/60 text-[7px] tracking-[0.15em]">
             REASON
           </text>
-          <text x="60" y="344" textAnchor="start" style={{ fontSize: "6px", letterSpacing: "0.12em" }} className="fill-foreground/40">
+          <text x="60" y="344" textAnchor="start" className="fill-foreground/40 text-[6px] tracking-[0.12em]">
             MODELS / RULES / TOOLS
           </text>
         </g>

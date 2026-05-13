@@ -1,6 +1,26 @@
 create extension if not exists pgcrypto;
 
+create table if not exists public.leads (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  name text,
+  email text,
+  company text,
+  message text,
+  source text default 'automation_audit_form',
+  status text default 'new',
+  metadata jsonb default '{}'::jsonb
+);
+
 alter table public.leads
+  add column if not exists name text,
+  add column if not exists email text,
+  add column if not exists company text,
+  add column if not exists message text,
+  add column if not exists source text default 'automation_audit_form',
+  add column if not exists status text default 'new',
+  add column if not exists metadata jsonb default '{}'::jsonb,
   add column if not exists company_name text,
   add column if not exists contact_name text,
   add column if not exists problem_description text,
@@ -21,6 +41,8 @@ alter table public.leads
   add column if not exists last_follow_up_sent_at timestamptz,
   add column if not exists last_client_report_sent_at timestamptz,
   add column if not exists lead_score integer default 0;
+
+alter table public.leads enable row level security;
 
 create table if not exists public.lead_captures (
   id uuid primary key default gen_random_uuid(),

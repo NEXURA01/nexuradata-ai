@@ -50,8 +50,8 @@ export function HomePage() {
       <section className="py-24 border-t border-border">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-baseline gap-4 mb-12">
-            <span className="ref-number">01</span>
-            <h2 className="font-mono text-sm tracking-widest uppercase text-muted-foreground">
+            <span className="ref-number text-foreground/80">01</span>
+            <h2 className="font-mono text-sm tracking-widest uppercase text-foreground">
               {t("problem.title")}
             </h2>
           </div>
@@ -59,9 +59,9 @@ export function HomePage() {
             {(t.raw("problem.items") as Array<{ label: string; desc: string }>).map(
               (item, i) => (
                 <div key={i} className="bg-background p-6">
-                  <div className="ref-number mb-2 text-foreground/60">P-0{i + 1}</div>
-                  <h3 className="font-serif text-lg mb-2 text-foreground">{item.label}</h3>
-                  <p className="text-dense text-foreground/70">{item.desc}</p>
+                  <div className="ref-number mb-2 text-foreground">P-0{i + 1}</div>
+                  <h3 className="font-serif text-lg font-bold mb-2 text-foreground">{item.label}</h3>
+                  <p className="text-dense text-foreground/85">{item.desc}</p>
                 </div>
               )
             )}

@@ -25,17 +25,17 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 border-b border-foreground/10">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-foreground/10">
       <nav className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Logo + Language */}
-        <div className="flex items-center gap-4">
-          <Link href="/" className="font-mono text-sm tracking-widest">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="font-mono text-sm tracking-widest font-semibold">
             NEXURA
           </Link>
-          <div className="hidden md:block border-l border-foreground/20 pl-4">
+          <div className="hidden md:flex items-center border-l border-foreground/15 pl-8">
             <button
               onClick={switchLocale}
-              className="ref-number text-xs font-semibold text-foreground/70 hover:text-foreground transition-colors"
+              className="ref-number text-xs text-foreground/60 hover:text-foreground transition-colors"
             >
               {locale === "fr" ? "FR" : "EN"}
             </button>
@@ -43,12 +43,12 @@ export function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="ref-number hover:text-accent transition-colors"
+              className="ref-number text-xs text-foreground/70 hover:text-foreground transition-colors"
             >
               {link.label}
             </Link>
@@ -58,10 +58,10 @@ export function Header() {
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden ref-number"
+          className="md:hidden ref-number text-xs"
           aria-label="Menu"
         >
-          {mobileMenuOpen ? "CLOSE" : "MENU"}
+          {mobileMenuOpen ? "✕" : "☰"}
         </button>
       </nav>
 

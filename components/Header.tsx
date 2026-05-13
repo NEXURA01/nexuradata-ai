@@ -33,10 +33,10 @@ export function Header() {
           <Link href="/" className="text-foreground hover:opacity-80 transition-opacity" aria-label="Nexura Analytics — Home">
             <LogoWordmark size={30} />
           </Link>
-          <div className="hidden md:flex items-center border-l border-foreground/15 pl-12">
+          <div className="hidden md:flex items-center border-l-2 border-foreground/30 pl-8">
             <button
               onClick={switchLocale}
-              className="font-mono text-xs tracking-wider uppercase text-foreground/70 hover:text-foreground transition-colors"
+              className="font-mono text-sm font-medium tracking-wide uppercase text-foreground hover:text-foreground/70 transition-colors"
             >
               {locale === "fr" ? "FR" : "EN"}
             </button>
@@ -44,12 +44,12 @@ export function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-mono text-xs tracking-wider uppercase text-foreground hover:text-foreground/60 transition-colors leading-tight"
+              className="font-mono text-sm font-medium tracking-wide uppercase text-foreground hover:text-foreground/70 transition-colors"
             >
               {link.label}
             </Link>

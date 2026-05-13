@@ -95,17 +95,17 @@ export function OrbitalDiagram() {
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           style={{ transformOrigin: "200px 200px" }}
         >
-          {/* Ellipse 3 - accent color */}
+          {/* Ellipse 3 - solid circle */}
           <ellipse
             cx="200"
             cy="200"
             rx="80"
             ry="80"
-            className="orbit-line-accent"
-            style={{ opacity: 0.6 }}
+            className="orbit-line"
+            style={{ opacity: 0.4 }}
           />
-          {/* Red accent dot */}
-          <circle cx="280" cy="200" r="5" className="orbit-dot-accent" />
+          {/* Accent dot - now charcoal */}
+          <circle cx="280" cy="200" r="5" className="orbit-dot" />
         </motion.g>
 
         {/* Inner dashed ellipse */}

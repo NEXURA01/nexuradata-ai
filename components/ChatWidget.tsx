@@ -1,136 +1,166 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import { useLocale } from "next-intl";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationEmptyState,
+  ConversationScrollButton,
+} from "@/components/ai-elements/conversation";
+import {
+  Message,
+  MessageContent,
+  MessageResponse,
+} from "@/components/ai-elements/message";
+import {
+  PromptInput,
+  type PromptInputMessage,
+  PromptInputTextarea,
+  PromptInputSubmit,
+  PromptInputBody,
+  PromptInputFooter,
+} from "@/components/ai-elements/prompt-input";
+import { LogoMark } from "@/components/Logo";
 
 export function ChatWidget() {
-  const t = useTranslations("chat");
-  const locale = useLocale();
   const [isOpen, setIsOpen] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [input, setInput] = useState("");
+  const locale = useLocale();
 
-  const { messages, input, setInput, sendMessage, status } = useChat({
+  const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
       body: { locale },
     }),
   });
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const handleSubmit = (message: PromptInputMessage) => {
+    if (!message.text?.trim()) return;
+    sendMessage({ text: message.text });
+    setInput("");
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isOpen]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (input.trim() && status !== "streaming") {
-      sendMessage({ text: input });
-      setInput("");
-    }
-  };
-
-  const getMessageText = (msg: (typeof messages)[0]): string => {
-    if (!msg.parts || !Array.isArray(msg.parts)) return "";
-    return msg.parts
-      .filter((p): p is { type: "text"; text: string } => p.type === "text")
-      .map((p) => p.text)
-      .join("");
-  };
+  const isFr = locale === "fr";
 
   return (
     <>
-      {/* Toggle Button - technical, no rounding */}
+      {/* Floating trigger */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 px-4 py-2 bg-foreground text-background flex items-center gap-2 hover:bg-accent transition-colors"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-foreground text-background rounded-full flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform"
         aria-label={isOpen ? "Close chat" : "Open chat"}
       >
-        <span className="font-mono text-xs uppercase tracking-wider">
-          {isOpen ? "CLOSE" : "ASK"}
-        </span>
-        {!isOpen && (
-          <span className="w-2 h-2 bg-accent animate-pulse" />
+        {isOpen ? (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        ) : (
+          <LogoMark size={26} />
         )}
       </button>
 
-      {/* Chat Panel - technical frame style */}
-      {isOpen && (
-        <div className="fixed bottom-20 right-6 z-50 w-[340px] max-h-[480px] bg-background border border-foreground/15 shadow-xl flex flex-col overflow-hidden">
-          {/* Header - technical reference */}
-          <div className="px-4 py-3 border-b border-foreground/10 flex items-center justify-between">
-            <div>
-              <span className="ref-number block">NXR · ASSIST</span>
-              <span className="font-serif text-sm">{t("title")}</span>
-            </div>
-            <span className="ref-number opacity-50">v0.1</span>
-          </div>
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[280px] technical-grid">
-            {messages.length === 0 && (
-              <div className="text-dense text-muted-foreground">{t("greeting")}</div>
-            )}
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[85%] px-3 py-2 text-dense ${
-                    msg.role === "user"
-                      ? "bg-foreground text-background"
-                      : "border border-foreground/10 bg-surface"
-                  }`}
-                >
-                  {getMessageText(msg)}
-                </div>
+      {/* Chat panel */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.96 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="fixed bottom-24 right-6 z-50 w-[380px] h-[520px] bg-background border-2 border-foreground/15 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+          >
+            {/* Header */}
+            <div className="px-5 py-4 border-b border-foreground/10 flex items-center gap-3 shrink-0">
+              <div className="w-9 h-9 bg-foreground rounded-full flex items-center justify-center shrink-0">
+                <LogoMark size={18} className="text-background" />
               </div>
-            ))}
-            {status === "streaming" && (
-              <div className="flex justify-start">
-                <div className="border border-foreground/10 bg-surface px-3 py-2">
-                  <span className="ref-number animate-pulse">PROCESSING...</span>
-                </div>
+              <div className="min-w-0">
+                <h3 className="font-serif text-base font-semibold text-foreground leading-tight">
+                  Nexura
+                </h3>
+                <p className="text-[11px] text-foreground/50 font-mono uppercase tracking-wider">
+                  {isFr ? "Assistant IA" : "AI Assistant"}
+                </p>
               </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input - stark */}
-          <form onSubmit={handleSubmit} className="p-3 border-t border-foreground/10">
-            <div className="flex gap-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={t("placeholder")}
-                className="flex-1 px-3 py-2 bg-surface border border-foreground/10 text-dense font-mono focus:outline-none focus:border-accent"
-                disabled={status === "streaming"}
-              />
-              <button
-                type="submit"
-                disabled={!input.trim() || status === "streaming"}
-                className="px-3 py-2 bg-accent text-accent-foreground font-mono text-xs uppercase tracking-wider hover:opacity-90 transition-opacity disabled:opacity-30"
-              >
-                SEND
-              </button>
+              <div className="ml-auto flex items-center gap-1.5 shrink-0">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] text-foreground/40 font-mono">
+                  {isFr ? "En ligne" : "Online"}
+                </span>
+              </div>
             </div>
-          </form>
-        </div>
-      )}
+
+            {/* Conversation */}
+            <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+              <Conversation>
+                <ConversationContent className="px-4 py-4">
+                  {messages.length === 0 ? (
+                    <ConversationEmptyState
+                      title={isFr ? "Bonjour" : "Hello"}
+                      description={
+                        isFr
+                          ? "Posez-moi une question sur nos services, tarifs ou comment NEXURA peut aider votre entreprise."
+                          : "Ask me about our services, pricing, or how NEXURA can help your company."
+                      }
+                    />
+                  ) : (
+                    messages.map((message) => (
+                      <Message from={message.role} key={message.id}>
+                        <MessageContent>
+                          {message.parts.map((part, i) => {
+                            switch (part.type) {
+                              case "text":
+                                return (
+                                  <MessageResponse key={`${message.id}-${i}`}>
+                                    {part.text}
+                                  </MessageResponse>
+                                );
+                              default:
+                                return null;
+                            }
+                          })}
+                        </MessageContent>
+                      </Message>
+                    ))
+                  )}
+                </ConversationContent>
+                <ConversationScrollButton />
+              </Conversation>
+            </div>
+
+            {/* Input */}
+            <div className="px-3 pb-3 pt-1 shrink-0">
+              <PromptInput
+                onSubmit={handleSubmit}
+                className="border border-foreground/15 rounded-xl"
+              >
+                <PromptInputBody>
+                  <PromptInputTextarea
+                    value={input}
+                    placeholder={
+                      isFr
+                        ? "Posez une question..."
+                        : "Ask a question..."
+                    }
+                    onChange={(e) => setInput(e.currentTarget.value)}
+                    className="text-sm min-h-[40px] max-h-[100px]"
+                  />
+                </PromptInputBody>
+                <PromptInputFooter className="justify-end px-2 pb-1">
+                  <PromptInputSubmit
+                    status={status === "streaming" ? "streaming" : "ready"}
+                    disabled={!input.trim()}
+                  />
+                </PromptInputFooter>
+              </PromptInput>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

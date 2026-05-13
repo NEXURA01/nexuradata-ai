@@ -6,6 +6,7 @@ import { Playfair_Display, Inter, IBM_Plex_Mono } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ChatWidget } from "@/components/ChatWidget";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -52,10 +53,12 @@ export default async function LocaleLayout({ children, params }: Props) {
     >
       <body className="min-h-screen flex flex-col font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <ChatWidget />
+          <TooltipProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <ChatWidget />
+          </TooltipProvider>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Playfair_Display, Inter, IBM_Plex_Mono, Geist } from "next/font/google";
 import "./globals.css";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const playfair = Playfair_Display({
   subsets: ["latin"],

@@ -45,10 +45,12 @@ function OrbitDiagram() {
 }
 
 function Plate({
+  id,
   n,
   title,
   children,
 }: {
+  id?: string;
   n: string;
   title: Localized;
   children: React.ReactNode;
@@ -57,7 +59,7 @@ function Plate({
   const fig = n.replace(/^0+/, "") || "0";
 
   return (
-    <section className="bg-[#ece7db] px-4 py-10 text-[#17181c] md:px-10 md:py-16">
+    <section id={id} className="scroll-mt-36 bg-[#ece7db] px-4 py-10 text-[#17181c] md:px-10 md:py-16">
       <div className="relative mx-auto max-w-[1320px] border border-[#17181c]/35 p-3">
         <div className="relative border border-[#17181c]/18 px-5 py-8 md:px-10 md:py-12">
           <div className="absolute left-1/2 top-[-1.05rem] -translate-x-1/2 font-mono text-sm text-[#17181c]/45">+</div>
@@ -83,22 +85,22 @@ export function HomePage() {
     {
       id: "N-01",
       title: { en: "Ingest", fr: "Ingestion" },
-      detail: { en: "Data, events, calls — normalized at the boundary.", fr: "Données, événements, appels — normalisés à la frontière." },
+      detail: { en: "Data, events, calls, forms, payments, and service requests are normalized at the boundary before they enter the operating layer.", fr: "Données, événements, appels, formulaires, paiements et demandes de service sont normalisés à la frontière avant d’entrer dans la couche opérationnelle." },
     },
     {
       id: "N-02",
       title: { en: "Reason", fr: "Raisonner" },
-      detail: { en: "Models, rules, and tools composed with control.", fr: "Modèles, règles et outils composés avec contrôle." },
+      detail: { en: "Models, rules, and tools are composed with explicit control so automation supports execution instead of creating hidden risk.", fr: "Modèles, règles et outils sont composés avec contrôle explicite afin que l’automatisation soutienne l’exécution sans créer de risque caché." },
     },
     {
       id: "N-03",
       title: { en: "Act", fr: "Agir" },
-      detail: { en: "Approvals, handoffs, notifications, and execution loops.", fr: "Approbations, transferts, notifications et boucles d’exécution." },
+      detail: { en: "Approvals, handoffs, notifications, status changes, and workflow loops move through clear systems rather than memory or manual follow-up.", fr: "Approbations, transferts, notifications, changements de statut et boucles de workflow passent par des systèmes clairs plutôt que par la mémoire ou le suivi manuel." },
     },
     {
       id: "N-04",
       title: { en: "Observe", fr: "Observer" },
-      detail: { en: "Every decision traced, every signal readable.", fr: "Chaque décision tracée, chaque signal lisible." },
+      detail: { en: "Every decision, cost, delay, and exception remains readable so leaders can see execution before problems become expensive.", fr: "Chaque décision, coût, délai et exception demeure lisible pour que les dirigeants voient l’exécution avant que les problèmes deviennent coûteux." },
     },
   ];
 
@@ -106,23 +108,30 @@ export function HomePage() {
     {
       n: "I",
       title: { en: "Operational assessment", fr: "Évaluation opérationnelle" },
-      body: { en: "A structured first read of the workflows, systems, and decision points that shape execution.", fr: "Une première lecture structurée des workflows, systèmes et points de décision qui façonnent l’exécution." },
+      body: { en: "A structured first read of workflows, systems, ownership, delays, and decision points. The assessment identifies where execution is unclear and where automation can reduce cost.", fr: "Une première lecture structurée des workflows, systèmes, responsabilités, délais et points de décision. L’évaluation identifie où l’exécution est floue et où l’automatisation peut réduire les coûts." },
     },
     {
       n: "II",
       title: { en: "Workflow automation", fr: "Automatisation des workflows" },
-      body: { en: "Reliable handoffs, approvals, notifications, and data movement across the tools your team already uses.", fr: "Transferts, approbations, notifications et mouvements de données fiables entre les outils que votre équipe utilise déjà." },
+      body: { en: "Reliable handoffs, approvals, notifications, data movement, and client follow-up across the tools your team already uses. The goal is quiet execution, not another dashboard nobody trusts.", fr: "Transferts, approbations, notifications, mouvements de données et suivis clients fiables entre les outils que votre équipe utilise déjà. L’objectif est une exécution silencieuse, pas un tableau de bord de plus que personne ne consulte." },
     },
     {
       n: "III",
       title: { en: "Control surfaces", fr: "Surfaces de contrôle" },
-      body: { en: "Dashboards, internal tools, and private AI systems built around your operating reality.", fr: "Tableaux de bord, outils internes et systèmes IA privés conçus autour de votre réalité opérationnelle." },
+      body: { en: "Dashboards, internal tools, private AI systems, and operator views built around your real operating rhythm. Each surface makes status, ownership, and next action clear.", fr: "Tableaux de bord, outils internes, systèmes IA privés et vues opérateur conçus autour de votre rythme opérationnel réel. Chaque surface rend le statut, la responsabilité et la prochaine action clairs." },
     },
+  ];
+
+  const operatingSignals = [
+    copy(locale, { en: "Work depends on memory instead of systems.", fr: "Le travail dépend de la mémoire plutôt que de systèmes." }),
+    copy(locale, { en: "Status is reconstructed in meetings instead of visible in real time.", fr: "Le statut est reconstruit en réunion au lieu d’être visible en temps réel." }),
+    copy(locale, { en: "Data moves by copy and paste between tools.", fr: "Les données circulent par copier-coller entre les outils." }),
+    copy(locale, { en: "Client follow-up, payments, and approvals have no single owner.", fr: "Les suivis clients, paiements et approbations n’ont pas de propriétaire clair." }),
   ];
 
   return (
     <main className="min-h-screen bg-[#ece7db] text-[#17181c]">
-      <section className="relative bg-[#ece7db] px-4 py-8 text-[#17181c] md:px-10 md:py-12">
+      <section className="relative bg-[#ece7db] px-4 pb-8 pt-32 text-[#17181c] md:px-10 md:pb-12 md:pt-40">
         <div className="relative mx-auto max-w-[1480px] border border-[#17181c]/40 p-3">
           <div className="relative overflow-hidden border border-[#17181c]/18 px-6 py-10 md:px-14 md:py-16">
             <div className="absolute left-1/2 top-[-0.95rem] -translate-x-1/2 font-mono text-sm text-[#17181c]/45">+</div>
@@ -147,18 +156,18 @@ export function HomePage() {
                   <h1 className="max-w-[12ch] font-serif text-[clamp(3.8rem,8vw,8.8rem)] font-normal leading-[0.86] tracking-[-0.04em]">
                     {copy(locale, { en: "Quiet systems for clear execution.", fr: "Des systèmes silencieux pour une exécution claire." })}
                   </h1>
-                  <p className="mt-6 max-w-[48ch] font-serif text-2xl italic leading-tight text-[#17181c]/72 md:text-4xl">
-                    {copy(locale, { en: "AI automation, quietly engineered.", fr: "Automatisation IA, ingénierie discrète." })}
+                  <p className="mt-6 max-w-[52ch] font-serif text-2xl italic leading-tight text-[#17181c]/72 md:text-4xl">
+                    {copy(locale, { en: "Operational intelligence, workflow automation, and private AI control layers for teams that need execution to be visible, reliable, and calm.", fr: "Intelligence opérationnelle, automatisation de workflows et couches de contrôle IA privées pour les équipes qui ont besoin d’une exécution visible, fiable et calme." })}
                   </p>
                   <div className="mt-8 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[#17181c]/56">
                     <span>EST. 2026</span><span>·</span><span>Agents</span><span>·</span><span>Pipelines</span><span>·</span><span>Observability</span>
                   </div>
                   <div className="mt-10 flex flex-wrap gap-4">
                     <Link href="/operational-assessment" className="border border-[#17181c] px-5 py-3 font-mono text-[10px] uppercase tracking-[0.22em] transition hover:bg-[#17181c] hover:text-[#ece7db]">
-                      {copy(locale, { en: "Start assessment", fr: "Démarrer l’évaluation" })} ↗
+                      {copy(locale, { en: "Begin diagnostic", fr: "Lancer le diagnostic" })} ↗
                     </Link>
                     <Link href="/contact" className="border border-[#17181c]/25 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.22em] transition hover:border-[#17181c]">
-                      {copy(locale, { en: "Contact", fr: "Nous écrire" })}
+                      {copy(locale, { en: "Discuss a system", fr: "Discuter d’un système" })}
                     </Link>
                   </div>
                 </div>
@@ -181,13 +190,44 @@ export function HomePage() {
         <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#c85d42]">— A note from the workshop —</p>
         <p className="font-serif text-3xl italic leading-tight md:text-5xl">
           {copy(locale, {
-            en: "We build automations the way instrument makers build movements: precise, legible, and quiet.",
-            fr: "Nous bâtissons les automatisations comme des instruments de précision: lisibles, stables et silencieux.",
+            en: "We build operational systems the way instrument makers build movements: precise, legible, and quiet.",
+            fr: "Nous bâtissons les systèmes opérationnels comme des instruments de précision: lisibles, stables et silencieux.",
           })}{" "}
           <span className="text-[#c85d42]">
-            {copy(locale, { en: "No theatrics. Just execution you can trust.", fr: "Pas de théâtre. Juste une exécution fiable." })}
+            {copy(locale, { en: "No theatrics. Just clear execution you can trust.", fr: "Pas de théâtre. Juste une exécution claire et fiable." })}
           </span>
         </p>
+      </section>
+
+      <section className="bg-[#17181c] px-6 py-20 text-[#ece7db] md:px-10 md:py-28">
+        <div className="mx-auto grid max-w-[1180px] gap-10 md:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em] text-[#ece7db]/45">Operational intelligence in practice</p>
+            <h2 className="font-serif text-4xl leading-none md:text-6xl">
+              {copy(locale, { en: "Clear execution is a system, not a slogan.", fr: "L’exécution claire est un système, pas un slogan." })}
+            </h2>
+          </div>
+          <div className="space-y-6 text-base leading-relaxed text-[#ece7db]/70 md:text-lg">
+            <p>
+              {copy(locale, {
+                en: "NEXURA designs operational intelligence infrastructure for companies where work has become too dependent on people remembering the next step. We connect workflows, tools, approvals, payments, client requests, and internal status into a quiet system that keeps execution clear.",
+                fr: "NEXURA conçoit une infrastructure d’intelligence opérationnelle pour les entreprises où le travail dépend trop de la mémoire des personnes. Nous relions workflows, outils, approbations, paiements, demandes clients et statuts internes dans un système silencieux qui garde l’exécution claire.",
+              })}
+            </p>
+            <p>
+              {copy(locale, {
+                en: "The work is not to add noise. The work is to expose what is costing time and money, reduce manual handoffs, and make the next action visible. A clear operating layer gives leaders better control without forcing teams into another heavy platform.",
+                fr: "Le travail n’est pas d’ajouter du bruit. Le travail consiste à exposer ce qui coûte du temps et de l’argent, réduire les transferts manuels et rendre la prochaine action visible. Une couche opérationnelle claire donne plus de contrôle aux dirigeants sans imposer une autre plateforme lourde aux équipes.",
+              })}
+            </p>
+            <p>
+              {copy(locale, {
+                en: "We start by reading the operation: where information enters, where it waits, who approves it, what tools repeat the same data, and where status becomes unclear. Then we build quiet systems that improve execution with automation, dashboards, private AI agents, and measurable control points.",
+                fr: "Nous commençons par lire l’opération: où l’information entre, où elle attend, qui l’approuve, quels outils répètent les mêmes données et où le statut devient flou. Ensuite, nous bâtissons des systèmes silencieux qui améliorent l’exécution avec automatisation, tableaux de bord, agents IA privés et points de contrôle mesurables.",
+              })}
+            </p>
+          </div>
+        </div>
       </section>
 
       <Plate n="0002" title={{ en: "Orchestration of agents", fr: "Orchestration des agents" }}>
@@ -207,15 +247,36 @@ export function HomePage() {
         </div>
       </Plate>
 
-      <Plate n="0003" title={{ en: "Commissions and studies", fr: "Mandats et études" }}>
+      <section className="bg-[#ece7db] px-6 py-16 text-[#17181c] md:px-10 md:py-20">
+        <div className="mx-auto max-w-[1180px] border-y border-[#17181c]/25 py-12">
+          <div className="grid gap-10 md:grid-cols-[0.7fr_1.3fr]">
+            <div>
+              <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.26em] text-[#c85d42]">Signals</p>
+              <h2 className="font-serif text-4xl leading-none md:text-5xl">
+                {copy(locale, { en: "What is limiting clear execution?", fr: "Qu’est-ce qui limite l’exécution claire?" })}
+              </h2>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              {operatingSignals.map((signal, index) => (
+                <div key={signal} className="border border-[#17181c]/20 p-5">
+                  <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[#17181c]/45">Signal 0{index + 1}</p>
+                  <p className="text-sm leading-relaxed text-[#17181c]/68">{signal}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Plate id="services" n="0003" title={{ en: "Commissions and studies", fr: "Mandats et études" }}>
         <div className="grid gap-6 md:grid-cols-3">
           {services.map((service) => (
-            <article key={service.n} className="relative min-h-[260px] border border-[#17181c]/32 p-7">
+            <article key={service.n} className="relative min-h-[300px] border border-[#17181c]/32 p-7">
               <span className="absolute right-5 top-4 font-serif text-3xl italic text-[#c85d42]">{service.n}</span>
               <h3 className="mb-5 max-w-[11ch] font-serif text-3xl leading-none md:text-4xl">{copy(locale, service.title)}</h3>
               <p className="text-sm leading-relaxed text-[#17181c]/62">{copy(locale, service.body)}</p>
               <div className="mt-10 border-t border-[#17181c]/22 pt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[#17181c]/55">
-                {copy(locale, { en: "Inquire", fr: "Discuter" })} ↗
+                {copy(locale, { en: "Review this service", fr: "Voir ce service" })} ↗
               </div>
             </article>
           ))}
@@ -243,14 +304,14 @@ export function HomePage() {
         <h2 className="mx-auto max-w-3xl font-serif text-5xl leading-none md:text-7xl">
           {copy(locale, { en: "Quiet work, on request.", fr: "Travail discret, sur demande." })}
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-[#17181c]/60">
+        <p className="mx-auto mt-6 max-w-2xl text-[#17181c]/60">
           {copy(locale, {
-            en: "We take a small number of operational intelligence commissions at a time. Send the problem; we respond with the study.",
-            fr: "Nous prenons un petit nombre de mandats d’intelligence opérationnelle à la fois. Envoyez le problème; nous répondons avec l’étude.",
+            en: "We take a small number of operational intelligence commissions at a time. Send the problem, the workflow, or the system that is slowing execution. We respond with a clear first study and a practical path forward.",
+            fr: "Nous prenons un petit nombre de mandats d’intelligence opérationnelle à la fois. Envoyez le problème, le workflow ou le système qui ralentit l’exécution. Nous répondons avec une première étude claire et une voie pratique vers la suite.",
           })}
         </p>
         <Link href="/contact" className="mt-10 inline-block border border-[#17181c] px-8 py-4 font-mono text-[10px] uppercase tracking-[0.24em] transition hover:bg-[#17181c] hover:text-[#ece7db]">
-          contact@nexuradata.ca ↗
+          {copy(locale, { en: "Send the problem", fr: "Envoyer le problème" })} ↗
         </Link>
       </section>
     </main>

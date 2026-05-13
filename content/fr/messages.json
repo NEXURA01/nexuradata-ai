@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "title": "NEXURA | Centralisez vos opérations. Automatisez vos workflows.",
+    "description": "NEXURA aide les entreprises à centraliser leurs opérations et automatiser leurs workflows."
+  },
+  "brand": {
+    "name": "NEXURA",
+    "tagline": "Intelligence opérationnelle"
+  },
+  "nav": {
+    "platform": "Plateforme",
+    "services": "Services",
+    "pricing": "Tarifs",
+    "assessment": "Évaluation",
+    "contact": "Contact"
+  },
+  "hero": {
+    "tagline": "Un fabricant d'instruments pour l'intelligence opérationnelle",
+    "cta": "Demander l'accès",
+    "secondary": "Voir comment ça marche"
+  },
+  "finalCta": {
+    "headline": "Voyez ce qui limite votre entreprise",
+    "subheadline": "Une évaluation opérationnelle structurée pour exposer les inefficacités, les lacunes d'exécution et les opportunités de croissance inexploitées.",
+    "cta": "Démarrer l'évaluation"
+  },
+  "problem": {
+    "title": "Le problème",
+    "items": [
+      { "label": "Trop d'outils", "desc": "Systèmes éparpillés qui ne communiquent pas" },
+      { "label": "Workflows désorganisés", "desc": "Pas de processus clair, des choses passent entre les mailles" },
+      { "label": "Tâches manuelles", "desc": "Travail répétitif qui épuise votre équipe" },
+      { "label": "Pas de visibilité", "desc": "Difficile de voir ce qui se passe dans les opérations" },
+      { "label": "Coordination difficile", "desc": "Équipes en silos sans synchronisation" }
+    ]
+  },
+  "solution": {
+    "title": "La solution",
+    "items": [
+      { "label": "Automatisation des workflows", "desc": "Automatisez les tâches répétitives et les transferts" },
+      { "label": "Tableau de bord opérationnel", "desc": "Voyez tout au même endroit" },
+      { "label": "Analyse IA des opérations", "desc": "Obtenez des insights sur les goulots et améliorations" },
+      { "label": "Opérations centralisées", "desc": "Un système, une source de vérité" }
+    ]
+  },
+  "howItWorks": {
+    "title": "Comment ça marche",
+    "steps": [
+      { "num": "01", "label": "Soumettez l'évaluation", "desc": "Parlez-nous de vos opérations" },
+      { "num": "02", "label": "L'IA analyse les opérations", "desc": "On identifie la complexité et la portée" },
+      { "num": "03", "label": "NEXURA recommande une structure", "desc": "Vous recevez un plan clair" },
+      { "num": "04", "label": "Les workflows deviennent centralisés", "desc": "Les opérations roulent" }
+    ]
+  },
+  "reviews": {
+    "title": "Rapports de terrain",
+    "subtitle": "Observations d'organisations opérant avec l'infrastructure NEXURA.",
+    "items": [
+      {
+        "quote": "Nous avons remplacé quatre systèmes déconnectés par une seule couche silencieuse. L'équipe a cessé d'éteindre des feux et s'est remise à construire.",
+        "author": "M. Tremblay",
+        "role": "Directeur des opérations",
+        "company": "Manufacturier · Québec"
+      },
+      {
+        "quote": "L'évaluation a exposé des goulots d'étranglement que nous avions normalisés pendant des années. Les recommandations étaient inconfortablement précises.",
+        "author": "S. Reyes",
+        "role": "Chef de cabinet",
+        "company": "Logistique · Montréal"
+      },
+      {
+        "quote": "Leur travail est invisible jusqu'à ce que vous regardiez les chiffres. Là, il devient impossible à ignorer.",
+        "author": "J. Côté",
+        "role": "Associé directeur",
+        "company": "Services professionnels · Toronto"
+      }
+    ]
+  },
+  "workflowPreview": {
+    "title": "Ce qui arrive après l'évaluation",
+    "items": [
+      { "status": "complete", "label": "Évaluation reçue" },
+      { "status": "complete", "label": "Analyse IA complétée" },
+      { "status": "complete", "label": "Recommandation préparée" },
+      { "status": "pending", "label": "Initialisation du workflow en attente" }
+    ]
+  },
+  "assessment": {
+    "title": "Évaluation opérationnelle",
+    "subtitle": "Parlez-nous de vos opérations. Notre IA analysera la complexité et recommandera une portée.",
+    "form": {
+      "company": "Entreprise",
+      "name": "Votre nom",
+      "email": "Courriel",
+      "problem": "Problème opérationnel principal",
+      "problemPlaceholder": "Décrivez le plus grand défi dans vos opérations actuelles...",
+      "tools": "Outils actuels",
+      "toolsPlaceholder": "Listez les outils principaux (Slack, Notion, Airtable, etc.)",
+      "teams": "Nombre d'équipes",
+      "urgency": "Urgence",
+      "urgencyOptions": ["Basse", "Moyenne", "Haute", "Critique"],
+      "submit": "Générer l'estimation opérationnelle"
+    },
+    "result": {
+      "title": "Estimation opérationnelle",
+      "complexity": "Complexité opérationnelle",
+      "scope": "Portée recommandée",
+      "range": "Fourchette estimée",
+      "nextStep": "Prochaine étape",
+      "cta": "Réserver la revue opérationnelle"
+    }
+  },
+  "paymentSuccess": {
+    "title": "Paiement confirmé",
+    "items": [
+      { "status": "complete", "label": "Paiement confirmé" },
+      { "status": "complete", "label": "Évaluation initialisée" },
+      { "status": "pending", "label": "Revue humaine en attente" }
+    ],
+    "nextStep": "Notre équipe examinera votre évaluation dans les 24-48 heures.",
+    "cta": "Voir le statut de l'évaluation"
+  },
+  "portal": {
+    "title": "Portail d'évaluation",
+    "sections": {
+      "status": "Statut de l'évaluation",
+      "estimate": "Estimation IA",
+      "payment": "Statut du paiement",
+      "timeline": "Échéancier",
+      "actions": "Prochaines actions"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "subtitle": "Ce qu'on construit pour vous",
+    "items": [
+      {
+        "id": "workflow-automation",
+        "title": "Automatisation des workflows",
+        "desc": "Automatisez les tâches répétitives, transferts et approbations. Arrêtez de faire manuellement ce qu'un logiciel peut faire."
+      },
+      {
+        "id": "operational-dashboard",
+        "title": "Tableau de bord opérationnel",
+        "desc": "Voyez toutes vos opérations dans une vue. Suivez le progrès, repérez les problèmes, décidez plus vite."
+      },
+      {
+        "id": "ai-analysis",
+        "title": "Analyse IA des opérations",
+        "desc": "Notre IA examine vos opérations, identifie les goulots et recommande des améliorations."
+      },
+      {
+        "id": "centralized-ops",
+        "title": "Opérations centralisées",
+        "desc": "Un système qui connecte vos outils, équipes et workflows. Plus d'information éparpillée."
+      }
+    ],
+    "cta": "Démarrer l'évaluation"
+  },
+  "pricing": {
+    "title": "Tarifs",
+    "subtitle": "Des fourchettes, pas des prix fixes. Chaque opération est différente.",
+    "note": "Tous les prix en CAD. Soumission finale après évaluation.",
+    "items": [
+      { "title": "Évaluation opérationnelle", "range": "Gratuit", "desc": "Analyse IA de vos opérations" },
+      { "title": "Revue opérationnelle", "range": "250$", "desc": "Revue humaine + recommandations détaillées" },
+      { "title": "Automatisation des workflows", "range": "2 500$ - 15 000$", "desc": "Selon la complexité et les intégrations" },
+      { "title": "Tableau de bord opérationnel", "range": "5 000$ - 25 000$", "desc": "Tableau de bord personnalisé pour vos opérations" },
+      { "title": "Infrastructure opérationnelle complète", "range": "15 000$ - 75 000$+", "desc": "Transformation complète du système" },
+      { "title": "Support mensuel", "range": "500$ - 2 500$/mois", "desc": "Maintenance continue et améliorations" }
+    ],
+    "cta": "Démarrer l'évaluation"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Questions seulement. Pour les évaluations, utilisez la page d'évaluation.",
+    "form": {
+      "name": "Votre nom",
+      "email": "Courriel",
+      "message": "Votre question",
+      "submit": "Envoyer"
+    },
+    "success": "Message envoyé. On répond dans les 24 heures.",
+    "email": "contact@nexura.ai"
+  },
+  "footer": {
+    "description": "NEXURA aide les entreprises à centraliser leurs opérations et automatiser leurs workflows.",
+    "services": "Services",
+    "legal": "Légal",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "law25": "Conformité Loi 25",
+    "law25Notice": "NEXURA applique des pratiques de confidentialité et de gestion des données conformes à la Loi 25 du Québec.",
+    "privacyEmail": "privacy@nexura.ai",
+    "copyright": "© 2026 NEXURA. Tous droits réservés.",
+    "status": "Statut opérationnel",
+    "statusOk": "Tous les systèmes opérationnels"
+  },
+  "chat": {
+    "title": "Demandez à NEXURA",
+    "placeholder": "Posez une question...",
+    "greeting": "Bonjour. Comment puis-je vous aider à comprendre nos services opérationnels?"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "lastUpdated": "Dernière mise à jour: 12 mai 2026",
+    "intro": "Chez NEXURA, nous prenons la protection de vos renseignements personnels au sérieux. Cette politique explique comment nous collectons, utilisons et protégeons vos données, conformément à la Loi 25 du Québec et à la LPRPDE fédérale.",
+    "sections": {
+      "collection": {
+        "title": "Renseignements collectés",
+        "content": "Nous collectons les informations que vous nous fournissez directement: nom, adresse courriel, informations de contact professionnel, et les données relatives à vos demandes d'évaluation. Nous collectons également des données techniques de navigation de façon automatique."
+      },
+      "use": {
+        "title": "Utilisation des données",
+        "content": "Vos renseignements sont utilisés pour: répondre à vos demandes, fournir nos services d'automatisation, améliorer notre site web, et vous envoyer des communications si vous y avez consenti."
+      },
+      "sharing": {
+        "title": "Partage des données",
+        "content": "Nous ne vendons jamais vos données personnelles. Nous pouvons partager vos informations avec nos prestataires de services (hébergement, paiement, courriel) dans le cadre strict de nos opérations."
+      },
+      "retention": {
+        "title": "Conservation",
+        "content": "Nous conservons vos données aussi longtemps que nécessaire pour fournir nos services ou selon les obligations légales applicables."
+      },
+      "rights": {
+        "title": "Vos droits",
+        "content": "Vous avez le droit d'accéder à vos données, de les rectifier, de les supprimer, et de retirer votre consentement. Pour exercer ces droits, contactez-nous à privacy@nexura.ai."
+      },
+      "contact": {
+        "title": "Nous joindre",
+        "content": "Pour toute question concernant cette politique, écrivez-nous à privacy@nexura.ai ou par la poste à NEXURA, Montréal, Québec, Canada."
+      }
+    }
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "lastUpdated": "Dernière mise à jour: 12 mai 2026",
+    "intro": "En utilisant le site et les services de NEXURA, vous acceptez les présentes conditions. Ces conditions sont régies par les lois du Québec.",
+    "sections": {
+      "services": {
+        "title": "Description des services",
+        "content": "NEXURA offre des services de consultation et d'implémentation en automatisation des opérations d'affaires. Les solutions sont personnalisées selon les besoins de chaque client."
+      },
+      "obligations": {
+        "title": "Vos obligations",
+        "content": "Vous vous engagez à fournir des informations exactes, à utiliser nos services de façon légale, et à respecter les droits de propriété intellectuelle."
+      },
+      "payment": {
+        "title": "Paiement",
+        "content": "Les tarifs sont indiqués en dollars canadiens. Le paiement est dû selon les termes convenus pour chaque projet. Les taxes applicables sont en sus."
+      },
+      "liability": {
+        "title": "Limitation de responsabilité",
+        "content": "NEXURA ne peut être tenue responsable des dommages indirects résultant de l'utilisation de nos services. Notre responsabilité est limitée au montant payé pour les services concernés."
+      },
+      "ip": {
+        "title": "Propriété intellectuelle",
+        "content": "Le contenu du site (textes, images, logos) appartient à NEXURA. Les solutions développées pour vous vous appartiennent, sauf indication contraire."
+      },
+      "termination": {
+        "title": "Résiliation",
+        "content": "Nous pouvons suspendre ou résilier votre accès aux services en cas de violation des présentes conditions."
+      }
+    }
+  }
+}

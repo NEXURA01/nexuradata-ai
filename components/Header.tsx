@@ -31,7 +31,7 @@ export function Header() {
         {/* Logo + Language */}
         <div className="flex items-center gap-12">
           <Link href="/" className="text-foreground hover:opacity-80 transition-opacity" aria-label="Nexura Analytics — Home">
-            <LogoWordmark size={13} />
+            <LogoWordmark size={24} />
           </Link>
           <div className="hidden md:flex items-center border-l border-foreground/15 pl-12">
             <button

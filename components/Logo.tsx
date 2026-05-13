@@ -79,19 +79,19 @@ function Punctum({ size }: { size: number }) {
 /* ---------------------------------------------------------------- */
 /*  Compact wordmark — header / nav                                 */
 /* ---------------------------------------------------------------- */
-export function LogoWordmark({ size = 13, className }: LogoBaseProps) {
+export function LogoWordmark({ size = 26, className }: LogoBaseProps) {
   return (
     <div className={cn("inline-flex items-center gap-3", className)}>
-      <LogoMark size={size * 2} />
+      <LogoMark size={size * 1.4} />
       <span
-        className="font-mono font-medium uppercase leading-none inline-flex items-baseline"
+        className="font-serif leading-none inline-flex items-baseline"
         style={{
           fontSize: size,
-          letterSpacing: "0.26em",
+          letterSpacing: "-0.018em",
         }}
       >
         Nexura
-        <Punctum size={size * 0.32} />
+        <Punctum size={size * 0.16} />
       </span>
     </div>
   );

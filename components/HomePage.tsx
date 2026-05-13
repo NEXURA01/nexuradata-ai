@@ -26,23 +26,23 @@ export function HomePage() {
     {
       title: { en: "Operational blind spots", fr: "Angles morts opérationnels" },
       desc: {
-        en: "Leaders cannot see risk, throughput, bottlenecks, or ownership in time. Problems surface late, after the cost is already real.",
-        fr: "Les dirigeants ne voient pas les risques, le débit, les goulots ou les responsabilités à temps. Les problèmes remontent tard, quand le coût est déjà réel."
+        en: "Leaders do not see risk, delays, blockers, or ownership early enough. Problems surface when the cost is already real.",
+        fr: "Les dirigeants ne voient pas assez tôt les risques, les délais, les blocages ou les responsabilités. Les problèmes apparaissent quand le coût est déjà réel."
       }
     }
   ];
 
   const whatWeDo = [
     {
-      title: { en: "We instrument the operation.", fr: "On instrumente l'opération." },
+      title: { en: "We map the operation.", fr: "On cartographie l'opération." },
       opacity: "text-background"
     },
     {
-      title: { en: "Expose the failure points.", fr: "On expose les points de rupture." },
+      title: { en: "Expose the failure points.", fr: "On fait ressortir les points de rupture." },
       opacity: "text-background/60"
     },
     {
-      title: { en: "Build the system that keeps work moving.", fr: "On bâtit le système qui garde le travail en mouvement." },
+      title: { en: "Build the system that keeps execution clear.", fr: "On bâtit le système qui garde l'exécution claire." },
       opacity: "text-background/40"
     }
   ];
@@ -185,12 +185,18 @@ export function HomePage() {
                 <span className="ml-4 text-[#9b4635] transition-transform group-hover:translate-x-1">→</span>
               </Link>
               <Link
-                href="/services"
+                href="/contact"
                 className="border-y border-[#f4efe4]/18 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#f4efe4]/54 transition-colors hover:border-[#f4efe4]/45 hover:text-[#f4efe4]"
               >
-                {getText({ en: "View systems", fr: "Voir les systèmes" })}
+                {getText({ en: "Contact", fr: "Nous écrire" })}
               </Link>
             </div>
+            <a
+              href="mailto:contact@nexuradata.ca"
+              className="mt-7 inline-block font-mono text-[10px] uppercase tracking-[0.24em] text-[#f4efe4]/42 transition-colors hover:text-[#f4efe4]/78"
+            >
+              contact@nexuradata.ca
+            </a>
           </motion.div>
 
           <motion.div
@@ -256,10 +262,10 @@ export function HomePage() {
               <p className="font-mono text-sm tracking-[0.2em] text-foreground/40 mb-6">
                 {getText({ en: "THE PROBLEM", fr: "LE PROBLÈME" })}
               </p>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-foreground">
+              <h2 className="max-w-[12ch] font-serif text-4xl leading-[0.98] text-foreground md:text-5xl lg:text-6xl">
                 {getText({
-                  en: "Most companies do not need more software. They need an operating layer that makes the software obey.",
-                  fr: "La plupart des entreprises n'ont pas besoin de plus de logiciels. Elles ont besoin d'une couche opérationnelle qui force les logiciels à obéir."
+                  en: "Most companies do not need another tool. They need an operating layer that connects the systems and keeps the work clear.",
+                  fr: "La plupart des entreprises n'ont pas besoin d'un outil de plus. Elles ont besoin d'une couche opérationnelle qui relie les systèmes et garde le travail clair."
                 })}
               </h2>
             </div>
@@ -294,7 +300,7 @@ export function HomePage() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className={`font-serif text-4xl md:text-5xl lg:text-7xl leading-[1.1] ${item.opacity}`}
+                className={`max-w-[12ch] font-serif text-4xl leading-[0.98] md:text-5xl lg:text-6xl ${item.opacity}`}
               >
                 {getText(item.title)}
               </motion.h2>

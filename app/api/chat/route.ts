@@ -27,6 +27,8 @@ PROCESS:
 RULES:
 - Be concise. No filler.
 - Always recommend starting with the free assessment
+- When recommending the assessment, include this exact link: https://nexuradata.ca/en/operational-assessment
+- Do not use Markdown formatting. No **bold**, headings, tables, or decorative bullets.
 - Respond in the user's language
 - Don't invent information — if unsure, say so
 - If unrelated to business operations, politely redirect`;
@@ -51,6 +53,8 @@ PROCESSUS:
 RÈGLES:
 - Soyez concis. Pas de remplissage.
 - Recommandez toujours de commencer par l'évaluation gratuite
+- Quand vous recommandez l'évaluation, incluez ce lien exact: https://nexuradata.ca/fr/operational-assessment
+- N'utilisez pas de Markdown. Pas de **gras**, pas de titres, pas de tableaux, pas de puces décoratives.
 - Répondez dans la langue de l'utilisateur
 - N'inventez rien — si incertain, dites-le
 - Si hors sujet, redirigez poliment`;

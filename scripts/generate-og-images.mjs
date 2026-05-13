@@ -22,7 +22,7 @@ function escapeXml(value) {
     .replaceAll('"', "&quot;");
 }
 
-const DISPLAY_FONT = "Inter Tight, Satoshi, Inter, Arial, sans-serif";
+const DISPLAY_FONT = "Instrument Serif, Georgia, 'Times New Roman', serif";
 const SANS_FONT = "Inter, Satoshi, Arial, sans-serif";
 const MONO_FONT = "IBM Plex Mono, SFMono-Regular, Consolas, monospace";
 
@@ -60,7 +60,7 @@ function ogSvg({ locale, headline, subline }) {
   <line x1="0" y1="132" x2="1200" y2="132" stroke="${COLORS.black}" stroke-opacity="0.16" stroke-width="1" />
 
   ${logoMark(42, 30, 72)}
-  <text x="130" y="83" fill="${COLORS.black}" font-family="${DISPLAY_FONT}" font-size="56" font-weight="800" letter-spacing="-1">Nexura</text>
+  <text x="130" y="83" fill="${COLORS.black}" font-family="${DISPLAY_FONT}" font-size="56" font-weight="400" letter-spacing="-1">Nexura</text>
   <text x="336" y="78" fill="${COLORS.black}" fill-opacity="0.16" font-family="${MONO_FONT}" font-size="38" letter-spacing="0">|</text>
   <text x="396" y="77" fill="${COLORS.black}" font-family="${MONO_FONT}" font-size="23" font-weight="700" letter-spacing="4">${statusLocale === "FR" ? "EN" : "FR"}</text>
   <text x="670" y="77" fill="${COLORS.black}" font-family="${MONO_FONT}" font-size="22" font-weight="700" letter-spacing="5">PLATFORM</text>
@@ -69,7 +69,7 @@ function ogSvg({ locale, headline, subline }) {
 
   <rect x="0" y="132" width="1200" height="410" fill="${COLORS.black}" />
   <text x="54" y="218" fill="${COLORS.boneMuted}" font-family="${MONO_FONT}" font-size="23" letter-spacing="11">${escapeXml(eyebrow)}</text>
-  ${textLines(headline, { x: 54, y: 356, size: 100, lineHeight: 100, fill: COLORS.bone, weight: 800 })}
+  ${textLines(headline, { x: 54, y: 356, size: 100, lineHeight: 100, fill: COLORS.bone, weight: 400 })}
   <text x="54" y="505" fill="${COLORS.bone}" fill-opacity="0.72" font-family="${SANS_FONT}" font-size="28" letter-spacing="0">${escapeXml(subline)}</text>
   ${logoMark(1082, 458, 58, COLORS.bone)}
 
@@ -96,11 +96,38 @@ const images = [
   },
 ];
 
+const icons = [
+  { name: "icon-192.png", size: 192 },
+  { name: "icon-512.png", size: 512 },
+  { name: "apple-touch-icon.png", size: 180 },
+];
+
+function appIconSvg(size) {
+  const outerInset = Math.round(size * 0.18);
+  const outerSize = size - outerInset * 2;
+  const innerSize = Math.round(size * 0.22);
+  const innerInset = Math.round((size - innerSize) / 2);
+  const stroke = Math.max(3, Math.round(size * 0.032));
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+  <rect width="${size}" height="${size}" fill="${COLORS.black}" />
+  <rect x="${outerInset}" y="${outerInset}" width="${outerSize}" height="${outerSize}" fill="none" stroke="${COLORS.bone}" stroke-width="${stroke}" />
+  <rect x="${innerInset}" y="${innerInset}" width="${innerSize}" height="${innerSize}" fill="${COLORS.bone}" />
+</svg>`;
+}
+
 await mkdir(OUT_DIR, { recursive: true });
 
 for (const image of images) {
   const svg = ogSvg(image);
   const file = path.join(OUT_DIR, image.name);
   await sharp(Buffer.from(svg)).png().toFile(file);
+  console.log(`generated ${path.relative(ROOT, file)}`);
+}
+
+for (const icon of icons) {
+  const file = path.join(OUT_DIR, icon.name);
+  await sharp(Buffer.from(appIconSvg(icon.size))).png().toFile(file);
   console.log(`generated ${path.relative(ROOT, file)}`);
 }

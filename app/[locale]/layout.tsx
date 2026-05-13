@@ -4,7 +4,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { buildPageMetadata, getOrganizationJsonLd } from "@/lib/seo";
-import { Inter, Inter_Tight, IBM_Plex_Mono } from "next/font/google";
+import { Inter, Inter_Tight, Instrument_Serif, IBM_Plex_Mono } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ChatWidget } from "@/components/ChatWidget";
@@ -19,6 +19,13 @@ const inter = Inter({
 const interTight = Inter_Tight({
   subsets: ["latin"],
   variable: "--font-inter-tight",
+  display: "swap",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-instrument-serif",
   display: "swap",
 });
 
@@ -56,7 +63,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${interTight.variable} ${ibmPlexMono.variable} bg-background`}
+      className={`${inter.variable} ${interTight.variable} ${instrumentSerif.variable} ${ibmPlexMono.variable} bg-background`}
     >
       <body className="min-h-screen flex flex-col font-sans antialiased">
         <script

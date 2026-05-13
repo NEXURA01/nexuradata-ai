@@ -7,6 +7,32 @@ import { useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogoMark } from "@/components/Logo";
 
+const cleanAssistantText = (value: string) =>
+  value
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/__([^_]+)__/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .trim();
+
+const renderMessageText = (value: string) => {
+  const cleanText = cleanAssistantText(value);
+  const parts = cleanText.split(/(https?:\/\/[^\s)]+)/g);
+
+  return parts.map((part, index) => {
+    if (!part.startsWith("http")) return part;
+
+    return (
+      <a
+        key={`${part}-${index}`}
+        href={part}
+        className="border-b border-current/35 text-current transition-opacity hover:opacity-70"
+      >
+        {part.replace(/^https?:\/\/nexuradata\.ca/, "")}
+      </a>
+    );
+  });
+};
+
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -180,7 +206,7 @@ export function ChatWidget() {
                             : "bg-foreground/5 text-foreground"
                         }`}
                       >
-                        {text}
+                        {isUser ? text : renderMessageText(text)}
                       </div>
                     </div>
                   );

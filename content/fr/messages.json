@@ -185,7 +185,7 @@
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Questions seulement. Pour les évaluations, utilisez la page d'évaluation.",
+    "subtitle": "Écrivez-nous directement ou laissez un court message. L'équipe vous répondra avec la prochaine étape.",
     "form": {
       "name": "Votre nom",
       "email": "Courriel",
@@ -196,7 +196,7 @@
     "email": "contact@nexuradata.ca"
   },
   "footer": {
-    "description": "NEXURA aide les entreprises à centraliser leurs opérations et automatiser leurs workflows.",
+    "description": "Infrastructure opérationnelle privée pour équipes qui veulent clarifier, automatiser et contrôler l'exécution.",
     "services": "Services",
     "legal": "Légal",
     "privacy": "Politique de confidentialité",

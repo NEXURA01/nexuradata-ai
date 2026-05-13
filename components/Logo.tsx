@@ -51,7 +51,7 @@ export function LogoWordmark({ size = 28, className }: LogoBaseProps) {
   return (
     <div className={cn("inline-flex items-center gap-3", className)}>
       <LogoMark size={size * 1.15} />
-      <span className="font-serif text-[30px] font-semibold leading-none tracking-normal sm:text-[38px] lg:text-[42px]">
+      <span className="font-serif text-[30px] font-normal leading-none tracking-[-0.01em] sm:text-[38px] lg:text-[42px]">
         Nexura
       </span>
     </div>
@@ -66,7 +66,7 @@ export function Logo({ size = 44, className }: LogoBaseProps) {
     <div className={cn("inline-flex items-center gap-4", className)}>
       <LogoMark size={size * 1.1} />
       <div className="flex flex-col">
-        <span className="font-serif text-[44px] font-semibold leading-none tracking-normal">
+        <span className="font-serif text-[44px] font-normal leading-none tracking-[-0.01em]">
           Nexura
         </span>
         <span className="mt-2 font-mono text-[9px] uppercase leading-none tracking-[0.4em] opacity-[0.55]">
@@ -85,7 +85,7 @@ export function LogoDisplay({ size = 100, className }: LogoBaseProps) {
     <div className={cn("inline-flex flex-col items-center gap-8", className)}>
       <LogoMark size={size} />
       <div className="flex flex-col items-center gap-4">
-        <span className="font-serif text-[55px] font-semibold leading-none tracking-normal">
+        <span className="font-serif text-[55px] font-normal leading-none tracking-[-0.01em]">
           Nexura
         </span>
         <div className="flex items-center gap-4">

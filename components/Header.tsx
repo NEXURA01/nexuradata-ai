@@ -22,7 +22,6 @@ export function Header() {
     { href: "/services", label: t("services") },
     { href: "/pricing", label: t("pricing") },
     { href: "/operational-assessment", label: t("assessment") },
-    { href: "/contact", label: t("contact") },
   ];
 
   return (
@@ -44,7 +43,7 @@ export function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-12">
+        <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -54,6 +53,12 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/contact"
+            className="border border-[rgba(11,13,16,0.24)] px-4 py-3 font-mono text-[14px] font-semibold uppercase tracking-[0.18em] text-[var(--noir)] transition-colors hover:border-[var(--noir)] hover:bg-[var(--noir)] hover:text-[var(--os)]"
+          >
+            {t("contact")}
+          </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -69,6 +74,13 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-[rgba(11,13,16,0.12)] bg-[var(--os)]">
           <div className="px-8 py-8 flex flex-col gap-6">
+            <Link
+              href="/contact"
+              className="border border-[rgba(11,13,16,0.24)] px-4 py-4 font-mono text-sm font-semibold uppercase tracking-wider text-[var(--noir)] transition-colors hover:border-[var(--noir)]"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t("contact")}
+            </Link>
             {navLinks.map((link) => (
               <Link
                 key={link.href}

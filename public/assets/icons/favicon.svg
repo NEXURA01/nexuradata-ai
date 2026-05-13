@@ -1,8 +1,7 @@
 ﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
   <title id="title">NEXURA</title>
-  <desc id="desc">Structural NX monogram on obsidian.</desc>
-  <rect width="64" height="64" rx="0" fill="#0A0A0B"/>
-  <path d="M8 8H56M8 8V56M56 8V56M8 56H56" fill="none" stroke="#F5F1E8" stroke-width="1.5" opacity="0.32"/>
-  <path d="M19 47V17H24L40 47H45V17" fill="none" stroke="#F5F1E8" stroke-width="5.8" stroke-linecap="square" stroke-linejoin="miter"/>
-  <path d="M40 17L52 32L40 47M52 17L40 32L52 47" fill="none" stroke="#B87333" stroke-width="4.8" stroke-linecap="square" stroke-linejoin="miter"/>
+  <desc id="desc">Square operational mark on obsidian.</desc>
+  <rect width="64" height="64" fill="#0b0d10"/>
+  <rect x="7" y="7" width="50" height="50" fill="none" stroke="#e8e4dc" stroke-width="2.6"/>
+  <rect x="25" y="25" width="14" height="14" fill="#e8e4dc"/>
 </svg>

@@ -6,21 +6,21 @@ const cn = (...classes: Array<string | undefined | false>) =>
   classes.filter(Boolean).join(" ");
 
 /**
- * NEXURA — The Aperture Mark
+ * NEXURA — The Locator Mark
  * ----------------------------------------------------------------
  * The mark IS the business.
  *
- * NEXURA reveals what limits companies. The logo is a literal
- * aperture — a lens focused on a single point of insight.
- * Two opposing blades form an iris around a focal square.
+ * Two squares. One frame. One point inside it.
+ * The outer square is the system — your company, your operations.
+ * The inner solid square is what NEXURA reveals — the constraint,
+ * the bottleneck, the exact point where intelligence is missing.
  *
  * Symbol semantics:
- *   • Aperture        → "See what's limiting your company"
- *   • Focal square    → the insight, the bottleneck exposed
- *   • Outer ring      → instrument-grade precision
- *   • Bold geometry   → operational, not decorative
+ *   • Outer hairline square → the operational system
+ *   • Inner solid square    → the located insight
+ *   • Asymmetric placement  → constraint never sits in the center
  *
- * Monochrome only. No red. No fluff.
+ * Monochrome only. No red. No fluff. No decoration.
  * ----------------------------------------------------------------
  */
 
@@ -46,25 +46,26 @@ export function LogoMark({ size = 32, className, style }: LogoBaseProps) {
       className={cn("inline-block shrink-0", className)}
       style={style}
     >
-      {/* Outer instrument ring — hairline, registration grade.          */}
-      <circle
-        cx="32"
-        cy="32"
-        r="30"
+      {/* Outer square — the system. Hairline, precision-instrument.    */}
+      <rect
+        x="4"
+        y="4"
+        width="56"
+        height="56"
         stroke="currentColor"
-        strokeWidth="1"
-        opacity="0.4"
+        strokeWidth="2"
         fill="none"
       />
 
-      {/* Aperture blades — two opposing triangles forming an iris       */}
-      {/* converging on the focal point. The space between them is the   */}
-      {/* lens opening — the "field of view".                            */}
-      <path d="M32 7 L48 29 L16 29 Z" fill="currentColor" />
-      <path d="M32 57 L16 35 L48 35 Z" fill="currentColor" />
-
-      {/* Focal point — the insight at center.                           */}
-      <rect x="29.5" y="29.5" width="5" height="5" fill="currentColor" />
+      {/* Inner solid square — the located constraint.                   */}
+      {/* Offset down-right deliberately: insights are never centered.   */}
+      <rect
+        x="34"
+        y="34"
+        width="22"
+        height="22"
+        fill="currentColor"
+      />
     </svg>
   );
 }

@@ -26,16 +26,16 @@ export function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-foreground/10">
-      <nav className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <nav className="max-w-6xl mx-auto px-8 h-20 flex items-center justify-between">
         {/* Logo + Language */}
-        <div className="flex items-center gap-8">
-          <Link href="/" className="font-mono text-sm tracking-widest font-semibold">
+        <div className="flex items-center gap-12">
+          <Link href="/" className="font-mono text-base tracking-widest font-semibold leading-tight">
             NEXURA
           </Link>
-          <div className="hidden md:flex items-center border-l border-foreground/15 pl-8">
+          <div className="hidden md:flex items-center border-l border-foreground/15 pl-12">
             <button
               onClick={switchLocale}
-              className="ref-number text-xs text-foreground/60 hover:text-foreground transition-colors"
+              className="font-mono text-xs tracking-wider uppercase text-foreground/70 hover:text-foreground transition-colors"
             >
               {locale === "fr" ? "FR" : "EN"}
             </button>
@@ -43,12 +43,12 @@ export function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-mono text-xs tracking-wider uppercase text-foreground hover:text-foreground/60 transition-colors"
+              className="font-mono text-xs tracking-wider uppercase text-foreground hover:text-foreground/60 transition-colors leading-tight"
             >
               {link.label}
             </Link>
@@ -58,7 +58,7 @@ export function Header() {
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden ref-number text-xs"
+          className="md:hidden font-mono text-sm tracking-wider"
           aria-label="Menu"
         >
           {mobileMenuOpen ? "✕" : "☰"}
@@ -68,19 +68,19 @@ export function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-foreground/10 bg-background">
-          <div className="px-6 py-6 flex flex-col gap-4">
+          <div className="px-8 py-8 flex flex-col gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="ref-number"
+                className="font-mono text-sm tracking-wider uppercase text-foreground hover:text-foreground/60 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="border-t border-foreground/10 pt-4 mt-2">
-              <button onClick={switchLocale} className="ref-number">
+            <div className="border-t border-foreground/10 pt-6 mt-4">
+              <button onClick={switchLocale} className="font-mono text-sm tracking-wider uppercase text-foreground/70 hover:text-foreground transition-colors">
                 {locale === "fr" ? "ENGLISH" : "FRANÇAIS"}
               </button>
             </div>

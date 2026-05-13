@@ -10,7 +10,21 @@ const scriptSources = [
   !isProduction ? "'unsafe-eval'" : "",
   "https://js.stripe.com",
   "https://vercel.live",
+  "https://www.googletagmanager.com",
 ].filter(Boolean).join(" ");
+
+const connectSources = [
+  "'self'",
+  "https://api.stripe.com",
+  "https://checkout.stripe.com",
+  "https://js.stripe.com",
+  "https://*.supabase.co",
+  "wss://*.supabase.co",
+  "https://vitals.vercel-insights.com",
+  "https://www.google-analytics.com",
+  "https://analytics.google.com",
+  "https://region1.google-analytics.com",
+].join(" ");
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -22,7 +36,7 @@ const contentSecurityPolicy = [
   "font-src 'self' data:",
   `script-src ${scriptSources}`,
   "style-src 'self' 'unsafe-inline'",
-  "connect-src 'self' https://api.stripe.com https://checkout.stripe.com https://js.stripe.com https://*.supabase.co wss://*.supabase.co https://vitals.vercel-insights.com",
+  `connect-src ${connectSources}`,
   "frame-src https://checkout.stripe.com https://js.stripe.com",
   "manifest-src 'self'",
   "worker-src 'self' blob:",

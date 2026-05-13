@@ -50,7 +50,7 @@ export function LogoMark({ size = 32, className }: LogoBaseProps) {
       <path
         d="M41 14L54 32L41 50M54 14L41 32L54 50"
         fill="none"
-        stroke="#BD7630"
+        stroke="#9B4635"
         strokeWidth="6.2"
         strokeLinecap="square"
         strokeLinejoin="miter"

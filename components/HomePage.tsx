@@ -141,8 +141,13 @@ export function HomePage() {
       {/* Hero — operational command surface */}
       <section className="relative min-h-[100svh] overflow-hidden bg-[#080806] pt-20 text-[#f4efe4]">
         <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(244,239,228,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(244,239,228,0.055)_1px,transparent_1px)] [background-size:56px_56px]" />
-        <div className="absolute inset-x-0 top-20 h-px bg-[#bd7630]/45" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-[#bd7630]/30" />
+        <div className="absolute inset-x-6 top-28 h-px bg-[#9b4635]/38 lg:inset-x-14" />
+        <div className="absolute inset-x-6 bottom-8 h-px bg-[#f4efe4]/14 lg:inset-x-14" />
+        <div className="absolute left-6 right-6 top-28 bottom-8 border-x border-[#f4efe4]/10 lg:left-14 lg:right-14" />
+        <div className="absolute left-8 top-24 font-mono text-[8px] uppercase tracking-[0.24em] text-[#f4efe4]/45 lg:left-16">NXR / 0002 / Quiet Mechanism</div>
+        <div className="absolute right-8 top-24 hidden font-mono text-[8px] uppercase tracking-[0.24em] text-[#f4efe4]/45 md:block lg:right-16">XXM 01 / Plate II / MMXXVI</div>
+        <div className="absolute left-8 bottom-3 hidden font-mono text-[8px] uppercase tracking-[0.2em] text-[#f4efe4]/34 md:block lg:left-16">NEXURA Analytics · Atelier</div>
+        <div className="absolute right-8 bottom-3 hidden font-mono text-[8px] uppercase tracking-[0.2em] text-[#f4efe4]/34 md:block lg:right-16">1008 X 1008 / Post</div>
         <div className="relative z-10 grid min-h-[calc(100svh-5rem)] w-full max-w-[1480px] grid-cols-1 items-center gap-16 px-6 py-20 mx-auto lg:grid-cols-12 lg:px-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -150,8 +155,8 @@ export function HomePage() {
             transition={{ duration: 0.8 }}
             className="lg:col-span-7"
           >
-            <div className="mb-8 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.34em] text-[#bd7630]">
-              <span className="h-px w-14 bg-[#bd7630]" />
+            <div className="mb-8 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.34em] text-[#9b4635]">
+              <span className="h-px w-14 bg-[#9b4635]" />
               <span>NEXURA ANALYTICS / PRIVATE OPS SYSTEMS</span>
             </div>
             
@@ -172,17 +177,17 @@ export function HomePage() {
             <div className="flex flex-wrap items-center gap-5">
               <Link
                 href="/operational-assessment"
-                className="group inline-flex items-center border border-[#bd7630]/70 bg-[#bd7630] px-5 py-4 font-mono text-[11px] uppercase tracking-[0.24em] text-[#080806] transition-colors hover:bg-[#f4efe4] hover:border-[#f4efe4]"
+                className="group inline-flex items-center border-y border-[#9b4635]/70 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#f4efe4]/82 transition-colors hover:border-[#f4efe4]/70 hover:text-[#f4efe4]"
               >
                 {getText({
                   en: "Start assessment",
                   fr: "Démarrer l'évaluation"
                 })}
-                <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+                <span className="ml-4 text-[#9b4635] transition-transform group-hover:translate-x-1">→</span>
               </Link>
               <Link
                 href="/services"
-                className="border border-[#f4efe4]/18 px-5 py-4 font-mono text-[11px] uppercase tracking-[0.24em] text-[#f4efe4]/70 transition-colors hover:border-[#f4efe4]/50 hover:text-[#f4efe4]"
+                className="border-y border-[#f4efe4]/18 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#f4efe4]/54 transition-colors hover:border-[#f4efe4]/45 hover:text-[#f4efe4]"
               >
                 {getText({ en: "View systems", fr: "Voir les systèmes" })}
               </Link>
@@ -203,7 +208,7 @@ export function HomePage() {
               <div className="grid grid-cols-[auto_1fr] gap-6">
                 <LogoMark size={80} />
                 <div>
-                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#bd7630]">Operational command layer</p>
+                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#9b4635]">Operational command layer</p>
                   <p className="font-serif text-3xl leading-none text-[#f4efe4]">Private systems for execution clarity.</p>
                 </div>
               </div>
@@ -223,7 +228,7 @@ export function HomePage() {
                     fr: "Une couche silencieuse entre personnes, outils, données et décisions."
                   })}
                 </p>
-                <svg viewBox="0 0 120 120" className="h-28 w-28 shrink-0 text-[#bd7630]" aria-hidden="true">
+                <svg viewBox="0 0 120 120" className="h-28 w-28 shrink-0 text-[#9b4635]" aria-hidden="true">
                   <circle cx="60" cy="60" r="47" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.55" />
                   <circle cx="60" cy="60" r="26" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.35" />
                   <path d="M60 13V0M60 120v-13M13 60H0M120 60h-13" stroke="currentColor" strokeWidth="1" opacity="0.7" />
@@ -239,7 +244,7 @@ export function HomePage() {
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="h-14 w-px bg-[#bd7630]/55"
+            className="h-14 w-px bg-[#9b4635]/45"
           />
         </div>
       </section>

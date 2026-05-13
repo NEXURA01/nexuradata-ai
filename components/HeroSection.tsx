@@ -70,10 +70,10 @@ export function HeroSection() {
             {/* CTA - stark, no rounding */}
             <Link
               href="/evaluation"
-              className="inline-flex items-center gap-3 px-5 py-2.5 bg-foreground text-background font-mono text-xs uppercase tracking-wider hover:bg-accent transition-colors"
+              className="inline-flex items-center gap-3 border-y border-foreground/60 px-1 py-2.5 font-mono text-xs uppercase tracking-wider text-foreground hover:border-accent transition-colors"
             >
               {t("cta")}
-              <span className="text-background/60">→</span>
+              <span className="text-accent">→</span>
             </Link>
 
             <span className="ref-number block mt-8 opacity-40">

@@ -11,11 +11,11 @@
   --color-surface: oklch(0.95 0.01 75);
   --color-muted: oklch(0.50 0.02 55);
   --color-muted-foreground: oklch(0.35 0.02 55);
-  --color-accent: oklch(0.52 0.16 28);
+  --color-accent: #9b4635;
   --color-accent-foreground: oklch(0.95 0.01 75);
   --color-border: oklch(0.12 0.01 75 / 0.12);
   --color-input: oklch(0.95 0.01 75);
-  --color-ring: oklch(0.52 0.16 28);
+  --color-ring: #9b4635;
 
   --font-serif: var(--font-playfair), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
@@ -212,12 +212,12 @@ body {
   --secondary-foreground: oklch(0.12 0.01 75);
   --muted: oklch(0.88 0.01 75);
   --muted-foreground: oklch(0.50 0.02 55);
-  --accent: oklch(0.52 0.16 28);
+  --accent: #9b4635;
   --accent-foreground: oklch(0.95 0.01 75);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.12 0.01 75 / 12%);
   --input: oklch(0.95 0.01 75);
-  --ring: oklch(0.52 0.16 28);
+  --ring: #9b4635;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

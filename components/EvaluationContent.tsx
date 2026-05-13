@@ -51,7 +51,7 @@ export function EvaluationContent() {
 
               <a
                 href="mailto:contact@nexuradata.ca?subject=Demande d'évaluation"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-accent text-accent-foreground font-mono text-sm uppercase tracking-wider hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-3 border-y border-accent/70 px-1 py-3 font-mono text-xs uppercase tracking-[0.24em] text-foreground hover:border-foreground transition-colors"
               >
                 {t("cta")}
                 <svg

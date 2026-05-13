@@ -61,7 +61,7 @@ export function PricingContent() {
         <div className="text-center mt-12">
           <Link
             href="/operational-assessment"
-            className="inline-flex items-center justify-center px-8 py-4 bg-foreground text-background font-mono text-xs tracking-widest uppercase hover:bg-accent transition-colors"
+            className="inline-flex items-center justify-center border-y border-foreground/70 px-1 py-3 font-mono text-xs tracking-widest uppercase text-foreground hover:border-accent transition-colors"
           >
             {t("cta")}
           </Link>

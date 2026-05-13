@@ -53,7 +53,7 @@ export function PaymentSuccessContent() {
 
           <Link
             href="/portal"
-            className="inline-flex items-center justify-center w-full px-6 py-4 bg-foreground text-background font-mono text-xs tracking-widest uppercase hover:bg-accent transition-colors"
+            className="inline-flex items-center justify-center w-full border-y border-foreground/70 px-6 py-4 font-mono text-xs tracking-widest uppercase text-foreground hover:border-accent transition-colors"
           >
             {t("cta")}
           </Link>

@@ -84,7 +84,7 @@ export function ContactContent() {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="w-full px-6 py-4 bg-foreground text-background font-mono text-xs tracking-widest uppercase hover:bg-accent transition-colors disabled:opacity-50"
+              className="w-full border-y border-foreground/70 px-6 py-4 font-mono text-xs tracking-widest uppercase text-foreground hover:border-accent transition-colors disabled:opacity-50"
             >
               {status === "loading" ? "..." : t("form.submit")}
             </button>

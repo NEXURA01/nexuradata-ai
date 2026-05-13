@@ -194,7 +194,7 @@ export function AssessmentForm() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 bg-foreground text-background font-mono text-xs tracking-widest uppercase hover:bg-accent transition-colors disabled:opacity-50"
+                className="w-full border-y border-foreground/70 px-6 py-4 font-mono text-xs tracking-widest uppercase text-foreground hover:border-accent transition-colors disabled:opacity-50"
               >
                 {isSubmitting ? "..." : t("form.submit")}
               </button>
@@ -241,7 +241,7 @@ export function AssessmentForm() {
               <button
                 onClick={handleCheckout}
                 disabled={checkoutLoading}
-                className="w-full mt-8 px-6 py-4 bg-accent text-accent-foreground font-mono text-xs tracking-widest uppercase hover:bg-foreground transition-colors disabled:opacity-50"
+                className="w-full mt-8 border-y border-accent/70 px-6 py-4 font-mono text-xs tracking-widest uppercase text-foreground hover:border-foreground transition-colors disabled:opacity-50"
               >
                 {checkoutLoading ? "..." : t("result.cta")}
               </button>

@@ -26,17 +26,17 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-[#bd7630]/24 bg-[#080806]/96 text-[#f4efe4] backdrop-blur-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-[#9b4635]/24 bg-[#080806]/96 text-[#f4efe4] backdrop-blur-sm">
       <nav className="max-w-7xl mx-auto px-5 md:px-8 h-20 flex items-center justify-between">
         {/* Logo + Language */}
         <div className="flex items-center gap-12">
-          <Link href="/" className="text-[#f4efe4] hover:text-[#bd7630] transition-colors" aria-label="Nexura Analytics — Home">
+          <Link href="/" className="text-[#f4efe4] hover:text-[#9b4635] transition-colors" aria-label="Nexura Analytics — Home">
             <LogoWordmark size={30} />
           </Link>
-          <div className="hidden md:flex items-center border-l border-[#bd7630]/35 pl-8">
+          <div className="hidden md:flex items-center border-l border-[#9b4635]/35 pl-8">
             <button
               onClick={switchLocale}
-              className="font-mono text-xs font-medium tracking-[0.22em] uppercase text-[#f4efe4]/70 hover:text-[#bd7630] transition-colors"
+              className="font-mono text-xs font-medium tracking-[0.22em] uppercase text-[#f4efe4]/70 hover:text-[#9b4635] transition-colors"
             >
               {locale === "fr" ? "FR" : "EN"}
             </button>
@@ -49,7 +49,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-mono text-[11px] font-medium tracking-[0.22em] uppercase text-[#f4efe4]/68 hover:text-[#bd7630] transition-colors"
+              className="font-mono text-[11px] font-medium tracking-[0.22em] uppercase text-[#f4efe4]/68 hover:text-[#9b4635] transition-colors"
             >
               {link.label}
             </Link>
@@ -68,20 +68,20 @@ export function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-[#bd7630]/24 bg-[#080806]">
+        <div className="md:hidden border-t border-[#9b4635]/24 bg-[#080806]">
           <div className="px-8 py-8 flex flex-col gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-mono text-sm tracking-wider uppercase text-[#f4efe4]/75 hover:text-[#bd7630] transition-colors"
+                className="font-mono text-sm tracking-wider uppercase text-[#f4efe4]/75 hover:text-[#9b4635] transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="border-t border-[#bd7630]/24 pt-6 mt-4">
-              <button onClick={switchLocale} className="font-mono text-sm tracking-wider uppercase text-[#f4efe4]/70 hover:text-[#bd7630] transition-colors">
+            <div className="border-t border-[#9b4635]/24 pt-6 mt-4">
+              <button onClick={switchLocale} className="font-mono text-sm tracking-wider uppercase text-[#f4efe4]/70 hover:text-[#9b4635] transition-colors">
                 {locale === "fr" ? "ENGLISH" : "FRANÇAIS"}
               </button>
             </div>

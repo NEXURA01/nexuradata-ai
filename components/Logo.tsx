@@ -10,15 +10,14 @@ const cn = (...classes: Array<string | undefined | false>) =>
  * ----------------------------------------------------------------
  * The mark IS the business.
  *
- * Two squares. One frame. One point inside it.
+ * Two squares, concentric. One contains the other.
  * The outer square is the system — your company, your operations.
- * The inner solid square is what NEXURA reveals — the constraint,
- * the bottleneck, the exact point where intelligence is missing.
+ * The inner solid square is the core — the intelligence at the center.
  *
  * Symbol semantics:
  *   • Outer hairline square → the operational system
- *   • Inner solid square    → the located insight
- *   • Asymmetric placement  → constraint never sits in the center
+ *   • Inner solid square    → the intelligence core
+ *   • Concentric alignment  → containment, precision, focus
  *
  * Monochrome only. No red. No fluff. No decoration.
  * ----------------------------------------------------------------
@@ -57,11 +56,10 @@ export function LogoMark({ size = 32, className, style }: LogoBaseProps) {
         fill="none"
       />
 
-      {/* Inner solid square — the located constraint.                   */}
-      {/* Offset down-right deliberately: insights are never centered.   */}
+      {/* Inner solid square — the intelligence core. Concentric.       */}
       <rect
-        x="34"
-        y="34"
+        x="21"
+        y="21"
         width="22"
         height="22"
         fill="currentColor"

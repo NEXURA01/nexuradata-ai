@@ -5,7 +5,7 @@ export const contentType = "image/png";
 
 /**
  * Browser tab icon — The Locator Mark.
- * Two squares: the system, and the constraint located inside it.
+ * Two concentric squares: outer system, inner intelligence core.
  */
 export default function Icon() {
   return new ImageResponse(
@@ -27,9 +27,9 @@ export default function Icon() {
             stroke="#1A1A1A" strokeWidth="3"
             fill="none"
           />
-          {/* Inner solid square — the located constraint */}
+          {/* Inner solid square — the intelligence core, concentric */}
           <rect
-            x="34" y="34" width="22" height="22"
+            x="21" y="21" width="22" height="22"
             fill="#1A1A1A"
           />
         </svg>

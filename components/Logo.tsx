@@ -66,7 +66,7 @@ export function LogoWordmark({ size = 28, className }: LogoBaseProps) {
   return (
     <div className={cn("inline-flex items-center gap-2.5", className)}>
       <LogoMark size={size * 1.15} />
-      <span className="font-sans text-[30px] font-extrabold leading-none tracking-[0.11em]">
+      <span className="font-sans text-[18px] font-extrabold leading-none tracking-[0.11em] sm:text-[22px] lg:text-[30px]">
         NEXURA Analytics
       </span>
     </div>

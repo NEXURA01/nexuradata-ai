@@ -10,39 +10,39 @@ export function HomePage() {
 
   const problems = [
     {
-      title: { en: "Disconnected tools", fr: "Outils déconnectés" },
+      title: { en: "Fragmented execution", fr: "Exécution fragmentée" },
       desc: {
-        en: "Your CRM doesn't talk to your project management. Your invoicing is manual. Everyone copies and pastes between fifteen browser tabs, and information goes stale within hours.",
-        fr: "Votre CRM ne communique pas avec votre gestion de projets. Votre facturation est manuelle. Tout le monde copie-colle entre quinze onglets, et l'information devient périmée en quelques heures."
+        en: "Critical work moves between tools, people, approvals, and spreadsheets without a reliable operating layer. Data gets copied by hand, decisions lag, and status becomes negotiation.",
+        fr: "Le travail critique circule entre outils, personnes, approbations et tableurs sans couche opérationnelle fiable. Les données sont copiées à la main, les décisions ralentissent, et le statut devient une négociation."
       }
     },
     {
-      title: { en: "Tribal knowledge", fr: "Savoir tribal" },
+      title: { en: "Human dependency", fr: "Dépendance humaine" },
       desc: {
-        en: "Critical processes live in people's heads. When they're sick or quit, work stops. Training new hires takes months because nothing is documented or automated.",
-        fr: "Les processus critiques sont dans la tête des gens. Quand ils sont malades ou partent, le travail s'arrête. Former de nouveaux employés prend des mois parce que rien n'est documenté ou automatisé."
+        en: "Processes depend on memory, heroics, and manual follow-up. When one person is unavailable, the company loses context, momentum, and control.",
+        fr: "Les processus dépendent de la mémoire, des efforts individuels et du suivi manuel. Quand une personne manque, l'entreprise perd le contexte, l'élan et le contrôle."
       }
     },
     {
-      title: { en: "Blind spots", fr: "Angles morts" },
+      title: { en: "Operational blind spots", fr: "Angles morts opérationnels" },
       desc: {
-        en: "You can't see what's happening across your operation in real time. Problems become crises before anyone notices. Decisions are made on gut feel, not data.",
-        fr: "Vous ne voyez pas ce qui se passe dans vos opérations en temps réel. Les problèmes deviennent des crises avant que quelqu'un ne remarque. Les décisions sont prises au feeling, pas avec des données."
+        en: "Leaders cannot see risk, throughput, bottlenecks, or ownership in time. Problems surface late, after the cost is already real.",
+        fr: "Les dirigeants ne voient pas les risques, le débit, les goulots ou les responsabilités à temps. Les problèmes remontent tard, quand le coût est déjà réel."
       }
     }
   ];
 
   const whatWeDo = [
     {
-      title: { en: "We audit your operations.", fr: "On audite vos opérations." },
+      title: { en: "We instrument the operation.", fr: "On instrumente l'opération." },
       opacity: "text-background"
     },
     {
-      title: { en: "Map every bottleneck.", fr: "On cartographie chaque goulot." },
+      title: { en: "Expose the failure points.", fr: "On expose les points de rupture." },
       opacity: "text-background/60"
     },
     {
-      title: { en: "Build the infrastructure to eliminate them.", fr: "On bâtit l'infrastructure pour les éliminer." },
+      title: { en: "Build the system that keeps work moving.", fr: "On bâtit le système qui garde le travail en mouvement." },
       opacity: "text-background/40"
     }
   ];
@@ -51,24 +51,31 @@ export function HomePage() {
     {
       title: { en: "Assessment", fr: "Évaluation" },
       desc: {
-        en: "AI-powered analysis of your operational complexity. 5 minutes from you, 24-hour turnaround. Completely free.",
-        fr: "Analyse IA de votre complexité opérationnelle. 5 minutes de votre part, livraison en 24h. Complètement gratuit."
+        en: "A structured first read of the workflows, systems, and decision points that shape execution.",
+        fr: "Une première lecture structurée des workflows, systèmes et points de décision qui façonnent l'exécution."
       }
     },
     {
       title: { en: "Automation", fr: "Automatisation" },
       desc: {
-        en: "We connect your tools and automate the handoffs. When something happens in System A, System B updates automatically.",
-        fr: "On connecte vos outils et on automatise les transferts. Quand quelque chose arrive dans le Système A, le Système B se met à jour automatiquement."
+        en: "Reliable handoffs, notifications, updates, and approvals across the systems your team already uses.",
+        fr: "Transferts, notifications, mises à jour et approbations fiables entre les systèmes que votre équipe utilise déjà."
       }
     },
     {
       title: { en: "Infrastructure", fr: "Infrastructure" },
       desc: {
-        en: "Custom dashboards, agent systems, and operational tooling. A single view of your entire operation, built for how you work.",
-        fr: "Tableaux de bord personnalisés, systèmes d'agents et outils opérationnels. Une vue unique de toute votre opération, construite pour votre façon de travailler."
+        en: "Dashboards, agent workflows, internal tools, and control surfaces built around your operating reality.",
+        fr: "Tableaux de bord, workflows d'agents, outils internes et surfaces de contrôle conçus autour de votre réalité opérationnelle."
       }
     }
+  ];
+
+  const heroMetrics = [
+    { label: { en: "signal", fr: "signal" }, value: "04 layers" },
+    { label: { en: "handoffs", fr: "transferts" }, value: "mapped" },
+    { label: { en: "review", fr: "revue" }, value: "24h" },
+    { label: { en: "status", fr: "statut" }, value: "private" }
   ];
 
   const services = [
@@ -122,10 +129,6 @@ export function HomePage() {
     }
   ];
 
-  // Detect locale from translation context
-  const locale = t("brand.name") === "NEXURA" ? "en" : "en"; // fallback
-  const isEn = true; // We'll use the t() function for translated content
-  
   // Helper to get localized text
   const getText = (obj: { en: string; fr: string }) => {
     // Check if we're in French by looking at a known translation
@@ -135,60 +138,108 @@ export function HomePage() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      {/* Hero — Full viewport, statement typography */}
-      <section className="min-h-screen flex flex-col justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-foreground" />
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-8 lg:px-16 py-32">
+      {/* Hero — operational command surface */}
+      <section className="relative min-h-[100svh] overflow-hidden bg-[#080806] pt-20 text-[#f4efe4]">
+        <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(244,239,228,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(244,239,228,0.055)_1px,transparent_1px)] [background-size:56px_56px]" />
+        <div className="absolute inset-x-0 top-20 h-px bg-[#bd7630]/45" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-[#bd7630]/30" />
+        <div className="relative z-10 grid min-h-[calc(100svh-5rem)] w-full max-w-[1480px] grid-cols-1 items-center gap-16 px-6 py-20 mx-auto lg:grid-cols-12 lg:px-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="lg:col-span-7"
           >
-            <p className="font-mono text-sm tracking-[0.3em] text-background/50 mb-8">
-              NEXURA ANALYTICS — MONTREAL
-            </p>
+            <div className="mb-8 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.34em] text-[#bd7630]">
+              <span className="h-px w-14 bg-[#bd7630]" />
+              <span>NEXURA ANALYTICS / PRIVATE OPS SYSTEMS</span>
+            </div>
             
-            <h1 className="font-serif text-[clamp(2.5rem,8vw,7rem)] leading-[0.95] text-background mb-12 max-w-[18ch]">
+            <h1 className="mb-10 max-w-[15ch] font-serif text-[clamp(3rem,8vw,7.6rem)] leading-[0.9] text-[#f4efe4]">
               {getText({
-                en: "We find what's costing you money.",
-                fr: "On trouve ce qui vous coûte de l'argent."
+                en: "Execution infrastructure for controlled growth.",
+                fr: "Infrastructure d'exécution pour croissance contrôlée."
               })}
             </h1>
             
-            <p className="text-xl md:text-2xl text-background/60 max-w-[52ch] leading-relaxed mb-16">
+            <p className="mb-12 max-w-[55ch] text-lg leading-relaxed text-[#f4efe4]/62 md:text-2xl">
               {getText({
-                en: "Operational intelligence for mid-market companies. We expose hidden inefficiencies, automate broken workflows, and build the systems that let you scale.",
-                fr: "Intelligence opérationnelle pour entreprises de taille moyenne. On expose les inefficacités cachées, automatise les workflows brisés, et bâtit les systèmes qui vous permettent de grandir."
+                en: "NEXURA designs secure operational intelligence systems: workflow automation, agent-assisted analysis, dashboards, and private control layers for teams that need clarity before scale.",
+                fr: "NEXURA conçoit des systèmes sécurisés d'intelligence opérationnelle: automatisation de workflows, analyse assistée par agents, tableaux de bord et couches de contrôle privées pour les équipes qui veulent de la clarté avant l'échelle."
               })}
             </p>
 
-            <div className="flex flex-wrap gap-6">
+            <div className="flex flex-wrap items-center gap-5">
               <Link
                 href="/operational-assessment"
-                className="group inline-flex items-center gap-4 text-background text-lg"
+                className="group inline-flex items-center border border-[#bd7630]/70 bg-[#bd7630] px-5 py-4 font-mono text-[11px] uppercase tracking-[0.24em] text-[#080806] transition-colors hover:bg-[#f4efe4] hover:border-[#f4efe4]"
               >
-                <span className="w-14 h-14 rounded-full border-2 border-background/30 flex items-center justify-center group-hover:bg-background group-hover:text-foreground transition-all">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
-                </span>
-                <span className="border-b border-background/30 pb-1 group-hover:border-background transition-colors">
-                  {getText({
-                    en: "Start Free Assessment",
-                    fr: "Démarrer l'évaluation gratuite"
-                  })}
-                </span>
+                {getText({
+                  en: "Start assessment",
+                  fr: "Démarrer l'évaluation"
+                })}
+                <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
               </Link>
+              <Link
+                href="/services"
+                className="border border-[#f4efe4]/18 px-5 py-4 font-mono text-[11px] uppercase tracking-[0.24em] text-[#f4efe4]/70 transition-colors hover:border-[#f4efe4]/50 hover:text-[#f4efe4]"
+              >
+                {getText({ en: "View systems", fr: "Voir les systèmes" })}
+              </Link>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.15 }}
+            className="lg:col-span-5"
+          >
+            <div className="relative border border-[#f4efe4]/16 bg-[#11100d]/78 p-5 shadow-2xl shadow-black/40">
+              <div className="mb-8 flex items-center justify-between border-b border-[#f4efe4]/12 pb-4 font-mono text-[9px] uppercase tracking-[0.28em] text-[#f4efe4]/45">
+                <span>NX-OPS/CONTROL</span>
+                <span>MMXXVI</span>
+              </div>
+              <div className="grid grid-cols-[auto_1fr] gap-6">
+                <LogoMark size={80} />
+                <div>
+                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#bd7630]">Operational command layer</p>
+                  <p className="font-serif text-3xl leading-none text-[#f4efe4]">Private systems for execution clarity.</p>
+                </div>
+              </div>
+              <div className="my-8 h-px bg-[#f4efe4]/12" />
+              <div className="grid grid-cols-2 border border-[#f4efe4]/12">
+                {heroMetrics.map((metric, index) => (
+                  <div key={metric.value} className={`p-4 ${index % 2 === 0 ? "border-r" : ""} ${index < 2 ? "border-b" : ""} border-[#f4efe4]/12`}>
+                    <p className="mb-3 font-mono text-[8px] uppercase tracking-[0.26em] text-[#f4efe4]/38">{getText(metric.label)}</p>
+                    <p className="font-mono text-sm uppercase tracking-[0.08em] text-[#f4efe4]">{metric.value}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 flex items-end justify-between gap-6">
+                <p className="max-w-[28ch] text-sm leading-relaxed text-[#f4efe4]/48">
+                  {getText({
+                    en: "A quiet layer between people, tools, data, and decisions.",
+                    fr: "Une couche silencieuse entre personnes, outils, données et décisions."
+                  })}
+                </p>
+                <svg viewBox="0 0 120 120" className="h-28 w-28 shrink-0 text-[#bd7630]" aria-hidden="true">
+                  <circle cx="60" cy="60" r="47" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.55" />
+                  <circle cx="60" cy="60" r="26" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.35" />
+                  <path d="M60 13V0M60 120v-13M13 60H0M120 60h-13" stroke="currentColor" strokeWidth="1" opacity="0.7" />
+                  <path d="M36 84 84 36M42 36l42 48" stroke="currentColor" strokeWidth="1.4" opacity="0.75" />
+                </svg>
+              </div>
             </div>
           </motion.div>
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
+        <div className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2">
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="w-px h-16 bg-gradient-to-b from-background/50 to-transparent"
+            className="h-14 w-px bg-[#bd7630]/55"
           />
         </div>
       </section>
@@ -203,8 +254,8 @@ export function HomePage() {
               </p>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-foreground">
                 {getText({
-                  en: "Most companies leak 20-40% of their capacity to friction they can't see.",
-                  fr: "La plupart des entreprises perdent 20-40% de leur capacité à cause de frictions qu'elles ne voient pas."
+                  en: "Most companies do not need more software. They need an operating layer that makes the software obey.",
+                  fr: "La plupart des entreprises n'ont pas besoin de plus de logiciels. Elles ont besoin d'une couche opérationnelle qui force les logiciels à obéir."
                 })}
               </h2>
             </div>

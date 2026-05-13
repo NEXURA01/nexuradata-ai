@@ -212,12 +212,12 @@ body {
   --secondary-foreground: oklch(0.12 0.01 75);
   --muted: oklch(0.88 0.01 75);
   --muted-foreground: oklch(0.50 0.02 55);
-  --accent: oklch(0.88 0.01 75);
-  --accent-foreground: oklch(0.12 0.01 75);
+  --accent: oklch(0.52 0.16 28);
+  --accent-foreground: oklch(0.95 0.01 75);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.12 0.01 75 / 12%);
   --input: oklch(0.95 0.01 75);
-  --ring: oklch(0.50 0.02 55);
+  --ring: oklch(0.52 0.16 28);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

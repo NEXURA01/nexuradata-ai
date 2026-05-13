@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter, IBM_Plex_Mono, Geist } from "next/font/google";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -24,8 +25,21 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nexura Analytics",
-  description: "AI automation, quietly engineered.",
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  title: {
+    default: "NEXURA | Operational Intelligence Infrastructure",
+    template: "%s",
+  },
+  description: "Secure operational intelligence infrastructure, workflow automation, dashboards, and private AI control systems.",
+  category: "technology",
+  creator: "NEXURA",
+  publisher: "NEXURA",
+  icons: {
+    icon: "/assets/icons/favicon.svg",
+    apple: "/assets/icons/apple-touch-icon.png",
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export const viewport: Viewport = {

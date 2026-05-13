@@ -1,7 +1,9 @@
+import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { buildPageMetadata, getOrganizationJsonLd } from "@/lib/seo";
 import { Playfair_Display, Inter, IBM_Plex_Mono } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -36,6 +38,11 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata("home", locale);
+}
+
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
@@ -52,6 +59,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${playfair.variable} ${inter.variable} ${ibmPlexMono.variable} bg-background`}
     >
       <body className="min-h-screen flex flex-col font-sans antialiased">
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationJsonLd(locale)) }}
+        />
         <NextIntlClientProvider messages={messages}>
           <TooltipProvider>
             <Header />

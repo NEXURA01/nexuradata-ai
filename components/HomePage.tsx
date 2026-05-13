@@ -3,307 +3,256 @@
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
-import { Logo, LogoMark } from "@/components/Logo";
+import { LogoMark } from "@/components/Logo";
 
 export function HomePage() {
   const t = useTranslations();
 
   return (
-    <main className="min-h-screen">
-      {/* Hero — Bold, clear, confident */}
-      <section className="min-h-screen flex items-center bg-foreground text-background">
-        <div className="w-full max-w-7xl mx-auto px-8 py-32">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-4 mb-12">
-              <LogoMark size={48} className="text-background" />
-              <span className="font-mono text-sm tracking-widest text-background/60">NEXURA ANALYTICS</span>
-            </div>
-
-            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-background mb-8">
-              Operational intelligence<br />
-              for companies that<br />
-              refuse to guess.
+    <main className="min-h-screen bg-background text-foreground">
+      {/* Hero — Full viewport, statement typography */}
+      <section className="min-h-screen flex flex-col justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-foreground" />
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-8 lg:px-16 py-32">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="font-mono text-sm tracking-[0.3em] text-background/50 mb-8">
+              NEXURA ANALYTICS — MONTREAL
+            </p>
+            
+            <h1 className="font-serif text-[clamp(2.5rem,8vw,7rem)] leading-[0.95] text-background mb-12 max-w-[18ch]">
+              We find what&apos;s costing you money.
             </h1>
-
-            <p className="text-xl md:text-2xl text-background/70 max-w-2xl mb-12 leading-relaxed">
-              We expose what&apos;s limiting your business — scattered systems, broken workflows, invisible bottlenecks — then build the infrastructure to eliminate them. Permanently.
+            
+            <p className="text-xl md:text-2xl text-background/60 max-w-[52ch] leading-relaxed mb-16">
+              Operational intelligence for mid-market companies. We expose hidden inefficiencies, automate broken workflows, and build the systems that let you scale.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-16">
+            <div className="flex flex-wrap gap-6">
               <Link
                 href="/operational-assessment"
-                className="inline-flex items-center justify-center px-10 py-5 bg-background text-foreground text-lg font-medium hover:bg-background/90 transition-colors"
+                className="group inline-flex items-center gap-4 text-background text-lg"
               >
-                Start Free Assessment
-              </Link>
-              <Link
-                href="#how-it-works"
-                className="inline-flex items-center justify-center px-10 py-5 border border-background/30 text-background text-lg font-medium hover:bg-background/10 transition-colors"
-              >
-                How It Works
+                <span className="w-14 h-14 rounded-full border-2 border-background/30 flex items-center justify-center group-hover:bg-background group-hover:text-foreground transition-all">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+                <span className="border-b border-background/30 pb-1 group-hover:border-background transition-colors">
+                  Start Free Assessment
+                </span>
               </Link>
             </div>
+          </motion.div>
+        </div>
 
-            {/* Trust bar */}
-            <div className="flex flex-wrap gap-x-12 gap-y-4 text-sm text-background/50 font-mono">
-              <span>Based in Montreal, QC</span>
-              <span>Serving Canada & US</span>
-              <span>Est. 2025</span>
-              <span>AI-Powered Analysis</span>
-            </div>
-          </div>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="w-px h-16 bg-gradient-to-b from-background/50 to-transparent"
+          />
         </div>
       </section>
 
-      {/* What We Do — Detailed breakdown */}
-      <section className="py-32 bg-background">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="grid lg:grid-cols-2 gap-16 mb-20">
-            <div>
-              <h2 className="font-serif text-4xl md:text-5xl text-foreground leading-tight mb-6">
-                We find the friction in your operations.
+      {/* The Problem — Editorial statement */}
+      <section className="py-32 lg:py-48">
+        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
+          <div className="grid lg:grid-cols-12 gap-16 lg:gap-8">
+            <div className="lg:col-span-5">
+              <p className="font-mono text-sm tracking-[0.2em] text-foreground/40 mb-6">THE PROBLEM</p>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-foreground">
+                Most companies leak 20-40% of their capacity to friction they can&apos;t see.
               </h2>
-              <p className="text-lg text-foreground/70 leading-relaxed">
-                Most companies lose 20-40% of productivity to operational friction they can&apos;t see. Tools that don&apos;t connect. Processes that exist only in someone&apos;s head. Data scattered across ten different places. We make that visible, then we fix it.
-              </p>
             </div>
-            <div className="flex items-center">
-              <div className="grid grid-cols-2 gap-6 w-full">
-                <div className="bg-surface p-8 border-2 border-foreground/40">
-                  <div className="font-serif text-5xl text-foreground mb-2">20-40%</div>
-                  <div className="text-foreground/60">productivity lost to invisible friction</div>
+            <div className="lg:col-span-6 lg:col-start-7 lg:pt-8">
+              <div className="space-y-12">
+                <div>
+                  <h3 className="text-2xl text-foreground mb-4">Disconnected tools</h3>
+                  <p className="text-lg text-foreground/60 leading-relaxed">
+                    Your CRM doesn&apos;t talk to your project management. Your invoicing is manual. Everyone copies and pastes between fifteen browser tabs, and information goes stale within hours.
+                  </p>
                 </div>
-                <div className="bg-surface p-8 border-2 border-foreground/40">
-                  <div className="font-serif text-5xl text-foreground mb-2">5-15</div>
-                  <div className="text-foreground/60">disconnected tools per company</div>
+                <div>
+                  <h3 className="text-2xl text-foreground mb-4">Tribal knowledge</h3>
+                  <p className="text-lg text-foreground/60 leading-relaxed">
+                    Critical processes live in people&apos;s heads. When they&apos;re sick or quit, work stops. Training new hires takes months because nothing is documented or automated.
+                  </p>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Problems we solve */}
-          <div className="border-t-2 border-foreground/40 pt-16">
-            <h3 className="font-mono text-sm tracking-widest text-foreground/50 mb-10">PROBLEMS WE SOLVE</h3>
-            <div className="grid md:grid-cols-3 gap-12">
-              <div>
-                <h4 className="font-serif text-2xl text-foreground mb-4">Disconnected Systems</h4>
-                <p className="text-foreground/70 leading-relaxed mb-4">
-                  Your CRM doesn&apos;t talk to your project management. Your project management doesn&apos;t talk to your invoicing. Everyone copies and pastes between tabs.
-                </p>
-                <ul className="text-sm text-foreground/60 space-y-2">
-                  <li>• Data entered multiple times</li>
-                  <li>• Information gets stale or wrong</li>
-                  <li>• No single source of truth</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-serif text-2xl text-foreground mb-4">Invisible Workflows</h4>
-                <p className="text-foreground/70 leading-relaxed mb-4">
-                  Your processes live in people&apos;s heads. When someone leaves or is sick, work stalls. There&apos;s no documentation, no automation, no backup.
-                </p>
-                <ul className="text-sm text-foreground/60 space-y-2">
-                  <li>• Tribal knowledge dependency</li>
-                  <li>• No handoff protocols</li>
-                  <li>• Training takes months</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-serif text-2xl text-foreground mb-4">No Operational Visibility</h4>
-                <p className="text-foreground/70 leading-relaxed mb-4">
-                  You can&apos;t see what&apos;s happening across your operation. Is that project on track? How backed up is customer support? Nobody knows until it&apos;s a crisis.
-                </p>
-                <ul className="text-sm text-foreground/60 space-y-2">
-                  <li>• Reactive instead of proactive</li>
-                  <li>• Decisions based on gut feel</li>
-                  <li>• Problems discovered too late</li>
-                </ul>
+                <div>
+                  <h3 className="text-2xl text-foreground mb-4">Blind spots</h3>
+                  <p className="text-lg text-foreground/60 leading-relaxed">
+                    You can&apos;t see what&apos;s happening across your operation in real time. Problems become crises before anyone notices. Decisions are made on gut feel, not data.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services — Detailed cards */}
-      <section id="services" className="py-32 bg-surface">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="max-w-3xl mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl text-foreground leading-tight mb-6">
-              What we build for you.
-            </h2>
-            <p className="text-lg text-foreground/70 leading-relaxed">
-              Every engagement starts with understanding your operation. Then we build exactly what you need — not a generic solution, not a one-size-fits-all platform.
-            </p>
+      {/* What We Do — Large text reveal */}
+      <section className="py-32 lg:py-48 bg-foreground text-background">
+        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
+          <p className="font-mono text-sm tracking-[0.2em] text-background/40 mb-12">WHAT WE DO</p>
+          
+          <div className="space-y-8 mb-24">
+            <motion.h2 
+              initial={{ opacity: 0.3 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="font-serif text-4xl md:text-5xl lg:text-7xl leading-[1.1] text-background"
+            >
+              We audit your operations.
+            </motion.h2>
+            <motion.h2 
+              initial={{ opacity: 0.3 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="font-serif text-4xl md:text-5xl lg:text-7xl leading-[1.1] text-background/60"
+            >
+              Map every bottleneck.
+            </motion.h2>
+            <motion.h2 
+              initial={{ opacity: 0.3 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="font-serif text-4xl md:text-5xl lg:text-7xl leading-[1.1] text-background/40"
+            >
+              Build the infrastructure to eliminate them.
+            </motion.h2>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Service 1 */}
-            <div className="bg-background p-10 border-2 border-foreground/40">
-              <div className="flex items-start justify-between mb-6">
-                <h3 className="font-serif text-3xl text-foreground">Operational Assessment</h3>
-                <span className="font-mono text-sm text-foreground/40">FREE</span>
-              </div>
-              <p className="text-foreground/70 leading-relaxed mb-6">
-                A 5-minute questionnaire analyzed by our AI. You get back a detailed report of operational complexity, identified bottlenecks, and recommended next steps. No sales call required.
+          <div className="grid md:grid-cols-3 gap-16">
+            <div>
+              <p className="font-mono text-6xl text-background/20 mb-6">01</p>
+              <h3 className="text-2xl text-background mb-4">Assessment</h3>
+              <p className="text-background/60 leading-relaxed">
+                AI-powered analysis of your operational complexity. 5 minutes from you, 24-hour turnaround. Completely free.
               </p>
-              <div className="border-t-2 border-foreground/40 pt-6">
-                <h4 className="font-mono text-xs tracking-widest text-foreground/50 mb-4">WHAT YOU GET</h4>
-                <ul className="text-sm text-foreground/60 space-y-2">
-                  <li>• Operational complexity score</li>
-                  <li>• Tool ecosystem mapping</li>
-                  <li>• Top 3 bottleneck identification</li>
-                  <li>• Recommended scope and budget range</li>
-                  <li>• Delivered in 24 hours</li>
-                </ul>
+            </div>
+            <div>
+              <p className="font-mono text-6xl text-background/20 mb-6">02</p>
+              <h3 className="text-2xl text-background mb-4">Automation</h3>
+              <p className="text-background/60 leading-relaxed">
+                We connect your tools and automate the handoffs. When something happens in System A, System B updates automatically.
+              </p>
+            </div>
+            <div>
+              <p className="font-mono text-6xl text-background/20 mb-6">03</p>
+              <h3 className="text-2xl text-background mb-4">Infrastructure</h3>
+              <p className="text-background/60 leading-relaxed">
+                Custom dashboards, agent systems, and operational tooling. A single view of your entire operation, built for how you work.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services — Clean rows, no cards */}
+      <section id="services" className="py-32 lg:py-48">
+        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
+          <div className="grid lg:grid-cols-12 gap-16 mb-24">
+            <div className="lg:col-span-6">
+              <p className="font-mono text-sm tracking-[0.2em] text-foreground/40 mb-6">SERVICES</p>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-foreground">
+                Fixed-price. No hourly. No surprises.
+              </h2>
+            </div>
+          </div>
+
+          <div className="space-y-0">
+            {/* Service 1 */}
+            <div className="grid lg:grid-cols-12 gap-8 items-baseline py-12 border-t border-foreground/20">
+              <div className="lg:col-span-1">
+                <p className="font-mono text-sm text-foreground/30">01</p>
+              </div>
+              <div className="lg:col-span-4">
+                <h3 className="font-serif text-3xl text-foreground">Operational Assessment</h3>
+                <p className="font-mono text-lg text-foreground/40 mt-2">Free</p>
+              </div>
+              <div className="lg:col-span-6">
+                <p className="text-lg text-foreground/70 leading-relaxed mb-4">
+                  5-minute questionnaire, AI-analyzed overnight. You get a detailed report on complexity, bottlenecks, and recommended next steps in 24 hours.
+                </p>
+                <p className="text-foreground/40">
+                  Complexity score · Tool mapping · Top 3 friction points · Budget estimate
+                </p>
               </div>
             </div>
 
             {/* Service 2 */}
-            <div className="bg-background p-10 border-2 border-foreground/40">
-              <div className="flex items-start justify-between mb-6">
-                <h3 className="font-serif text-3xl text-foreground">Human Review</h3>
-                <span className="font-mono text-sm text-foreground/40">FROM $250</span>
+            <div className="grid lg:grid-cols-12 gap-8 items-baseline py-12 border-t border-foreground/20">
+              <div className="lg:col-span-1">
+                <p className="font-mono text-sm text-foreground/30">02</p>
               </div>
-              <p className="text-foreground/70 leading-relaxed mb-6">
-                A senior analyst reviews your assessment, talks to your team, and produces a detailed implementation roadmap. This is where generic becomes specific.
-              </p>
-              <div className="border-t-2 border-foreground/40 pt-6">
-                <h4 className="font-mono text-xs tracking-widest text-foreground/50 mb-4">WHAT YOU GET</h4>
-                <ul className="text-sm text-foreground/60 space-y-2">
-                  <li>• 60-minute discovery call</li>
-                  <li>• Detailed process documentation</li>
-                  <li>• Integration architecture diagram</li>
-                  <li>• Prioritized implementation plan</li>
-                  <li>• Fixed-price project quotes</li>
-                </ul>
+              <div className="lg:col-span-4">
+                <h3 className="font-serif text-3xl text-foreground">Human Review</h3>
+                <p className="font-mono text-lg text-foreground/40 mt-2">From $250</p>
+              </div>
+              <div className="lg:col-span-6">
+                <p className="text-lg text-foreground/70 leading-relaxed mb-4">
+                  A senior analyst reviews your assessment, talks to your team, and delivers a detailed implementation roadmap with fixed-price quotes.
+                </p>
+                <p className="text-foreground/40">
+                  Discovery call · Process docs · Architecture diagram · Implementation plan
+                </p>
               </div>
             </div>
 
             {/* Service 3 */}
-            <div className="bg-background p-10 border-2 border-foreground/40">
-              <div className="flex items-start justify-between mb-6">
-                <h3 className="font-serif text-3xl text-foreground">Workflow Automation</h3>
-                <span className="font-mono text-sm text-foreground/40">$2,500 - $15,000</span>
+            <div className="grid lg:grid-cols-12 gap-8 items-baseline py-12 border-t border-foreground/20">
+              <div className="lg:col-span-1">
+                <p className="font-mono text-sm text-foreground/30">03</p>
               </div>
-              <p className="text-foreground/70 leading-relaxed mb-6">
-                We connect your tools and automate the handoffs between them. When something happens in System A, System B updates automatically. No human copy-paste required.
-              </p>
-              <div className="border-t-2 border-foreground/40 pt-6">
-                <h4 className="font-mono text-xs tracking-widest text-foreground/50 mb-4">EXAMPLES</h4>
-                <ul className="text-sm text-foreground/60 space-y-2">
-                  <li>• CRM → Project Management sync</li>
-                  <li>• Form submission → Internal workflow trigger</li>
-                  <li>• Invoice generation from completed work</li>
-                  <li>• Slack/Teams alerts for key events</li>
-                  <li>• Cross-platform data synchronization</li>
-                </ul>
+              <div className="lg:col-span-4">
+                <h3 className="font-serif text-3xl text-foreground">Workflow Automation</h3>
+                <p className="font-mono text-lg text-foreground/40 mt-2">$2,500 – $15,000</p>
+              </div>
+              <div className="lg:col-span-6">
+                <p className="text-lg text-foreground/70 leading-relaxed mb-4">
+                  We connect your tools and automate the handoffs. Eliminates copy-paste work, reduces errors, frees your team.
+                </p>
+                <p className="text-foreground/40">
+                  CRM sync · Auto-invoicing · Notifications · Data pipelines
+                </p>
               </div>
             </div>
 
             {/* Service 4 */}
-            <div className="bg-background p-10 border-2 border-foreground/40">
-              <div className="flex items-start justify-between mb-6">
-                <h3 className="font-serif text-3xl text-foreground">Operational Dashboard</h3>
-                <span className="font-mono text-sm text-foreground/40">$5,000 - $25,000</span>
+            <div className="grid lg:grid-cols-12 gap-8 items-baseline py-12 border-t border-foreground/20 border-b">
+              <div className="lg:col-span-1">
+                <p className="font-mono text-sm text-foreground/30">04</p>
               </div>
-              <p className="text-foreground/70 leading-relaxed mb-6">
-                A single view of your entire operation. Real-time data from all your systems, visualized so you can see problems before they become crises.
-              </p>
-              <div className="border-t-2 border-foreground/40 pt-6">
-                <h4 className="font-mono text-xs tracking-widest text-foreground/50 mb-4">EXAMPLES</h4>
-                <ul className="text-sm text-foreground/60 space-y-2">
-                  <li>• Project health at a glance</li>
-                  <li>• Sales pipeline + delivery capacity</li>
-                  <li>• Support queue metrics</li>
-                  <li>• Team utilization tracking</li>
-                  <li>• Custom KPI dashboards</li>
-                </ul>
+              <div className="lg:col-span-4">
+                <h3 className="font-serif text-3xl text-foreground">Operational Dashboard</h3>
+                <p className="font-mono text-lg text-foreground/40 mt-2">$5,000 – $25,000</p>
+              </div>
+              <div className="lg:col-span-6">
+                <p className="text-lg text-foreground/70 leading-relaxed mb-4">
+                  A single view of your entire operation. Real-time data from all systems, visualized to spot problems before they escalate.
+                </p>
+                <p className="text-foreground/40">
+                  Real-time metrics · Custom KPIs · Alerts · Team visibility
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" className="py-32 bg-background">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="max-w-3xl mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl text-foreground leading-tight mb-6">
-              How we work with you.
-            </h2>
-            <p className="text-lg text-foreground/70 leading-relaxed">
-              No long discovery phases. No enterprise sales process. We move fast and deliver results you can measure.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="text-8xl font-serif text-foreground/10 mb-4">1</div>
-              <h3 className="font-serif text-2xl text-foreground mb-3">Assessment</h3>
-              <p className="text-foreground/70 leading-relaxed">
-                5-minute questionnaire. You tell us what tools you use, what&apos;s broken, what keeps you up at night. AI analyzes it overnight.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="relative"
-            >
-              <div className="text-8xl font-serif text-foreground/10 mb-4">2</div>
-              <h3 className="font-serif text-2xl text-foreground mb-3">Analysis</h3>
-              <p className="text-foreground/70 leading-relaxed">
-                You get a report showing operational complexity, the biggest friction points, and a recommended scope. Free, no strings attached.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="relative"
-            >
-              <div className="text-8xl font-serif text-foreground/10 mb-4">3</div>
-              <h3 className="font-serif text-2xl text-foreground mb-3">Proposal</h3>
-              <p className="text-foreground/70 leading-relaxed">
-                If you want to move forward, we do a human review and deliver a fixed-price proposal. You know exactly what you&apos;re getting and what it costs.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="relative"
-            >
-              <div className="text-8xl font-serif text-foreground/10 mb-4">4</div>
-              <h3 className="font-serif text-2xl text-foreground mb-3">Delivery</h3>
-              <p className="text-foreground/70 leading-relaxed">
-                We build. You review. We iterate. Typical projects take 2-8 weeks depending on scope. You get documentation and training included.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-32 bg-surface">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="max-w-3xl mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl text-foreground leading-tight mb-6">
-              What clients say.
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
+      {/* Social Proof — Large quotes, no boxes */}
+      <section className="py-32 lg:py-48 bg-surface">
+        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
+          <p className="font-mono text-sm tracking-[0.2em] text-foreground/40 mb-16">WHAT CLIENTS SAY</p>
+          
+          <div className="space-y-32">
             {(t.raw("reviews.items") as Array<{
               quote: string;
               author: string;
@@ -312,19 +261,19 @@ export function HomePage() {
             }>).map((review, i) => (
               <motion.figure
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-background p-10 border-2 border-foreground/40"
+                className="grid lg:grid-cols-12 gap-8"
               >
-                <blockquote className="font-serif text-xl text-foreground leading-relaxed mb-8">
+                <blockquote className="lg:col-span-9 font-serif text-3xl md:text-4xl lg:text-5xl leading-[1.2] text-foreground">
                   &ldquo;{review.quote}&rdquo;
                 </blockquote>
-                <figcaption>
-                  <div className="font-medium text-foreground text-lg">{review.author}</div>
-                  <div className="text-foreground/60">{review.role}</div>
-                  <div className="text-foreground/40 text-sm">{review.company}</div>
+                <figcaption className="lg:col-span-3 flex flex-col justify-end">
+                  <p className="text-xl text-foreground mb-1">{review.author}</p>
+                  <p className="text-foreground/50">{review.role}</p>
+                  <p className="text-foreground/30 text-sm">{review.company}</p>
                 </figcaption>
               </motion.figure>
             ))}
@@ -332,64 +281,53 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Pricing Summary */}
-      <section className="py-32 bg-background border-t-2 border-foreground/40">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="max-w-3xl mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl text-foreground leading-tight mb-6">
-              Transparent pricing.
-            </h2>
-            <p className="text-lg text-foreground/70 leading-relaxed">
-              We don&apos;t hide our prices. Every project gets a fixed quote after assessment — no surprises, no scope creep fees, no hourly billing.
-            </p>
+      {/* Final CTA — Full bleed dark */}
+      <section className="bg-foreground text-background py-32 lg:py-48">
+        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
+          <div className="grid lg:grid-cols-12 gap-16 items-center">
+            <div className="lg:col-span-7">
+              <LogoMark size={80} className="text-background/20 mb-12" />
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-background mb-8">
+                {t("finalCta.headline")}
+              </h2>
+              <p className="text-xl text-background/50 leading-relaxed mb-12 max-w-[48ch]">
+                {t("finalCta.subheadline")}
+              </p>
+              <Link
+                href="/operational-assessment"
+                className="group inline-flex items-center gap-4 text-background text-lg"
+              >
+                <span className="w-14 h-14 rounded-full border-2 border-background/30 flex items-center justify-center group-hover:bg-background group-hover:text-foreground transition-all">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+                <span className="border-b border-background/30 pb-1 group-hover:border-background transition-colors">
+                  {t("finalCta.cta")}
+                </span>
+              </Link>
+            </div>
+            <div className="lg:col-span-4 lg:col-start-9">
+              <div className="space-y-8 text-background/40">
+                <div>
+                  <p className="text-background/20 font-mono text-sm mb-2">TIME</p>
+                  <p className="text-2xl text-background">5 minutes</p>
+                </div>
+                <div>
+                  <p className="text-background/20 font-mono text-sm mb-2">COST</p>
+                  <p className="text-2xl text-background">Free</p>
+                </div>
+                <div>
+                  <p className="text-background/20 font-mono text-sm mb-2">DELIVERY</p>
+                  <p className="text-2xl text-background">24 hours</p>
+                </div>
+                <div>
+                  <p className="text-background/20 font-mono text-sm mb-2">REQUIRED</p>
+                  <p className="text-2xl text-background">No sales call</p>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-surface p-10 border-2 border-foreground/40">
-              <div className="font-mono text-sm text-foreground/50 mb-4">ASSESSMENT</div>
-              <div className="font-serif text-4xl text-foreground mb-4">Free</div>
-              <p className="text-foreground/70">AI-powered analysis of your operations. No credit card, no call required.</p>
-            </div>
-            <div className="bg-surface p-10 border-2 border-foreground/40">
-              <div className="font-mono text-sm text-foreground/50 mb-4">AUTOMATION</div>
-              <div className="font-serif text-4xl text-foreground mb-4">$2.5K-15K</div>
-              <p className="text-foreground/70">Workflow connections and process automation. Price depends on complexity.</p>
-            </div>
-            <div className="bg-surface p-10 border-2 border-foreground/40">
-              <div className="font-mono text-sm text-foreground/50 mb-4">INFRASTRUCTURE</div>
-              <div className="font-serif text-4xl text-foreground mb-4">$15K-75K+</div>
-              <p className="text-foreground/70">Complete operational systems. Dashboards, automations, integrations.</p>
-            </div>
-          </div>
-
-          <p className="text-center text-foreground/50 font-mono text-sm">
-            All prices in CAD. Final quote provided after assessment.
-          </p>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="bg-foreground text-background py-32">
-        <div className="max-w-4xl mx-auto px-8 text-center">
-          <LogoMark size={64} className="mx-auto mb-10 text-background" />
-
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight mb-6">
-            {t("finalCta.headline")}
-          </h2>
-          <p className="text-xl text-background/60 mb-12 max-w-2xl mx-auto leading-relaxed">
-            {t("finalCta.subheadline")}
-          </p>
-
-          <Link
-            href="/operational-assessment"
-            className="inline-flex items-center justify-center px-12 py-5 bg-background text-foreground text-lg font-medium hover:bg-background/90 transition-colors"
-          >
-            {t("finalCta.cta")}
-          </Link>
-
-          <p className="mt-8 text-background/40 font-mono text-sm">
-            Free. 5 minutes. No sales call.
-          </p>
         </div>
       </section>
     </main>

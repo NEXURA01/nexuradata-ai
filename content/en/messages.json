@@ -15,11 +15,14 @@
     "contact": "Contact"
   },
   "hero": {
-    "title1": "Centralize operations.",
-    "title2": "Automate workflows.",
-    "subtitle": "NEXURA helps companies organize operations, automate repetitive workflows and improve visibility across teams and systems.",
-    "cta": "Start Operational Assessment",
+    "tagline": "An instrument maker for operational intelligence",
+    "cta": "Request Access",
     "secondary": "See How It Works"
+  },
+  "finalCta": {
+    "headline": "access is earned, not given.",
+    "subheadline": "a private layer for those who demand one.",
+    "cta": "Request Access"
   },
   "problem": {
     "title": "The problem",

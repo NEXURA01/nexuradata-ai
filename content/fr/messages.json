@@ -15,11 +15,14 @@
     "contact": "Contact"
   },
   "hero": {
-    "title1": "Centralisez vos opérations.",
-    "title2": "Automatisez vos workflows.",
-    "subtitle": "NEXURA aide les entreprises à organiser leurs opérations, automatiser les tâches répétitives et améliorer la visibilité entre équipes et systèmes.",
-    "cta": "Démarrer l'évaluation opérationnelle",
+    "tagline": "Un fabricant d'instruments pour l'intelligence opérationnelle",
+    "cta": "Demander l'accès",
     "secondary": "Voir comment ça marche"
+  },
+  "finalCta": {
+    "headline": "l'accès se mérite, il ne se donne pas.",
+    "subheadline": "une couche privée pour ceux qui en exigent une.",
+    "cta": "Demander l'accès"
   },
   "problem": {
     "title": "Le problème",

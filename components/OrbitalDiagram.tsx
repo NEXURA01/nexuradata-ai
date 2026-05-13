@@ -11,152 +11,203 @@ export function OrbitalDiagram() {
   }, []);
 
   if (!mounted) {
-    return <div className="w-full h-full" />;
+    return <div className="w-full aspect-square" />;
   }
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full aspect-square max-w-lg mx-auto">
       <svg
         viewBox="0 0 400 400"
         className="w-full h-full"
         style={{ overflow: "visible" }}
       >
-        {/* Registration marks at corners */}
-        <g className="registration-mark">
-          <line x1="30" y1="30" x2="50" y2="30" />
-          <line x1="30" y1="30" x2="30" y2="50" />
-          <line x1="370" y1="30" x2="350" y2="30" />
-          <line x1="370" y1="30" x2="370" y2="50" />
-          <line x1="30" y1="370" x2="50" y2="370" />
-          <line x1="30" y1="370" x2="30" y2="350" />
-          <line x1="370" y1="370" x2="350" y2="370" />
-          <line x1="370" y1="370" x2="370" y2="350" />
-        </g>
-
-        {/* Center point */}
-        <circle cx="200" cy="200" r="3" className="orbit-dot" />
-        <circle
-          cx="200"
-          cy="200"
-          r="8"
+        {/* Outer dashed guide circle */}
+        <circle 
+          cx="200" 
+          cy="200" 
+          r="180" 
           fill="none"
-          className="orbit-line"
-          strokeWidth={0.5}
+          stroke="currentColor"
+          strokeWidth="0.5"
+          strokeDasharray="4 4"
+          className="text-foreground/20"
         />
 
-        {/* Outer dashed circle */}
-        <circle cx="200" cy="200" r="160" className="orbit-line-dashed" />
+        {/* Tick marks around the circle - like a watch bezel */}
+        {Array.from({ length: 72 }).map((_, i) => {
+          const angle = (i * 5 * Math.PI) / 180;
+          const isMajor = i % 6 === 0;
+          const innerR = isMajor ? 168 : 172;
+          const outerR = 180;
+          return (
+            <line
+              key={i}
+              x1={200 + innerR * Math.cos(angle)}
+              y1={200 + innerR * Math.sin(angle)}
+              x2={200 + outerR * Math.cos(angle)}
+              y2={200 + outerR * Math.sin(angle)}
+              stroke="currentColor"
+              strokeWidth={isMajor ? "1" : "0.5"}
+              className="text-foreground/30"
+            />
+          );
+        })}
 
-        {/* Main orbit rings */}
+        {/* Registration marks at corners */}
+        <g stroke="currentColor" strokeWidth="0.5" className="text-foreground/40">
+          <line x1="10" y1="10" x2="30" y2="10" />
+          <line x1="10" y1="10" x2="10" y2="30" />
+          <line x1="390" y1="10" x2="370" y2="10" />
+          <line x1="390" y1="10" x2="390" y2="30" />
+          <line x1="10" y1="390" x2="30" y2="390" />
+          <line x1="10" y1="390" x2="10" y2="370" />
+          <line x1="390" y1="390" x2="370" y2="390" />
+          <line x1="390" y1="390" x2="390" y2="370" />
+        </g>
+
+        {/* Main orbit ellipses */}
         <motion.g
           animate={{ rotate: 360 }}
-          transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
           style={{ transformOrigin: "200px 200px" }}
         >
-          {/* Ellipse 1 - tilted */}
+          {/* Ellipse 1 - outermost tilted */}
           <ellipse
             cx="200"
             cy="200"
-            rx="120"
-            ry="60"
-            className="orbit-line"
-            transform="rotate(-20 200 200)"
-          />
-          {/* Orbiting dot on ellipse 1 */}
-          <motion.circle
-            cx="320"
-            cy="200"
-            r="4"
-            className="orbit-dot"
-            animate={{ rotate: -360 }}
-            transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-            style={{ transformOrigin: "200px 200px" }}
+            rx="140"
+            ry="70"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.75"
+            className="text-foreground/40"
+            transform="rotate(-15 200 200)"
           />
         </motion.g>
 
         <motion.g
           animate={{ rotate: -360 }}
-          transition={{ duration: 75, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
           style={{ transformOrigin: "200px 200px" }}
         >
-          {/* Ellipse 2 - tilted opposite */}
+          {/* Ellipse 2 - opposite tilt */}
           <ellipse
             cx="200"
             cy="200"
-            rx="100"
-            ry="45"
-            className="orbit-line"
-            transform="rotate(35 200 200)"
+            rx="110"
+            ry="50"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.75"
+            className="text-foreground/35"
+            transform="rotate(40 200 200)"
           />
+          {/* Orbiting dot */}
+          <circle cx="90" cy="200" r="4" className="fill-foreground/60" />
         </motion.g>
 
-        <defs>
-          <radialGradient id="sphereGradient" cx="40%" cy="40%">
-            <stop offset="0%" stopColor="oklch(0.60 0.008 75)" />
-            <stop offset="100%" stopColor="oklch(0.40 0.008 75)" />
-          </radialGradient>
-        </defs>
+        {/* Inner solid circle - the sphere */}
+        <circle
+          cx="200"
+          cy="200"
+          r="80"
+          fill="currentColor"
+          className="text-foreground/15"
+        />
+        <circle
+          cx="200"
+          cy="200"
+          r="80"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.75"
+          className="text-foreground/30"
+        />
 
         <motion.g
           animate={{ rotate: 360 }}
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           style={{ transformOrigin: "200px 200px" }}
         >
-          {/* Ellipse 3 - filled sphere */}
-          <ellipse
-            cx="200"
-            cy="200"
-            rx="80"
-            ry="80"
-            fill="url(#sphereGradient)"
-            style={{ opacity: 0.5 }}
-          />
-          {/* Accent dot - now charcoal */}
-          <circle cx="280" cy="200" r="5" className="orbit-dot" />
-        </motion.g>
-
-        {/* Inner dashed ellipse */}
-        <motion.g
-          animate={{ rotate: -360 }}
-          transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "200px 200px" }}
-        >
+          {/* Inner dashed ellipse */}
           <ellipse
             cx="200"
             cy="200"
             rx="55"
-            ry="30"
-            className="orbit-line-dashed"
-            transform="rotate(-45 200 200)"
+            ry="25"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.5"
+            strokeDasharray="3 3"
+            className="text-foreground/30"
+            transform="rotate(-50 200 200)"
           />
-          <circle cx="145" cy="200" r="3" className="orbit-dot" style={{ opacity: 0.5 }} />
         </motion.g>
 
-        {/* Small inner orbit */}
-        <circle cx="200" cy="200" r="25" className="orbit-line" strokeWidth={0.5} />
+        {/* Small inner rings */}
+        <circle
+          cx="200"
+          cy="200"
+          r="30"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.5"
+          className="text-foreground/25"
+        />
+        <circle
+          cx="200"
+          cy="200"
+          r="15"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.5"
+          strokeDasharray="2 2"
+          className="text-foreground/20"
+        />
 
-        {/* Technical annotations */}
-        <g className="frame-text" fill="currentColor" style={{ fontSize: "8px" }}>
-          {/* Top annotation */}
-          <text x="200" y="25" textAnchor="middle" className="fill-foreground">
-            FIG. I · ORCHESTRATION
+        {/* Center point */}
+        <circle cx="200" cy="200" r="3" className="fill-foreground" />
+        <circle
+          cx="200"
+          cy="200"
+          r="8"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.5"
+          className="text-foreground/40"
+        />
+
+        {/* Orbiting dots */}
+        <motion.g
+          animate={{ rotate: 360 }}
+          transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+          style={{ transformOrigin: "200px 200px" }}
+        >
+          <circle cx="280" cy="200" r="5" className="fill-foreground" />
+        </motion.g>
+
+        {/* Node annotations - positioned exactly like your image */}
+        <g 
+          style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.1em" }}
+          className="fill-foreground"
+        >
+          {/* N-01 INGEST - right side */}
+          <text x="320" y="170" textAnchor="start">N-01</text>
+          <text x="320" y="182" textAnchor="start" style={{ fontSize: "7px", letterSpacing: "0.15em" }} className="fill-foreground/60">
+            INGEST
           </text>
-          {/* Right annotation */}
-          <g transform="translate(380, 200) rotate(90)">
-            <text textAnchor="middle" className="fill-muted">
-              N-01 INGEST
-            </text>
-          </g>
-          {/* Bottom annotation */}
-          <text x="200" y="385" textAnchor="middle" className="fill-muted">
-            N-02 REASON
+          <text x="320" y="194" textAnchor="start" style={{ fontSize: "6px", letterSpacing: "0.12em" }} className="fill-foreground/40">
+            DATA / EVENTS / CALLS
           </text>
-          {/* Left annotation */}
-          <g transform="translate(20, 200) rotate(-90)">
-            <text textAnchor="middle" className="fill-muted">
-              N-03 ACT
-            </text>
-          </g>
+          
+          {/* N-02 REASON - bottom left */}
+          <text x="60" y="320" textAnchor="start">N-02</text>
+          <text x="60" y="332" textAnchor="start" style={{ fontSize: "7px", letterSpacing: "0.15em" }} className="fill-foreground/60">
+            REASON
+          </text>
+          <text x="60" y="344" textAnchor="start" style={{ fontSize: "6px", letterSpacing: "0.12em" }} className="fill-foreground/40">
+            MODELS / RULES / TOOLS
+          </text>
         </g>
       </svg>
     </div>

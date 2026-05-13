@@ -19,6 +19,7 @@ export type SeoPage =
   | "evaluation"
   | "operational-assessment"
   | "contact"
+  | "employe"
   | "conditions"
   | "confidentialite"
   | "portal"
@@ -42,6 +43,7 @@ const pagePaths: Record<SeoPage, string> = {
   evaluation: "evaluation",
   "operational-assessment": "operational-assessment",
   contact: "contact",
+  employe: "employe",
   conditions: "conditions",
   confidentialite: "confidentialite",
   portal: "portal",
@@ -143,6 +145,16 @@ const pageMeta: Record<SeoPage, Record<Locale, { title: string; description: str
       title: "Contact | NEXURA",
       description:
         "Contact NEXURA to discuss operational assessment, workflow automation, or secure AI infrastructure.",
+    },
+  },
+  employe: {
+    fr: {
+      title: "EMPLOYE | NEXURA",
+      description: "Point d'accès employé NEXURA pour ouvrir les dossiers, paiements, soumissions et relances internes.",
+    },
+    en: {
+      title: "EMPLOYE | NEXURA",
+      description: "NEXURA employee access point for internal cases, payments, quotes, and follow-ups.",
     },
   },
   conditions: {

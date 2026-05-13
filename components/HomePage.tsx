@@ -158,14 +158,14 @@ export function HomePage() {
             <div className="mb-8 flex items-center gap-4 font-mono text-[15px] uppercase tracking-[0.38em] text-[var(--nx-muted)]">
               <span>NEXURA ANALYTICS — MONTRÉAL</span>
             </div>
-            
+
             <h1 className="mb-10 max-w-[17ch] font-serif text-[clamp(4rem,8.8vw,9.3rem)] font-semibold leading-[0.88] text-[var(--os)]">
               {getText({
                 en: "We find what's costing you money.",
                 fr: "On trouve ce qui vous coûte de l'argent."
               })}
             </h1>
-            
+
             <p className="mb-12 max-w-[55ch] font-sans text-xl leading-relaxed text-[rgba(245,247,250,0.72)] md:text-3xl">
               {getText({
                 en: "Operational intelligence for mid-sized companies.",
@@ -176,24 +176,24 @@ export function HomePage() {
             <div className="flex flex-wrap items-center gap-5">
               <Link
                 href="/operational-assessment"
-                className="group inline-flex items-center border-y border-[#9b4635]/70 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#f4efe4]/82 transition-colors hover:border-[#f4efe4]/70 hover:text-[#f4efe4]"
+                className="group inline-flex items-center border-y border-accent/70 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/82 transition-colors hover:border-foreground/70 hover:text-foreground"
               >
                 {getText({
                   en: "Start assessment",
                   fr: "Démarrer l'évaluation"
                 })}
-                <span className="ml-4 text-[#9b4635] transition-transform group-hover:translate-x-1">→</span>
+                <span className="ml-4 text-accent transition-transform group-hover:translate-x-1">→</span>
               </Link>
               <Link
                 href="/contact"
-                className="border-y border-[#f4efe4]/18 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#f4efe4]/54 transition-colors hover:border-[#f4efe4]/45 hover:text-[#f4efe4]"
+                className="border-y border-foreground/20 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/55 transition-colors hover:border-foreground/45 hover:text-foreground"
               >
                 {getText({ en: "Contact", fr: "Nous écrire" })}
               </Link>
             </div>
             <a
               href="mailto:contact@nexuradata.ca"
-              className="mt-7 inline-block font-mono text-[10px] uppercase tracking-[0.24em] text-[#f4efe4]/42 transition-colors hover:text-[#f4efe4]/78"
+              className="mt-7 inline-block font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/45 transition-colors hover:text-foreground/80"
             >
               contact@nexuradata.ca
             </a>
@@ -205,35 +205,35 @@ export function HomePage() {
             transition={{ duration: 0.9, delay: 0.15 }}
             className="lg:col-span-5"
           >
-            <div className="relative border border-[#f4efe4]/16 bg-[#11100d]/78 p-5 shadow-2xl shadow-black/40">
-              <div className="mb-8 flex items-center justify-between border-b border-[#f4efe4]/12 pb-4 font-mono text-[9px] uppercase tracking-[0.28em] text-[#f4efe4]/45">
+            <div className="relative border border-foreground/15 bg-surface/80 p-5 shadow-2xl shadow-black/40">
+              <div className="mb-8 flex items-center justify-between border-b border-foreground/15 pb-4 font-mono text-[9px] uppercase tracking-[0.28em] text-foreground/45">
                 <span>NX-OPS/CONTROL</span>
                 <span>MMXXVI</span>
               </div>
               <div className="grid grid-cols-[auto_1fr] gap-6">
                 <LogoMark size={80} />
                 <div>
-                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#9b4635]">Operational command layer</p>
-                  <p className="font-serif text-3xl leading-none text-[#f4efe4]">Private systems for execution clarity.</p>
+                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-accent">Operational command layer</p>
+                  <p className="font-serif text-3xl leading-none text-foreground">Private systems for execution clarity.</p>
                 </div>
               </div>
-              <div className="my-8 h-px bg-[#f4efe4]/12" />
-              <div className="grid grid-cols-2 border border-[#f4efe4]/12">
+              <div className="my-8 h-px bg-foreground/15" />
+              <div className="grid grid-cols-2 border border-foreground/15">
                 {heroMetrics.map((metric, index) => (
-                  <div key={metric.value} className={`p-4 ${index % 2 === 0 ? "border-r" : ""} ${index < 2 ? "border-b" : ""} border-[#f4efe4]/12`}>
-                    <p className="mb-3 font-mono text-[8px] uppercase tracking-[0.26em] text-[#f4efe4]/38">{getText(metric.label)}</p>
-                    <p className="font-mono text-sm uppercase tracking-[0.08em] text-[#f4efe4]">{metric.value}</p>
+                  <div key={metric.value} className={`p-4 ${index % 2 === 0 ? "border-r" : ""} ${index < 2 ? "border-b" : ""} border-foreground/15`}>
+                    <p className="mb-3 font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/40">{getText(metric.label)}</p>
+                    <p className="font-mono text-sm uppercase tracking-[0.08em] text-foreground">{metric.value}</p>
                   </div>
                 ))}
               </div>
               <div className="mt-8 flex items-end justify-between gap-6">
-                <p className="max-w-[28ch] text-sm leading-relaxed text-[#f4efe4]/48">
+                <p className="max-w-[28ch] text-sm leading-relaxed text-foreground/50">
                   {getText({
                     en: "A quiet layer between people, tools, data, and decisions.",
                     fr: "Une couche silencieuse entre personnes, outils, données et décisions."
                   })}
                 </p>
-                <svg viewBox="0 0 120 120" className="h-28 w-28 shrink-0 text-[#9b4635]" aria-hidden="true">
+                <svg viewBox="0 0 120 120" className="h-28 w-28 shrink-0 text-accent" aria-hidden="true">
                   <circle cx="60" cy="60" r="47" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.55" />
                   <circle cx="60" cy="60" r="26" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.35" />
                   <path d="M60 13V0M60 120v-13M13 60H0M120 60h-13" stroke="currentColor" strokeWidth="1" opacity="0.7" />
@@ -249,7 +249,7 @@ export function HomePage() {
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="h-14 w-px bg-[#9b4635]/45"
+            className="h-14 w-px bg-accent/45"
           />
         </div>
       </section>
@@ -291,10 +291,10 @@ export function HomePage() {
           <p className="font-mono text-sm tracking-[0.2em] text-background/40 mb-12">
             {getText({ en: "WHAT WE DO", fr: "CE QU'ON FAIT" })}
           </p>
-          
+
           <div className="space-y-8 mb-24">
             {whatWeDo.map((item, i) => (
-              <motion.h2 
+              <motion.h2
                 key={i}
                 initial={{ opacity: 0.3 }}
                 whileInView={{ opacity: 1 }}
@@ -368,7 +368,7 @@ export function HomePage() {
           <p className="font-mono text-sm tracking-[0.2em] text-foreground/40 mb-16">
             {getText({ en: "WHAT CLIENTS SAY", fr: "CE QUE DISENT NOS CLIENTS" })}
           </p>
-          
+
           <div className="space-y-32">
             {(t.raw("reviews.items") as Array<{
               quote: string;

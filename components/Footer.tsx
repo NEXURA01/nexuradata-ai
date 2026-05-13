@@ -168,6 +168,9 @@ export function Footer() {
                 {link.label}
               </Link>
             ))}
+            <Link href="/employe" className="border border-accent/45 px-3 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-accent transition-colors hover:border-[var(--noir)] hover:bg-[var(--noir)] hover:text-[var(--os)]">
+              EMPLOYE
+            </Link>
           </div>
           <div className="flex flex-wrap items-center gap-8">
             <div className="flex items-center gap-5">

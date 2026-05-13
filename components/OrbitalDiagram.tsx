@@ -90,19 +90,26 @@ export function OrbitalDiagram() {
           />
         </motion.g>
 
+        <defs>
+          <radialGradient id="sphereGradient" cx="40%" cy="40%">
+            <stop offset="0%" stopColor="oklch(0.60 0.008 75)" />
+            <stop offset="100%" stopColor="oklch(0.40 0.008 75)" />
+          </radialGradient>
+        </defs>
+
         <motion.g
           animate={{ rotate: 360 }}
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           style={{ transformOrigin: "200px 200px" }}
         >
-          {/* Ellipse 3 - solid circle */}
+          {/* Ellipse 3 - filled sphere */}
           <ellipse
             cx="200"
             cy="200"
             rx="80"
             ry="80"
-            className="orbit-line"
-            style={{ opacity: 0.4 }}
+            fill="url(#sphereGradient)"
+            style={{ opacity: 0.5 }}
           />
           {/* Accent dot - now charcoal */}
           <circle cx="280" cy="200" r="5" className="orbit-dot" />

@@ -6,7 +6,7 @@ const ROOT = process.cwd();
 const OUT_DIR = path.join(ROOT, "public", "assets", "icons");
 
 const COLORS = {
-  bone: "#f5f7fa",
+  bone: "#e8e4dc",
   black: "#0b0d10",
   inkMuted: "#a7b0bc",
   boneMuted: "#a7b0bc",

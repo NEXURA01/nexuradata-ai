@@ -205,16 +205,16 @@ body {
   --nx-obsidian: #0b0d10;
   --nx-carbon: #13161b;
   --nx-iron: #181c22;
-  --nx-bone: #f5f7fa;
+  --nx-bone: #e8e4dc;
   --nx-muted: #a7b0bc;
-  --nx-line: rgba(255, 255, 255, 0.08);
+  --nx-line: rgba(232, 228, 220, 0.08);
   --nx-copper: #c17c45;
   --nx-ember: #c45b3e;
   --noir: #0b0d10;
-  --os: #f5f7fa;
-  --os-dim: rgba(245, 247, 250, 0.22);
-  --os-ghost: rgba(245, 247, 250, 0.08);
-  --rule: 1px solid rgba(255, 255, 255, 0.06);
+  --os: #e8e4dc;
+  --os-dim: rgba(232, 228, 220, 0.22);
+  --os-ghost: rgba(232, 228, 220, 0.08);
+  --rule: 1px solid rgba(232, 228, 220, 0.06);
 
   --serif: var(--font-inter), "Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: var(--font-inter-tight), "Satoshi", var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;

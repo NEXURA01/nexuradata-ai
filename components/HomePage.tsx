@@ -59,9 +59,9 @@ export function HomePage() {
             {(t.raw("problem.items") as Array<{ label: string; desc: string }>).map(
               (item, i) => (
                 <div key={i} className="bg-background p-6">
-                  <div className="ref-number mb-2">P-0{i + 1}</div>
-                  <h3 className="font-serif text-lg mb-2">{item.label}</h3>
-                  <p className="text-dense text-muted-foreground">{item.desc}</p>
+                  <div className="ref-number mb-2 text-foreground/60">P-0{i + 1}</div>
+                  <h3 className="font-serif text-lg mb-2 text-foreground">{item.label}</h3>
+                  <p className="text-dense text-foreground/70">{item.desc}</p>
                 </div>
               )
             )}

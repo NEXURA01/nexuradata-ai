@@ -3,6 +3,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useState } from "react";
+import { LogoWordmark } from "./Logo";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -29,8 +30,8 @@ export function Header() {
       <nav className="max-w-6xl mx-auto px-8 h-20 flex items-center justify-between">
         {/* Logo + Language */}
         <div className="flex items-center gap-12">
-          <Link href="/" className="font-mono text-base tracking-widest font-semibold leading-tight">
-            NEXURA
+          <Link href="/" className="text-foreground hover:opacity-80 transition-opacity" aria-label="Nexura Analytics — Home">
+            <LogoWordmark size={13} />
           </Link>
           <div className="hidden md:flex items-center border-l border-foreground/15 pl-12">
             <button

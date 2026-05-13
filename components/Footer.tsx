@@ -2,6 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { Logo } from "./Logo";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -21,9 +22,7 @@ export function Footer() {
         <div className="py-12 grid md:grid-cols-4 gap-8 border-b border-border">
           {/* Brand column */}
           <div className="md:col-span-2">
-            <span className="font-mono text-sm tracking-widest block mb-3">
-              NEXURA
-            </span>
+            <Logo size={44} className="mb-4 text-foreground" />
             <p className="text-dense text-muted-foreground max-w-sm">
               {t("description")}
             </p>

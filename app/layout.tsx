@@ -1,6 +1,33 @@
 import type { Metadata, Viewport } from "next";
+import { Inter, Inter_Tight, Instrument_Serif, IBM_Plex_Mono } from "next/font/google";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  variable: "--font-inter-tight",
+  display: "swap",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-instrument-serif",
+  display: "swap",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-ibm-plex-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -31,5 +58,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  return (
+    <html
+      lang="fr"
+      className={`${inter.variable} ${interTight.variable} ${instrumentSerif.variable} ${ibmPlexMono.variable} bg-background`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-screen flex flex-col font-sans antialiased">
+        {children}
+      </body>
+    </html>
+  );
 }

@@ -1,4 +1,4 @@
-﻿import {
+import {
   formatCurrency,
   getCaseDetail,
   getPublicOrigin,
@@ -19,23 +19,23 @@ const escapeHtml = (value) =>
 
 const formatTextLines = (lines) => lines.filter(Boolean).join("\n");
 
-/** Wrap email content in the NEXURA branded shell. */
+/** Wrap email content in the NEXURA branded shell. Warm light theme. */
 const buildEmailHtml = (content) => `<!DOCTYPE html>
 <html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NEXURA</title></head>
-<body style="margin:0;padding:0;background:#f0ede8;">
-<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:100%;background:#f0ede8;">
+<body style="margin:0;padding:0;background:#EDE7DA;">
+<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:100%;background:#EDE7DA;">
 <tr><td align="center" style="padding:28px 16px;">
-<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:100%;max-width:560px;background:#0d0d0b;border-radius:6px;">
+<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:100%;max-width:560px;background:#F5F2EB;border-radius:6px;border:1px solid rgba(26,26,24,0.08);">
   <tr><td style="padding:22px 28px 0;">
-    <p style="margin:0 0 3px;font-family:'Courier New',Courier,monospace;font-size:18px;font-weight:700;letter-spacing:0.14em;color:#e8e4dc;text-transform:uppercase;">NEXURA&#8202;DATA</p>
-    <p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.22em;color:#6a655e;text-transform:uppercase;">Récupération de données · Forensique numérique</p>
-    <div style="height:1px;background:rgba(232,228,220,0.1);"></div>
+    <p style="margin:0 0 3px;font-family:Georgia,serif;font-size:24px;font-weight:400;letter-spacing:0.02em;color:#1A1A18;">Nexura</p>
+    <p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.22em;color:#6A655E;text-transform:uppercase;">Analytics · AI Automation Atelier</p>
+    <div style="height:1px;background:rgba(26,26,24,0.08);"></div>
   </td></tr>
   <tr><td style="padding:24px 28px;">${content}</td></tr>
   <tr><td style="padding:0 28px 22px;">
-    <div style="height:1px;background:rgba(232,228,220,0.1);margin-bottom:16px;"></div>
-    <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#4a4540;line-height:1.7;">Ce message est confidentiel et destiné uniquement à son destinataire. Toute diffusion ou utilisation non autorisée est interdite.<br>NEXURA · Québec, Canada · <a href="https://nexuradata.ca" style="color:#6a655e;text-decoration:none;">nexuradata.ca</a></p>
+    <div style="height:1px;background:rgba(26,26,24,0.08);margin-bottom:16px;"></div>
+    <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#6A655E;line-height:1.7;">Ce message est confidentiel et destiné uniquement à son destinataire. Toute diffusion ou utilisation non autorisée est interdite.<br>NEXURA · Montréal, Québec · <a href="https://nexura.ca" style="color:#C45B3E;text-decoration:none;">nexura.ca</a></p>
   </td></tr>
 </table>
 </td></tr></table>

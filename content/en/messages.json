@@ -1,0 +1,199 @@
+{
+  "meta": {
+    "title": "Nexura Analytics | AI Automation, Quietly Engineered",
+    "description": "We help businesses stop chasing tasks and start finishing them."
+  },
+  "nav": {
+    "services": "Services",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "tagline": "AN AI AUTOMATION ATELIER",
+    "title": "Nexura",
+    "subtitle": "Analytics",
+    "slogan": "AI automation, quietly engineered.",
+    "description": "We help businesses stop chasing tasks and start finishing them.",
+    "cta": "Free Assessment",
+    "pillars": ["AGENTS", "PIPELINES", "OBSERVABILITY", "GOVERNANCE"]
+  },
+  "services": {
+    "title": "What we do",
+    "subtitle": "Solutions that work while you sleep",
+    "items": {
+      "agents": {
+        "title": "Smart Agents",
+        "description": "Assistants that sort, respond, and organize on your behalf."
+      },
+      "pipelines": {
+        "title": "Automated Flows",
+        "description": "Your data flows where it needs to, without manual work."
+      },
+      "observability": {
+        "title": "Clear Vision",
+        "description": "See what's happening in your business, in real time."
+      },
+      "governance": {
+        "title": "Total Control",
+        "description": "Clear rules so automation stays under your control."
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to simplify?",
+    "description": "Book a free assessment. We analyze your operations and show you what can be automated.",
+    "button": "Start Assessment"
+  },
+  "newsletter": {
+    "title": "Stay informed",
+    "description": "Practical automation tips, no jargon.",
+    "placeholder": "your@email.com",
+    "button": "Subscribe",
+    "success": "Thanks! Check your inbox.",
+    "error": "Oops, something went wrong."
+  },
+  "footer": {
+    "tagline": "AI automation, quietly engineered.",
+    "location": "Montreal, Quebec",
+    "copyright": "© 2026 NEXURA. All rights reserved.",
+    "links": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    }
+  },
+  "chat": {
+    "title": "Ask Nexura",
+    "placeholder": "Ask your question...",
+    "greeting": "Hello! I'm the Nexura assistant. How can I help you?"
+  },
+  "pricing": {
+    "title": "Simple pricing",
+    "subtitle": "No surprises. We tell you exactly what it costs.",
+    "assessment": {
+      "title": "Assessment",
+      "price": "Free",
+      "description": "We analyze your operations and show you what can be simplified.",
+      "features": [
+        "30-minute call",
+        "Process analysis",
+        "Personalized report",
+        "Clear recommendations"
+      ],
+      "cta": "Book a call"
+    },
+    "implementation": {
+      "title": "Implementation",
+      "price": "Starting at $250",
+      "description": "We build and deploy solutions tailored to your reality.",
+      "features": [
+        "Custom configuration",
+        "Integration with your tools",
+        "Testing and validation",
+        "Complete documentation"
+      ],
+      "cta": "Start Assessment"
+    },
+    "support": {
+      "title": "Support",
+      "price": "Custom",
+      "description": "We stay by your side to maintain and evolve your solutions.",
+      "features": [
+        "Priority support",
+        "Regular updates",
+        "Adjustments included",
+        "Direct team access"
+      ],
+      "cta": "Contact us"
+    },
+    "note": "All prices in Canadian dollars. Taxes extra."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: May 12, 2026",
+    "intro": "At Nexura Analytics, we take the protection of your personal information seriously. This policy explains how we collect, use, and protect your data, in accordance with Quebec Law 25 and federal PIPEDA.",
+    "sections": {
+      "collection": {
+        "title": "Information Collected",
+        "content": "We collect information you provide directly: name, email address, professional contact information, and data related to your assessment requests. We also automatically collect technical browsing data."
+      },
+      "use": {
+        "title": "Use of Data",
+        "content": "Your information is used to: respond to your requests, provide our automation services, improve our website, and send you communications if you have consented."
+      },
+      "sharing": {
+        "title": "Data Sharing",
+        "content": "We never sell your personal data. We may share your information with our service providers (hosting, payment, email) strictly within the scope of our operations."
+      },
+      "retention": {
+        "title": "Retention",
+        "content": "We retain your data as long as necessary to provide our services or as required by applicable legal obligations."
+      },
+      "rights": {
+        "title": "Your Rights",
+        "content": "You have the right to access your data, correct it, delete it, and withdraw your consent. To exercise these rights, contact us at privacy@nexura.ca."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "content": "For any questions about this policy, write to us at privacy@nexura.ca or by mail to Nexura Analytics, Montreal, Quebec, Canada."
+      }
+    }
+  },
+  "contact": {
+    "title": "Let's talk",
+    "subtitle": "We usually respond within 24 hours.",
+    "email": "hello@nexura.ca",
+    "location": "Montreal, Quebec",
+    "form": {
+      "name": "Your name",
+      "email": "Your email",
+      "message": "Your message",
+      "submit": "Send",
+      "success": "Thanks! We'll get back to you soon.",
+      "error": "Something went wrong. Please try again."
+    }
+  },
+  "evaluation": {
+    "title": "Free Assessment",
+    "subtitle": "Discover what can be simplified in your operations.",
+    "description": "In 30 minutes, we analyze your processes together and identify tasks that can be automated. No commitment, no pressure.",
+    "cta": "Book my call",
+    "benefits": [
+      "Personalized analysis of your operations",
+      "Identification of repetitive tasks",
+      "Concrete recommendations",
+      "Transparent cost estimation"
+    ]
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: May 12, 2026",
+    "intro": "By using the Nexura Analytics website and services, you agree to these terms. These terms are governed by the laws of Quebec.",
+    "sections": {
+      "services": {
+        "title": "Description of Services",
+        "content": "Nexura Analytics offers consulting and implementation services in business operations automation. Solutions are customized according to each client's needs."
+      },
+      "obligations": {
+        "title": "Your Obligations",
+        "content": "You agree to provide accurate information, use our services legally, and respect intellectual property rights."
+      },
+      "payment": {
+        "title": "Payment",
+        "content": "Prices are indicated in Canadian dollars. Payment is due according to the terms agreed for each project. Applicable taxes are extra."
+      },
+      "liability": {
+        "title": "Limitation of Liability",
+        "content": "Nexura Analytics cannot be held liable for indirect damages resulting from the use of our services. Our liability is limited to the amount paid for the services concerned."
+      },
+      "ip": {
+        "title": "Intellectual Property",
+        "content": "Website content (text, images, logos) belongs to Nexura Analytics. Solutions developed for you belong to you, unless otherwise indicated."
+      },
+      "termination": {
+        "title": "Termination",
+        "content": "We may suspend or terminate your access to services in case of violation of these terms."
+      }
+    }
+  }
+}

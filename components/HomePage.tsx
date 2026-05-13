@@ -69,11 +69,11 @@ export function HomePage() {
             </div>
             <div className="flex items-center">
               <div className="grid grid-cols-2 gap-6 w-full">
-                <div className="bg-surface p-8 border border-foreground/25">
+                <div className="bg-surface p-8 border-2 border-foreground/40">
                   <div className="font-serif text-5xl text-foreground mb-2">20-40%</div>
                   <div className="text-foreground/60">productivity lost to invisible friction</div>
                 </div>
-                <div className="bg-surface p-8 border border-foreground/25">
+                <div className="bg-surface p-8 border-2 border-foreground/40">
                   <div className="font-serif text-5xl text-foreground mb-2">5-15</div>
                   <div className="text-foreground/60">disconnected tools per company</div>
                 </div>
@@ -82,7 +82,7 @@ export function HomePage() {
           </div>
 
           {/* Problems we solve */}
-          <div className="border-t border-foreground/25 pt-16">
+          <div className="border-t-2 border-foreground/40 pt-16">
             <h3 className="font-mono text-sm tracking-widest text-foreground/50 mb-10">PROBLEMS WE SOLVE</h3>
             <div className="grid md:grid-cols-3 gap-12">
               <div>
@@ -137,7 +137,7 @@ export function HomePage() {
 
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Service 1 */}
-            <div className="bg-background p-10 border border-foreground/25">
+            <div className="bg-background p-10 border-2 border-foreground/40">
               <div className="flex items-start justify-between mb-6">
                 <h3 className="font-serif text-3xl text-foreground">Operational Assessment</h3>
                 <span className="font-mono text-sm text-foreground/40">FREE</span>
@@ -145,7 +145,7 @@ export function HomePage() {
               <p className="text-foreground/70 leading-relaxed mb-6">
                 A 5-minute questionnaire analyzed by our AI. You get back a detailed report of operational complexity, identified bottlenecks, and recommended next steps. No sales call required.
               </p>
-              <div className="border-t border-foreground/25 pt-6">
+              <div className="border-t-2 border-foreground/40 pt-6">
                 <h4 className="font-mono text-xs tracking-widest text-foreground/50 mb-4">WHAT YOU GET</h4>
                 <ul className="text-sm text-foreground/60 space-y-2">
                   <li>• Operational complexity score</li>
@@ -158,7 +158,7 @@ export function HomePage() {
             </div>
 
             {/* Service 2 */}
-            <div className="bg-background p-10 border border-foreground/25">
+            <div className="bg-background p-10 border-2 border-foreground/40">
               <div className="flex items-start justify-between mb-6">
                 <h3 className="font-serif text-3xl text-foreground">Human Review</h3>
                 <span className="font-mono text-sm text-foreground/40">FROM $250</span>
@@ -166,7 +166,7 @@ export function HomePage() {
               <p className="text-foreground/70 leading-relaxed mb-6">
                 A senior analyst reviews your assessment, talks to your team, and produces a detailed implementation roadmap. This is where generic becomes specific.
               </p>
-              <div className="border-t border-foreground/25 pt-6">
+              <div className="border-t-2 border-foreground/40 pt-6">
                 <h4 className="font-mono text-xs tracking-widest text-foreground/50 mb-4">WHAT YOU GET</h4>
                 <ul className="text-sm text-foreground/60 space-y-2">
                   <li>• 60-minute discovery call</li>
@@ -179,7 +179,7 @@ export function HomePage() {
             </div>
 
             {/* Service 3 */}
-            <div className="bg-background p-10 border border-foreground/25">
+            <div className="bg-background p-10 border-2 border-foreground/40">
               <div className="flex items-start justify-between mb-6">
                 <h3 className="font-serif text-3xl text-foreground">Workflow Automation</h3>
                 <span className="font-mono text-sm text-foreground/40">$2,500 - $15,000</span>
@@ -187,7 +187,7 @@ export function HomePage() {
               <p className="text-foreground/70 leading-relaxed mb-6">
                 We connect your tools and automate the handoffs between them. When something happens in System A, System B updates automatically. No human copy-paste required.
               </p>
-              <div className="border-t border-foreground/25 pt-6">
+              <div className="border-t-2 border-foreground/40 pt-6">
                 <h4 className="font-mono text-xs tracking-widest text-foreground/50 mb-4">EXAMPLES</h4>
                 <ul className="text-sm text-foreground/60 space-y-2">
                   <li>• CRM → Project Management sync</li>
@@ -200,7 +200,7 @@ export function HomePage() {
             </div>
 
             {/* Service 4 */}
-            <div className="bg-background p-10 border border-foreground/25">
+            <div className="bg-background p-10 border-2 border-foreground/40">
               <div className="flex items-start justify-between mb-6">
                 <h3 className="font-serif text-3xl text-foreground">Operational Dashboard</h3>
                 <span className="font-mono text-sm text-foreground/40">$5,000 - $25,000</span>
@@ -208,7 +208,7 @@ export function HomePage() {
               <p className="text-foreground/70 leading-relaxed mb-6">
                 A single view of your entire operation. Real-time data from all your systems, visualized so you can see problems before they become crises.
               </p>
-              <div className="border-t border-foreground/25 pt-6">
+              <div className="border-t-2 border-foreground/40 pt-6">
                 <h4 className="font-mono text-xs tracking-widest text-foreground/50 mb-4">EXAMPLES</h4>
                 <ul className="text-sm text-foreground/60 space-y-2">
                   <li>• Project health at a glance</li>
@@ -316,7 +316,7 @@ export function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-background p-10 border border-foreground/25"
+                className="bg-background p-10 border-2 border-foreground/40"
               >
                 <blockquote className="font-serif text-xl text-foreground leading-relaxed mb-8">
                   &ldquo;{review.quote}&rdquo;
@@ -333,7 +333,7 @@ export function HomePage() {
       </section>
 
       {/* Pricing Summary */}
-      <section className="py-32 bg-background border-t border-foreground/25">
+      <section className="py-32 bg-background border-t-2 border-foreground/40">
         <div className="max-w-7xl mx-auto px-8">
           <div className="max-w-3xl mb-16">
             <h2 className="font-serif text-4xl md:text-5xl text-foreground leading-tight mb-6">
@@ -345,17 +345,17 @@ export function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-surface p-10 border border-foreground/25">
+            <div className="bg-surface p-10 border-2 border-foreground/40">
               <div className="font-mono text-sm text-foreground/50 mb-4">ASSESSMENT</div>
               <div className="font-serif text-4xl text-foreground mb-4">Free</div>
               <p className="text-foreground/70">AI-powered analysis of your operations. No credit card, no call required.</p>
             </div>
-            <div className="bg-surface p-10 border border-foreground/25">
+            <div className="bg-surface p-10 border-2 border-foreground/40">
               <div className="font-mono text-sm text-foreground/50 mb-4">AUTOMATION</div>
               <div className="font-serif text-4xl text-foreground mb-4">$2.5K-15K</div>
               <p className="text-foreground/70">Workflow connections and process automation. Price depends on complexity.</p>
             </div>
-            <div className="bg-surface p-10 border border-foreground/25">
+            <div className="bg-surface p-10 border-2 border-foreground/40">
               <div className="font-mono text-sm text-foreground/50 mb-4">INFRASTRUCTURE</div>
               <div className="font-serif text-4xl text-foreground mb-4">$15K-75K+</div>
               <p className="text-foreground/70">Complete operational systems. Dashboards, automations, integrations.</p>

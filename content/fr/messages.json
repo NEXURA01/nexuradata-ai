@@ -61,10 +61,6 @@
       { "status": "pending", "label": "Initialisation du workflow en attente" }
     ]
   },
-  "finalCta": {
-    "title": "Amenez de la structure à vos opérations.",
-    "cta": "Démarrer l'évaluation opérationnelle"
-  },
   "assessment": {
     "title": "Évaluation opérationnelle",
     "subtitle": "Parlez-nous de vos opérations. Notre IA analysera la complexité et recommandera une portée.",

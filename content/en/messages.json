@@ -61,10 +61,6 @@
       { "status": "pending", "label": "Workflow initialization pending" }
     ]
   },
-  "finalCta": {
-    "title": "Bring structure to your operations.",
-    "cta": "Start Operational Assessment"
-  },
   "assessment": {
     "title": "Operational Assessment",
     "subtitle": "Tell us about your operations. Our AI will analyze complexity and recommend a scope.",

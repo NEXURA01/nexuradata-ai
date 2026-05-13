@@ -17,91 +17,87 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
-      <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-serif text-xl tracking-tight">Nexura</span>
-          <span className="font-mono text-xs text-muted uppercase tracking-widest">
-            Analytics
-          </span>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 border-b border-foreground/10">
+      <nav className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        {/* Logo - stark */}
+        <Link href="/" className="flex items-baseline gap-2">
+          <span className="font-serif text-lg tracking-tight">Nexura</span>
+          <span className="ref-number">Analytics</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           <Link
             href="/tarifs"
-            className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+            className="ref-number hover:text-accent transition-colors"
           >
             {t("pricing")}
           </Link>
           <Link
+            href="/evaluation"
+            className="ref-number hover:text-accent transition-colors"
+          >
+            {t("evaluate")}
+          </Link>
+          <Link
             href="/contact"
-            className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+            className="ref-number hover:text-accent transition-colors"
           >
             {t("contact")}
           </Link>
-        </div>
-
-        {/* Language Switcher + Mobile Menu */}
-        <div className="flex items-center gap-4">
+          
+          {/* Divider */}
+          <div className="w-px h-4 bg-foreground/10" />
+          
+          {/* Language */}
           <button
             onClick={switchLocale}
-            className="font-mono text-xs uppercase tracking-wider text-muted hover:text-foreground transition-colors px-2 py-1 border border-transparent hover:border-border rounded"
+            className="ref-number hover:text-accent transition-colors"
           >
             {locale === "fr" ? "EN" : "FR"}
           </button>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2"
-            aria-label="Toggle menu"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {mobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
         </div>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden ref-number"
+          aria-label="Menu"
+        >
+          {mobileMenuOpen ? "CLOSE" : "MENU"}
+        </button>
       </nav>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-border bg-background">
-          <div className="px-6 py-4 flex flex-col gap-4">
+        <div className="md:hidden border-t border-foreground/10 bg-background">
+          <div className="px-6 py-6 flex flex-col gap-4">
             <Link
               href="/tarifs"
-              className="font-mono text-sm uppercase tracking-wider text-muted-foreground"
+              className="ref-number"
               onClick={() => setMobileMenuOpen(false)}
             >
               {t("pricing")}
             </Link>
             <Link
+              href="/evaluation"
+              className="ref-number"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t("evaluate")}
+            </Link>
+            <Link
               href="/contact"
-              className="font-mono text-sm uppercase tracking-wider text-muted-foreground"
+              className="ref-number"
               onClick={() => setMobileMenuOpen(false)}
             >
               {t("contact")}
             </Link>
+            <div className="border-t border-foreground/10 pt-4 mt-2">
+              <button onClick={switchLocale} className="ref-number">
+                {locale === "fr" ? "ENGLISH" : "FRANÇAIS"}
+              </button>
+            </div>
           </div>
         </div>
       )}

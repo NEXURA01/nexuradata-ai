@@ -15,69 +15,60 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t border-border bg-surface/50">
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        {/* Top section */}
-        <div className="flex flex-col md:flex-row justify-between gap-12 mb-16">
-          {/* Brand */}
-          <div className="max-w-sm">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="font-serif text-2xl tracking-tight">Nexura</span>
-              <span className="font-mono text-xs text-muted uppercase tracking-widest">
-                Analytics
-              </span>
+    <footer className="border-t border-foreground/10">
+      <div className="max-w-5xl mx-auto px-6">
+        {/* Main footer content */}
+        <div className="py-12 grid md:grid-cols-3 gap-8 border-b border-foreground/5">
+          {/* Brand column */}
+          <div>
+            <div className="flex items-baseline gap-2 mb-3">
+              <span className="font-serif text-lg">Nexura</span>
+              <span className="ref-number">Analytics</span>
             </div>
-            <p className="font-serif text-lg italic text-muted-foreground mb-4">
+            <p className="text-dense text-muted-foreground mb-4">
               {t("tagline")}
             </p>
-            <p className="font-mono text-xs text-muted uppercase tracking-wider">
-              {t("location")}
-            </p>
+            <span className="ref-number opacity-50">{t("location")}</span>
           </div>
 
-          {/* Links */}
-          <div className="flex flex-col md:flex-row gap-12">
-            <div>
-              <h4 className="font-mono text-xs uppercase tracking-widest text-muted mb-4">
-                Legal
-              </h4>
-              <div className="flex flex-col gap-3">
-                <Link
-                  href="/confidentialite"
-                  className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {t("links.privacy")}
-                </Link>
-                <Link
-                  href="/conditions"
-                  className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {t("links.terms")}
-                </Link>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-mono text-xs uppercase tracking-widest text-muted mb-4">
-                Language
-              </h4>
-              <button
-                onClick={switchLocale}
-                className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
+          {/* Legal column */}
+          <div>
+            <span className="ref-number block mb-4">LEGAL</span>
+            <div className="flex flex-col gap-2">
+              <Link
+                href="/confidentialite"
+                className="text-dense text-muted-foreground hover:text-accent transition-colors"
               >
-                {locale === "fr" ? "English" : "Français"}
-              </button>
+                {t("links.privacy")}
+              </Link>
+              <Link
+                href="/conditions"
+                className="text-dense text-muted-foreground hover:text-accent transition-colors"
+              >
+                {t("links.terms")}
+              </Link>
             </div>
+          </div>
+
+          {/* Language column */}
+          <div>
+            <span className="ref-number block mb-4">LANGUAGE</span>
+            <button
+              onClick={switchLocale}
+              className="text-dense text-muted-foreground hover:text-accent transition-colors"
+            >
+              {locale === "fr" ? "English" : "Français"}
+            </button>
           </div>
         </div>
 
-        {/* Bottom section */}
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="font-mono text-xs text-muted">{t("copyright")}</p>
-
-          {/* Technical frame reference */}
-          <div className="font-mono text-xs text-muted/50 tracking-widest">
-            NXR · MMXXVI
+        {/* Bottom bar - technical reference style */}
+        <div className="py-4 flex flex-col md:flex-row justify-between items-center gap-2">
+          <span className="ref-number opacity-50">{t("copyright")}</span>
+          <div className="flex items-center gap-4">
+            <span className="ref-number opacity-30">NXR · 0001</span>
+            <span className="ref-number opacity-30">MMXXVI</span>
+            <span className="ref-number opacity-30">QC/CA</span>
           </div>
         </div>
       </div>

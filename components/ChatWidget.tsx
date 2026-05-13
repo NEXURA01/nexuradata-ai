@@ -41,7 +41,7 @@ export function ChatWidget() {
     }
   };
 
-  const getMessageText = (msg: typeof messages[0]): string => {
+  const getMessageText = (msg: (typeof messages)[0]): string => {
     if (!msg.parts || !Array.isArray(msg.parts)) return "";
     return msg.parts
       .filter((p): p is { type: "text"; text: string } => p.type === "text")
@@ -51,37 +51,36 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Toggle Button */}
+      {/* Toggle Button - technical, no rounding */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-foreground text-background rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
+        className="fixed bottom-6 right-6 z-50 px-4 py-2 bg-foreground text-background flex items-center gap-2 hover:bg-accent transition-colors"
         aria-label={isOpen ? "Close chat" : "Open chat"}
       >
-        {isOpen ? (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        ) : (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
+        <span className="font-mono text-xs uppercase tracking-wider">
+          {isOpen ? "CLOSE" : "ASK"}
+        </span>
+        {!isOpen && (
+          <span className="w-2 h-2 bg-accent animate-pulse" />
         )}
       </button>
 
-      {/* Chat Panel */}
+      {/* Chat Panel - technical frame style */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-h-[500px] bg-background border border-border rounded-lg shadow-xl flex flex-col overflow-hidden">
-          {/* Header */}
-          <div className="px-4 py-3 border-b border-border bg-surface/50">
-            <h3 className="font-serif text-lg">{t("title")}</h3>
+        <div className="fixed bottom-20 right-6 z-50 w-[340px] max-h-[480px] bg-background border border-foreground/15 shadow-xl flex flex-col overflow-hidden">
+          {/* Header - technical reference */}
+          <div className="px-4 py-3 border-b border-foreground/10 flex items-center justify-between">
+            <div>
+              <span className="ref-number block">NXR · ASSIST</span>
+              <span className="font-serif text-sm">{t("title")}</span>
+            </div>
+            <span className="ref-number opacity-50">v0.1</span>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[300px]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[280px] technical-grid">
             {messages.length === 0 && (
-              <div className="text-muted text-sm font-mono">
-                {t("greeting")}
-              </div>
+              <div className="text-dense text-muted-foreground">{t("greeting")}</div>
             )}
             {messages.map((msg) => (
               <div
@@ -89,10 +88,10 @@ export function ChatWidget() {
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] px-3 py-2 rounded-lg text-sm ${
+                  className={`max-w-[85%] px-3 py-2 text-dense ${
                     msg.role === "user"
                       ? "bg-foreground text-background"
-                      : "bg-surface border border-border"
+                      : "border border-foreground/10 bg-surface"
                   }`}
                 >
                   {getMessageText(msg)}
@@ -101,16 +100,16 @@ export function ChatWidget() {
             ))}
             {status === "streaming" && (
               <div className="flex justify-start">
-                <div className="bg-surface border border-border px-3 py-2 rounded-lg">
-                  <span className="animate-pulse">...</span>
+                <div className="border border-foreground/10 bg-surface px-3 py-2">
+                  <span className="ref-number animate-pulse">PROCESSING...</span>
                 </div>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
-          <form onSubmit={handleSubmit} className="p-4 border-t border-border bg-surface/30">
+          {/* Input - stark */}
+          <form onSubmit={handleSubmit} className="p-3 border-t border-foreground/10">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -118,17 +117,15 @@ export function ChatWidget() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={t("placeholder")}
-                className="flex-1 px-3 py-2 bg-background border border-border rounded text-sm font-mono focus:outline-none focus:ring-1 focus:ring-accent"
+                className="flex-1 px-3 py-2 bg-surface border border-foreground/10 text-dense font-mono focus:outline-none focus:border-accent"
                 disabled={status === "streaming"}
               />
               <button
                 type="submit"
                 disabled={!input.trim() || status === "streaming"}
-                className="px-4 py-2 bg-accent text-accent-foreground rounded text-sm font-mono uppercase tracking-wider hover:opacity-90 transition-opacity disabled:opacity-50"
+                className="px-3 py-2 bg-accent text-accent-foreground font-mono text-xs uppercase tracking-wider hover:opacity-90 transition-opacity disabled:opacity-30"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                </svg>
+                SEND
               </button>
             </div>
           </form>

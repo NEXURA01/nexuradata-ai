@@ -138,7 +138,7 @@ export function OrbitalDiagram() {
         {/* Technical annotations */}
         <g className="frame-text" fill="currentColor" style={{ fontSize: "8px" }}>
           {/* Top annotation */}
-          <text x="200" y="25" textAnchor="middle" className="fill-muted">
+          <text x="200" y="25" textAnchor="middle" className="fill-foreground">
             FIG. I · ORCHESTRATION
           </text>
           {/* Right annotation */}

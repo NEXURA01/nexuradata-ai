@@ -1,459 +1,257 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
-import { LogoMark } from "@/components/Logo";
+import { Logo, LogoMark } from "@/components/Logo";
+
+type Localized = { en: string; fr: string };
+
+const copy = (locale: string, value: Localized) => (locale === "fr" ? value.fr : value.en);
+
+function OrbitDiagram() {
+  return (
+    <svg viewBox="0 0 520 520" className="mx-auto h-[310px] w-[310px] md:h-[460px] md:w-[460px]" aria-hidden="true">
+      <defs>
+        <path id="nx-tick" d="M260 20 L260 31" />
+      </defs>
+      {Array.from({ length: 96 }).map((_, index) => (
+        <use
+          key={index}
+          href="#nx-tick"
+          stroke="currentColor"
+          strokeOpacity={index % 12 === 0 ? 0.55 : 0.22}
+          strokeWidth={index % 12 === 0 ? 1.5 : 0.75}
+          transform={`rotate(${index * 3.75} 260 260)`}
+        />
+      ))}
+      <circle cx="260" cy="260" r="196" fill="none" stroke="currentColor" strokeOpacity="0.34" />
+      <circle cx="260" cy="260" r="148" fill="none" stroke="#c85d42" strokeOpacity="0.74" />
+      <circle cx="260" cy="260" r="82" fill="none" stroke="currentColor" strokeOpacity="0.25" />
+      <circle cx="260" cy="260" r="24" fill="none" stroke="currentColor" strokeOpacity="0.28" />
+      <ellipse cx="260" cy="260" rx="214" ry="66" fill="none" stroke="currentColor" strokeOpacity="0.38" transform="rotate(12 260 260)" />
+      <ellipse cx="260" cy="260" rx="208" ry="62" fill="none" stroke="currentColor" strokeOpacity="0.34" transform="rotate(-27 260 260)" />
+      <path d="M150 350 C105 310 120 206 198 178 C278 149 380 163 407 232 C431 293 369 352 290 358 C240 362 192 357 150 350Z" fill="none" stroke="currentColor" strokeOpacity="0.24" strokeDasharray="9 12" />
+      <circle cx="386" cy="181" r="10" fill="none" stroke="#c85d42" strokeWidth="2" />
+      <circle cx="386" cy="181" r="3" fill="#c85d42" />
+      <circle cx="176" cy="373" r="5" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="316" cy="329" r="4" fill="currentColor" fillOpacity="0.44" />
+      <circle cx="260" cy="260" r="4" fill="#c85d42" />
+      <path d="M150 395 H370" stroke="currentColor" strokeOpacity="0.38" />
+      <path d="M225 413 H295" stroke="currentColor" strokeOpacity="0.38" />
+      <text x="260" y="440" textAnchor="middle" className="fill-current font-mono text-[18px] tracking-[0.25em]">N · 0001</text>
+    </svg>
+  );
+}
+
+function Plate({
+  n,
+  title,
+  children,
+}: {
+  n: string;
+  title: Localized;
+  children: React.ReactNode;
+}) {
+  const locale = useLocale();
+  const fig = n.replace(/^0+/, "") || "0";
+
+  return (
+    <section className="bg-[#ece7db] px-4 py-10 text-[#17181c] md:px-10 md:py-16">
+      <div className="relative mx-auto max-w-[1320px] border border-[#17181c]/35 p-3">
+        <div className="relative border border-[#17181c]/18 px-5 py-8 md:px-10 md:py-12">
+          <div className="absolute left-1/2 top-[-1.05rem] -translate-x-1/2 font-mono text-sm text-[#17181c]/45">+</div>
+          <div className="absolute bottom-[-1.05rem] left-1/2 -translate-x-1/2 font-mono text-sm text-[#17181c]/45">+</div>
+          <div className="mb-10 flex items-center justify-between border-b border-[#17181c]/25 pb-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[#17181c]/58">
+            <span>NXR · {n} — Quiet Mechanism</span>
+            <span className="hidden md:inline">Plate {fig} / MMXXVI</span>
+          </div>
+          <p className="mb-12 text-center font-mono text-[10px] uppercase tracking-[0.24em] text-[#17181c]/55">
+            Fig. {fig} · {copy(locale, title)}
+          </p>
+          {children}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export function HomePage() {
-  const t = useTranslations();
+  const locale = useLocale();
 
-  const problems = [
+  const capabilities = [
     {
-      title: { en: "Fragmented execution", fr: "Exécution fragmentée" },
-      desc: {
-        en: "Critical work moves between tools, people, approvals, and spreadsheets without a reliable operating layer. Data gets copied by hand, decisions lag, and status becomes negotiation.",
-        fr: "Le travail critique circule entre outils, personnes, approbations et tableurs sans couche opérationnelle fiable. Les données sont copiées à la main, les décisions ralentissent, et le statut devient une négociation."
-      }
+      id: "N-01",
+      title: { en: "Ingest", fr: "Ingestion" },
+      detail: { en: "Data, events, calls — normalized at the boundary.", fr: "Données, événements, appels — normalisés à la frontière." },
     },
     {
-      title: { en: "Human dependency", fr: "Dépendance humaine" },
-      desc: {
-        en: "Processes depend on memory, heroics, and manual follow-up. When one person is unavailable, the company loses context, momentum, and control.",
-        fr: "Les processus dépendent de la mémoire, des efforts individuels et du suivi manuel. Quand une personne manque, l'entreprise perd le contexte, l'élan et le contrôle."
-      }
+      id: "N-02",
+      title: { en: "Reason", fr: "Raisonner" },
+      detail: { en: "Models, rules, and tools composed with control.", fr: "Modèles, règles et outils composés avec contrôle." },
     },
     {
-      title: { en: "Operational blind spots", fr: "Angles morts opérationnels" },
-      desc: {
-        en: "Leaders do not see risk, delays, blockers, or ownership early enough. Problems surface when the cost is already real.",
-        fr: "Les dirigeants ne voient pas assez tôt les risques, les délais, les blocages ou les responsabilités. Les problèmes apparaissent quand le coût est déjà réel."
-      }
-    }
-  ];
-
-  const whatWeDo = [
-    {
-      title: { en: "We map the operation.", fr: "On cartographie l'opération." },
-      opacity: "text-background"
+      id: "N-03",
+      title: { en: "Act", fr: "Agir" },
+      detail: { en: "Approvals, handoffs, notifications, and execution loops.", fr: "Approbations, transferts, notifications et boucles d’exécution." },
     },
     {
-      title: { en: "Expose the failure points.", fr: "On fait ressortir les points de rupture." },
-      opacity: "text-background/60"
+      id: "N-04",
+      title: { en: "Observe", fr: "Observer" },
+      detail: { en: "Every decision traced, every signal readable.", fr: "Chaque décision tracée, chaque signal lisible." },
     },
-    {
-      title: { en: "Build the system that keeps execution clear.", fr: "On bâtit le système qui garde l'exécution claire." },
-      opacity: "text-background/40"
-    }
-  ];
-
-  const steps = [
-    {
-      title: { en: "Assessment", fr: "Évaluation" },
-      desc: {
-        en: "A structured first read of the workflows, systems, and decision points that shape execution.",
-        fr: "Une première lecture structurée des workflows, systèmes et points de décision qui façonnent l'exécution."
-      }
-    },
-    {
-      title: { en: "Automation", fr: "Automatisation" },
-      desc: {
-        en: "Reliable handoffs, notifications, updates, and approvals across the systems your team already uses.",
-        fr: "Transferts, notifications, mises à jour et approbations fiables entre les systèmes que votre équipe utilise déjà."
-      }
-    },
-    {
-      title: { en: "Infrastructure", fr: "Infrastructure" },
-      desc: {
-        en: "Dashboards, agent workflows, internal tools, and control surfaces built around your operating reality.",
-        fr: "Tableaux de bord, workflows d'agents, outils internes et surfaces de contrôle conçus autour de votre réalité opérationnelle."
-      }
-    }
-  ];
-
-  const heroMetrics = [
-    { label: { en: "signal", fr: "signal" }, value: "04 layers" },
-    { label: { en: "handoffs", fr: "transferts" }, value: "mapped" },
-    { label: { en: "review", fr: "revue" }, value: "24h" },
-    { label: { en: "status", fr: "statut" }, value: "private" }
   ];
 
   const services = [
     {
-      title: { en: "Operational Assessment", fr: "Évaluation opérationnelle" },
-      price: { en: "Free", fr: "Gratuit" },
-      desc: {
-        en: "5-minute questionnaire, AI-analyzed overnight. You get a detailed report on complexity, bottlenecks, and recommended next steps in 24 hours.",
-        fr: "Questionnaire de 5 minutes, analysé par IA pendant la nuit. Vous recevez un rapport détaillé sur la complexité, les goulots et les prochaines étapes en 24 heures."
-      },
-      includes: {
-        en: "Complexity score · Tool mapping · Top 3 friction points · Budget estimate",
-        fr: "Score de complexité · Cartographie des outils · Top 3 des frictions · Estimation budgétaire"
-      }
+      n: "I",
+      title: { en: "Operational assessment", fr: "Évaluation opérationnelle" },
+      body: { en: "A structured first read of the workflows, systems, and decision points that shape execution.", fr: "Une première lecture structurée des workflows, systèmes et points de décision qui façonnent l’exécution." },
     },
     {
-      title: { en: "Human Review", fr: "Revue humaine" },
-      price: { en: "From $250", fr: "À partir de 250$" },
-      desc: {
-        en: "A senior analyst reviews your assessment, talks to your team, and delivers a detailed implementation roadmap with fixed-price quotes.",
-        fr: "Un analyste senior revoit votre évaluation, parle à votre équipe, et livre une feuille de route détaillée avec des prix fixes."
-      },
-      includes: {
-        en: "Discovery call · Process docs · Architecture diagram · Implementation plan",
-        fr: "Appel découverte · Documentation des processus · Diagramme d'architecture · Plan d'implémentation"
-      }
+      n: "II",
+      title: { en: "Workflow automation", fr: "Automatisation des workflows" },
+      body: { en: "Reliable handoffs, approvals, notifications, and data movement across the tools your team already uses.", fr: "Transferts, approbations, notifications et mouvements de données fiables entre les outils que votre équipe utilise déjà." },
     },
     {
-      title: { en: "Workflow Automation", fr: "Automatisation des workflows" },
-      price: { en: "$2,500 – $15,000", fr: "2 500$ – 15 000$" },
-      desc: {
-        en: "We connect your tools and automate the handoffs. Eliminates copy-paste work, reduces errors, frees your team.",
-        fr: "On connecte vos outils et on automatise les transferts. Élimine le copier-coller, réduit les erreurs, libère votre équipe."
-      },
-      includes: {
-        en: "CRM sync · Auto-invoicing · Notifications · Data pipelines",
-        fr: "Sync CRM · Facturation auto · Notifications · Pipelines de données"
-      }
+      n: "III",
+      title: { en: "Control surfaces", fr: "Surfaces de contrôle" },
+      body: { en: "Dashboards, internal tools, and private AI systems built around your operating reality.", fr: "Tableaux de bord, outils internes et systèmes IA privés conçus autour de votre réalité opérationnelle." },
     },
-    {
-      title: { en: "Operational Dashboard", fr: "Tableau de bord opérationnel" },
-      price: { en: "$5,000 – $25,000", fr: "5 000$ – 25 000$" },
-      desc: {
-        en: "A single view of your entire operation. Real-time data from all systems, visualized to spot problems before they escalate.",
-        fr: "Une vue unique de toute votre opération. Données en temps réel de tous les systèmes, visualisées pour repérer les problèmes avant qu'ils n'escaladent."
-      },
-      includes: {
-        en: "Real-time metrics · Custom KPIs · Alerts · Team visibility",
-        fr: "Métriques temps réel · KPIs personnalisés · Alertes · Visibilité équipe"
-      }
-    }
   ];
 
-  // Helper to get localized text
-  const getText = (obj: { en: string; fr: string }) => {
-    // Check if we're in French by looking at a known translation
-    const isFr = t("problem.title") === "Le problème";
-    return isFr ? obj.fr : obj.en;
-  };
-
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      {/* Hero — operational command surface */}
-      <section className="relative min-h-[100svh] overflow-hidden bg-[var(--noir)] pt-24 text-[var(--os)]">
-        <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(245,247,250,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(245,247,250,0.045)_1px,transparent_1px)] [background-size:64px_64px]" />
-        <div className="absolute inset-x-6 top-28 h-px bg-[var(--os-ghost)] lg:inset-x-14" />
-        <div className="absolute inset-x-6 bottom-8 h-px bg-[var(--os-ghost)] lg:inset-x-14" />
-        <div className="absolute left-6 right-6 top-28 bottom-8 border-x border-[var(--os-ghost)] lg:left-14 lg:right-14" />
-        <div className="absolute left-8 top-24 font-mono text-[8px] uppercase tracking-[0.24em] text-[rgba(245,247,250,0.45)] lg:left-16">NXR / 0002 / Quiet Mechanism</div>
-        <div className="absolute right-8 top-24 hidden font-mono text-[8px] uppercase tracking-[0.24em] text-[rgba(245,247,250,0.45)] md:block lg:right-16">XXM 01 / Plate II / MMXXVI</div>
-        <div className="absolute left-8 bottom-3 hidden font-mono text-[8px] uppercase tracking-[0.2em] text-[rgba(245,247,250,0.34)] md:block lg:left-16">NEXURA Analytics · Atelier</div>
-        <div className="absolute right-8 bottom-3 hidden font-mono text-[8px] uppercase tracking-[0.2em] text-[rgba(245,247,250,0.34)] md:block lg:right-16">1008 X 1008 / Post</div>
-        <div className="relative z-10 grid min-h-[calc(100svh-5rem)] w-full max-w-[1480px] grid-cols-1 items-center gap-16 px-6 py-20 mx-auto lg:grid-cols-12 lg:px-16">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-7"
-          >
-            <div className="mb-8 flex items-center gap-4 font-mono text-[15px] uppercase tracking-[0.38em] text-[var(--nx-muted)]">
-              <span>NEXURA ANALYTICS — MONTRÉAL</span>
+    <main className="min-h-screen bg-[#ece7db] text-[#17181c]">
+      <section className="relative bg-[#ece7db] px-4 py-8 text-[#17181c] md:px-10 md:py-12">
+        <div className="relative mx-auto max-w-[1480px] border border-[#17181c]/40 p-3">
+          <div className="relative overflow-hidden border border-[#17181c]/18 px-6 py-10 md:px-14 md:py-16">
+            <div className="absolute left-1/2 top-[-0.95rem] -translate-x-1/2 font-mono text-sm text-[#17181c]/45">+</div>
+            <div className="absolute bottom-[-0.95rem] left-1/2 -translate-x-1/2 font-mono text-sm text-[#17181c]/45">+</div>
+            <div className="absolute left-0 right-0 top-3 flex justify-between px-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[#17181c]/58">
+              <span>NXR · 0001 — Quiet Mechanism</span>
+              <span className="hidden md:inline">MMXXVI / Fig. I</span>
             </div>
 
-            <h1 className="mb-10 max-w-[17ch] font-serif text-[clamp(4rem,8.8vw,9.3rem)] font-semibold leading-[0.88] text-[var(--os)]">
-              {getText({
-                en: "We find what's costing you money.",
-                fr: "On trouve ce qui vous coûte de l'argent."
-              })}
-            </h1>
-
-            <p className="mb-12 max-w-[55ch] font-sans text-xl leading-relaxed text-[rgba(245,247,250,0.72)] md:text-3xl">
-              {getText({
-                en: "Operational intelligence for mid-sized companies.",
-                fr: "Intelligence opérationnelle pour entreprises de taille moyenne."
-              })}
-            </p>
-
-            <div className="flex flex-wrap items-center gap-5">
-              <Link
-                href="/operational-assessment"
-                className="group inline-flex items-center border-y border-accent/70 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/82 transition-colors hover:border-foreground/70 hover:text-foreground"
-              >
-                {getText({
-                  en: "Start assessment",
-                  fr: "Démarrer l'évaluation"
-                })}
-                <span className="ml-4 text-accent transition-transform group-hover:translate-x-1">→</span>
-              </Link>
-              <Link
-                href="/contact"
-                className="border-y border-foreground/20 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/55 transition-colors hover:border-foreground/45 hover:text-foreground"
-              >
-                {getText({ en: "Contact", fr: "Nous écrire" })}
-              </Link>
-            </div>
-            <a
-              href="mailto:contact@nexuradata.ca"
-              className="mt-7 inline-block font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/45 transition-colors hover:text-foreground/80"
-            >
-              contact@nexuradata.ca
-            </a>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.15 }}
-            className="lg:col-span-5"
-          >
-            <div className="relative border border-foreground/15 bg-surface/80 p-5 shadow-2xl shadow-black/40">
-              <div className="mb-8 flex items-center justify-between border-b border-foreground/15 pb-4 font-mono text-[9px] uppercase tracking-[0.28em] text-foreground/45">
-                <span>NX-OPS/CONTROL</span>
-                <span>MMXXVI</span>
-              </div>
-              <div className="grid grid-cols-[auto_1fr] gap-6">
-                <LogoMark size={80} />
-                <div>
-                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-accent">Operational command layer</p>
-                  <p className="font-serif text-3xl leading-none text-foreground">Private systems for execution clarity.</p>
-                </div>
-              </div>
-              <div className="my-8 h-px bg-foreground/15" />
-              <div className="grid grid-cols-2 border border-foreground/15">
-                {heroMetrics.map((metric, index) => (
-                  <div key={metric.value} className={`p-4 ${index % 2 === 0 ? "border-r" : ""} ${index < 2 ? "border-b" : ""} border-foreground/15`}>
-                    <p className="mb-3 font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/40">{getText(metric.label)}</p>
-                    <p className="font-mono text-sm uppercase tracking-[0.08em] text-foreground">{metric.value}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 flex items-end justify-between gap-6">
-                <p className="max-w-[28ch] text-sm leading-relaxed text-foreground/50">
-                  {getText({
-                    en: "A quiet layer between people, tools, data, and decisions.",
-                    fr: "Une couche silencieuse entre personnes, outils, données et décisions."
+            <div className="grid min-h-[66svh] items-center gap-10 pt-10 md:grid-cols-[0.92fr_1fr]">
+              <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+                <p className="mb-8 max-w-[31ch] font-mono text-[12px] uppercase leading-relaxed tracking-[0.24em] text-[#17181c]/68">
+                  {copy(locale, {
+                    en: "An instrument maker for operational intelligence",
+                    fr: "Un atelier d’instruments pour l’intelligence opérationnelle",
                   })}
                 </p>
-                <svg viewBox="0 0 120 120" className="h-28 w-28 shrink-0 text-accent" aria-hidden="true">
-                  <circle cx="60" cy="60" r="47" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.55" />
-                  <circle cx="60" cy="60" r="26" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.35" />
-                  <path d="M60 13V0M60 120v-13M13 60H0M120 60h-13" stroke="currentColor" strokeWidth="1" opacity="0.7" />
-                  <path d="M36 84 84 36M42 36l42 48" stroke="currentColor" strokeWidth="1.4" opacity="0.75" />
-                </svg>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2">
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="h-14 w-px bg-accent/45"
-          />
-        </div>
-      </section>
-
-      {/* The Problem — Editorial statement */}
-      <section className="py-32 lg:py-48">
-        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
-          <div className="grid lg:grid-cols-12 gap-16 lg:gap-8">
-            <div className="lg:col-span-5">
-              <p className="font-mono text-sm tracking-[0.2em] text-foreground/40 mb-6">
-                {getText({ en: "THE PROBLEM", fr: "LE PROBLÈME" })}
-              </p>
-              <h2 className="max-w-[12ch] font-serif text-4xl leading-[0.98] text-foreground md:text-5xl lg:text-6xl">
-                {getText({
-                  en: "Most companies do not need another tool. They need an operating layer that connects the systems and keeps the work clear.",
-                  fr: "La plupart des entreprises n'ont pas besoin d'un outil de plus. Elles ont besoin d'une couche opérationnelle qui relie les systèmes et garde le travail clair."
-                })}
-              </h2>
-            </div>
-            <div className="lg:col-span-6 lg:col-start-7 lg:pt-8">
-              <div className="space-y-12">
-                {problems.map((problem, i) => (
-                  <div key={i}>
-                    <h3 className="text-2xl text-foreground mb-4">{getText(problem.title)}</h3>
-                    <p className="text-lg text-foreground/60 leading-relaxed">
-                      {getText(problem.desc)}
-                    </p>
+                <div className="border-l-2 border-[#c85d42] pl-5 md:pl-7">
+                  <div className="mb-8 text-[#17181c]">
+                    <Logo size={62} />
                   </div>
-                ))}
-              </div>
+                  <h1 className="max-w-[12ch] font-serif text-[clamp(3.8rem,8vw,8.8rem)] font-normal leading-[0.86] tracking-[-0.04em]">
+                    {copy(locale, { en: "Quiet systems for clear execution.", fr: "Des systèmes silencieux pour une exécution claire." })}
+                  </h1>
+                  <p className="mt-6 max-w-[48ch] font-serif text-2xl italic leading-tight text-[#17181c]/72 md:text-4xl">
+                    {copy(locale, { en: "AI automation, quietly engineered.", fr: "Automatisation IA, ingénierie discrète." })}
+                  </p>
+                  <div className="mt-8 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[#17181c]/56">
+                    <span>EST. 2026</span><span>·</span><span>Agents</span><span>·</span><span>Pipelines</span><span>·</span><span>Observability</span>
+                  </div>
+                  <div className="mt-10 flex flex-wrap gap-4">
+                    <Link href="/operational-assessment" className="border border-[#17181c] px-5 py-3 font-mono text-[10px] uppercase tracking-[0.22em] transition hover:bg-[#17181c] hover:text-[#ece7db]">
+                      {copy(locale, { en: "Start assessment", fr: "Démarrer l’évaluation" })} ↗
+                    </Link>
+                    <Link href="/contact" className="border border-[#17181c]/25 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.22em] transition hover:border-[#17181c]">
+                      {copy(locale, { en: "Contact", fr: "Nous écrire" })}
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.1 }} className="text-[#17181c]">
+                <OrbitDiagram />
+              </motion.div>
+            </div>
+
+            <div className="mt-8 flex justify-between border-t border-[#17181c]/22 pt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[#17181c]/55">
+              <span>AI Automation Atelier</span>
+              <span className="hidden md:inline">851 x 315 · Cover Plate</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* What We Do — Large text reveal */}
-      <section className="py-32 lg:py-48 bg-foreground text-background">
-        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
-          <p className="font-mono text-sm tracking-[0.2em] text-background/40 mb-12">
-            {getText({ en: "WHAT WE DO", fr: "CE QU'ON FAIT" })}
-          </p>
+      <section className="mx-auto max-w-5xl px-6 py-20 text-center md:py-28">
+        <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#c85d42]">— A note from the workshop —</p>
+        <p className="font-serif text-3xl italic leading-tight md:text-5xl">
+          {copy(locale, {
+            en: "We build automations the way instrument makers build movements: precise, legible, and quiet.",
+            fr: "Nous bâtissons les automatisations comme des instruments de précision: lisibles, stables et silencieux.",
+          })}{" "}
+          <span className="text-[#c85d42]">
+            {copy(locale, { en: "No theatrics. Just execution you can trust.", fr: "Pas de théâtre. Juste une exécution fiable." })}
+          </span>
+        </p>
+      </section>
 
-          <div className="space-y-8 mb-24">
-            {whatWeDo.map((item, i) => (
-              <motion.h2
-                key={i}
-                initial={{ opacity: 0.3 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className={`max-w-[12ch] font-serif text-4xl leading-[0.98] md:text-5xl lg:text-6xl ${item.opacity}`}
-              >
-                {getText(item.title)}
-              </motion.h2>
-            ))}
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-16">
-            {steps.map((step, i) => (
-              <div key={i}>
-                <p className="font-mono text-6xl text-background/20 mb-6">0{i + 1}</p>
-                <h3 className="text-2xl text-background mb-4">{getText(step.title)}</h3>
-                <p className="text-background/60 leading-relaxed">
-                  {getText(step.desc)}
-                </p>
+      <Plate n="0002" title={{ en: "Orchestration of agents", fr: "Orchestration des agents" }}>
+        <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
+          <OrbitDiagram />
+          <div className="space-y-7">
+            {capabilities.map((item) => (
+              <div key={item.id} className="border-t border-[#17181c]/28 pt-4">
+                <div className="mb-2 flex items-baseline gap-4 font-mono text-[11px] uppercase tracking-[0.18em]">
+                  <span className="text-[#c85d42]">{item.id}</span>
+                  <span>{copy(locale, item.title)}</span>
+                </div>
+                <p className="max-w-[42ch] text-sm leading-relaxed text-[#17181c]/60">{copy(locale, item.detail)}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </Plate>
 
-      {/* Services — Clean rows, no cards */}
-      <section id="services" className="py-32 lg:py-48">
-        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
-          <div className="grid lg:grid-cols-12 gap-16 mb-24">
-            <div className="lg:col-span-6">
-              <p className="font-mono text-sm tracking-[0.2em] text-foreground/40 mb-6">
-                {getText({ en: "SERVICES", fr: "SERVICES" })}
-              </p>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-foreground">
-                {getText({
-                  en: "Fixed-price. No hourly. No surprises.",
-                  fr: "Prix fixe. Pas d'horaire. Pas de surprises."
-                })}
-              </h2>
-            </div>
-          </div>
-
-          <div className="space-y-0">
-            {services.map((service, i) => (
-              <div key={i} className={`grid lg:grid-cols-12 gap-8 items-baseline py-12 border-t-2 border-foreground/40 ${i === services.length - 1 ? 'border-b-2' : ''}`}>
-                <div className="lg:col-span-1">
-                  <p className="font-mono text-sm text-foreground/30">0{i + 1}</p>
-                </div>
-                <div className="lg:col-span-4">
-                  <h3 className="font-serif text-3xl text-foreground">{getText(service.title)}</h3>
-                  <p className="font-mono text-lg text-foreground/40 mt-2">{getText(service.price)}</p>
-                </div>
-                <div className="lg:col-span-6">
-                  <p className="text-lg text-foreground/70 leading-relaxed mb-4">
-                    {getText(service.desc)}
-                  </p>
-                  <p className="text-foreground/40">
-                    {getText(service.includes)}
-                  </p>
-                </div>
+      <Plate n="0003" title={{ en: "Commissions and studies", fr: "Mandats et études" }}>
+        <div className="grid gap-6 md:grid-cols-3">
+          {services.map((service) => (
+            <article key={service.n} className="relative min-h-[260px] border border-[#17181c]/32 p-7">
+              <span className="absolute right-5 top-4 font-serif text-3xl italic text-[#c85d42]">{service.n}</span>
+              <h3 className="mb-5 max-w-[11ch] font-serif text-3xl leading-none md:text-4xl">{copy(locale, service.title)}</h3>
+              <p className="text-sm leading-relaxed text-[#17181c]/62">{copy(locale, service.body)}</p>
+              <div className="mt-10 border-t border-[#17181c]/22 pt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[#17181c]/55">
+                {copy(locale, { en: "Inquire", fr: "Discuter" })} ↗
               </div>
-            ))}
-          </div>
+            </article>
+          ))}
+        </div>
+      </Plate>
+
+      <section className="border-y border-[#17181c]/28 bg-[#17181c] px-6 py-20 text-[#ece7db] md:px-10">
+        <div className="mx-auto grid max-w-[1180px] gap-8 text-center md:grid-cols-4">
+          {[
+            ["24h", copy(locale, { en: "first operational read", fr: "première lecture" })],
+            ["100%", copy(locale, { en: "replayable logic", fr: "logique rejouable" })],
+            ["04", copy(locale, { en: "control layers", fr: "couches de contrôle" })],
+            ["0", copy(locale, { en: "extra noise", fr: "bruit inutile" })],
+          ].map(([value, label]) => (
+            <div key={label}>
+              <div className="font-serif text-6xl leading-none md:text-7xl">{value}</div>
+              <div className="mt-4 font-mono text-[10px] uppercase tracking-[0.24em] text-[#ece7db]/52">{label}</div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Social Proof — Large quotes, no boxes */}
-      <section className="py-32 lg:py-48 bg-surface">
-        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
-          <p className="font-mono text-sm tracking-[0.2em] text-foreground/40 mb-16">
-            {getText({ en: "WHAT CLIENTS SAY", fr: "CE QUE DISENT NOS CLIENTS" })}
-          </p>
-
-          <div className="space-y-32">
-            {(t.raw("reviews.items") as Array<{
-              quote: string;
-              author: string;
-              role: string;
-              company: string;
-            }>).map((review, i) => (
-              <motion.figure
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="grid lg:grid-cols-12 gap-8"
-              >
-                <blockquote className="lg:col-span-9 font-serif text-3xl md:text-4xl lg:text-5xl leading-[1.2] text-foreground">
-                  &ldquo;{review.quote}&rdquo;
-                </blockquote>
-                <figcaption className="lg:col-span-3 flex flex-col justify-end">
-                  <p className="text-xl text-foreground mb-1">{review.author}</p>
-                  <p className="text-foreground/50">{review.role}</p>
-                  <p className="text-foreground/30 text-sm">{review.company}</p>
-                </figcaption>
-              </motion.figure>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA — Full bleed dark */}
-      <section className="bg-foreground text-background py-32 lg:py-48">
-        <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
-          <div className="grid lg:grid-cols-12 gap-16 items-center">
-            <div className="lg:col-span-7">
-              <LogoMark size={80} className="text-background/20 mb-12" />
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-background mb-8">
-                {t("finalCta.headline")}
-              </h2>
-              <p className="text-xl text-background/50 leading-relaxed mb-12 max-w-[48ch]">
-                {t("finalCta.subheadline")}
-              </p>
-              <Link
-                href="/operational-assessment"
-                className="group inline-flex items-center gap-4 text-background text-lg"
-              >
-                <span className="w-14 h-14 rounded-full border-2 border-background/30 flex items-center justify-center group-hover:bg-background group-hover:text-foreground transition-all">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
-                </span>
-                <span className="border-b border-background/30 pb-1 group-hover:border-background transition-colors">
-                  {t("finalCta.cta")}
-                </span>
-              </Link>
-            </div>
-            <div className="lg:col-span-4 lg:col-start-9">
-              <div className="space-y-8 text-background/40">
-                <div>
-                  <p className="text-background/20 font-mono text-sm mb-2">
-                    {getText({ en: "TIME", fr: "DURÉE" })}
-                  </p>
-                  <p className="text-2xl text-background">5 minutes</p>
-                </div>
-                <div>
-                  <p className="text-background/20 font-mono text-sm mb-2">
-                    {getText({ en: "COST", fr: "COÛT" })}
-                  </p>
-                  <p className="text-2xl text-background">{getText({ en: "Free", fr: "Gratuit" })}</p>
-                </div>
-                <div>
-                  <p className="text-background/20 font-mono text-sm mb-2">
-                    {getText({ en: "DELIVERY", fr: "LIVRAISON" })}
-                  </p>
-                  <p className="text-2xl text-background">24 {getText({ en: "hours", fr: "heures" })}</p>
-                </div>
-                <div>
-                  <p className="text-background/20 font-mono text-sm mb-2">
-                    {getText({ en: "REQUIRED", fr: "REQUIS" })}
-                  </p>
-                  <p className="text-2xl text-background">{getText({ en: "No sales call", fr: "Pas d'appel de vente" })}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <section className="bg-[#ece7db] px-6 py-24 text-center text-[#17181c] md:py-32">
+        <LogoMark size={90} className="mx-auto mb-10" />
+        <h2 className="mx-auto max-w-3xl font-serif text-5xl leading-none md:text-7xl">
+          {copy(locale, { en: "Quiet work, on request.", fr: "Travail discret, sur demande." })}
+        </h2>
+        <p className="mx-auto mt-6 max-w-xl text-[#17181c]/60">
+          {copy(locale, {
+            en: "We take a small number of operational intelligence commissions at a time. Send the problem; we respond with the study.",
+            fr: "Nous prenons un petit nombre de mandats d’intelligence opérationnelle à la fois. Envoyez le problème; nous répondons avec l’étude.",
+          })}
+        </p>
+        <Link href="/contact" className="mt-10 inline-block border border-[#17181c] px-8 py-4 font-mono text-[10px] uppercase tracking-[0.24em] transition hover:bg-[#17181c] hover:text-[#ece7db]">
+          contact@nexuradata.ca ↗
+        </Link>
       </section>
     </main>
   );

@@ -43,28 +43,28 @@ const buildEmailHtml = (content) => `<!DOCTYPE html>
 
 /** Labelled data row for branded emails. */
 const emailRow = (label, value) =>
-  `<p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#e8e4dc;line-height:1.5;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;margin-bottom:3px;">${label}</span>${escapeHtml(value)}</p>`;
+  `<p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1A1A18;line-height:1.5;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6A655E;text-transform:uppercase;margin-bottom:3px;">${label}</span>${escapeHtml(value)}</p>`;
 
 /** Highlighted badge for case IDs, codes, etc. */
 const emailBadge = (label, value) =>
-  `<div style="background:rgba(232,228,220,0.06);border:1px solid rgba(232,228,220,0.12);border-radius:4px;padding:13px 16px;margin:0 0 18px;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;margin-bottom:6px;">${label}</span><span style="font-family:'Courier New',Courier,monospace;font-size:21px;font-weight:700;color:#e8e4dc;letter-spacing:0.06em;">${escapeHtml(value)}</span></div>`;
+  `<div style="background:rgba(26,26,24,0.06);border:1px solid rgba(26,26,24,0.12);border-radius:4px;padding:13px 16px;margin:0 0 18px;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6A655E;text-transform:uppercase;margin-bottom:6px;">${label}</span><span style="font-family:'Courier New',Courier,monospace;font-size:21px;font-weight:700;color:#1A1A18;letter-spacing:0.06em;">${escapeHtml(value)}</span></div>`;
 
 /** Primary CTA button. */
 const emailCta = (label, url) =>
-  `<p style="margin:22px 0 0;"><a href="${escapeHtml(url)}" style="display:inline-block;background:#e8e4dc;color:#0d0d0b;font-family:'Courier New',Courier,monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;padding:11px 22px;border-radius:3px;">${label} →</a></p>`;
+  `<p style="margin:22px 0 0;"><a href="${escapeHtml(url)}" style="display:inline-block;background:#C45B3E;color:#F5F2EB;font-family:'Courier New',Courier,monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;padding:11px 22px;border-radius:3px;">${label} →</a></p>`;
 
 /** Quoted text block (descriptions, summaries). */
 const emailBlock = (text) =>
-  `<div style="background:rgba(232,228,220,0.05);border-left:2px solid rgba(232,228,220,0.18);padding:12px 16px;border-radius:0 3px 3px 0;margin:0 0 4px;"><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#c8c4bc;line-height:1.65;">${escapeHtml(text).replace(/\n/g, "<br>")}</p></div>`;
+  `<div style="background:rgba(26,26,24,0.05);border-left:2px solid rgba(26,26,24,0.18);padding:12px 16px;border-radius:0 3px 3px 0;margin:0 0 4px;"><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3D3D3A;line-height:1.65;">${escapeHtml(text).replace(/\n/g, "<br>")}</p></div>`;
 
 const emailSectionTitle = (label) =>
-  `<p style="margin:22px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6a655e;text-transform:uppercase;">${escapeHtml(label)}</p>`;
+  `<p style="margin:22px 0 8px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6A655E;text-transform:uppercase;">${escapeHtml(label)}</p>`;
 
 const emailActionBlock = (title, text) =>
-  `<div style="background:rgba(183,106,55,0.12);border:1px solid rgba(183,106,55,0.28);border-radius:4px;padding:14px 16px;margin:0 0 18px;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#b76a37;text-transform:uppercase;margin-bottom:6px;">Action équipe</span><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#e8e4dc;line-height:1.6;"><strong>${escapeHtml(title)}</strong><br>${escapeHtml(text)}</p></div>`;
+  `<div style="background:rgba(196,91,62,0.12);border:1px solid rgba(196,91,62,0.28);border-radius:4px;padding:14px 16px;margin:0 0 18px;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#C45B3E;text-transform:uppercase;margin-bottom:6px;">Action équipe</span><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1A1A18;line-height:1.6;"><strong>${escapeHtml(title)}</strong><br>${escapeHtml(text)}</p></div>`;
 
 const emailApprovalBlock = (primaryAction, secondaryAction, holdAction) =>
-  `<div style="background:rgba(232,228,220,0.07);border:1px solid rgba(232,228,220,0.14);border-radius:4px;padding:14px 16px;margin:0 0 18px;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#a09a90;text-transform:uppercase;margin-bottom:8px;">Approval rapide</span><p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#e8e4dc;line-height:1.55;"><strong>APPROVE</strong> — ${escapeHtml(primaryAction)}</p><p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#c8c4bc;line-height:1.55;"><strong>ADJUST</strong> — ${escapeHtml(secondaryAction)}</p><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#c8c4bc;line-height:1.55;"><strong>HOLD</strong> — ${escapeHtml(holdAction)}</p></div>`;
+  `<div style="background:rgba(26,26,24,0.07);border:1px solid rgba(26,26,24,0.14);border-radius:4px;padding:14px 16px;margin:0 0 18px;"><span style="display:block;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;color:#6A655E;text-transform:uppercase;margin-bottom:8px;">Approval rapide</span><p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1A1A18;line-height:1.55;"><strong>APPROVE</strong> — ${escapeHtml(primaryAction)}</p><p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3D3D3A;line-height:1.55;"><strong>ADJUST</strong> — ${escapeHtml(secondaryAction)}</p><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3D3D3A;line-height:1.55;"><strong>HOLD</strong> — ${escapeHtml(holdAction)}</p></div>`;
 
 const sendResendEmail = async (env, payload, idempotencyKey) => {
   const apiKey = normalizeText(env?.RESEND_API_KEY, 256);

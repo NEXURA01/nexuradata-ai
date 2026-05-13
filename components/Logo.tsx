@@ -2,22 +2,18 @@ const cn = (...classes: Array<string | undefined | false>) =>
   classes.filter(Boolean).join(" ");
 
 /**
- * NEXURA — The Punctum Mark
+ * NEXURA — Wordmark-led identity
  *
- * A monogram built from three weights of line:
- *   · two heavy pillars (architectural)
- *   · one hairline diagonal under tension (the signal path)
- *   · one solid square at the meeting point (the punctum)
+ * The type IS the logo. Bold serif "Nexura" with one precise
+ * detail: a solid square punctum as terminal punctuation —
+ * the instrument-maker's signature. Pure monochrome. No icon
+ * needed alongside the type. The mark exists only for square
+ * contexts (favicon, avatars).
  *
- * The square is the signature. It re-appears as the brand's
- * terminal punctuation in the wordmark — "Nexura ▪"  — so the
- * mark and the type carry the same DNA. Pure monochrome.
- * No circles, no gradients, no decoration.
- *
- *   LogoMark      → the mark in isolation (favicon, avatar)
- *   LogoWordmark  → mark + monospace "NEXURA" (header)
- *   Logo          → mark + serif "Nexura" + rule (footer / hero)
- *   LogoDisplay   → framed plate version (brand pages)
+ *   LogoMark      → bold N for favicons & tight squares
+ *   LogoWordmark  → "Nexura▪" — primary logo, used everywhere
+ *   Logo          → wordmark + ANALYTICS rule for footer / hero
+ *   LogoDisplay   → framed plate version for brand pages
  */
 
 interface LogoBaseProps {
@@ -26,7 +22,7 @@ interface LogoBaseProps {
 }
 
 /* ---------------------------------------------------------------- */
-/*  The Mark                                                        */
+/*  Mark — bold geometric N (favicon / square avatars only)         */
 /* ---------------------------------------------------------------- */
 export function LogoMark({ size = 32, className }: LogoBaseProps) {
   return (
@@ -39,37 +35,30 @@ export function LogoMark({ size = 32, className }: LogoBaseProps) {
       className={cn("inline-block shrink-0", className)}
       aria-hidden="true"
     >
-      {/* Left pillar — heavy */}
-      <rect x="14" y="12" width="10" height="76" fill="currentColor" />
-      {/* Right pillar — heavy */}
-      <rect x="76" y="12" width="10" height="76" fill="currentColor" />
-      {/* Signal path — hairline diagonal under tension */}
-      <line
-        x1="24"
-        y1="12"
-        x2="76"
-        y2="88"
-        stroke="currentColor"
-        strokeWidth="1.25"
+      {/* Solid geometric N — one connected shape */}
+      <path
+        d="M 16 12 L 30 12 L 70 64 L 70 12 L 84 12 L 84 88 L 70 88 L 30 36 L 30 88 L 16 88 Z"
+        fill="currentColor"
       />
-      {/* The punctum — the brand signature */}
-      <rect x="44" y="44" width="12" height="12" fill="currentColor" />
+      {/* The punctum — terminal square, anchored bottom-right */}
+      <rect x="88" y="80" width="8" height="8" fill="currentColor" />
     </svg>
   );
 }
 
 /* ---------------------------------------------------------------- */
-/*  Punctum glyph — re-used as terminal punctuation                 */
+/*  Punctum glyph — terminal punctuation in the wordmark            */
 /* ---------------------------------------------------------------- */
 function Punctum({ size }: { size: number }) {
   return (
     <span
-      className="inline-block align-baseline"
+      className="inline-block"
       style={{
         width: size,
         height: size,
         backgroundColor: "currentColor",
-        marginLeft: size * 0.4,
+        marginLeft: size * 0.45,
+        transform: `translateY(-${size * 0.05}px)`,
       }}
       aria-hidden="true"
     />
@@ -77,83 +66,71 @@ function Punctum({ size }: { size: number }) {
 }
 
 /* ---------------------------------------------------------------- */
-/*  Compact wordmark — header / nav                                 */
+/*  Primary wordmark — header, used everywhere                      */
 /* ---------------------------------------------------------------- */
 export function LogoWordmark({ size = 26, className }: LogoBaseProps) {
   return (
-    <div className={cn("inline-flex items-center gap-3", className)}>
-      <LogoMark size={size * 1.4} />
-      <span
-        className="font-serif leading-none inline-flex items-baseline"
-        style={{
-          fontSize: size,
-          letterSpacing: "-0.018em",
-        }}
-      >
-        Nexura
-        <Punctum size={size * 0.16} />
-      </span>
-    </div>
+    <span
+      className={cn(
+        "inline-flex items-baseline font-serif leading-none",
+        className,
+      )}
+      style={{
+        fontSize: size,
+        letterSpacing: "-0.025em",
+        fontWeight: 500,
+      }}
+    >
+      Nexura
+      <Punctum size={size * 0.16} />
+    </span>
   );
 }
 
 /* ---------------------------------------------------------------- */
 /*  Full lockup — footer / hero                                     */
 /* ---------------------------------------------------------------- */
-export function Logo({ size = 44, className }: LogoBaseProps) {
+export function Logo({ size = 36, className }: LogoBaseProps) {
   return (
-    <div className={cn("inline-flex items-center gap-4", className)}>
-      <LogoMark size={size} />
-      <div className="flex flex-col leading-none">
-        <span
-          className="font-serif inline-flex items-baseline"
-          style={{
-            fontSize: size * 0.62,
-            letterSpacing: "-0.02em",
-            lineHeight: 1,
-          }}
-        >
-          Nexura
-          <Punctum size={size * 0.11} />
-        </span>
-        <span
-          className="font-mono uppercase mt-2"
-          style={{
-            fontSize: size * 0.2,
-            letterSpacing: "0.34em",
-            opacity: 0.55,
-            lineHeight: 1,
-          }}
-        >
-          Analytics
-        </span>
-      </div>
-    </div>
+    <span className={cn("inline-flex flex-col leading-none", className)}>
+      <LogoWordmark size={size} />
+      <span
+        className="font-mono uppercase mt-3"
+        style={{
+          fontSize: size * 0.22,
+          letterSpacing: "0.42em",
+          opacity: 0.55,
+          lineHeight: 1,
+        }}
+      >
+        Analytics
+      </span>
+    </span>
   );
 }
 
 /* ---------------------------------------------------------------- */
 /*  Display — framed plate version for brand pages                  */
 /* ---------------------------------------------------------------- */
-export function LogoDisplay({ size = 200, className }: LogoBaseProps) {
+export function LogoDisplay({ size = 80, className }: LogoBaseProps) {
   return (
     <div className={cn("inline-flex flex-col items-center", className)}>
-      <div className="relative" style={{ padding: size * 0.1 }}>
+      <div className="relative" style={{ padding: size * 0.5 }}>
         <span className="absolute top-0 left-0 w-3 h-3 border-l border-t border-current opacity-30" />
         <span className="absolute top-0 right-0 w-3 h-3 border-r border-t border-current opacity-30" />
         <span className="absolute bottom-0 left-0 w-3 h-3 border-l border-b border-current opacity-30" />
         <span className="absolute bottom-0 right-0 w-3 h-3 border-r border-b border-current opacity-30" />
-        <LogoMark size={size} />
+        <LogoWordmark size={size} />
       </div>
       <span
-        className="font-mono uppercase mt-5"
+        className="font-mono uppercase mt-4"
         style={{
-          fontSize: size * 0.055,
-          letterSpacing: "0.35em",
+          fontSize: size * 0.13,
+          letterSpacing: "0.42em",
           opacity: 0.5,
         }}
       >
-        N · 0001 — Punctum Mark
+        Nexura Analytics — Est. MMXXVI
       </span>
     </div>
   );

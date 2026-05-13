@@ -82,9 +82,30 @@ create table if not exists public.newsletter_subscribers (
 
 alter table public.newsletter_subscribers enable row level security;
 
+create table if not exists public.payment_sessions (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  stripe_session_id text not null unique,
+  customer_email text,
+  product_id text,
+  locale text default 'fr',
+  amount_total integer,
+  currency text default 'cad',
+  status text default 'created',
+  checkout_url text,
+  paid_at timestamptz,
+  event_id text,
+  metadata jsonb default '{}'::jsonb
+);
+
+alter table public.payment_sessions enable row level security;
+
 create index if not exists idx_leads_email_created_at on public.leads (email, created_at desc);
 create index if not exists idx_leads_follow_up_due on public.leads (follow_up_next_at) where follow_up_consent = true and status = 'new';
 create index if not exists idx_lead_captures_email_created_at on public.lead_captures (email, created_at desc);
 create index if not exists idx_lead_captures_follow_up_due on public.lead_captures (follow_up_next_at) where follow_up_consent = true and status = 'new';
+create index if not exists idx_payment_sessions_email_created_at on public.payment_sessions (customer_email, created_at desc);
+create index if not exists idx_payment_sessions_status_created_at on public.payment_sessions (status, created_at desc);
 
 notify pgrst, 'reload schema';

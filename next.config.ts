@@ -2,6 +2,15 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
+const isProduction = process.env.NODE_ENV === "production";
+
+const scriptSources = [
+  "'self'",
+  "'unsafe-inline'",
+  !isProduction ? "'unsafe-eval'" : "",
+  "https://js.stripe.com",
+  "https://vercel.live",
+].filter(Boolean).join(" ");
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -11,7 +20,7 @@ const contentSecurityPolicy = [
   "object-src 'none'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://vercel.live",
+  `script-src ${scriptSources}`,
   "style-src 'self' 'unsafe-inline'",
   "connect-src 'self' https://api.stripe.com https://checkout.stripe.com https://js.stripe.com https://*.supabase.co wss://*.supabase.co https://vitals.vercel-insights.com",
   "frame-src https://checkout.stripe.com https://js.stripe.com",
@@ -58,6 +67,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.nexuradata.ca" }],
+        destination: "https://nexuradata.ca/:path*",
+        permanent: true,
+      },
       {
         source: "/:path*",
         has: [{ type: "host", value: "nexuradata-ai.vercel.app" }],

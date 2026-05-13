@@ -6,10 +6,36 @@ import {
 } from "@/lib/server-email";
 import { guardPublicPost, hasFilledHoneypot, jsonWithSecurity } from "@/lib/request-guard";
 
-const isValidEmail = (value: unknown) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(`${value || ""}`);
+type AssessmentEstimate = {
+  complexity: string;
+  scope: string;
+  range: string;
+  nextStep: string;
+};
+
+const isValidEmail = (value: unknown) => {
+  const email = typeof value === "string" ? value.trim() : "";
+  if (email.length < 5 || email.length > 254 || /\s/.test(email)) return false;
+  const at = email.indexOf("@");
+  const lastDot = email.lastIndexOf(".");
+  return at > 0 && lastDot > at + 1 && lastDot < email.length - 1;
+};
 
 const normalizeText = (value: unknown, maxLength = 2400) =>
   typeof value === "string" ? value.trim().replace(/\s+/g, " ").slice(0, maxLength) : "";
+
+const fallbackEstimate = (locale: string): AssessmentEstimate => ({
+  complexity: "Medium",
+  scope:
+    locale === "fr"
+      ? "Analyse approfondie requise"
+      : "Detailed analysis required",
+  range: "$2,500 - $15,000",
+  nextStep:
+    locale === "fr"
+      ? "Réservez une revue opérationnelle pour obtenir des recommandations détaillées."
+      : "Book an operational review to get detailed recommendations.",
+});
 
 export async function POST(req: Request) {
   const guarded = guardPublicPost(req, { namespace: "assessment", maxRequests: 4 });
@@ -44,7 +70,7 @@ export async function POST(req: Request) {
     const tools = normalizeText(body.tools, 1200);
     const teams = normalizeText(body.teams, 40);
     const urgency = normalizeText(body.urgency, 80);
-    const locale = normalizeText(body.locale, 12) || "fr";
+    const locale = normalizeText(body.locale, 12) === "en" ? "en" : "fr";
     const sourcePath = normalizeText(body.sourcePath, 240);
     const sourceLabel = normalizeText(body.sourceLabel, 120) || "assessment_form";
     const utmSource = normalizeText(body.utmSource, 120);
@@ -87,23 +113,20 @@ Analyze this operational problem and provide an estimate.`,
       maxOutputTokens: 500,
     });
 
-    let estimate;
+    let estimate = fallbackEstimate(locale);
     try {
       const jsonMatch = text.match(/\{[\s\S]*\}/);
-      estimate = jsonMatch ? JSON.parse(jsonMatch[0]) : null;
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]) as Partial<AssessmentEstimate>;
+        estimate = {
+          complexity: normalizeText(parsed.complexity, 80) || estimate.complexity,
+          scope: normalizeText(parsed.scope, 500) || estimate.scope,
+          range: normalizeText(parsed.range, 80) || estimate.range,
+          nextStep: normalizeText(parsed.nextStep, 500) || estimate.nextStep,
+        };
+      }
     } catch {
-      estimate = {
-        complexity: "Medium",
-        scope:
-          locale === "fr"
-            ? "Analyse approfondie requise"
-            : "Detailed analysis required",
-        range: "$2,500 - $15,000",
-        nextStep:
-          locale === "fr"
-            ? "Réservez une revue opérationnelle pour obtenir des recommandations détaillées."
-            : "Book an operational review to get detailed recommendations.",
-      };
+      estimate = fallbackEstimate(locale);
     }
 
     const teamCount = Number.parseInt(`${teams || ""}`, 10);
@@ -152,6 +175,7 @@ Analyze this operational problem and provide an estimate.`,
 
     if (dbError) {
       console.error("Supabase error:", dbError);
+      return jsonWithSecurity({ error: "Assessment storage failed" }, { status: 503 });
     }
 
     const emailPayload = {
@@ -176,17 +200,23 @@ Analyze this operational problem and provide an estimate.`,
       sendClientAssessmentReportEmail(emailPayload, estimate, req, lead?.id || null),
     ]);
 
+    const delivery = {
+      team: teamDelivery.status === "fulfilled"
+        ? (teamDelivery.value.sent ? "sent" : teamDelivery.value.reason)
+        : "notification-error",
+      client: clientDelivery.status === "fulfilled"
+        ? (clientDelivery.value.sent ? "sent" : clientDelivery.value.reason)
+        : "notification-error",
+    };
+
+    if (delivery.team !== "sent" || delivery.client !== "sent") {
+      return jsonWithSecurity({ error: "Assessment delivery failed", estimate, leadId: lead?.id || null, delivery }, { status: 503 });
+    }
+
     return jsonWithSecurity({
       estimate,
       leadId: lead?.id || null,
-      delivery: {
-        team: teamDelivery.status === "fulfilled"
-          ? (teamDelivery.value.sent ? "sent" : teamDelivery.value.reason)
-          : "notification-error",
-        client: clientDelivery.status === "fulfilled"
-          ? (clientDelivery.value.sent ? "sent" : clientDelivery.value.reason)
-          : "notification-error",
-      },
+      delivery,
     });
   } catch (error) {
     console.error("Assessment error:", error);

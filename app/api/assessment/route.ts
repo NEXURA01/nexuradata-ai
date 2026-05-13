@@ -57,7 +57,6 @@ export async function POST(req: Request) {
       return jsonWithSecurity({ error: "Invalid assessment payload" }, { status: 400 });
     }
 
-    // Generate AI estimate
     const { text } = await generateText({
       model: "openai/gpt-4o-mini",
       system: `You are an operational analyst at NEXURA. Analyze the client's operational problem and provide a structured estimate.
@@ -88,7 +87,6 @@ Analyze this operational problem and provide an estimate.`,
       maxOutputTokens: 500,
     });
 
-    // Parse AI response
     let estimate;
     try {
       const jsonMatch = text.match(/\{[\s\S]*\}/);
@@ -108,10 +106,20 @@ Analyze this operational problem and provide an estimate.`,
       };
     }
 
-    // Store lead in Supabase
     const teamCount = Number.parseInt(`${teams || ""}`, 10);
     const leadScore = [company, name, email, problem, tools, teams, urgency].filter(Boolean).length * 10;
+    const legacyMessage = [
+      `Problem: ${problem}`,
+      tools ? `Tools: ${tools}` : "Tools: Not specified",
+      teams ? `Teams: ${teams}` : "Teams: Not specified",
+      `Urgency: ${urgency}`,
+    ].join("\n");
+
     const { data: lead, error: dbError } = await supabase.from("leads").insert({
+      name,
+      company,
+      message: legacyMessage,
+      source: sourceLabel,
       company_name: company,
       contact_name: name,
       email,
@@ -132,6 +140,14 @@ Analyze this operational problem and provide an estimate.`,
       last_client_report_sent_at: new Date().toISOString(),
       lead_score: leadScore,
       status: "new",
+      metadata: {
+        sourcePath,
+        sourceLabel,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        referrer,
+      },
     }).select("id").maybeSingle();
 
     if (dbError) {
@@ -162,6 +178,7 @@ Analyze this operational problem and provide an estimate.`,
 
     return jsonWithSecurity({
       estimate,
+      leadId: lead?.id || null,
       delivery: {
         team: teamDelivery.status === "fulfilled"
           ? (teamDelivery.value.sent ? "sent" : teamDelivery.value.reason)

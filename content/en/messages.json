@@ -52,6 +52,30 @@
       { "num": "04", "label": "Workflows become centralized", "desc": "Operations run smoothly" }
     ]
   },
+  "reviews": {
+    "title": "Field reports",
+    "subtitle": "Observations from organizations operating with NEXURA infrastructure.",
+    "items": [
+      {
+        "quote": "We replaced four disconnected systems with one quiet layer. The team stopped firefighting and started building.",
+        "author": "M. Tremblay",
+        "role": "Director of Operations",
+        "company": "Manufacturing · Quebec"
+      },
+      {
+        "quote": "The assessment exposed bottlenecks we had normalized for years. The recommendations were uncomfortably precise.",
+        "author": "S. Reyes",
+        "role": "Chief of Staff",
+        "company": "Logistics · Montreal"
+      },
+      {
+        "quote": "Their work is invisible until you look at the numbers. Then it becomes impossible to ignore.",
+        "author": "J. Côté",
+        "role": "Managing Partner",
+        "company": "Professional Services · Toronto"
+      }
+    ]
+  },
   "workflowPreview": {
     "title": "What happens after assessment",
     "items": [

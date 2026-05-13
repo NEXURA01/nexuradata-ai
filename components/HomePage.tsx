@@ -185,6 +185,78 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* Field Reports / Reviews */}
+      <section className="py-24 border-t border-foreground/10 bg-surface">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-baseline gap-4 mb-4">
+            <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">04</span>
+            <h2 className="font-mono text-[11px] tracking-[0.25em] uppercase text-foreground">
+              {t("reviews.title")}
+            </h2>
+          </div>
+          <p className="font-serif italic text-foreground/60 text-lg max-w-2xl mb-16 pl-10">
+            {t("reviews.subtitle")}
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-px bg-foreground/10 border-y border-foreground/10">
+            {(
+              t.raw("reviews.items") as Array<{
+                quote: string;
+                author: string;
+                role: string;
+                company: string;
+              }>
+            ).map((review, i) => (
+              <motion.figure
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-surface p-8 flex flex-col justify-between min-h-[280px]"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-mono text-[9px] tracking-[0.2em] text-foreground/50">
+                      R-0{i + 1}
+                    </span>
+                    <span className="font-mono text-[9px] tracking-[0.2em] text-foreground/30">
+                      ◆
+                    </span>
+                  </div>
+                  <blockquote className="font-serif text-lg leading-relaxed text-foreground/90 mb-6">
+                    <span className="text-foreground/30 mr-1">&ldquo;</span>
+                    {review.quote}
+                    <span className="text-foreground/30 ml-1">&rdquo;</span>
+                  </blockquote>
+                </div>
+                <figcaption className="pt-6 border-t border-foreground/10">
+                  <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-foreground mb-1">
+                    {review.author}
+                  </div>
+                  <div className="font-mono text-[9px] tracking-[0.15em] text-foreground/60 mb-1">
+                    {review.role}
+                  </div>
+                  <div className="font-mono text-[9px] tracking-[0.2em] text-foreground/40 uppercase">
+                    {review.company}
+                  </div>
+                </figcaption>
+              </motion.figure>
+            ))}
+          </div>
+
+          {/* Bottom annotation strip */}
+          <div className="flex items-center justify-between mt-6 px-2">
+            <span className="font-mono text-[9px] tracking-[0.2em] text-foreground/40">
+              FIG. IV · CLIENT TESTIMONIES
+            </span>
+            <span className="font-mono text-[9px] tracking-[0.2em] text-foreground/40">
+              03 / 03 RECORDS
+            </span>
+          </div>
+        </div>
+      </section>
+
       {/* Dark CTA - "l'accès se mérite" */}
       <section className="bg-foreground text-background py-32">
         <div className="max-w-3xl mx-auto px-6 text-center">

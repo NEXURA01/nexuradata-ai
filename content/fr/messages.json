@@ -52,6 +52,30 @@
       { "num": "04", "label": "Les workflows deviennent centralisés", "desc": "Les opérations roulent" }
     ]
   },
+  "reviews": {
+    "title": "Rapports de terrain",
+    "subtitle": "Observations d'organisations opérant avec l'infrastructure NEXURA.",
+    "items": [
+      {
+        "quote": "Nous avons remplacé quatre systèmes déconnectés par une seule couche silencieuse. L'équipe a cessé d'éteindre des feux et s'est remise à construire.",
+        "author": "M. Tremblay",
+        "role": "Directeur des opérations",
+        "company": "Manufacturier · Québec"
+      },
+      {
+        "quote": "L'évaluation a exposé des goulots d'étranglement que nous avions normalisés pendant des années. Les recommandations étaient inconfortablement précises.",
+        "author": "S. Reyes",
+        "role": "Chef de cabinet",
+        "company": "Logistique · Montréal"
+      },
+      {
+        "quote": "Leur travail est invisible jusqu'à ce que vous regardiez les chiffres. Là, il devient impossible à ignorer.",
+        "author": "J. Côté",
+        "role": "Associé directeur",
+        "company": "Services professionnels · Toronto"
+      }
+    ]
+  },
   "workflowPreview": {
     "title": "Ce qui arrive après l'évaluation",
     "items": [

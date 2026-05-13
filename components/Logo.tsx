@@ -2,152 +2,107 @@ const cn = (...classes: Array<string | undefined | false>) =>
   classes.filter(Boolean).join(" ");
 
 /**
- * NEXURA — Brand Mark
+ * NEXURA — Brand Identity
  *
- * A circular instrument emblem:
- *  · Hairline bezel (the "quiet mechanism")
- *  · Single elliptical orbit with one agent node (warm red accent)
- *  · Serif "N" letterform at the center
- *  · Cardinal registration marks at 12 / 3 / 6 / 9
+ * The logo IS the wordmark. One serif, one signal.
+ * The red dot is the brand's quiet accent — a single signal,
+ * never decoration. It appears nowhere else by default.
  *
- * Use `LogoMark` for the icon alone (favicons, social, small spaces).
- * Use `Logo` for the full lockup (mark + serif wordmark + analytics line).
+ *   Logo          → full serif wordmark "Nexura." (primary lockup)
+ *   LogoMark      → "N." monogram (favicon, avatar, tight spaces)
+ *   LogoWordmark  → wordmark + monospace "ANALYTICS" stack (header)
  */
 
 type LogoProps = {
   className?: string;
   size?: number;
-  /** Override the stroke / text color (defaults to currentColor). */
   color?: string;
-  /** Override the orbit accent color. Defaults to the brand red. */
   accent?: string;
 };
 
+const BRAND_RED = "#B8412E";
+
+/* ---------------------------------------------------------------- */
+/*  Monogram — "N." in the brand serif                              */
+/* ---------------------------------------------------------------- */
 export function LogoMark({
   className,
   size = 32,
   color = "currentColor",
-  accent = "#B8412E",
+  accent = BRAND_RED,
 }: LogoProps) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 100 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn("shrink-0", className)}
+    <span
+      className={cn("inline-flex items-baseline leading-none font-serif", className)}
+      style={{ fontSize: `${size}px`, color }}
       aria-hidden="true"
     >
-      {/* Outer bezel */}
-      <circle cx="50" cy="50" r="46" stroke={color} strokeWidth="0.75" opacity="0.9" />
-
-      {/* Cardinal registration marks (12 / 3 / 6 / 9) */}
-      <line x1="50" y1="1" x2="50" y2="6" stroke={color} strokeWidth="0.75" />
-      <line x1="99" y1="50" x2="94" y2="50" stroke={color} strokeWidth="0.75" />
-      <line x1="50" y1="99" x2="50" y2="94" stroke={color} strokeWidth="0.75" />
-      <line x1="1" y1="50" x2="6" y2="50" stroke={color} strokeWidth="0.75" />
-
-      {/* Single elliptical orbit — the "agent path" */}
-      <ellipse
-        cx="50"
-        cy="50"
-        rx="38"
-        ry="16"
-        stroke={accent}
-        strokeWidth="0.75"
-        transform="rotate(-22 50 50)"
-        opacity="0.85"
-      />
-
-      {/* Agent node on the orbit */}
-      <circle cx="83" cy="38" r="1.6" fill={accent} />
-
-      {/* Center serif N — the letterform anchor */}
-      <text
-        x="50"
-        y="50"
-        textAnchor="middle"
-        dominantBaseline="central"
-        fill={color}
-        fontFamily="var(--font-playfair), Georgia, serif"
-        fontSize="44"
-        fontWeight="400"
-        letterSpacing="-0.02em"
-      >
-        N
-      </text>
-
-      {/* Subtle baseline under N */}
-      <line x1="42" y1="72" x2="58" y2="72" stroke={color} strokeWidth="0.5" opacity="0.4" />
-    </svg>
+      <span style={{ fontWeight: 400, letterSpacing: "-0.04em" }}>N</span>
+      <span style={{ color: accent, marginLeft: "0.02em" }}>.</span>
+    </span>
   );
 }
 
-/**
- * Full horizontal lockup: mark + wordmark + analytics tag.
- * Sized via the mark's `size`; the wordmark scales to match.
- */
+/* ---------------------------------------------------------------- */
+/*  Primary wordmark — "Nexura."                                     */
+/* ---------------------------------------------------------------- */
 export function Logo({
   className,
-  size = 36,
+  size = 32,
   color = "currentColor",
-  accent = "#B8412E",
-  showTag = true,
-}: LogoProps & { showTag?: boolean }) {
+  accent = BRAND_RED,
+}: LogoProps) {
   return (
-    <div className={cn("flex items-center gap-3", className)}>
-      <LogoMark size={size} color={color} accent={accent} />
-      <div className="flex flex-col leading-none">
-        <span
-          className="font-serif tracking-tight"
-          style={{
-            fontSize: `${size * 0.62}px`,
-            color,
-            lineHeight: 1,
-          }}
-        >
-          Nexura
-        </span>
-        {showTag && (
-          <span
-            className="font-mono uppercase tracking-[0.22em] mt-1"
-            style={{
-              fontSize: `${size * 0.22}px`,
-              color: accent,
-              lineHeight: 1,
-            }}
-          >
-            Analytics
-          </span>
-        )}
-      </div>
-    </div>
+    <span
+      className={cn("inline-flex items-baseline leading-none font-serif", className)}
+      style={{ fontSize: `${size}px`, color }}
+      aria-label="Nexura"
+    >
+      <span style={{ fontWeight: 400, letterSpacing: "-0.03em" }}>Nexura</span>
+      <span style={{ color: accent, marginLeft: "0.02em" }}>.</span>
+    </span>
   );
 }
 
-/**
- * Compact monospace wordmark — for places where the serif feels too editorial.
- * Used by the fixed header.
- */
+/* ---------------------------------------------------------------- */
+/*  Lockup — wordmark above "ANALYTICS" rule (header / footer)       */
+/* ---------------------------------------------------------------- */
 export function LogoWordmark({
   className,
-  size = 14,
+  size = 22,
   color = "currentColor",
+  accent = BRAND_RED,
 }: LogoProps) {
   return (
-    <div className={cn("flex items-center gap-2.5", className)}>
-      <LogoMark size={size * 1.6} color={color} />
+    <span
+      className={cn("inline-flex flex-col leading-none", className)}
+      aria-label="Nexura Analytics"
+    >
       <span
-        className="font-mono font-semibold tracking-[0.28em] uppercase"
+        className="font-serif"
         style={{
           fontSize: `${size}px`,
           color,
+          letterSpacing: "-0.03em",
           lineHeight: 1,
         }}
       >
         Nexura
+        <span style={{ color: accent }}>.</span>
       </span>
-    </div>
+      <span
+        className="font-mono uppercase"
+        style={{
+          fontSize: `${size * 0.32}px`,
+          letterSpacing: "0.28em",
+          color,
+          opacity: 0.55,
+          marginTop: `${size * 0.18}px`,
+          lineHeight: 1,
+        }}
+      >
+        Analytics
+      </span>
+    </span>
   );
 }

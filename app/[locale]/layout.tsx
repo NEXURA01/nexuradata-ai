@@ -8,6 +8,7 @@ import { Inter, Inter_Tight, Instrument_Serif, IBM_Plex_Mono } from "next/font/g
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ChatWidget } from "@/components/ChatWidget";
+import { CookieConsent } from "@/components/CookieConsent";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({
@@ -77,6 +78,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <main className="flex-1">{children}</main>
             <Footer />
             <ChatWidget />
+            <CookieConsent />
           </TooltipProvider>
         </NextIntlClientProvider>
       </body>

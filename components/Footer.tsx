@@ -50,6 +50,10 @@ export function Footer() {
     }
   };
 
+  const openCookiePreferences = () => {
+    window.dispatchEvent(new Event("nexura:open-cookie-preferences"));
+  };
+
   const primaryLinks = isFr
     ? [
         { href: "/operational-assessment", label: "Auto-évaluation" },
@@ -184,6 +188,13 @@ export function Footer() {
               className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.42)] transition-colors hover:text-[var(--noir)]"
             >
               {locale === "fr" ? "EN" : "FR"}
+            </button>
+            <button
+              type="button"
+              onClick={openCookiePreferences}
+              className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.42)] transition-colors hover:text-[var(--noir)]"
+            >
+              {isFr ? "Témoins" : "Cookies"}
             </button>
           </div>
         </div>

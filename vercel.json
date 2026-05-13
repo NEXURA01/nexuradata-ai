@@ -4,6 +4,12 @@
     "installCommand": "npm ci",
     "cleanUrls": true,
     "trailingSlash": false,
+    "crons": [
+        {
+            "path": "/api/lead-followup",
+            "schedule": "0 14 * * *"
+        }
+    ],
     "redirects": [
         {
             "source": "/portal",

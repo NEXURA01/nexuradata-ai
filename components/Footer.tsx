@@ -25,10 +25,18 @@ export function Footer() {
     setNewsletterStatus("loading");
 
     try {
-      const response = await fetch("/api/newsletter", {
+      const response = await fetch("/api/lead-magnet", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: newsletterEmail, locale }),
+        body: JSON.stringify({
+          email: newsletterEmail,
+          locale,
+          consent: true,
+          offer: "operational_notes",
+          sourcePath: pathname,
+          sourceLabel: "footer_notes",
+          referrer: typeof document === "undefined" ? "" : document.referrer,
+        }),
       });
 
       if (!response.ok) {
@@ -116,7 +124,7 @@ export function Footer() {
               </span>
               <form onSubmit={submitNewsletter} className="mt-3 max-w-[420px] border-t border-[rgba(11,13,16,0.12)] pt-6">
                 <label htmlFor="footer-newsletter" className="mb-3 block font-mono text-[10px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.42)]">
-                  {isFr ? "Notes opérationnelles" : "Operational notes"}
+                  {isFr ? "Diagnostic express" : "Express diagnostic"}
                 </label>
                 <div className="flex border border-[rgba(11,13,16,0.18)]">
                   <input
@@ -134,12 +142,12 @@ export function Footer() {
                     disabled={newsletterStatus === "loading"}
                     className="border-l border-[rgba(11,13,16,0.18)] px-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[rgba(11,13,16,0.62)] transition-colors hover:bg-[var(--noir)] hover:text-[var(--os)] disabled:opacity-40"
                   >
-                    {newsletterStatus === "loading" ? "..." : isFr ? "Recevoir" : "Join"}
+                    {newsletterStatus === "loading" ? "..." : isFr ? "Recevoir" : "Get"}
                   </button>
                 </div>
                 {newsletterStatus === "success" && (
                   <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[rgba(11,13,16,0.56)]">
-                    {isFr ? "Inscription reçue." : "Subscription received."}
+                    {isFr ? "Diagnostic envoyé." : "Diagnostic sent."}
                   </p>
                 )}
                 {newsletterStatus === "error" && (

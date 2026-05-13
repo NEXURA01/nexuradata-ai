@@ -21,6 +21,13 @@ type AssessmentPayload = {
   teams?: string;
   urgency?: string;
   locale?: string;
+  sourcePath?: string;
+  sourceLabel?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  referrer?: string;
+  followUpConsent?: boolean;
 };
 
 type AssessmentEstimate = {
@@ -48,6 +55,31 @@ type PaymentCompletedPayload = {
   currency?: string | null;
   productId?: string | null;
   locale?: string | null;
+};
+
+type LeadMagnetPayload = {
+  email?: string;
+  company?: string;
+  name?: string;
+  role?: string;
+  bottleneck?: string;
+  offer?: string;
+  locale?: string;
+  sourcePath?: string;
+  sourceLabel?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  referrer?: string;
+};
+
+type LeadFollowUpPayload = {
+  email?: string;
+  name?: string;
+  company?: string;
+  locale?: string;
+  sourcePath?: string;
+  sourceLabel?: string;
 };
 
 const DEFAULT_TEAM_RECIPIENTS = [
@@ -115,6 +147,16 @@ const emailBlock = (text: unknown) => `
   <div style="background:rgba(232,228,220,0.05);border-left:2px solid #bd7630;padding:14px 16px;margin:16px 0 0;">
     <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.65;color:#c8c4bc;">${escapeHtml(text || "Non fourni").replace(/\n/g, "<br>")}</p>
   </div>`;
+
+const getLeadSourceSummary = (payload: AssessmentPayload | LeadMagnetPayload) =>
+  formatTextLines([
+    payload.sourceLabel ? `Source: ${payload.sourceLabel}` : false,
+    payload.sourcePath ? `Page: ${payload.sourcePath}` : false,
+    payload.utmSource ? `UTM source: ${payload.utmSource}` : false,
+    payload.utmMedium ? `UTM medium: ${payload.utmMedium}` : false,
+    payload.utmCampaign ? `UTM campaign: ${payload.utmCampaign}` : false,
+    payload.referrer ? `Referrer: ${payload.referrer}` : false,
+  ]);
 
 const buildEmailHtml = (eyebrow: string, title: string, body: string) => `<!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title></head>
@@ -197,6 +239,7 @@ export const sendTeamAssessmentEmail = async (
 
   const origin = getPublicOrigin(request);
   const company = normalizeText(payload.company, 160) || "Organisation";
+  const sourceSummary = getLeadSourceSummary(payload);
   const subject = `[NEXURA] Action equipe - Evaluation operationnelle - ${company}`;
   const text = formatTextLines([
     "ACTION EQUIPE",
@@ -211,6 +254,8 @@ export const sendTeamAssessmentEmail = async (
     `Urgence: ${payload.urgency || "Non precisee"}`,
     `Equipes: ${payload.teams || "Non precise"}`,
     `Outils: ${payload.tools || "Non fourni"}`,
+    `Consentement suivi: ${payload.followUpConsent === false ? "Non" : "Oui"}`,
+    sourceSummary ? `Source: ${sourceSummary.replace(/\n/g, " | ")}` : false,
     "",
     "ESTIMATION",
     `Complexite: ${estimate.complexity || "Non precisee"}`,
@@ -232,6 +277,9 @@ export const sendTeamAssessmentEmail = async (
       ${emailRow("Courriel", payload.email)}
       ${emailRow("Urgence", payload.urgency)}
       ${emailRow("Equipes", payload.teams)}
+      ${emailRow("Source", payload.sourceLabel || payload.sourcePath || "Non precisee")}
+      ${emailRow("UTM", [payload.utmSource, payload.utmMedium, payload.utmCampaign].filter(Boolean).join(" / ") || "Non precise")}
+      ${emailRow("Suivi", payload.followUpConsent === false ? "Non" : "Oui")}
       ${emailRow("Complexite", estimate.complexity)}
       ${emailRow("Fourchette", estimate.range)}
       ${emailRow("Lead", leadId || "Non disponible")}
@@ -256,6 +304,7 @@ export const sendClientAssessmentReportEmail = async (
   const isFr = payload.locale === "fr";
   const origin = getPublicOrigin(request);
   const assessmentUrl = `${origin}/${isFr ? "fr" : "en"}/operational-assessment`;
+  const contactUrl = `${origin}/${isFr ? "fr" : "en"}/contact`;
   const subject = isFr
     ? `Votre rapport d'evaluation operationnelle - ${payload.company || "NEXURA"}`
     : `Your operational assessment report - ${payload.company || "NEXURA"}`;
@@ -270,6 +319,7 @@ export const sendClientAssessmentReportEmail = async (
         `Prochaine etape: ${estimate.nextStep || "Notre equipe validera les informations avant toute recommandation finale."}`,
         "",
         `Page d'evaluation: ${assessmentUrl}`,
+        `Contact: ${contactUrl}`,
         "",
         "NEXURA Analytics",
       ])
@@ -283,6 +333,7 @@ export const sendClientAssessmentReportEmail = async (
         `Next step: ${estimate.nextStep || "Our team will validate the information before any final recommendation."}`,
         "",
         `Assessment page: ${assessmentUrl}`,
+        `Contact: ${contactUrl}`,
         "",
         "NEXURA Analytics",
       ]);
@@ -302,6 +353,11 @@ export const sendClientAssessmentReportEmail = async (
       ${emailRow(isFr ? "Prochaine etape" : "Next step", estimate.nextStep)}
     </table>
     ${emailBlock(payload.problem)}
+    <p style="margin:18px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.65;color:#c8c4bc;">${
+      isFr
+        ? "Si la lecture correspond a votre realite, repondez a ce courriel ou demandez la revue humaine pour transformer ce diagnostic en plan d'execution."
+        : "If this read matches your reality, reply to this email or request the human review to turn the diagnostic into an execution plan."
+    }</p>
     <p style="margin:22px 0 0;"><a href="${escapeHtml(assessmentUrl)}" style="display:inline-block;background:#bd7630;color:#0d0d0b;text-decoration:none;font-family:'Courier New',Courier,monospace;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:12px 18px;">${
       isFr ? "Continuer" : "Continue"
     }</a></p>`
@@ -423,4 +479,205 @@ export const sendTeamPaymentCompletedEmail = async (payload: PaymentCompletedPay
   );
 
   return sendResendEmail({ to: recipients, subject, text, html }, emailKey("team-payment-completed", payload.eventId, payload.sessionId));
+};
+
+export const sendTeamLeadMagnetEmail = async (
+  payload: LeadMagnetPayload,
+  request?: Request,
+  leadCaptureId?: string | null
+) => {
+  const recipients = getTeamNotificationRecipients();
+
+  if (!recipients.length) {
+    return { sent: false, reason: "missing-team-inbox" };
+  }
+
+  const origin = getPublicOrigin(request);
+  const email = normalizeText(payload.email, 220).toLowerCase();
+  const sourceSummary = getLeadSourceSummary(payload);
+  const subject = `[NEXURA] Nouveau lead - ${email || "prospect"}`;
+  const text = formatTextLines([
+    "NOUVEAU LEAD",
+    "Un prospect a demande les notes operationnelles / diagnostic express.",
+    `Console equipe: ${origin}/operations/`,
+    "Action: repondre si le signal est qualifie, sinon laisser la sequence client faire le suivi.",
+    "",
+    "PROSPECT",
+    `Courriel: ${email || "Non fourni"}`,
+    `Organisation: ${payload.company || "Non fournie"}`,
+    `Nom: ${payload.name || "Non fourni"}`,
+    `Role: ${payload.role || "Non fourni"}`,
+    `Blocage: ${payload.bottleneck || "Non fourni"}`,
+    `Offre: ${payload.offer || "operational_notes"}`,
+    leadCaptureId ? `Lead capture: ${leadCaptureId}` : false,
+    "",
+    "SOURCE",
+    sourceSummary || "Non precisee",
+  ]);
+  const html = buildEmailHtml(
+    "Nouveau lead",
+    "Prospect a qualifier",
+    `<p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.65;color:#c8c4bc;">Un prospect a demande les notes operationnelles. Le suivi client initial a ete envoye automatiquement.</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
+      ${emailRow("Courriel", email)}
+      ${emailRow("Organisation", payload.company)}
+      ${emailRow("Nom", payload.name)}
+      ${emailRow("Role", payload.role)}
+      ${emailRow("Offre", payload.offer || "operational_notes")}
+      ${emailRow("Source", payload.sourceLabel || payload.sourcePath || "Non precisee")}
+      ${emailRow("UTM", [payload.utmSource, payload.utmMedium, payload.utmCampaign].filter(Boolean).join(" / ") || "Non precise")}
+      ${emailRow("Lead", leadCaptureId || "Non disponible")}
+    </table>
+    ${emailBlock(payload.bottleneck || sourceSummary || "Aucun detail supplementaire")}`
+  );
+
+  return sendResendEmail({ to: recipients, subject, text, html }, emailKey("team-lead-magnet", leadCaptureId, email));
+};
+
+export const sendClientLeadMagnetEmail = async (payload: LeadMagnetPayload, request?: Request) => {
+  if (!isValidEmail(payload.email)) {
+    return { sent: false, reason: "missing-client-email" };
+  }
+
+  const isFr = payload.locale === "fr";
+  const origin = getPublicOrigin(request);
+  const assessmentUrl = `${origin}/${isFr ? "fr" : "en"}/operational-assessment?source=lead-magnet`;
+  const contactUrl = `${origin}/${isFr ? "fr" : "en"}/contact`;
+  const subject = isFr
+    ? "Votre diagnostic express NEXURA"
+    : "Your NEXURA express diagnostic";
+  const checklist = isFr
+    ? [
+        "1. Identifier les transferts qui dependent d'une seule personne.",
+        "2. Reperer les donnees copiees a la main entre deux outils.",
+        "3. Noter les decisions qui attendent un statut fiable.",
+        "4. Isoler les suivis clients sans proprietaire clair.",
+        "5. Mesurer le temps perdu a reconstruire le contexte.",
+        "6. Prioriser les workflows qui touchent revenus, paiements ou livraison.",
+        "7. Transformer le premier point de rupture en automatisation simple.",
+      ]
+    : [
+        "1. Identify handoffs that depend on one person.",
+        "2. Spot data copied manually between tools.",
+        "3. List decisions waiting on reliable status.",
+        "4. Isolate client follow-ups without clear ownership.",
+        "5. Measure time lost rebuilding context.",
+        "6. Prioritize workflows tied to revenue, payments, or delivery.",
+        "7. Turn the first failure point into a simple automation.",
+      ];
+  const text = isFr
+    ? formatTextLines([
+        `Bonjour ${payload.name || ""},`,
+        "",
+        "Voici le diagnostic express promis. Utilisez-le pour reperer rapidement les endroits ou vos operations perdent du temps, du signal ou de l'argent.",
+        "",
+        ...checklist,
+        "",
+        "Si vous voulez une lecture adaptee a votre contexte, demarrez l'auto-evaluation:",
+        assessmentUrl,
+        "",
+        `Contact direct: ${contactUrl}`,
+        "",
+        "NEXURA Analytics",
+      ])
+    : formatTextLines([
+        `Hello ${payload.name || ""},`,
+        "",
+        "Here is the express diagnostic you requested. Use it to quickly spot where operations lose time, signal, or money.",
+        "",
+        ...checklist,
+        "",
+        "For a read tailored to your context, start the self-assessment:",
+        assessmentUrl,
+        "",
+        `Direct contact: ${contactUrl}`,
+        "",
+        "NEXURA Analytics",
+      ]);
+  const html = buildEmailHtml(
+    isFr ? "Diagnostic express" : "Express diagnostic",
+    isFr ? "Les 7 signaux a verifier" : "The 7 signals to check",
+    `<p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.65;color:#c8c4bc;">${
+      isFr
+        ? "Utilisez cette grille pour reperer rapidement les endroits ou vos operations perdent du temps, du signal ou de l'argent."
+        : "Use this checklist to quickly spot where operations lose time, signal, or money."
+    }</p>
+    <ol style="margin:0;padding-left:20px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.75;color:#c8c4bc;">
+      ${checklist.map((item) => `<li>${escapeHtml(item.replace(/^\d+\.\s*/, ""))}</li>`).join("")}
+    </ol>
+    <p style="margin:18px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.65;color:#c8c4bc;">${
+      isFr
+        ? "Pour une lecture adaptee a votre contexte, l'auto-evaluation transforme ces signaux en priorites, portee et prix indicatif."
+        : "For a read tailored to your context, the self-assessment turns these signals into priorities, scope, and indicative pricing."
+    }</p>
+    <p style="margin:22px 0 0;"><a href="${escapeHtml(assessmentUrl)}" style="display:inline-block;background:#bd7630;color:#0d0d0b;text-decoration:none;font-family:'Courier New',Courier,monospace;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:12px 18px;">${
+      isFr ? "Demarrer l'auto-evaluation" : "Start the self-assessment"
+    }</a></p>`
+  );
+
+  return sendResendEmail({ to: [payload.email!.toLowerCase()], subject, text, html }, emailKey("client-lead-magnet", payload.email, payload.sourceLabel));
+};
+
+export const sendClientLeadFollowUpEmail = async (
+  payload: LeadFollowUpPayload,
+  stage: number,
+  request?: Request
+) => {
+  if (!isValidEmail(payload.email)) {
+    return { sent: false, reason: "missing-client-email" };
+  }
+
+  const isFr = payload.locale === "fr";
+  const origin = getPublicOrigin(request);
+  const assessmentUrl = `${origin}/${isFr ? "fr" : "en"}/operational-assessment?source=follow-up-${stage}`;
+  const contactUrl = `${origin}/${isFr ? "fr" : "en"}/contact`;
+  const subject = isFr
+    ? stage <= 1
+      ? "Votre diagnostic NEXURA: prochaine lecture"
+      : "Reprendre votre lecture operationnelle"
+    : stage <= 1
+      ? "Your NEXURA diagnostic: next read"
+      : "Continue your operational read";
+  const prompt = isFr
+    ? stage <= 1
+      ? "Le meilleur prochain pas est de choisir un seul workflow qui coute du temps chaque semaine et de le decrire dans l'auto-evaluation."
+      : "Si le diagnostic vous a aide a nommer une friction, l'equipe peut transformer ce signal en priorites et portee de travail."
+    : stage <= 1
+      ? "The best next step is to choose one workflow that costs time every week and describe it in the self-assessment."
+      : "If the diagnostic helped name a friction point, the team can turn that signal into priorities and scope.";
+  const text = isFr
+    ? formatTextLines([
+        `Bonjour ${payload.name || ""},`,
+        "",
+        prompt,
+        "",
+        `Auto-evaluation: ${assessmentUrl}`,
+        `Contact direct: ${contactUrl}`,
+        "",
+        "NEXURA Analytics",
+      ])
+    : formatTextLines([
+        `Hello ${payload.name || ""},`,
+        "",
+        prompt,
+        "",
+        `Self-assessment: ${assessmentUrl}`,
+        `Direct contact: ${contactUrl}`,
+        "",
+        "NEXURA Analytics",
+      ]);
+  const html = buildEmailHtml(
+    isFr ? "Suivi operationnel" : "Operational follow-up",
+    isFr ? "Reprendre le diagnostic" : "Continue the diagnostic",
+    `<p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.65;color:#c8c4bc;">${escapeHtml(prompt)}</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
+      ${emailRow(isFr ? "Organisation" : "Organization", payload.company)}
+      ${emailRow("Source", payload.sourceLabel || payload.sourcePath || "Non precisee")}
+    </table>
+    <p style="margin:22px 0 0;"><a href="${escapeHtml(assessmentUrl)}" style="display:inline-block;background:#bd7630;color:#0d0d0b;text-decoration:none;font-family:'Courier New',Courier,monospace;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:12px 18px;">${
+      isFr ? "Continuer" : "Continue"
+    }</a></p>`
+  );
+
+  return sendResendEmail({ to: [payload.email!.toLowerCase()], subject, text, html }, emailKey("client-lead-follow-up", stage, payload.email));
 };

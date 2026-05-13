@@ -25,7 +25,10 @@ export async function POST(req: Request) {
   }
 
   try {
-    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    const stripeSecretKey =
+      process.env.STRIPE_SECRET_KEY ||
+      process.env.NEXURA_STRIPE_SECRET_KEY ||
+      process.env.nexadura_STRIPE_SECRET_KEY;
 
     if (!stripeSecretKey) {
       return jsonWithSecurity(

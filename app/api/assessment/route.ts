@@ -45,6 +45,13 @@ export async function POST(req: Request) {
     const teams = normalizeText(body.teams, 40);
     const urgency = normalizeText(body.urgency, 80);
     const locale = normalizeText(body.locale, 12) || "fr";
+    const sourcePath = normalizeText(body.sourcePath, 240);
+    const sourceLabel = normalizeText(body.sourceLabel, 120) || "assessment_form";
+    const utmSource = normalizeText(body.utmSource, 120);
+    const utmMedium = normalizeText(body.utmMedium, 120);
+    const utmCampaign = normalizeText(body.utmCampaign, 160);
+    const referrer = normalizeText(body.referrer, 240);
+    const followUpConsent = body.followUpConsent !== false;
 
     if (!company || !name || !isValidEmail(email) || !problem || !urgency) {
       return jsonWithSecurity({ error: "Invalid assessment payload" }, { status: 400 });
@@ -103,6 +110,7 @@ Analyze this operational problem and provide an estimate.`,
 
     // Store lead in Supabase
     const teamCount = Number.parseInt(`${teams || ""}`, 10);
+    const leadScore = [company, name, email, problem, tools, teams, urgency].filter(Boolean).length * 10;
     const { data: lead, error: dbError } = await supabase.from("leads").insert({
       company_name: company,
       contact_name: name,
@@ -113,6 +121,16 @@ Analyze this operational problem and provide an estimate.`,
       urgency,
       locale,
       ai_estimate: estimate,
+      source_path: sourcePath,
+      source_label: sourceLabel,
+      utm_source: utmSource,
+      utm_medium: utmMedium,
+      utm_campaign: utmCampaign,
+      referrer,
+      follow_up_consent: followUpConsent,
+      follow_up_next_at: followUpConsent ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null,
+      last_client_report_sent_at: new Date().toISOString(),
+      lead_score: leadScore,
       status: "new",
     }).select("id").maybeSingle();
 
@@ -120,7 +138,23 @@ Analyze this operational problem and provide an estimate.`,
       console.error("Supabase error:", dbError);
     }
 
-    const emailPayload = { company, name, email, problem, tools, teams, urgency, locale };
+    const emailPayload = {
+      company,
+      name,
+      email,
+      problem,
+      tools,
+      teams,
+      urgency,
+      locale,
+      sourcePath,
+      sourceLabel,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      referrer,
+      followUpConsent,
+    };
     const [teamDelivery, clientDelivery] = await Promise.allSettled([
       sendTeamAssessmentEmail(emailPayload, estimate, req, lead?.id || null),
       sendClientAssessmentReportEmail(emailPayload, estimate, req, lead?.id || null),

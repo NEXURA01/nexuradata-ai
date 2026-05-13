@@ -1,137 +1,168 @@
+"use client";
+
+import type { CSSProperties } from "react";
+
 const cn = (...classes: Array<string | undefined | false>) =>
   classes.filter(Boolean).join(" ");
 
 /**
- * NEXURA — Wordmark-led identity
+ * NEXURA — The Aperture Mark
+ * ----------------------------------------------------------------
+ * The mark IS the business.
  *
- * The type IS the logo. Bold serif "Nexura" with one precise
- * detail: a solid square punctum as terminal punctuation —
- * the instrument-maker's signature. Pure monochrome. No icon
- * needed alongside the type. The mark exists only for square
- * contexts (favicon, avatars).
+ * NEXURA reveals what limits companies. The logo is a literal
+ * aperture — a lens focused on a single point of insight.
+ * Two opposing blades form an iris around a focal square.
  *
- *   LogoMark      → bold N for favicons & tight squares
- *   LogoWordmark  → "Nexura▪" — primary logo, used everywhere
- *   Logo          → wordmark + ANALYTICS rule for footer / hero
- *   LogoDisplay   → framed plate version for brand pages
+ * Symbol semantics:
+ *   • Aperture        → "See what's limiting your company"
+ *   • Focal square    → the insight, the bottleneck exposed
+ *   • Outer ring      → instrument-grade precision
+ *   • Bold geometry   → operational, not decorative
+ *
+ * Monochrome only. No red. No fluff.
+ * ----------------------------------------------------------------
  */
 
 interface LogoBaseProps {
   size?: number;
   className?: string;
+  style?: CSSProperties;
 }
 
 /* ---------------------------------------------------------------- */
-/*  Mark — bold geometric N (favicon / square avatars only)         */
+/*  The Aperture — primary symbol                                   */
 /* ---------------------------------------------------------------- */
-export function LogoMark({ size = 32, className }: LogoBaseProps) {
+export function LogoMark({ size = 32, className, style }: LogoBaseProps) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 100 100"
+      viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Nexura"
       className={cn("inline-block shrink-0", className)}
-      aria-hidden="true"
+      style={style}
     >
-      {/* Solid geometric N — one connected shape */}
-      <path
-        d="M 16 12 L 30 12 L 70 64 L 70 12 L 84 12 L 84 88 L 70 88 L 30 36 L 30 88 L 16 88 Z"
-        fill="currentColor"
+      {/* Outer instrument ring — hairline, registration grade.          */}
+      <circle
+        cx="32"
+        cy="32"
+        r="30"
+        stroke="currentColor"
+        strokeWidth="1"
+        opacity="0.4"
+        fill="none"
       />
-      {/* The punctum — terminal square, anchored bottom-right */}
-      <rect x="88" y="80" width="8" height="8" fill="currentColor" />
+
+      {/* Aperture blades — two opposing triangles forming an iris       */}
+      {/* converging on the focal point. The space between them is the   */}
+      {/* lens opening — the "field of view".                            */}
+      <path d="M32 7 L48 29 L16 29 Z" fill="currentColor" />
+      <path d="M32 57 L16 35 L48 35 Z" fill="currentColor" />
+
+      {/* Focal point — the insight at center.                           */}
+      <rect x="29.5" y="29.5" width="5" height="5" fill="currentColor" />
     </svg>
   );
 }
 
 /* ---------------------------------------------------------------- */
-/*  Punctum glyph — terminal punctuation in the wordmark            */
+/*  Compact wordmark — header / nav                                 */
 /* ---------------------------------------------------------------- */
-function Punctum({ size }: { size: number }) {
+export function LogoWordmark({ size = 28, className }: LogoBaseProps) {
   return (
-    <span
-      className="inline-block"
-      style={{
-        width: size,
-        height: size,
-        backgroundColor: "currentColor",
-        marginLeft: size * 0.45,
-        transform: `translateY(-${size * 0.05}px)`,
-      }}
-      aria-hidden="true"
-    />
-  );
-}
-
-/* ---------------------------------------------------------------- */
-/*  Primary wordmark — header, used everywhere                      */
-/* ---------------------------------------------------------------- */
-export function LogoWordmark({ size = 26, className }: LogoBaseProps) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-baseline font-serif leading-none",
-        className,
-      )}
-      style={{
-        fontSize: size,
-        letterSpacing: "-0.025em",
-        fontWeight: 500,
-      }}
-    >
-      Nexura
-      <Punctum size={size * 0.16} />
-    </span>
-  );
-}
-
-/* ---------------------------------------------------------------- */
-/*  Full lockup — footer / hero                                     */
-/* ---------------------------------------------------------------- */
-export function Logo({ size = 36, className }: LogoBaseProps) {
-  return (
-    <span className={cn("inline-flex flex-col leading-none", className)}>
-      <LogoWordmark size={size} />
+    <div className={cn("inline-flex items-center gap-2.5", className)}>
+      <LogoMark size={size * 1.15} />
       <span
-        className="font-mono uppercase mt-3"
+        className="font-serif leading-none"
         style={{
-          fontSize: size * 0.22,
-          letterSpacing: "0.42em",
-          opacity: 0.55,
-          lineHeight: 1,
+          fontSize: size,
+          letterSpacing: "-0.025em",
+          fontWeight: 500,
         }}
       >
-        Analytics
+        Nexura
       </span>
-    </span>
+    </div>
   );
 }
 
 /* ---------------------------------------------------------------- */
-/*  Display — framed plate version for brand pages                  */
+/*  Full editorial lockup — footer / brand surfaces                 */
 /* ---------------------------------------------------------------- */
-export function LogoDisplay({ size = 80, className }: LogoBaseProps) {
+export function Logo({ size = 44, className }: LogoBaseProps) {
   return (
-    <div className={cn("inline-flex flex-col items-center", className)}>
-      <div className="relative" style={{ padding: size * 0.5 }}>
-        <span className="absolute top-0 left-0 w-3 h-3 border-l border-t border-current opacity-30" />
-        <span className="absolute top-0 right-0 w-3 h-3 border-r border-t border-current opacity-30" />
-        <span className="absolute bottom-0 left-0 w-3 h-3 border-l border-b border-current opacity-30" />
-        <span className="absolute bottom-0 right-0 w-3 h-3 border-r border-b border-current opacity-30" />
-        <LogoWordmark size={size} />
+    <div className={cn("inline-flex items-center gap-4", className)}>
+      <LogoMark size={size * 1.1} />
+      <div className="flex flex-col">
+        <span
+          className="font-serif leading-none"
+          style={{
+            fontSize: size,
+            letterSpacing: "-0.025em",
+            fontWeight: 500,
+          }}
+        >
+          Nexura
+        </span>
+        <span
+          className="font-mono uppercase mt-2"
+          style={{
+            fontSize: size * 0.2,
+            letterSpacing: "0.4em",
+            opacity: 0.55,
+            lineHeight: 1,
+          }}
+        >
+          Operational Intelligence
+        </span>
       </div>
-      <span
-        className="font-mono uppercase mt-4"
-        style={{
-          fontSize: size * 0.13,
-          letterSpacing: "0.42em",
-          opacity: 0.5,
-        }}
-      >
-        Nexura Analytics — Est. MMXXVI
-      </span>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------- */
+/*  Hero display lockup — landing plates                            */
+/* ---------------------------------------------------------------- */
+export function LogoDisplay({ size = 100, className }: LogoBaseProps) {
+  return (
+    <div className={cn("inline-flex flex-col items-center gap-8", className)}>
+      <LogoMark size={size} />
+      <div className="flex flex-col items-center gap-4">
+        <span
+          className="font-serif leading-none"
+          style={{
+            fontSize: size * 0.55,
+            letterSpacing: "-0.028em",
+            fontWeight: 500,
+          }}
+        >
+          Nexura
+        </span>
+        <div className="flex items-center gap-4">
+          <span
+            className="block bg-current"
+            style={{ width: size * 0.35, height: 1, opacity: 0.35 }}
+          />
+          <span
+            className="font-mono uppercase"
+            style={{
+              fontSize: size * 0.09,
+              letterSpacing: "0.45em",
+              opacity: 0.6,
+            }}
+          >
+            Operational Intelligence
+          </span>
+          <span
+            className="block bg-current"
+            style={{ width: size * 0.35, height: 1, opacity: 0.35 }}
+          />
+        </div>
+      </div>
     </div>
   );
 }

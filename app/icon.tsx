@@ -4,9 +4,9 @@ export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
 
 /**
- * Browser tab icon — the Punctum Mark.
- * Two pillars · hairline diagonal · a solid square at the meeting point.
- * Pure monochrome.
+ * Browser tab icon — The Aperture Mark.
+ * A lens focused on a single point of insight.
+ * The mark = the business: "See what's limiting your company."
  */
 export default function Icon() {
   return new ImageResponse(
@@ -21,14 +21,19 @@ export default function Icon() {
           justifyContent: "center",
         }}
       >
-        <svg width="52" height="52" viewBox="0 0 100 100">
-          <rect x="14" y="12" width="10" height="76" fill="#1A1A1A" />
-          <rect x="76" y="12" width="10" height="76" fill="#1A1A1A" />
-          <line
-            x1="24" y1="12" x2="76" y2="88"
-            stroke="#1A1A1A" strokeWidth="2"
+        <svg width="56" height="56" viewBox="0 0 64 64">
+          {/* Outer ring */}
+          <circle
+            cx="32" cy="32" r="30"
+            stroke="#1A1A1A" strokeWidth="1.5"
+            fill="none" opacity="0.5"
           />
-          <rect x="44" y="44" width="12" height="12" fill="#1A1A1A" />
+          {/* Top blade */}
+          <path d="M32 7 L48 29 L16 29 Z" fill="#1A1A1A" />
+          {/* Bottom blade */}
+          <path d="M32 57 L16 35 L48 35 Z" fill="#1A1A1A" />
+          {/* Focal point */}
+          <rect x="29.5" y="29.5" width="5" height="5" fill="#1A1A1A" />
         </svg>
       </div>
     ),

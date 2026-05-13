@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 
 const CONSENT_STORAGE_KEY = "nexuradata_cookie_consent_v1";
 const CONSENT_VERSION = 1;
-const GA_MEASUREMENT_ID = "G-TC31YSS01P";
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
 const META_PIXEL_ID = "751859640106935";
 
 type ConsentChoice = {
@@ -21,7 +21,6 @@ type TrackingWindow = Window &
     gtag?: (...args: unknown[]) => void;
     fbq?: (...args: unknown[]) => void;
     _fbq?: unknown;
-    nexuraApplyTrackingConsent?: (consent: ConsentChoice | null) => void;
     metaPixelLoaded?: boolean;
   } & Record<`ga-disable-${string}`, boolean | undefined>;
 
@@ -67,6 +66,8 @@ const getCanonicalPagePath = () => {
 };
 
 const applyGoogleAnalyticsConsent = (consent: ConsentChoice | null) => {
+  if (!GA_MEASUREMENT_ID) return;
+
   const trackingWindow = window as TrackingWindow;
   trackingWindow[`ga-disable-${GA_MEASUREMENT_ID}`] = consent?.analytics !== true;
 
@@ -193,7 +194,7 @@ export function CookieConsent() {
             {isFr
               ? "Le stockage essentiel garde le site fonctionnel. Google Analytics et Meta Pixel restent désactivés sans votre consentement."
               : "Essential storage keeps the site working. Google Analytics and Meta Pixel stay off unless you accept optional measurement."} {" "}
-            <Link href={isFr ? "/confidentialite" : "/confidentialite"} className="border-b border-accent/60 text-accent transition-colors hover:text-foreground">
+            <Link href="/confidentialite" className="border-b border-accent/60 text-accent transition-colors hover:text-foreground">
               {isFr ? "Politique de confidentialité" : "Privacy policy"}
             </Link>
             .

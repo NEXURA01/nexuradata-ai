@@ -4,6 +4,7 @@ import {
   streamText,
   UIMessage,
 } from "ai";
+import { guardPublicPost, jsonWithSecurity } from "@/lib/request-guard";
 
 export const maxDuration = 30;
 
@@ -60,8 +61,19 @@ RÈGLES:
 - Si hors sujet, redirigez poliment`;
 
 export async function POST(req: Request) {
-  const { messages, locale }: { messages: UIMessage[]; locale?: string } =
-    await req.json();
+  const guarded = guardPublicPost(req, { namespace: "chat", maxRequests: 8 });
+
+  if (guarded) {
+    return guarded;
+  }
+
+  const body = (await req.json().catch(() => ({}))) as { messages?: UIMessage[]; locale?: string };
+  const messages = Array.isArray(body.messages) ? body.messages : [];
+  const locale = body.locale;
+
+  if (!messages.length) {
+    return jsonWithSecurity({ ok: false, error: "invalid-chat-payload" }, { status: 400 });
+  }
 
   const result = streamText({
     model: "openai/gpt-4o-mini",

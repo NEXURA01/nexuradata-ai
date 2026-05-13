@@ -1,4 +1,5 @@
 import { getTeamNotificationRecipients, sendResendEmail } from "@/lib/server-email";
+import { guardPublicPost, hasFilledHoneypot, jsonWithSecurity } from "@/lib/request-guard";
 
 const normalizeText = (value: unknown, maxLength = 1200) =>
   typeof value === "string" ? value.trim().replace(/\s+/g, " ").slice(0, maxLength) : "";
@@ -14,20 +15,31 @@ const escapeHtml = (value: unknown) =>
 const isValidEmail = (value: unknown) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(`${value || ""}`);
 
 export async function POST(req: Request) {
+  const guarded = guardPublicPost(req, { namespace: "contact", maxRequests: 5 });
+
+  if (guarded) {
+    return guarded;
+  }
+
   const body = await req.json().catch(() => ({}));
+
+  if (hasFilledHoneypot(body)) {
+    return jsonWithSecurity({ ok: true });
+  }
+
   const name = normalizeText(body.name, 180);
   const email = normalizeText(body.email, 220).toLowerCase();
   const message = normalizeText(body.message, 2400);
   const locale = normalizeText(body.locale, 12) || "fr";
 
   if (!name || !isValidEmail(email) || !message) {
-    return Response.json({ ok: false, error: "invalid-contact-payload" }, { status: 400 });
+    return jsonWithSecurity({ ok: false, error: "invalid-contact-payload" }, { status: 400 });
   }
 
   const recipients = getTeamNotificationRecipients();
 
   if (!recipients.length) {
-    return Response.json({ ok: false, error: "missing-team-inbox" }, { status: 503 });
+    return jsonWithSecurity({ ok: false, error: "missing-team-inbox" }, { status: 503 });
   }
 
   const subject = `[NEXURA] Nouveau contact - ${name}`;
@@ -56,8 +68,8 @@ export async function POST(req: Request) {
   const delivery = await sendResendEmail({ to: recipients, subject, text, html }, `contact-${email}-${Date.now()}`);
 
   if (!delivery.sent) {
-    return Response.json({ ok: false, error: delivery.reason || "contact-email-failed" }, { status: 503 });
+    return jsonWithSecurity({ ok: false, error: delivery.reason || "contact-email-failed" }, { status: 503 });
   }
 
-  return Response.json({ ok: true });
+  return jsonWithSecurity({ ok: true });
 }

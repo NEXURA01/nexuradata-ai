@@ -4,23 +4,51 @@ import {
   sendClientAssessmentReportEmail,
   sendTeamAssessmentEmail,
 } from "@/lib/server-email";
+import { guardPublicPost, hasFilledHoneypot, jsonWithSecurity } from "@/lib/request-guard";
+
+const isValidEmail = (value: unknown) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(`${value || ""}`);
+
+const normalizeText = (value: unknown, maxLength = 2400) =>
+  typeof value === "string" ? value.trim().replace(/\s+/g, " ").slice(0, maxLength) : "";
 
 export async function POST(req: Request) {
+  const guarded = guardPublicPost(req, { namespace: "assessment", maxRequests: 4 });
+
+  if (guarded) {
+    return guarded;
+  }
+
   try {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey =
       process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      return Response.json(
+      return jsonWithSecurity(
         { error: "Assessment storage is not configured" },
         { status: 503 }
       );
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const { company, name, email, problem, tools, teams, urgency, locale } =
-      await req.json();
+    const body = await req.json().catch(() => ({}));
+
+    if (hasFilledHoneypot(body)) {
+      return jsonWithSecurity({ ok: true });
+    }
+
+    const company = normalizeText(body.company, 180);
+    const name = normalizeText(body.name, 180);
+    const email = normalizeText(body.email, 220).toLowerCase();
+    const problem = normalizeText(body.problem, 3000);
+    const tools = normalizeText(body.tools, 1200);
+    const teams = normalizeText(body.teams, 40);
+    const urgency = normalizeText(body.urgency, 80);
+    const locale = normalizeText(body.locale, 12) || "fr";
+
+    if (!company || !name || !isValidEmail(email) || !problem || !urgency) {
+      return jsonWithSecurity({ error: "Invalid assessment payload" }, { status: 400 });
+    }
 
     // Generate AI estimate
     const { text } = await generateText({
@@ -98,7 +126,7 @@ Analyze this operational problem and provide an estimate.`,
       sendClientAssessmentReportEmail(emailPayload, estimate, req, lead?.id || null),
     ]);
 
-    return Response.json({
+    return jsonWithSecurity({
       estimate,
       delivery: {
         team: teamDelivery.status === "fulfilled"
@@ -111,7 +139,7 @@ Analyze this operational problem and provide an estimate.`,
     });
   } catch (error) {
     console.error("Assessment error:", error);
-    return Response.json(
+    return jsonWithSecurity(
       { error: "Failed to process assessment" },
       { status: 500 }
     );

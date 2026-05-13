@@ -3,6 +3,7 @@ import {
   sendClientPaymentLinkEmail,
   sendTeamPaymentStartedEmail,
 } from "@/lib/server-email";
+import { guardPublicPost, jsonWithSecurity } from "@/lib/request-guard";
 
 const PRODUCTS = {
   "operational-review": {
@@ -14,12 +15,20 @@ const PRODUCTS = {
   },
 };
 
+const isValidEmail = (value: unknown) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(`${value || ""}`);
+
 export async function POST(req: Request) {
+  const guarded = guardPublicPost(req, { namespace: "stripe-checkout", maxRequests: 8 });
+
+  if (guarded) {
+    return guarded;
+  }
+
   try {
     const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
     if (!stripeSecretKey) {
-      return Response.json(
+      return jsonWithSecurity(
         { error: "Stripe is not configured" },
         { status: 503 }
       );
@@ -28,9 +37,13 @@ export async function POST(req: Request) {
     const stripe = new Stripe(stripeSecretKey);
     const { productId, email, locale } = await req.json();
 
+    if (!isValidEmail(email)) {
+      return jsonWithSecurity({ error: "Invalid email" }, { status: 400 });
+    }
+
     const product = PRODUCTS[productId as keyof typeof PRODUCTS];
     if (!product) {
-      return Response.json({ error: "Invalid product" }, { status: 400 });
+      return jsonWithSecurity({ error: "Invalid product" }, { status: 400 });
     }
 
     const isFr = locale === "fr";
@@ -75,7 +88,7 @@ export async function POST(req: Request) {
       sendTeamPaymentStartedEmail(paymentPayload, req),
     ]);
 
-    return Response.json({
+    return jsonWithSecurity({
       url: session.url,
       delivery: {
         client: clientDelivery.status === "fulfilled"
@@ -88,7 +101,7 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error("Stripe checkout error:", error);
-    return Response.json(
+    return jsonWithSecurity(
       { error: "Failed to create checkout session" },
       { status: 500 }
     );

@@ -6,33 +6,43 @@
     "trailingSlash": false,
     "redirects": [
         {
+            "source": "/portal",
+            "destination": "/fr/contact",
+            "permanent": false
+        },
+        {
+            "source": "/portal.html",
+            "destination": "/fr/contact",
+            "permanent": false
+        },
+        {
             "source": "/trust",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/security",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/web-protection",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/cipher",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/certificate",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/ai-certificate",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         }
     ]

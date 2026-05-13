@@ -27,10 +27,20 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 border-b border-foreground/10">
       <nav className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="font-mono text-sm tracking-widest">
-          NEXURA
-        </Link>
+        {/* Logo + Language */}
+        <div className="flex items-center gap-4">
+          <Link href="/" className="font-mono text-sm tracking-widest">
+            NEXURA
+          </Link>
+          <div className="hidden md:block border-l border-foreground/20 pl-4">
+            <button
+              onClick={switchLocale}
+              className="ref-number text-xs font-semibold text-foreground/70 hover:text-foreground transition-colors"
+            >
+              {locale === "fr" ? "FR" : "EN"}
+            </button>
+          </div>
+        </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
@@ -43,15 +53,6 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          
-          <div className="w-px h-4 bg-foreground/10" />
-          
-          <button
-            onClick={switchLocale}
-            className="ref-number hover:text-accent transition-colors"
-          >
-            {locale === "fr" ? "EN" : "FR"}
-          </button>
         </div>
 
         {/* Mobile Menu Toggle */}

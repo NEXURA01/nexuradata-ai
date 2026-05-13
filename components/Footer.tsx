@@ -15,60 +15,101 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t border-foreground/10">
-      <div className="max-w-5xl mx-auto px-6">
+    <footer className="border-t border-border bg-surface">
+      <div className="max-w-6xl mx-auto px-6">
         {/* Main footer content */}
-        <div className="py-12 grid md:grid-cols-3 gap-8 border-b border-foreground/5">
+        <div className="py-12 grid md:grid-cols-4 gap-8 border-b border-border">
           {/* Brand column */}
-          <div>
-            <div className="flex items-baseline gap-2 mb-3">
-              <span className="font-serif text-lg">Nexura</span>
-              <span className="ref-number">Analytics</span>
-            </div>
-            <p className="text-dense text-muted-foreground mb-4">
-              {t("tagline")}
+          <div className="md:col-span-2">
+            <span className="font-mono text-sm tracking-widest block mb-3">
+              NEXURA
+            </span>
+            <p className="text-dense text-muted-foreground max-w-sm">
+              {t("description")}
             </p>
-            <span className="ref-number opacity-50">{t("location")}</span>
+          </div>
+
+          {/* Services column */}
+          <div>
+            <span className="ref-number block mb-4">{t("services")}</span>
+            <div className="flex flex-col gap-2">
+              <Link
+                href="/services"
+                className="text-dense text-muted-foreground hover:text-accent transition-colors"
+              >
+                Services
+              </Link>
+              <Link
+                href="/pricing"
+                className="text-dense text-muted-foreground hover:text-accent transition-colors"
+              >
+                Pricing
+              </Link>
+              <Link
+                href="/operational-assessment"
+                className="text-dense text-muted-foreground hover:text-accent transition-colors"
+              >
+                Assessment
+              </Link>
+            </div>
           </div>
 
           {/* Legal column */}
           <div>
-            <span className="ref-number block mb-4">LEGAL</span>
+            <span className="ref-number block mb-4">{t("legal")}</span>
             <div className="flex flex-col gap-2">
               <Link
-                href="/confidentialite"
+                href="/privacy"
                 className="text-dense text-muted-foreground hover:text-accent transition-colors"
               >
-                {t("links.privacy")}
+                {t("privacy")}
               </Link>
               <Link
-                href="/conditions"
+                href="/terms"
                 className="text-dense text-muted-foreground hover:text-accent transition-colors"
               >
-                {t("links.terms")}
+                {t("terms")}
+              </Link>
+              <Link
+                href="/contact"
+                className="text-dense text-muted-foreground hover:text-accent transition-colors"
+              >
+                Contact
               </Link>
             </div>
           </div>
-
-          {/* Language column */}
-          <div>
-            <span className="ref-number block mb-4">LANGUAGE</span>
-            <button
-              onClick={switchLocale}
-              className="text-dense text-muted-foreground hover:text-accent transition-colors"
-            >
-              {locale === "fr" ? "English" : "Français"}
-            </button>
-          </div>
         </div>
 
-        {/* Bottom bar - technical reference style */}
-        <div className="py-4 flex flex-col md:flex-row justify-between items-center gap-2">
-          <span className="ref-number opacity-50">{t("copyright")}</span>
-          <div className="flex items-center gap-4">
-            <span className="ref-number opacity-30">NXR · 0001</span>
-            <span className="ref-number opacity-30">MMXXVI</span>
-            <span className="ref-number opacity-30">QC/CA</span>
+        {/* Law 25 Notice */}
+        <div className="py-6 border-b border-border">
+          <div className="flex items-start gap-2">
+            <span className="ref-number text-accent flex-shrink-0">{t("law25")}</span>
+          </div>
+          <p className="text-dense text-muted-foreground mt-2 max-w-2xl">
+            {t("law25Notice")}
+          </p>
+          <a
+            href={`mailto:${t("privacyEmail")}`}
+            className="ref-number text-accent hover:underline mt-2 inline-block"
+          >
+            {t("privacyEmail")}
+          </a>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+          <span className="ref-number opacity-60">{t("copyright")}</span>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500" />
+              <span className="ref-number opacity-60">{t("statusOk")}</span>
+            </div>
+            <button
+              onClick={switchLocale}
+              className="ref-number opacity-60 hover:opacity-100 transition-opacity"
+            >
+              {locale === "fr" ? "EN" : "FR"}
+            </button>
           </div>
         </div>
       </div>

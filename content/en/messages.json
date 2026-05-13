@@ -1,118 +1,187 @@
 {
   "meta": {
-    "title": "Nexura Analytics | AI Automation, Quietly Engineered",
-    "description": "We help businesses stop chasing tasks and start finishing them."
+    "title": "NEXURA | Centralize operations. Automate workflows.",
+    "description": "NEXURA helps companies centralize operations and automate workflows."
+  },
+  "brand": {
+    "name": "NEXURA",
+    "tagline": "Operational Intelligence"
   },
   "nav": {
+    "platform": "Platform",
     "services": "Services",
     "pricing": "Pricing",
-    "evaluate": "Assessment",
-    "about": "About",
+    "assessment": "Assessment",
     "contact": "Contact"
   },
   "hero": {
-    "tagline": "AN AI AUTOMATION ATELIER",
-    "title": "Nexura",
-    "subtitle": "Analytics",
-    "slogan": "AI automation, quietly engineered.",
-    "description": "We help businesses stop chasing tasks and start finishing them.",
-    "cta": "Free Assessment",
-    "pillars": ["AGENTS", "PIPELINES", "OBSERVABILITY", "GOVERNANCE"]
+    "title1": "Centralize operations.",
+    "title2": "Automate workflows.",
+    "subtitle": "NEXURA helps companies organize operations, automate repetitive workflows and improve visibility across teams and systems.",
+    "cta": "Start Operational Assessment",
+    "secondary": "See How It Works"
+  },
+  "problem": {
+    "title": "The problem",
+    "items": [
+      { "label": "Too many tools", "desc": "Scattered systems that don't talk to each other" },
+      { "label": "Disorganized workflows", "desc": "No clear process, things fall through cracks" },
+      { "label": "Manual tasks", "desc": "Repetitive work that drains your team" },
+      { "label": "No visibility", "desc": "Hard to see what's happening across operations" },
+      { "label": "Difficult coordination", "desc": "Teams working in silos without sync" }
+    ]
+  },
+  "solution": {
+    "title": "The solution",
+    "items": [
+      { "label": "Workflow Automation", "desc": "Automate repetitive tasks and handoffs" },
+      { "label": "Operational Dashboard", "desc": "See everything in one place" },
+      { "label": "AI Operational Analysis", "desc": "Get insights on bottlenecks and improvements" },
+      { "label": "Centralized Operations", "desc": "One system, one source of truth" }
+    ]
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "steps": [
+      { "num": "01", "label": "Submit assessment", "desc": "Tell us about your operations" },
+      { "num": "02", "label": "AI analyzes operations", "desc": "We identify complexity and scope" },
+      { "num": "03", "label": "NEXURA recommends structure", "desc": "You get a clear plan" },
+      { "num": "04", "label": "Workflows become centralized", "desc": "Operations run smoothly" }
+    ]
+  },
+  "workflowPreview": {
+    "title": "What happens after assessment",
+    "items": [
+      { "status": "complete", "label": "Assessment received" },
+      { "status": "complete", "label": "AI analysis completed" },
+      { "status": "complete", "label": "Recommendation prepared" },
+      { "status": "pending", "label": "Workflow initialization pending" }
+    ]
+  },
+  "finalCta": {
+    "title": "Bring structure to your operations.",
+    "cta": "Start Operational Assessment"
+  },
+  "assessment": {
+    "title": "Operational Assessment",
+    "subtitle": "Tell us about your operations. Our AI will analyze complexity and recommend a scope.",
+    "form": {
+      "company": "Company",
+      "name": "Your name",
+      "email": "Email",
+      "problem": "Main operational problem",
+      "problemPlaceholder": "Describe the biggest challenge in your current operations...",
+      "tools": "Current tools",
+      "toolsPlaceholder": "List the main tools you use (Slack, Notion, Airtable, etc.)",
+      "teams": "Number of teams",
+      "urgency": "Urgency",
+      "urgencyOptions": ["Low", "Medium", "High", "Critical"],
+      "submit": "Generate Operational Estimate"
+    },
+    "result": {
+      "title": "Operational Estimate",
+      "complexity": "Operational Complexity",
+      "scope": "Recommended Scope",
+      "range": "Estimated Range",
+      "nextStep": "Next Step",
+      "cta": "Reserve Operational Review"
+    }
+  },
+  "paymentSuccess": {
+    "title": "Payment Confirmed",
+    "items": [
+      { "status": "complete", "label": "Payment confirmed" },
+      { "status": "complete", "label": "Assessment initialized" },
+      { "status": "pending", "label": "Human review pending" }
+    ],
+    "nextStep": "Our team will review your assessment within 24-48 hours.",
+    "cta": "View Assessment Status"
+  },
+  "portal": {
+    "title": "Assessment Portal",
+    "sections": {
+      "status": "Assessment Status",
+      "estimate": "AI Estimate",
+      "payment": "Payment Status",
+      "timeline": "Timeline",
+      "actions": "Next Actions"
+    }
   },
   "services": {
-    "title": "What we do",
-    "subtitle": "Solutions that work while you sleep",
-    "items": {
-      "agents": {
-        "title": "Smart Agents",
-        "description": "Assistants that sort, respond, and organize on your behalf."
+    "title": "Services",
+    "subtitle": "What we build for you",
+    "items": [
+      {
+        "id": "workflow-automation",
+        "title": "Workflow Automation",
+        "desc": "Automate repetitive tasks, handoffs, and approvals. Stop doing manually what software can do."
       },
-      "pipelines": {
-        "title": "Automated Flows",
-        "description": "Your data flows where it needs to, without manual work."
+      {
+        "id": "operational-dashboard",
+        "title": "Operational Dashboard",
+        "desc": "See all your operations in one view. Track progress, spot issues, make decisions faster."
       },
-      "observability": {
-        "title": "Clear Vision",
-        "description": "See what's happening in your business, in real time."
+      {
+        "id": "ai-analysis",
+        "title": "AI Operational Analysis",
+        "desc": "Our AI reviews your operations, identifies bottlenecks, and recommends improvements."
       },
-      "governance": {
-        "title": "Total Control",
-        "description": "Clear rules so automation stays under your control."
+      {
+        "id": "centralized-ops",
+        "title": "Centralized Operations",
+        "desc": "One system that connects your tools, teams, and workflows. No more scattered information."
       }
-    }
-  },
-  "cta": {
-    "title": "Ready to simplify?",
-    "description": "Book a free assessment. We analyze your operations and show you what can be automated.",
-    "button": "Start Assessment"
-  },
-  "newsletter": {
-    "title": "Stay informed",
-    "description": "Practical automation tips, no jargon.",
-    "placeholder": "your@email.com",
-    "button": "Subscribe",
-    "success": "Thanks! Check your inbox.",
-    "error": "Oops, something went wrong."
-  },
-  "footer": {
-    "tagline": "AI automation, quietly engineered.",
-    "location": "Montreal, Quebec",
-    "copyright": "© 2026 NEXURA. All rights reserved.",
-    "links": {
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service"
-    }
-  },
-  "chat": {
-    "title": "Ask Nexura",
-    "placeholder": "Ask your question...",
-    "greeting": "Hello! I'm the Nexura assistant. How can I help you?"
+    ],
+    "cta": "Start Assessment"
   },
   "pricing": {
-    "title": "Simple pricing",
-    "subtitle": "No surprises. We tell you exactly what it costs.",
-    "assessment": {
-      "title": "Assessment",
-      "price": "Free",
-      "description": "We analyze your operations and show you what can be simplified.",
-      "features": [
-        "30-minute call",
-        "Process analysis",
-        "Personalized report",
-        "Clear recommendations"
-      ],
-      "cta": "Book a call"
+    "title": "Pricing",
+    "subtitle": "Ranges, not fixed prices. Every operation is different.",
+    "note": "All prices in CAD. Final quote after assessment.",
+    "items": [
+      { "title": "Operational Assessment", "range": "Free", "desc": "AI analysis of your operations" },
+      { "title": "Operational Review", "range": "$250", "desc": "Human review + detailed recommendations" },
+      { "title": "Workflow Automation", "range": "$2,500 - $15,000", "desc": "Depends on complexity and integrations" },
+      { "title": "Operational Dashboard", "range": "$5,000 - $25,000", "desc": "Custom dashboard for your operations" },
+      { "title": "Full Operational Infrastructure", "range": "$15,000 - $75,000+", "desc": "Complete system transformation" },
+      { "title": "Monthly Support", "range": "$500 - $2,500/mo", "desc": "Ongoing maintenance and improvements" }
+    ],
+    "cta": "Start Assessment"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Questions only. For assessments, use the assessment page.",
+    "form": {
+      "name": "Your name",
+      "email": "Email",
+      "message": "Your question",
+      "submit": "Send"
     },
-    "implementation": {
-      "title": "Implementation",
-      "price": "Starting at $250",
-      "description": "We build and deploy solutions tailored to your reality.",
-      "features": [
-        "Custom configuration",
-        "Integration with your tools",
-        "Testing and validation",
-        "Complete documentation"
-      ],
-      "cta": "Start Assessment"
-    },
-    "support": {
-      "title": "Support",
-      "price": "Custom",
-      "description": "We stay by your side to maintain and evolve your solutions.",
-      "features": [
-        "Priority support",
-        "Regular updates",
-        "Adjustments included",
-        "Direct team access"
-      ],
-      "cta": "Contact us"
-    },
-    "note": "All prices in Canadian dollars. Taxes extra."
+    "success": "Message sent. We'll respond within 24 hours.",
+    "email": "contact@nexura.ai"
+  },
+  "footer": {
+    "description": "NEXURA helps companies centralize operations and automate workflows.",
+    "services": "Services",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "law25": "Law 25 Compliance",
+    "law25Notice": "NEXURA applies privacy and data handling practices aligned with Quebec Law 25.",
+    "privacyEmail": "privacy@nexura.ai",
+    "copyright": "© 2026 NEXURA. All rights reserved.",
+    "status": "Operational Status",
+    "statusOk": "All systems operational"
+  },
+  "chat": {
+    "title": "Ask NEXURA",
+    "placeholder": "Ask a question...",
+    "greeting": "Hello. How can I help you understand our operational services?"
   },
   "privacy": {
     "title": "Privacy Policy",
     "lastUpdated": "Last updated: May 12, 2026",
-    "intro": "At Nexura Analytics, we take the protection of your personal information seriously. This policy explains how we collect, use, and protect your data, in accordance with Quebec Law 25 and federal PIPEDA.",
+    "intro": "At NEXURA, we take the protection of your personal information seriously. This policy explains how we collect, use, and protect your data, in accordance with Quebec Law 25 and federal PIPEDA.",
     "sections": {
       "collection": {
         "title": "Information Collected",
@@ -132,48 +201,22 @@
       },
       "rights": {
         "title": "Your Rights",
-        "content": "You have the right to access your data, correct it, delete it, and withdraw your consent. To exercise these rights, contact us at privacy@nexura.ca."
+        "content": "You have the right to access your data, correct it, delete it, and withdraw your consent. To exercise these rights, contact us at privacy@nexura.ai."
       },
       "contact": {
         "title": "Contact Us",
-        "content": "For any questions about this policy, write to us at privacy@nexura.ca or by mail to Nexura Analytics, Montreal, Quebec, Canada."
+        "content": "For any questions about this policy, write to us at privacy@nexura.ai or by mail to NEXURA, Montreal, Quebec, Canada."
       }
     }
-  },
-  "contact": {
-    "title": "Let's talk",
-    "subtitle": "We usually respond within 24 hours.",
-    "email": "hello@nexura.ca",
-    "location": "Montreal, Quebec",
-    "form": {
-      "name": "Your name",
-      "email": "Your email",
-      "message": "Your message",
-      "submit": "Send",
-      "success": "Thanks! We'll get back to you soon.",
-      "error": "Something went wrong. Please try again."
-    }
-  },
-  "evaluation": {
-    "title": "Free Assessment",
-    "subtitle": "Discover what can be simplified in your operations.",
-    "description": "In 30 minutes, we analyze your processes together and identify tasks that can be automated. No commitment, no pressure.",
-    "cta": "Book my call",
-    "benefits": [
-      "Personalized analysis of your operations",
-      "Identification of repetitive tasks",
-      "Concrete recommendations",
-      "Transparent cost estimation"
-    ]
   },
   "terms": {
     "title": "Terms of Service",
     "lastUpdated": "Last updated: May 12, 2026",
-    "intro": "By using the Nexura Analytics website and services, you agree to these terms. These terms are governed by the laws of Quebec.",
+    "intro": "By using the NEXURA website and services, you agree to these terms. These terms are governed by the laws of Quebec.",
     "sections": {
       "services": {
         "title": "Description of Services",
-        "content": "Nexura Analytics offers consulting and implementation services in business operations automation. Solutions are customized according to each client's needs."
+        "content": "NEXURA offers consulting and implementation services in business operations automation. Solutions are customized according to each client's needs."
       },
       "obligations": {
         "title": "Your Obligations",
@@ -185,11 +228,11 @@
       },
       "liability": {
         "title": "Limitation of Liability",
-        "content": "Nexura Analytics cannot be held liable for indirect damages resulting from the use of our services. Our liability is limited to the amount paid for the services concerned."
+        "content": "NEXURA cannot be held liable for indirect damages resulting from the use of our services. Our liability is limited to the amount paid for the services concerned."
       },
       "ip": {
         "title": "Intellectual Property",
-        "content": "Website content (text, images, logos) belongs to Nexura Analytics. Solutions developed for you belong to you, unless otherwise indicated."
+        "content": "Website content (text, images, logos) belongs to NEXURA. Solutions developed for you belong to you, unless otherwise indicated."
       },
       "termination": {
         "title": "Termination",

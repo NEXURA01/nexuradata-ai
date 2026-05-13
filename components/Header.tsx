@@ -16,40 +16,36 @@ export function Header() {
     router.replace(pathname, { locale: newLocale });
   };
 
+  const navLinks = [
+    { href: "/#platform", label: t("platform") },
+    { href: "/services", label: t("services") },
+    { href: "/pricing", label: t("pricing") },
+    { href: "/operational-assessment", label: t("assessment") },
+    { href: "/contact", label: t("contact") },
+  ];
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 border-b border-foreground/10">
-      <nav className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-        {/* Logo - stark */}
-        <Link href="/" className="flex items-baseline gap-2">
-          <span className="font-serif text-lg tracking-tight">Nexura</span>
-          <span className="ref-number">Analytics</span>
+      <nav className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="font-mono text-sm tracking-widest">
+          NEXURA
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          <Link
-            href="/tarifs"
-            className="ref-number hover:text-accent transition-colors"
-          >
-            {t("pricing")}
-          </Link>
-          <Link
-            href="/evaluation"
-            className="ref-number hover:text-accent transition-colors"
-          >
-            {t("evaluate")}
-          </Link>
-          <Link
-            href="/contact"
-            className="ref-number hover:text-accent transition-colors"
-          >
-            {t("contact")}
-          </Link>
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="ref-number hover:text-accent transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
           
-          {/* Divider */}
           <div className="w-px h-4 bg-foreground/10" />
           
-          {/* Language */}
           <button
             onClick={switchLocale}
             className="ref-number hover:text-accent transition-colors"
@@ -72,27 +68,16 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-foreground/10 bg-background">
           <div className="px-6 py-6 flex flex-col gap-4">
-            <Link
-              href="/tarifs"
-              className="ref-number"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {t("pricing")}
-            </Link>
-            <Link
-              href="/evaluation"
-              className="ref-number"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {t("evaluate")}
-            </Link>
-            <Link
-              href="/contact"
-              className="ref-number"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {t("contact")}
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="ref-number"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
             <div className="border-t border-foreground/10 pt-4 mt-2">
               <button onClick={switchLocale} className="ref-number">
                 {locale === "fr" ? "ENGLISH" : "FRANÇAIS"}

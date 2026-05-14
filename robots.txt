@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /operations/
 Disallow: /api/ops/
+Disallow: /employe
+Disallow: /employe.html
 
 Sitemap: https://nexuradata.ca/sitemap.xml

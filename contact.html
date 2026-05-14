@@ -41,13 +41,18 @@
 
   <main class="page-shell" id="contenu">
     <div class="container">
-      <section class="page-card page-content">
+      <section class="page-card page-content command-header">
         <p class="eyebrow">Contact</p>
         <h1>Send a manual operational inquiry.</h1>
         <p>Contact has one purpose: submit a non-payment inquiry that NEXURA can review and answer through the provided email.</p>
       </section>
 
-      <form class="page-card contact-form" data-contact-form data-contact-endpoint="/api/intake" novalidate>
+      <form class="page-card contact-form process-form" data-contact-form data-contact-endpoint="/api/intake" novalidate>
+        <div class="form-process-rail" aria-label="Inquiry sequence">
+          <span>Receive</span>
+          <span>Qualify</span>
+          <span>Respond</span>
+        </div>
         <div class="form-grid">
           <label class="field">
             <span>Company</span>

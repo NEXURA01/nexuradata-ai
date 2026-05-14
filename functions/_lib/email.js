@@ -163,7 +163,7 @@ export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) =>
   const text = formatTextLines([
     "ACTION EQUIPE",
     "Qualifier le dossier, confirmer la priorite et assigner la prochaine etape.",
-    `Console equipe: ${portalUrl}`,
+    `EMPLOYE: ${portalUrl}`,
     "Decision rapide: APPROVE = assigner et repondre; ADJUST = corriger priorite/scope; HOLD = demander plus d'information.",
     "",
     "CLIENT",
@@ -184,7 +184,7 @@ export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) =>
   ]);
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Nouveau dossier pour l'equipe</p>` +
-    emailActionBlock("Dossier à qualifier", "Confirmer la priorité, assigner la prochaine étape et répondre depuis la console interne.") +
+    emailActionBlock("Dossier à qualifier", "Confirmer la priorité, assigner la prochaine étape et répondre depuis EMPLOYE.") +
     emailApprovalBlock("Assigner le dossier et répondre au client.", "Corriger la priorité, le support ou la prochaine étape.", "Demander les détails manquants avant de poursuivre.") +
     emailBadge("Référence", intakeRecord.caseId) +
     emailSectionTitle("Client") +
@@ -199,7 +199,7 @@ export const sendLabNotificationEmail = async (env, intakeRecord, requestUrl) =>
     emailSectionTitle("Suivi interne") +
     emailRow("Code d'accès initial", intakeRecord.accessCode) +
     emailRow("Source", intakeRecord.sourcePath) +
-    emailCta("Ouvrir la console équipe", portalUrl)
+    emailCta("Ouvrir EMPLOYE", portalUrl)
   );
 
   return sendResendEmail(
@@ -234,7 +234,7 @@ export const sendTeamOperationalAssessmentEmail = async (env, detail, requestUrl
   const text = formatTextLines([
     "ACTION EQUIPE",
     "Valider l'estimation, prioriser le dossier et preparer la recommandation humaine.",
-    `Console equipe: ${portalUrl}`,
+    `EMPLOYE: ${portalUrl}`,
     "Decision rapide: APPROVE = laisser le paiement Stripe de revue operationnelle avancer; ADJUST = modifier scope/montant avant suivi; HOLD = demander plus d'information.",
     "Note: OpenAI prepare l'estimation. Stripe complete le paiement. La validation humaine reste obligatoire.",
     "",
@@ -257,7 +257,7 @@ export const sendTeamOperationalAssessmentEmail = async (env, detail, requestUrl
     "Solution recommandee:",
     estimate.recommended_scope || workflowCase.recommended_solution || "Validation humaine requise",
     "",
-    `Console equipe: ${portalUrl}`
+    `EMPLOYE: ${portalUrl}`
   ]);
   const html = buildEmailHtml(
     `<p style="margin:0 0 18px;font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:0.1em;color:#a09a90;text-transform:uppercase;">Evaluation operationnelle recue</p>` +
@@ -278,7 +278,7 @@ export const sendTeamOperationalAssessmentEmail = async (env, detail, requestUrl
     emailBlock(payload.workflow_summary || "Non fourni") +
     emailSectionTitle("Solution recommandee") +
     emailBlock(estimate.recommended_scope || workflowCase.recommended_solution || "Validation humaine requise") +
-    emailCta("Ouvrir la console equipe", portalUrl)
+    emailCta("Ouvrir EMPLOYE", portalUrl)
   );
 
   return sendResendEmail(
@@ -314,7 +314,7 @@ export const sendTeamPaymentCompletedEmail = async (env, detail, requestUrl) => 
   const text = formatTextLines([
     "ACTION EQUIPE",
     "Lancer la revue humaine, valider l'estimation et preparer la prochaine recommandation.",
-    `Console equipe: ${portalUrl}`,
+    `EMPLOYE: ${portalUrl}`,
     "Decision rapide: APPROVE = lancer la revue; ADJUST = corriger le workflow interne; HOLD = verifier paiement/client avant action.",
     "",
     "PAIEMENT",
@@ -337,7 +337,7 @@ export const sendTeamPaymentCompletedEmail = async (env, detail, requestUrl) => 
     emailRow("Session Stripe", payment.stripe_session_id || session.id || "Non disponible") +
     emailRow("Workflow case", workflowCase.id || payment.workflow_case_id || "Non disponible") +
     emailRow("Evenement Stripe", event.type || "Non disponible") +
-    emailCta("Ouvrir la console equipe", portalUrl)
+    emailCta("Ouvrir EMPLOYE", portalUrl)
   );
 
   return sendResendEmail(

@@ -516,7 +516,7 @@ const normalizeRoute = (value) => {
   }
 };
 
-const isPublicAiSurface = () => document.body.classList.contains("ai-positioning") && !window.location.pathname.startsWith("/operations");
+const isPublicAiSurface = () => document.body.classList.contains("ai-positioning") && !document.body.classList.contains("employee-access-page") && !window.location.pathname.startsWith("/operations");
 
 const isCurrentNavigationItem = (item, currentRoute) => item.matches.some((match) => normalizeRoute(match) === currentRoute);
 

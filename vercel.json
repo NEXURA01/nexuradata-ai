@@ -1,45 +1,55 @@
 {
+    "framework": "nextjs",
     "buildCommand": "npm run build",
-    "outputDirectory": "release-cloudflare",
     "installCommand": "npm ci",
     "cleanUrls": true,
     "trailingSlash": false,
+    "crons": [
+        {
+            "path": "/api/lead-followup",
+            "schedule": "0 14 * * *"
+        }
+    ],
     "redirects": [
         {
+            "source": "/portal",
+            "destination": "/fr/contact",
+            "permanent": false
+        },
+        {
+            "source": "/portal.html",
+            "destination": "/fr/contact",
+            "permanent": false
+        },
+        {
             "source": "/trust",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/security",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/web-protection",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/cipher",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/certificate",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
         },
         {
             "source": "/ai-certificate",
-            "destination": "/ai-trust-security",
+            "destination": "/fr/services",
             "permanent": true
-        }
-    ],
-    "rewrites": [
-        {
-            "source": "/api/:path*",
-            "destination": "https://nexuradata-ai.pages.dev/api/:path*"
         }
     ]
 }

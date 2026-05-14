@@ -1,6 +1,6 @@
 {
+    "framework": "nextjs",
     "buildCommand": "npm run build",
-    "outputDirectory": "release-cloudflare",
     "installCommand": "npm ci",
     "cleanUrls": true,
     "trailingSlash": false,
@@ -34,12 +34,6 @@
             "source": "/ai-certificate",
             "destination": "/ai-trust-security",
             "permanent": true
-        }
-    ],
-    "rewrites": [
-        {
-            "source": "/api/:path*",
-            "destination": "https://nexuradata-ai.pages.dev/api/:path*"
         }
     ]
 }

@@ -10,6 +10,7 @@ Desktop.ini
 
 # Node.js
 node_modules/
+.next/
 
 # Local environment / secrets
 .env

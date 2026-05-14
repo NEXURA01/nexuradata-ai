@@ -91,7 +91,7 @@ for (const file of funcFiles) {
 
 // ─── 4. release-cloudflare/ in sync with source ──────────────────────────────
 try {
-    execSync("npm run build --silent", { cwd: ROOT, stdio: "pipe" });
+    execSync("npm run build:static --silent", { cwd: ROOT, stdio: "pipe" });
     const dirty = execSync("git status --porcelain release-cloudflare/", { cwd: ROOT, encoding: "utf8" }).trim();
     if (dirty) {
         fail(

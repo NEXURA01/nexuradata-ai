@@ -1,0 +1,354 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* NEXURA design tokens: operational infrastructure system */
+@theme {
+  --color-background: var(--nx-black);
+  --color-foreground: var(--nx-bone);
+  --color-surface: var(--nx-carbon);
+  --color-muted: var(--nx-iron);
+  --color-muted-foreground: var(--nx-muted);
+  --color-accent: var(--nx-copper);
+  --color-accent-foreground: var(--nx-black);
+  --color-border: var(--nx-line);
+  --color-input: var(--nx-iron);
+  --color-ring: var(--nx-copper);
+
+  --font-serif: var(--font-display), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  --animate-orbit-slow: orbit 90s linear infinite;
+  --animate-orbit-medium: orbit 60s linear infinite;
+  --animate-orbit-fast: orbit 45s linear infinite;
+  --animate-fade-in: fadeIn 0.6s ease-out;
+  --animate-slide-up: slideUp 0.6s ease-out;
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utility classes */
+@utility text-balance {
+  overflow-wrap: break-word;
+}
+
+@utility text-pretty {
+  overflow-wrap: break-word;
+}
+
+/* Technical frame overlay text styling */
+.frame-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Orbital diagram styling */
+.orbit-line {
+  stroke: oklch(0.15 0.01 80 / 0.15);
+  stroke-width: 1;
+  fill: none;
+}
+
+.orbit-line-dashed {
+  stroke: oklch(0.15 0.01 80 / 0.12);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  fill: none;
+}
+
+.orbit-line-accent {
+  stroke: var(--color-accent);
+  stroke-width: 1;
+  fill: none;
+}
+
+.orbit-dot {
+  fill: var(--color-foreground);
+}
+
+.orbit-dot-accent {
+  fill: var(--color-accent);
+}
+
+/* Registration marks */
+.registration-mark {
+  stroke: oklch(0.12 0.01 75 / 0.3);
+  stroke-width: 1;
+}
+
+/* Technical grid background */
+.technical-grid {
+  background-image: 
+    linear-gradient(oklch(0.12 0.01 75 / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.12 0.01 75 / 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Technical border - single pixel, no rounding */
+.technical-border {
+  border: 1px solid rgba(27, 25, 22, 0.15);
+}
+
+/* Reference number styling */
+.ref-number {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Measurement tick marks */
+.tick-mark {
+  background: oklch(0.12 0.01 75 / 0.2);
+  width: 1px;
+  height: 6px;
+}
+
+/* Austere heading - less decorative */
+.heading-austere {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+}
+
+/* Dense text block */
+.text-dense {
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: dark;
+
+  --nx-black: #0b0d10;
+  --nx-obsidian: #0b0d10;
+  --nx-carbon: #13161b;
+  --nx-iron: #181c22;
+  --nx-bone: #e8e4dc;
+  --nx-muted: #a7b0bc;
+  --nx-line: rgba(232, 228, 220, 0.08);
+  --nx-copper: #c17c45;
+  --nx-ember: #c45b3e;
+  --noir: #0b0d10;
+  --os: #e8e4dc;
+  --os-dim: rgba(232, 228, 220, 0.22);
+  --os-ghost: rgba(232, 228, 220, 0.08);
+  --rule: 1px solid rgba(232, 228, 220, 0.06);
+
+  --serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), "Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), "SFMono-Regular", Consolas, monospace;
+  --tracking-wide: 0.35em;
+  --tracking-xwide: 0.55em;
+
+  --color-bg: var(--nx-black);
+  --color-bg-soft: var(--nx-obsidian);
+  --color-surface: var(--nx-carbon);
+  --color-surface-strong: var(--nx-iron);
+  --color-surface-elevated: var(--nx-iron);
+  --color-panel: var(--nx-carbon);
+  --color-panel-soft: var(--nx-iron);
+  --color-line: var(--nx-line);
+  --color-line-strong: rgba(245, 247, 250, 0.2);
+  --color-text: var(--nx-bone);
+  --color-text-soft: rgba(245, 247, 250, 0.72);
+  --color-text-muted: var(--nx-muted);
+  --color-accent: var(--nx-copper);
+  --color-accent-strong: var(--nx-copper);
+  --color-accent-ink: var(--nx-black);
+  --color-highlight: var(--nx-copper);
+  --color-copper: var(--nx-copper);
+  --color-copper-soft: rgba(193, 124, 69, 0.18);
+  --color-error: var(--nx-ember);
+  --color-warning: var(--nx-muted);
+  --color-info: var(--nx-muted);
+
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 6rem;
+  --section-padding: 140px;
+  --card-padding: 32px;
+  --grid-gap: 32px;
+  --width-content: min(1280px, calc(100% - 3rem));
+
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.35);
+  --shadow-strong: 0 18px 50px rgba(0, 0, 0, 0.42);
+  --shadow-operational: 0 10px 40px rgba(0, 0, 0, 0.35);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-button: 8px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-system: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 160ms;
+  --duration-base: 220ms;
+  --duration-slow: 520ms;
+
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --card: var(--color-panel);
+  --card-foreground: var(--color-text);
+  --popover: var(--color-panel);
+  --popover-foreground: var(--color-text);
+  --primary: var(--color-text);
+  --primary-foreground: var(--color-bg);
+  --secondary: var(--color-panel-soft);
+  --secondary-foreground: var(--color-text);
+  --muted: var(--color-panel-soft);
+  --muted-foreground: var(--color-text-muted);
+  --accent: var(--color-accent);
+  --accent-foreground: var(--color-accent-ink);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--color-line);
+  --input: var(--color-panel-soft);
+  --ring: var(--color-accent);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: var(--radius-md);
+  --sidebar: var(--color-panel);
+  --sidebar-foreground: var(--color-text);
+  --sidebar-primary: var(--color-text);
+  --sidebar-primary-foreground: var(--color-bg);
+  --sidebar-accent: var(--color-panel-soft);
+  --sidebar-accent-foreground: var(--color-text);
+  --sidebar-border: var(--color-line);
+  --sidebar-ring: var(--color-accent);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}

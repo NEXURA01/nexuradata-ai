@@ -42,7 +42,7 @@
 
   <main id="contenu" class="page-shell">
     <div class="container">
-      <section class="page-card page-content">
+      <section class="page-card page-content command-header">
         <p class="eyebrow">Operational Assessment</p>
         <h1>Tell NEXURA what is operationally broken.</h1>
         <p>This page has one job: collect the operational problem, generate an AI estimate, and show the secure review step on the same page.</p>
@@ -52,6 +52,11 @@
         <article class="page-card operational-estimate-card assessment-estimator">
           <p class="estimate-kicker">NEXURA</p>
           <h2 id="assessment-form-title">Operational intake</h2>
+          <div class="form-process-rail" aria-label="Assessment sequence">
+            <span>Intake</span>
+            <span>Estimate</span>
+            <span>Review</span>
+          </div>
           <form id="estimate-form" class="estimate-form" data-estimate-form data-estimate-endpoint="/api/estimate"
             data-estimate-fallback-endpoint="https://amddiekyhrvxnzszugxb.supabase.co/functions/v1/estimate" novalidate>
             <div class="estimate-form-grid">
@@ -117,7 +122,7 @@
           </form>
         </article>
 
-        <aside class="page-card estimate-result" data-estimate-result data-operational-checkout-panel hidden aria-live="polite">
+        <aside class="page-card estimate-result process-output-panel" data-estimate-result data-operational-checkout-panel hidden aria-live="polite">
           <p class="estimate-kicker">AI estimate</p>
           <h2>Operational estimate</h2>
           <dl class="status-grid">

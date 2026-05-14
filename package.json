@@ -51,8 +51,8 @@
     "qrcode": "^1.5.4",
     "sharp": "^0.34.5",
     "supabase": "^2.98.2",
-    "vitest": "^4.1.4",
-    "wrangler": "^4.84.0"
+    "vitest": "^4.1.6",
+    "wrangler": "^4.90.1"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.182",

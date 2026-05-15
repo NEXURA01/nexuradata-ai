@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="en-CA">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Operational Assessment | NEXURA</title>
+  <meta name="description" content="Start a focused NEXURA operational assessment: describe the problem, generate an AI estimate, and reserve the secure operational review.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="NEXURA">
+  <link rel="canonical" href="https://nexuradata.ca/operational-assessment">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260512-footer2">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+
+<body class="ai-positioning">
+  <a class="skip-link" href="#contenu">Skip to content</a>
+  <header class="site-header">
+    <div class="container">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="NEXURA home">
+          <span class="brand-glyph" aria-hidden="true">
+            <span class="brand-glyph-axis brand-glyph-axis-horizontal"></span>
+            <span class="brand-glyph-axis brand-glyph-axis-vertical"></span>
+            <span class="brand-glyph-core"></span>
+          </span>
+          <span class="brand-copy">
+            <span class="brand-name">NEXURA</span>
+            <span class="brand-subtitle">Operational Systems</span>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="/services">Offers</a>
+          <a href="/pricing">Pricing</a>
+          <a class="nav-cta-link" href="/operational-assessment">Assessment</a>
+          <a class="nav-trust-link" href="/ai-trust-security">Trust</a>
+          <a href="/contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" class="page-shell">
+    <div class="container">
+      <section class="page-card page-content command-header">
+        <p class="eyebrow">Operational Assessment</p>
+        <h1>Tell NEXURA what is operationally broken.</h1>
+        <p>This page has one job: collect the operational problem, generate an AI estimate, and show the secure review step on the same page.</p>
+      </section>
+
+      <section class="assessment-layout" aria-labelledby="assessment-form-title">
+        <article class="page-card operational-estimate-card assessment-estimator">
+          <p class="estimate-kicker">NEXURA</p>
+          <h2 id="assessment-form-title">Operational intake</h2>
+          <div class="form-process-rail" aria-label="Assessment sequence">
+            <span>Intake</span>
+            <span>Estimate</span>
+            <span>Review</span>
+          </div>
+          <form id="estimate-form" class="estimate-form" data-estimate-form data-estimate-endpoint="/api/estimate"
+            data-estimate-fallback-endpoint="https://amddiekyhrvxnzszugxb.supabase.co/functions/v1/estimate" novalidate>
+            <div class="estimate-form-grid">
+              <label class="field">
+                <span>Company</span>
+                <input name="organization" autocomplete="organization" required>
+              </label>
+
+              <label class="field">
+                <span>Name</span>
+                <input name="contact_name" autocomplete="name" required>
+              </label>
+
+              <label class="field">
+                <span>Email</span>
+                <input type="email" name="email" autocomplete="email" required>
+              </label>
+
+              <label class="field field-full">
+                <span>Current tools</span>
+                <textarea name="current_tools" rows="3" placeholder="Slack, email, Notion, CRM, spreadsheets, Stripe, internal tools" required></textarea>
+              </label>
+
+              <label class="field field-full">
+                <span>Main operational problem</span>
+                <textarea name="workflow_summary" rows="6" placeholder="Describe the broken workflow, handoff, visibility gap, manual work, or execution bottleneck." required></textarea>
+              </label>
+
+              <label class="field">
+                <span>Number of teams</span>
+                <select name="teams_involved" required>
+                  <option value="">Choose</option>
+                  <option>Solo / 1 owner</option>
+                  <option>Small team</option>
+                  <option>2-3 teams</option>
+                  <option>4-6 teams</option>
+                  <option>Multi-department / enterprise</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Urgency</span>
+                <select name="urgency" required>
+                  <option value="">Choose</option>
+                  <option>Low urgency</option>
+                  <option>Normal</option>
+                  <option>Active inefficiency</option>
+                  <option>Revenue-impacting</option>
+                  <option>Critical operations</option>
+                </select>
+              </label>
+            </div>
+
+            <input type="hidden" name="workflow_count" value="2-3 workflows">
+            <input type="hidden" name="dashboard_visibility" value="Internal dashboard">
+            <input type="hidden" name="ai_routing" value="AI routing or estimate">
+            <input type="hidden" name="payment_portal" value="Assessment payment only">
+            <input type="hidden" name="budget_expectation" value="Human validation required">
+            <input type="hidden" name="preferred_language" value="Bilingual FR / EN">
+
+            <button type="submit" class="button button-primary">Generate Operational Estimate</button>
+            <p class="form-status" data-estimate-status aria-live="polite"></p>
+          </form>
+        </article>
+
+        <aside class="page-card estimate-result process-output-panel" data-estimate-result data-operational-checkout-panel hidden aria-live="polite">
+          <p class="estimate-kicker">AI estimate</p>
+          <h2>Operational estimate</h2>
+          <dl class="status-grid">
+            <div>
+              <dt>Operational problem</dt>
+              <dd data-estimate-problem>Pending</dd>
+            </div>
+            <div>
+              <dt>Operational Complexity</dt>
+              <dd data-estimate-complexity>Pending</dd>
+            </div>
+            <div>
+              <dt>Recommended System</dt>
+              <dd data-estimate-scope>Pending</dd>
+            </div>
+            <div>
+              <dt>Estimated Range</dt>
+              <dd class="estimate-range" data-estimate-range>Pending</dd>
+            </div>
+            <div>
+              <dt>Next Step</dt>
+              <dd>Reserve the operational review before human validation</dd>
+            </div>
+          </dl>
+          <button type="button" class="button button-primary" data-estimate-payment hidden>Reserve Operational Review</button>
+          <p class="form-status" data-operational-checkout-status aria-live="polite"></p>
+        </aside>
+      </section>
+    </div>
+  </main>
+<footer class="site-footer">
+  <div class="footer-system">
+    <section class="footer-brand-block" aria-label="NEXURA operational identity">
+      <a class="footer-brand-row" href="/" aria-label="NEXURA home">
+        <span class="brand-glyph" aria-hidden="true">
+          <span class="brand-glyph-axis brand-glyph-axis-horizontal"></span>
+          <span class="brand-glyph-axis brand-glyph-axis-vertical"></span>
+          <span class="brand-glyph-core"></span>
+        </span>
+        <span class="footer-brand-copy">
+          <span class="footer-brand-name">NEXURA</span>
+          <span class="footer-brand-subtitle">Operational Systems</span>
+        </span>
+      </a>
+      <p class="footer-description">NEXURA centralizes operations, automates workflows and improves operational
+        visibility through intelligent systems.</p>
+      <a class="footer-status" href="/status" aria-label="Operational Status: Systems Online">
+        <span class="footer-status-dot" aria-hidden="true"></span>
+        <span class="footer-status-copy">
+          <span class="footer-status-label">Operational Status</span>
+          <span class="footer-status-state">Systems Online</span>
+        </span>
+      </a>
+    </section>
+
+    <nav class="footer-link-column" aria-label="Platform">
+      <h2 class="footer-column-title">Platform</h2>
+      <div class="footer-link-list">
+        <a href="/operational-assessment">Operational Assessment</a>
+        <a href="/workflow-automation">Workflow Automation</a>
+        <a href="/operational-dashboard">Operational Dashboard</a>
+        <a href="/ai-operational-analysis">AI Analysis</a>
+        <a href="/operational-assessment?scope=infrastructure">Infrastructure</a>
+      </div>
+    </nav>
+
+    <nav class="footer-link-column" aria-label="Company">
+      <h2 class="footer-column-title">Company</h2>
+      <div class="footer-link-list">
+        <a href="/le-laboratoire.html">About</a>
+        <a href="/services">Services</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/contact">Contact</a>
+        <a href="/faq">FAQ</a>
+      </div>
+    </nav>
+
+    <nav class="footer-link-column" aria-label="Operations">
+      <h2 class="footer-column-title">Operations</h2>
+      <div class="footer-link-list">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms</a>
+        <a href="/status">Status</a>
+        <a href="mailto:operations@nexuradata.ca">operations@nexuradata.ca</a>
+        <span>Montreal, Quebec</span>
+      </div>
+      <div class="footer-socials" aria-label="Social channels">
+        <span>LinkedIn</span>
+        <span>GitHub</span>
+        <span>X</span>
+      </div>
+    </nav>
+
+    <section class="footer-bottom-layer" aria-label="Operational footer indicators">
+      <p>© 2026 NEXURA. Operational Systems Infrastructure.</p>
+      <ul class="footer-indicators">
+        <li>Workflow Systems</li>
+        <li>AI Infrastructure</li>
+        <li>Operational Routing</li>
+      </ul>
+    </section>
+  </div>
+</footer>
+</body>
+
+</html>

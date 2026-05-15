@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 
 type ServiceItem = {
@@ -40,19 +39,19 @@ export function ServicesContent() {
               className="bg-background p-8 group"
             >
               <div className="ref-number mb-4">SRV-0{i + 1}</div>
-              <h2 className="font-serif text-2xl mb-4">{item.title}</h2>
-              <p className="text-dense text-muted-foreground mb-6">
+              <h2 className="font-serif text-lg md:text-2xl mb-4 line-clamp-2">{item.title}</h2>
+              <p className="text-dense text-muted-foreground mb-6 line-clamp-4">
                 {item.desc}
               </p>
-              <Link
+              <a
                 href={`/operational-assessment?type=${item.id}`}
-                className="inline-flex items-center gap-2 font-mono text-xs tracking-widest uppercase text-accent hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-2 font-mono text-xs tracking-widest uppercase text-accent hover:text-foreground transition-colors whitespace-nowrap"
               >
                 {t("cta")}
                 <span className="group-hover:translate-x-1 transition-transform">
                   →
                 </span>
-              </Link>
+              </a>
             </motion.div>
           ))}
         </div>

@@ -29,12 +29,12 @@ export function PricingContent() {
         </div>
 
         {/* Pricing Table */}
-        <div className="border border-border">
+        <div className="border border-border overflow-x-auto">
           {/* Header Row */}
-          <div className="grid grid-cols-3 gap-4 p-4 bg-surface border-b border-border">
-            <div className="ref-number">SERVICE</div>
-            <div className="ref-number">RANGE</div>
-            <div className="ref-number">DESCRIPTION</div>
+          <div className="grid grid-cols-3 gap-0 p-4 bg-surface border-b border-border sticky top-0 min-w-min">
+            <div className="ref-number whitespace-nowrap">SERVICE</div>
+            <div className="ref-number whitespace-nowrap">PRIX</div>
+            <div className="ref-number whitespace-nowrap">DESCRIPTION</div>
           </div>
 
           {/* Pricing Rows */}
@@ -45,11 +45,11 @@ export function PricingContent() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="grid grid-cols-3 gap-4 p-4 border-b border-border last:border-0 hover:bg-surface/50 transition-colors"
+              className="grid grid-cols-3 gap-0 p-4 border-b border-border last:border-0 hover:bg-surface/50 transition-colors min-w-min"
             >
-              <div className="font-serif">{item.title}</div>
-              <div className="font-mono text-accent">{item.range}</div>
-              <div className="text-dense text-muted-foreground">{item.desc}</div>
+              <div className="font-serif text-sm line-clamp-2">{item.title}</div>
+              <div className="font-mono text-accent text-sm">{item.range}</div>
+              <div className="text-dense text-muted-foreground text-sm line-clamp-2">{item.desc}</div>
             </motion.div>
           ))}
         </div>

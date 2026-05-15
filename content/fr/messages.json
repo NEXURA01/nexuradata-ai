@@ -144,42 +144,42 @@
   },
   "services": {
     "title": "Services",
-    "subtitle": "Ce qu'on construit pour vous",
+    "subtitle": "Ce qu'on construire pour vous",
     "items": [
       {
         "id": "workflow-automation",
         "title": "Automatisation des workflows",
-        "desc": "Automatisez les tâches répétitives, transferts et approbations. Arrêtez de faire manuellement ce qu'un logiciel peut faire."
+        "desc": "Automatisez les tâches, transferts et approbations répétitifs."
       },
       {
         "id": "operational-dashboard",
         "title": "Tableau de bord opérationnel",
-        "desc": "Voyez toutes vos opérations dans une vue. Suivez le progrès, repérez les problèmes, décidez plus vite."
+        "desc": "Voyez toutes vos opérations. Suivez, repérez les problèmes, décidez vite."
       },
       {
         "id": "ai-analysis",
         "title": "Analyse IA des opérations",
-        "desc": "Notre IA examine vos opérations, identifie les goulots et recommande des améliorations."
+        "desc": "L'IA examine vos opérations, identifie goulots et améliorations."
       },
       {
         "id": "centralized-ops",
         "title": "Opérations centralisées",
-        "desc": "Un système qui connecte vos outils, équipes et workflows. Plus d'information éparpillée."
+        "desc": "Un système qui connecte outils, équipes et workflows en une seule source."
       }
     ],
     "cta": "Démarrer l'évaluation"
   },
   "pricing": {
     "title": "Tarifs",
-    "subtitle": "Des fourchettes, pas des prix fixes. Chaque opération est différente.",
-    "note": "Tous les prix en CAD. Soumission finale après évaluation.",
+    "subtitle": "Fourchettes, pas prix fixes. Chaque opération est unique.",
+    "note": "En CAD. Soumission finale après évaluation.",
     "items": [
-      { "title": "Évaluation opérationnelle", "range": "Gratuit", "desc": "Analyse IA de vos opérations" },
-      { "title": "Revue opérationnelle", "range": "250$", "desc": "Revue humaine + recommandations détaillées" },
-      { "title": "Automatisation des workflows", "range": "2 500$ - 15 000$", "desc": "Selon la complexité et les intégrations" },
-      { "title": "Tableau de bord opérationnel", "range": "5 000$ - 25 000$", "desc": "Tableau de bord personnalisé pour vos opérations" },
-      { "title": "Infrastructure opérationnelle complète", "range": "15 000$ - 75 000$+", "desc": "Transformation complète du système" },
-      { "title": "Support mensuel", "range": "500$ - 2 500$/mois", "desc": "Maintenance continue et améliorations" }
+      { "title": "Évaluation", "range": "Gratuit", "desc": "Analyse IA de vos opérations" },
+      { "title": "Revue", "range": "250$", "desc": "Revue + recommandations détaillées" },
+      { "title": "Automatisation", "range": "2.5K–15K$", "desc": "Selon complexité et intégrations" },
+      { "title": "Tableau de bord", "range": "5K–25K$", "desc": "Personnalisé pour vos opérations" },
+      { "title": "Infrastructure complet", "range": "15K–75K$+", "desc": "Transformation système complète" },
+      { "title": "Support mensuel", "range": "500–2.5K$/m", "desc": "Maintenance et améliorations" }
     ],
     "cta": "Démarrer l'évaluation"
   },

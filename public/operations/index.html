@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>EMPLOYE | NEXURA</title>
+  <meta name="description" content="Espace EMPLOYE NEXURA pour l'exploitation des dossiers, le suivi client et les actions internes.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="author" content="NEXURA">
+  <link rel="manifest" href="../site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20260503i">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <nav class="navbar container" aria-label="Navigation EMPLOYE">
+      <a class="brand" href="../index.html" aria-label="NEXURA, retour à l'accueil">
+        <img src="../assets/icons/logo-petit.svg" alt="NEXURA" width="200" height="24">
+      </a>
+      <div class="nav-links">
+        <a href="quotes.html">Soumissions</a>
+        <a href="payments.html">Paiements</a>
+        <a href="follow-up.html">Relances</a>
+        <a href="../suivi-dossier-client-montreal.html">Portail client</a>
+        <a href="../index.html" class="button button-outline button-small">Retour au site</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="contenu" class="page-shell">
+    <div class="container" data-ops-app data-ops-endpoint="/api/ops/cases">
+      <header class="page-hero ops-hero">
+        <p class="eyebrow">EMPLOYE</p>
+        <h1>Exploitation des dossiers</h1>
+        <p class="page-intro">
+          Cette surface sert à qualifier les demandes, gérer le suivi client et déclencher les
+          communications utiles. Cet espace doit être protégé avant exposition publique.
+        </p>
+      </header>
+
+      <div class="ops-layout">
+        <aside class="page-card ops-sidebar">
+          <h2>Rechercher un dossier</h2>
+          <p class="form-note">Charge les dossiers récents au démarrage, puis affine par numéro, nom client, courriel ou type de support.</p>
+          <form class="ops-search-form" data-ops-search-form>
+            <label class="field">
+              <span>Numéro, client ou courriel</span>
+              <input type="search" name="query" placeholder="NX-2026..., client@..." autocomplete="off">
+            </label>
+            <div class="ops-filter-bar">
+              <label class="field">
+                <span>Statut</span>
+                <select name="filterStatus">
+                  <option value="">Tous</option>
+                  <option value="Dossier reçu">Nouveau</option>
+                  <option value="Évaluation en cours">Évaluation</option>
+                  <option value="Soumission envoyée">Soumission envoyée</option>
+                  <option value="En attente du client">En attente client</option>
+                  <option value="En cours">En cours</option>
+                  <option value="En pause">En pause</option>
+                  <option value="Terminé">Terminé</option>
+                  <option value="Fermé">Fermé</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Soumission</span>
+                <select name="filterQuoteStatus">
+                  <option value="">Toutes</option>
+                  <option value="none">Aucune</option>
+                  <option value="draft">Brouillon</option>
+                  <option value="sent">Envoyée</option>
+                  <option value="approved">Approuvée</option>
+                  <option value="expired">Expirée</option>
+                  <option value="declined">Refusée</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Urgence</span>
+                <select name="filterUrgency">
+                  <option value="">Toutes</option>
+                  <option value="Standard">Standard</option>
+                  <option value="Rapide">Rapide</option>
+                  <option value="Urgent">Urgent</option>
+                  <option value="Très sensible">Très sensible</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="button button-primary">Chercher</button>
+            </div>
+            <p class="form-status" data-ops-search-status aria-live="polite"></p>
+          </form>
+
+          <div class="ops-results" data-ops-results></div>
+        </aside>
+
+        <section class="page-card ops-panel" data-ops-case-panel hidden>
+          <div class="ops-panel-head">
+            <div>
+              <p class="guide-meta">Dossier</p>
+              <h2 data-ops-case-title>NX-0000-0000</h2>
+            </div>
+            <input type="hidden" data-ops-current-case-id>
+          </div>
+
+          <div class="ops-meta-grid">
+            <article class="contact-card">
+              <h3>Dates</h3>
+              <p><strong>Créé:</strong> <span data-ops-meta-created></span></p>
+              <p><strong>Mis à jour:</strong> <span data-ops-meta-updated></span></p>
+            </article>
+
+            <article class="contact-card">
+              <h3>Client</h3>
+              <p><strong>Nom:</strong> <span data-ops-meta-client></span></p>
+              <p><strong>Courriel:</strong> <span data-ops-meta-email></span></p>
+            </article>
+
+            <article class="contact-card">
+              <h3>Support</h3>
+              <p><strong>Type:</strong> <span data-ops-meta-support></span></p>
+              <p><strong>Urgence:</strong> <span data-ops-meta-urgency></span></p>
+            </article>
+
+            <article class="contact-card">
+              <h3>Canal</h3>
+              <p><strong>Origine:</strong> <span data-ops-meta-source></span></p>
+              <p><strong>Acquisition:</strong> <span data-ops-meta-acquisition></span></p>
+              <p><strong>Code envoyé:</strong> <span data-ops-meta-access-sent></span></p>
+              <p><strong>Suivi envoyé:</strong> <span data-ops-meta-status-sent></span></p>
+            </article>
+          </div>
+
+          <article class="contact-card ops-message-card">
+            <h3>Message initial</h3>
+            <p data-ops-message></p>
+          </article>
+
+          <form class="ops-case-form" data-ops-case-form>
+            <div class="form-grid">
+              <label class="field">
+                <span>Statut client</span>
+                <input type="text" name="status" required>
+              </label>
+
+              <label class="field">
+                <span>Prochaine étape</span>
+                <input type="text" name="nextStep" required>
+              </label>
+
+              <label class="field field-full">
+                <span>Résumé client</span>
+                <textarea name="clientSummary" rows="4" required></textarea>
+              </label>
+
+              <label class="field field-full">
+                <span>Résumé de qualification (interne)</span>
+                <textarea name="qualificationSummary" rows="3"></textarea>
+              </label>
+
+              <label class="field field-full">
+                <span>Notes internes</span>
+                <textarea name="internalNotes" rows="4"></textarea>
+              </label>
+
+              <label class="field">
+                <span>Marqueurs internes</span>
+                <input type="text" name="handlingFlags" placeholder="urgent, sensible, juridique...">
+              </label>
+
+              <label class="field">
+                <span>Source d'acquisition</span>
+                <input type="text" name="acquisitionSource" placeholder="direct, recherche, référence...">
+              </label>
+
+              <label class="field">
+                <span>Montant soumission (CAD)</span>
+                <input type="text" name="quoteAmount" inputmode="decimal" placeholder="650.00">
+              </label>
+
+              <label class="consent-check">
+                <input type="checkbox" name="preapprovalConfirmed">
+                <span>Préapprobation confirmée — le travail peut débuter.</span>
+              </label>
+
+              <label class="consent-check field-full">
+                <input type="checkbox" name="notifyClient">
+                <span>Envoyer automatiquement une mise à jour au client au moment de l'enregistrement.</span>
+              </label>
+            </div>
+
+            <div class="ops-steps-head">
+              <h3>Timeline visible côté client</h3>
+              <button type="button" class="button button-secondary button-small" data-ops-add-step>Ajouter une étape</button>
+            </div>
+
+            <div class="ops-steps" data-ops-steps></div>
+
+            <div class="form-actions">
+              <button type="submit" class="button button-primary">Enregistrer le dossier</button>
+              <button type="button" class="button button-secondary" data-ops-send-update>Envoyer une mise à jour</button>
+            </div>
+
+            <p class="form-status" data-ops-case-status aria-live="polite"></p>
+          </form>
+
+          <section class="ops-access-card">
+            <h3>Accès client</h3>
+            <p class="form-note">Le code client n'est jamais exposé publiquement. Vous pouvez renvoyer le code actuel ou en générer un nouveau.</p>
+            <div class="form-actions">
+              <button type="button" class="button button-secondary" data-ops-send-access>Renvoyer le code</button>
+              <button type="button" class="button button-primary" data-ops-regenerate-access>Régénérer le code</button>
+            </div>
+            <p class="form-status" data-ops-access-result aria-live="polite"></p>
+          </section>
+
+          <section class="ops-quote-card">
+            <h3>Soumission</h3>
+            <div class="ops-quote-meta">
+              <p><strong>Statut:</strong> <span data-ops-quote-status>Aucune</span></p>
+              <p><strong>Montant:</strong> <span data-ops-quote-amount>—</span></p>
+              <p><strong>Préapprobation:</strong> <span data-ops-quote-preapproval>Non</span></p>
+              <p><strong>Envoyée:</strong> <span data-ops-quote-sent-at>—</span></p>
+              <p><strong>Approuvée:</strong> <span data-ops-quote-approved-at>—</span></p>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="button button-primary" data-ops-quote-send>Marquer envoyée</button>
+              <button type="button" class="button button-secondary" data-ops-quote-approve>Marquer approuvée</button>
+              <button type="button" class="button button-secondary" data-ops-quote-expire>Marquer expirée</button>
+              <button type="button" class="button button-secondary" data-ops-quote-decline>Marquer refusée</button>
+            </div>
+            <p class="form-status" data-ops-quote-result aria-live="polite"></p>
+          </section>
+
+          <section class="ops-reminder-card">
+            <h3>Relances</h3>
+            <p class="form-note">Enregistrez une relance pour garder le suivi dans l'historique du dossier.</p>
+            <div class="form-grid">
+              <label class="field">
+                <span>Type de relance</span>
+                <select data-ops-reminder-type>
+                  <option value="quote_follow_up">Relance soumission</option>
+                  <option value="payment_follow_up">Relance paiement</option>
+                  <option value="missing_information">Demande d'information</option>
+                  <option value="general_follow_up">Relance générale</option>
+                </select>
+              </label>
+              <label class="field field-full">
+                <span>Note (optionnelle)</span>
+                <textarea data-ops-reminder-message rows="2" placeholder="Contexte de la relance..."></textarea>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="button button-primary" data-ops-log-reminder>Enregistrer la relance</button>
+            </div>
+            <p class="form-status" data-ops-reminder-result aria-live="polite"></p>
+          </section>
+
+          <section class="ops-payments-card">
+            <h3>Paiements</h3>
+            <p class="form-note">Créez un acompte, un solde ou une demande de paiement ponctuelle, puis envoyez le lien sécurisé au client.</p>
+
+            <form class="ops-payment-form" data-ops-payment-form>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Type</span>
+                  <select name="paymentKind">
+                    <option value="deposit">Acompte</option>
+                    <option value="final">Solde final</option>
+                    <option value="custom">Paiement ponctuel</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Montant CAD</span>
+                  <input type="text" name="amount" inputmode="decimal" placeholder="250.00" required>
+                </label>
+
+                <label class="field field-full">
+                  <span>Libellé</span>
+                  <input type="text" name="label" placeholder="Acompte de traitement" required>
+                </label>
+
+                <label class="field field-full">
+                  <span>Description</span>
+                  <textarea name="description" rows="3" required placeholder="Exemple : acompte initial pour lancer le traitement autorisé du dossier."></textarea>
+                </label>
+
+                <label class="consent-check field-full">
+                  <input type="checkbox" name="sendEmail" checked>
+                  <span>Envoyer automatiquement le lien de paiement au client après création.</span>
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="button button-primary">Créer une demande de paiement</button>
+              </div>
+
+              <p class="form-status" data-ops-payment-status aria-live="polite"></p>
+            </form>
+
+            <div class="ops-payment-list" data-ops-payments></div>
+          </section>
+
+          <section class="ops-history-card">
+            <h3>Historique</h3>
+            <div class="ops-history" data-ops-history></div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <p>© <span data-year></span> NEXURA. Tous droits réservés.</p>
+    </div>
+  </footer>
+</body>
+</html>

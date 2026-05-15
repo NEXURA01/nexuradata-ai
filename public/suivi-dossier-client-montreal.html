@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Suivi de dossier client | NEXURA Montréal</title>
+  <meta name="description" content="Portail de suivi NEXURA. Consultez l'état de votre dossier avec votre numéro de dossier et code d'accès sécurisé.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="NEXURA">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_CA">
+  <meta property="og:site_name" content="NEXURA">
+  <meta property="og:image" content="https://nexuradata.ca/assets/icons/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="NEXURA — Récupération de données à Montréal">
+  <meta property="og:title" content="Suivi de dossier client | NEXURA Montréal">
+  <meta property="og:description" content="Portail de suivi NEXURA. Consultez l'état de votre dossier avec votre numéro de dossier et code d'accès sécurisé.">
+  <meta property="og:url" content="https://nexuradata.ca/suivi-dossier-client-montreal.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Suivi de dossier client | NEXURA Montréal">
+  <meta name="twitter:description" content="Portail de suivi NEXURA. Consultez l'état de votre dossier avec votre numéro de dossier et code d'accès sécurisé.">
+  <meta name="twitter:image" content="https://nexuradata.ca/assets/icons/og-default.png">
+  <link rel="canonical" href="https://nexuradata.ca/suivi-dossier-client-montreal.html">
+  <link rel="alternate" hreflang="fr-CA" href="https://nexuradata.ca/suivi-dossier-client-montreal.html">
+  <link rel="alternate" hreflang="en-CA" href="https://nexuradata.ca/en/suivi-dossier-client-montreal.html">
+  <link rel="alternate" hreflang="x-default" href="https://nexuradata.ca/en/suivi-dossier-client-montreal.html">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css?v=20260512-footer2">
+  <script src="assets/js/site.js" defer></script>
+  <!-- Google Analytics 4 -->
+  <script src="/assets/js/ga4-init.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="site-nav" aria-label="Navigation principale">
+        <a class="brand" href="/" aria-label="Accueil NEXURA">
+          <span class="brand-glyph" aria-hidden="true">
+            <span class="brand-glyph-axis brand-glyph-axis-horizontal"></span>
+            <span class="brand-glyph-axis brand-glyph-axis-vertical"></span>
+            <span class="brand-glyph-core"></span>
+          </span>
+          <span class="brand-copy">
+            <span class="brand-name">NEXURA</span>
+            <span class="brand-subtitle">Operational Systems</span>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="/#platform">Platform</a>
+          <a href="/services">Services</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/operational-assessment">Assessment</a>
+          <a href="/contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" class="page-shell">
+    <div class="container">
+      <header class="page-hero">
+        <p class="eyebrow">Portail client</p>
+        <h1>Suivi de l'état de votre demande</h1>
+        <p class="page-intro">
+          L'accès au suivi se fait à l'aide d'un numéro de dossier et d'un code d'accès transmis par
+          NEXURA. Le portail affiche uniquement l'état utile du dossier, sans exposer de détails
+          sensibles non nécessaires.
+        </p>
+      </header>
+
+      <div class="status-layout">
+        <section class="page-card status-gate">
+          <h2>Accéder au suivi</h2>
+          <form class="status-form" data-status-form data-status-endpoint="/api/status" novalidate>
+            <label class="field">
+              <span>Numéro de dossier</span>
+              <input type="text" name="dossier" placeholder="Exemple : NX-2026-0412" required>
+            </label>
+
+            <label class="field">
+              <span>Code d'accès</span>
+              <input type="password" name="code" placeholder="Code transmis par NEXURA" required>
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="button button-primary">Consulter le dossier</button>
+              <a href="mailto:contact@nexuradata.ca?subject=Demande%20de%20suivi%20NEXURA" class="button button-secondary">Demander une mise à jour</a>
+            </div>
+
+            <p class="form-note">
+              Le portail affiche uniquement l'état utile du dossier. En l'absence d'un accès valide,
+              aucune information n'est renvoyée. Les détails sensibles restent hors du portail client.
+            </p>
+            <p class="form-status" data-status-form-message aria-live="polite"></p>
+          </form>
+        </section>
+
+        <aside class="contact-rail">
+          <article class="contact-card">
+            <h3>États affichés</h3>
+            <ul class="contact-list">
+              <li>Dossier reçu</li>
+              <li>Évaluation en cours</li>
+              <li>Soumission envoyée</li>
+              <li>Intervention autorisée</li>
+              <li>Traitement en cours</li>
+              <li>Restitution ou remise prévue</li>
+            </ul>
+          </article>
+
+          <article class="contact-card">
+            <h3>Confidentialité</h3>
+            <p>Le portail doit rester limité à l'état du dossier, aux prochaines étapes et aux informations nécessaires au client concerné.</p>
+          </article>
+
+          <article class="contact-card">
+            <h3>Besoin urgent</h3>
+            <a href="mailto:contact@nexuradata.ca?subject=Urgence%20sur%20un%20dossier%20NEXURA">contact@nexuradata.ca</a>
+            <p>Utilisez le courriel si le niveau d'urgence a changé depuis l'ouverture du dossier ou si une autorisation doit être confirmée.</p>
+          </article>
+        </aside>
+      </div>
+
+      <section class="status-panel page-card" data-status-panel hidden>
+        <div class="status-panel-head">
+          <div>
+            <p class="guide-meta">Dossier</p>
+            <h2 data-status-case>NX-0000-0000</h2>
+          </div>
+          <div class="status-badge" data-status-badge>État</div>
+        </div>
+
+        <div class="status-meta">
+          <p><strong>Dernière mise à jour:</strong> <span data-status-updated></span></p>
+          <p><strong>Support:</strong> <span data-status-support></span></p>
+          <p><strong>Prochaine étape:</strong> <span data-status-next></span></p>
+        </div>
+
+        <p class="status-summary" data-status-summary></p>
+
+        <section class="status-section authorization-request" data-authorization-section hidden>
+          <div class="status-section-head">
+            <div>
+              <p class="guide-meta">Autorisation</p>
+              <h3>Approuver la demande d'intervention</h3>
+            </div>
+            <p class="status-section-note" data-authorization-note>Une autorisation est requise avant de poursuivre le traitement.</p>
+          </div>
+
+          <div class="authorization-summary">
+            <p><strong>Montant autorisé:</strong> <span data-authorization-amount></span></p>
+            <p><strong>État:</strong> <span data-authorization-state></span></p>
+          </div>
+
+          <form class="authorization-form" data-authorization-form data-authorization-endpoint="/api/authorization" novalidate>
+            <label class="field">
+              <span>Nom de la personne qui autorise</span>
+              <input type="text" name="signerName" autocomplete="name" required>
+            </label>
+
+            <label class="consent-check">
+              <input type="checkbox" name="consent" required>
+              <span>J'autorise NEXURA à poursuivre l'intervention selon le cadre transmis, incluant les consignes, manipulations ou étapes de traitement nécessaires au dossier.</span>
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="button button-primary">Approuver l'autorisation</button>
+            </div>
+
+            <p class="form-status" data-authorization-message aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="status-section" data-status-payments-section hidden>
+          <div class="status-section-head">
+            <div>
+              <p class="guide-meta">Infrastructure financière</p>
+              <h3>Facture, règlement et activation</h3>
+            </div>
+            <p class="status-section-note">Lorsqu'une facture, un acompte ou un solde est ouvert, son statut apparaît ici avec le lien sécurisé et l'état d'activation du workflow.</p>
+          </div>
+
+          <div class="status-payment-list" data-status-payments></div>
+        </section>
+
+        <section class="status-section client-workroom" data-workroom-section hidden>
+          <div class="status-section-head">
+            <div>
+              <p class="guide-meta">Espace de travail</p>
+              <h3 data-workroom-title>Prochaines actions guidées</h3>
+            </div>
+            <p class="status-section-note" data-workroom-note>NEXURA affiche ici le parcours utile une fois le dossier qualifié.</p>
+          </div>
+
+          <div class="workroom-status" data-workroom-status></div>
+          <div class="workroom-grid">
+            <article class="workroom-card">
+              <h4>À préparer</h4>
+              <ul data-workroom-prepare></ul>
+            </article>
+            <article class="workroom-card">
+              <h4>À éviter</h4>
+              <ul data-workroom-avoid></ul>
+            </article>
+            <article class="workroom-card workroom-card-wide">
+              <h4>Transmission</h4>
+              <p data-workroom-transfer></p>
+              <a class="button button-secondary button-small" data-workroom-mail href="mailto:contact@nexuradata.ca">Écrire à NEXURA</a>
+            </article>
+          </div>
+        </section>
+
+        <div class="status-timeline" data-status-timeline></div>
+      </section>
+
+      <section class="page-grid">
+        <section class="page-card page-content">
+          <h2>Ce que le client doit voir</h2>
+          <ul>
+            <li>L'état courant du dossier.</li>
+            <li>La dernière mise à jour disponible.</li>
+            <li>La prochaine étape concrète.</li>
+            <li>Une facture, un statut de paiement et un lien sécurisé lorsqu'une activation est ouverte.</li>
+            <li>L'historique opérationnel utile et l'état d'infrastructure du dossier.</li>
+            <li>Un canal clair pour joindre le laboratoire si quelque chose change.</li>
+          </ul>
+        </section>
+
+        <section class="page-card page-content">
+          <h2>Ce que le portail ne doit pas afficher publiquement</h2>
+          <ul>
+            <li>Données récupérées ou inventaires détaillés sans contrôle d'accès fort.</li>
+            <li>Pièces sensibles, captures ou éléments techniques inutiles au suivi.</li>
+            <li>Informations d'autres clients ou structures internes.</li>
+          </ul>
+        </section>
+      </section>
+
+      <div class="page-links">
+        <a class="button button-primary" href="index.html#contact">Ouvrir un nouveau dossier</a>
+        <a class="button button-secondary" href="reception-securisee-donnees-montreal.html">Voir le cadre de réception sécurisée</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+  <div class="footer-system">
+    <section class="footer-brand-block" aria-label="NEXURA operational identity">
+      <a class="footer-brand-row" href="/" aria-label="NEXURA home">
+        <span class="brand-glyph" aria-hidden="true">
+          <span class="brand-glyph-axis brand-glyph-axis-horizontal"></span>
+          <span class="brand-glyph-axis brand-glyph-axis-vertical"></span>
+          <span class="brand-glyph-core"></span>
+        </span>
+        <span class="footer-brand-copy">
+          <span class="footer-brand-name">NEXURA</span>
+          <span class="footer-brand-subtitle">Operational Systems</span>
+        </span>
+      </a>
+      <p class="footer-description">NEXURA centralizes operations, automates workflows and improves operational visibility through intelligent systems.</p>
+      <a class="footer-status" href="/status" aria-label="Operational Status: Systems Online">
+        <span class="footer-status-dot" aria-hidden="true"></span>
+        <span class="footer-status-copy">
+          <span class="footer-status-label">Operational Status</span>
+          <span class="footer-status-state">Systems Online</span>
+        </span>
+      </a>
+    </section>
+
+    <nav class="footer-link-column" aria-label="Platform">
+      <h2 class="footer-column-title">Platform</h2>
+      <div class="footer-link-list">
+        <a href="/operational-assessment">Operational Assessment</a>
+        <a href="/workflow-automation">Workflow Automation</a>
+        <a href="/operational-dashboard">Operational Dashboard</a>
+        <a href="/ai-operational-analysis">AI Analysis</a>
+        <a href="/operational-assessment?scope=infrastructure">Infrastructure</a>
+      </div>
+    </nav>
+
+    <nav class="footer-link-column" aria-label="Company">
+      <h2 class="footer-column-title">Company</h2>
+      <div class="footer-link-list">
+        <a href="/le-laboratoire.html">About</a>
+        <a href="/services">Services</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/contact">Contact</a>
+        <a href="/faq">FAQ</a>
+      </div>
+    </nav>
+
+    <nav class="footer-link-column" aria-label="Operations">
+      <h2 class="footer-column-title">Operations</h2>
+      <div class="footer-link-list">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms</a>
+        <a href="/status">Status</a>
+        <a href="mailto:operations@nexuradata.ca">operations@nexuradata.ca</a>
+        <span>Montreal, Quebec</span>
+      </div>
+      <div class="footer-socials" aria-label="Social channels">
+        <span>LinkedIn</span>
+        <span>GitHub</span>
+        <span>X</span>
+      </div>
+    </nav>
+
+    <section class="footer-bottom-layer" aria-label="Operational footer indicators">
+      <p>© 2026 NEXURA. Operational Systems Infrastructure.</p>
+      <ul class="footer-indicators">
+        <li>Workflow Systems</li>
+        <li>AI Infrastructure</li>
+        <li>Operational Routing</li>
+      </ul>
+    </section>
+  </div>
+</footer>
+</body>
+</html>

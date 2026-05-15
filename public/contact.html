@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html lang="en-CA">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Contact | NEXURA</title>
+  <meta name="description" content="Send a manual operational inquiry to NEXURA.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="NEXURA">
+  <link rel="canonical" href="https://nexuradata.ca/contact">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260512-footer2">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+
+<body class="ai-positioning">
+  <header class="site-header">
+    <div class="container">
+      <nav class="site-nav" aria-label="Navigation principale">
+        <a class="brand" href="/" aria-label="Accueil NEXURA">
+          <span class="brand-glyph" aria-hidden="true">
+            <span class="brand-glyph-axis brand-glyph-axis-horizontal"></span>
+            <span class="brand-glyph-axis brand-glyph-axis-vertical"></span>
+            <span class="brand-glyph-core"></span>
+          </span>
+          <span class="brand-copy">
+            <span class="brand-name">NEXURA</span>
+            <span class="brand-subtitle">Operational Systems</span>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="/services">Offers</a>
+          <a href="/pricing">Pricing</a>
+          <a class="nav-cta-link" href="/operational-assessment">Assessment</a>
+          <a class="nav-trust-link" href="/ai-trust-security">Trust</a>
+          <a href="/contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell" id="contenu">
+    <div class="container">
+      <section class="page-card page-content command-header">
+        <p class="eyebrow">Contact</p>
+        <h1>Send a manual operational inquiry.</h1>
+        <p>Contact has one purpose: submit a non-payment inquiry that NEXURA can review and answer through the provided email.</p>
+      </section>
+
+      <form class="page-card contact-form process-form" data-contact-form data-contact-endpoint="/api/intake" novalidate>
+        <div class="form-process-rail" aria-label="Inquiry sequence">
+          <span>Receive</span>
+          <span>Qualify</span>
+          <span>Respond</span>
+        </div>
+        <div class="form-grid">
+          <label class="field">
+            <span>Company</span>
+            <input name="organization" autocomplete="organization" required>
+          </label>
+
+          <label class="field">
+            <span>Name</span>
+            <input name="contact_name" autocomplete="name" required>
+          </label>
+
+          <label class="field">
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required>
+          </label>
+
+          <label class="field">
+            <span>Urgency</span>
+            <select name="urgency" required>
+              <option value="">Choose</option>
+              <option value="Standard">Standard</option>
+              <option value="Rapide">Priority</option>
+              <option value="Urgent">Urgent</option>
+            </select>
+          </label>
+
+          <label class="field field-full">
+            <span>Operational inquiry</span>
+            <textarea name="message" rows="6" placeholder="Describe the operational issue, workflow, dashboard need, or AI analysis request." required></textarea>
+          </label>
+
+          <label class="field field-full consent-row">
+            <input type="checkbox" name="consentement" required>
+            <span>NEXURA may review this inquiry and respond through the provided contact email.</span>
+          </label>
+        </div>
+
+        <input type="hidden" name="website" value="">
+        <button type="submit" class="button button-primary">Send Operational Inquiry</button>
+        <p class="form-status" data-contact-status aria-live="polite"></p>
+      </form>
+    </div>
+  </main>
+<footer class="site-footer">
+  <div class="footer-system">
+    <section class="footer-brand-block" aria-label="NEXURA operational identity">
+      <a class="footer-brand-row" href="/" aria-label="NEXURA home">
+        <span class="brand-glyph" aria-hidden="true">
+          <span class="brand-glyph-axis brand-glyph-axis-horizontal"></span>
+          <span class="brand-glyph-axis brand-glyph-axis-vertical"></span>
+          <span class="brand-glyph-core"></span>
+        </span>
+        <span class="footer-brand-copy">
+          <span class="footer-brand-name">NEXURA</span>
+          <span class="footer-brand-subtitle">Operational Systems</span>
+        </span>
+      </a>
+      <p class="footer-description">NEXURA centralizes operations, automates workflows and improves operational visibility through intelligent systems.</p>
+      <a class="footer-status" href="/status" aria-label="Operational Status: Systems Online">
+        <span class="footer-status-dot" aria-hidden="true"></span>
+        <span class="footer-status-copy">
+          <span class="footer-status-label">Operational Status</span>
+          <span class="footer-status-state">Systems Online</span>
+        </span>
+      </a>
+    </section>
+
+    <nav class="footer-link-column" aria-label="Platform">
+      <h2 class="footer-column-title">Platform</h2>
+      <div class="footer-link-list">
+        <a href="/operational-assessment">Operational Assessment</a>
+        <a href="/workflow-automation">Workflow Automation</a>
+        <a href="/operational-dashboard">Operational Dashboard</a>
+        <a href="/ai-operational-analysis">AI Analysis</a>
+        <a href="/operational-assessment?scope=infrastructure">Infrastructure</a>
+      </div>
+    </nav>
+
+    <nav class="footer-link-column" aria-label="Company">
+      <h2 class="footer-column-title">Company</h2>
+      <div class="footer-link-list">
+        <a href="/le-laboratoire.html">About</a>
+        <a href="/services">Services</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/contact">Contact</a>
+        <a href="/faq">FAQ</a>
+      </div>
+    </nav>
+
+    <nav class="footer-link-column" aria-label="Operations">
+      <h2 class="footer-column-title">Operations</h2>
+      <div class="footer-link-list">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms</a>
+        <a href="/status">Status</a>
+        <a href="mailto:operations@nexuradata.ca">operations@nexuradata.ca</a>
+        <span>Montreal, Quebec</span>
+      </div>
+      <div class="footer-socials" aria-label="Social channels">
+        <span>LinkedIn</span>
+        <span>GitHub</span>
+        <span>X</span>
+      </div>
+    </nav>
+
+    <section class="footer-bottom-layer" aria-label="Operational footer indicators">
+      <p>© 2026 NEXURA. Operational Systems Infrastructure.</p>
+      <ul class="footer-indicators">
+        <li>Workflow Systems</li>
+        <li>AI Infrastructure</li>
+        <li>Operational Routing</li>
+      </ul>
+    </section>
+  </div>
+</footer>
+</body>
+
+</html>

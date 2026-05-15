@@ -1,13 +1,12 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { Link } from "@/i18n/navigation";
 
 const employeeLinks = [
-  { href: "/operations/", labelFr: "Dossiers clients", labelEn: "Client cases", detailFr: "Voir la demande reçue, qualifier la priorité et préparer la réponse.", detailEn: "Review the request, qualify priority, and prepare the response." },
-  { href: "/operations/payments.html", labelFr: "Paiements", labelEn: "Payments", detailFr: "Créer ou suivre un lien Stripe rattaché au dossier client.", detailEn: "Create or track a Stripe link attached to the client case." },
-  { href: "/operations/quotes.html", labelFr: "Soumissions", labelEn: "Quotes", detailFr: "Vérifier les travaux demandés, approuvés ou à relancer.", detailEn: "Review requested, approved, or follow-up work." },
-  { href: "/operations/follow-up.html", labelFr: "Relances", labelEn: "Follow-ups", detailFr: "Reprendre les dossiers qui attendent une prochaine action.", detailEn: "Resume cases waiting for the next action." },
+  { href: "/operations/", labelFr: "Cas clients", labelEn: "Client cases", detailFr: "Voir la demande, qualifier la priorité, préparer la réponse.", detailEn: "Review the request, qualify priority, and prepare the response." },
+  { href: "/operations/payments.html", labelFr: "Paiements", labelEn: "Payments", detailFr: "Créer ou suivre un lien Stripe pour le dossier.", detailEn: "Create or track a Stripe link attached to the client case." },
+  { href: "/operations/quotes.html", labelFr: "Soumissions", labelEn: "Quotes", detailFr: "Vérifier les travaux demandés, approuvés ou relancés.", detailEn: "Review requested, approved, or follow-up work." },
+  { href: "/operations/follow-up.html", labelFr: "Relances", labelEn: "Follow-ups", detailFr: "Reprendre les dossiers en attente de prochaine action.", detailEn: "Resume cases waiting for the next action." },
 ];
 
 const flowSteps = [
@@ -18,10 +17,10 @@ const flowSteps = [
 ];
 
 const automationSteps = [
-  { number: "01", titleFr: "Recevoir", titleEn: "Receive", detailFr: "La demande arrive dans le suivi employé.", detailEn: "The request enters employee tracking." },
-  { number: "02", titleFr: "Qualifier", titleEn: "Qualify", detailFr: "L'équipe confirme la priorité et la prochaine action.", detailEn: "The team confirms priority and next action." },
-  { number: "03", titleFr: "Répondre", titleEn: "Respond", detailFr: "Le client reçoit une réponse claire depuis le dossier.", detailEn: "The client receives a clear case-based response." },
-  { number: "04", titleFr: "Facturer", titleEn: "Invoice", detailFr: "Si requis, le lien Stripe reste attaché au bon client.", detailEn: "When needed, the Stripe link stays attached to the right client." },
+  { number: "01", titleFr: "Recevoir", titleEn: "Receive", detailFr: "La demande arrive dans le suivi.", detailEn: "The request enters employee tracking." },
+  { number: "02", titleFr: "Qualifier", titleEn: "Qualify", detailFr: "L'équipe confirme priorité et action.", detailEn: "The team confirms priority and next action." },
+  { number: "03", titleFr: "Répondre", titleEn: "Respond", detailFr: "Le client reçoit la réponse du dossier.", detailEn: "The client receives a clear case-based response." },
+  { number: "04", titleFr: "Facturer", titleEn: "Invoice", detailFr: "Lien Stripe reste attaché au dossier.", detailEn: "When needed, the Stripe link stays attached to the right client." },
 ];
 
 export function EmployeeAccessContent() {
@@ -43,7 +42,7 @@ export function EmployeeAccessContent() {
           </p>
           <div className="mt-8 grid border border-foreground/10 bg-foreground/[0.04] sm:grid-cols-4">
             {flowSteps.map((step) => (
-              <span key={step.labelEn} className="border-b border-foreground/10 px-4 py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/66 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+              <span key={step.labelEn} className="border-b border-foreground/10 px-3 py-3 font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-foreground/66 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0 truncate">
                 {isFr ? step.labelFr : step.labelEn}
               </span>
             ))}
@@ -86,7 +85,7 @@ export function EmployeeAccessContent() {
           <article className="border border-foreground/12 bg-surface p-7">
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.26em] text-accent">Chemin rapide</p>
             <h2 className="font-serif text-4xl leading-none text-[var(--os)]">{isFr ? "Quoi ouvrir" : "What to open"}</h2>
-            <ul className="mt-7 grid gap-0" role="list">
+          <ul className="mt-7 grid gap-0" role="list">
               {employeeLinks.map((item) => (
                 <li key={item.href} className="grid gap-3 border-t border-foreground/10 py-4 md:grid-cols-[13rem_1fr]">
                   <a href={item.href} className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-accent transition-colors hover:text-foreground">
@@ -118,9 +117,9 @@ export function EmployeeAccessContent() {
               ? "Quand une demande arrive, ouvrir EMPLOYE, chercher le dossier, qualifier la priorité, puis répondre avec la prochaine étape. Si un paiement est requis, créer le lien Stripe depuis le dossier pour garder le reçu, le statut et le suivi au même endroit."
               : "When a request arrives, open EMPLOYE, find the case, qualify priority, then respond with the next step. If payment is required, create the Stripe link from the case so the receipt, status, and follow-up stay in one place."}
           </p>
-          <Link href="/contact" className="mt-8 inline-block border-y border-foreground/20 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/60 transition-colors hover:border-foreground/55 hover:text-foreground">
+          <a href="/contact" className="mt-8 inline-block border-y border-foreground/20 px-1 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/60 transition-colors hover:border-foreground/55 hover:text-foreground">
             {isFr ? "Retour au contact" : "Back to contact"}
-          </Link>
+          </a>
         </section>
       </div>
     </main>

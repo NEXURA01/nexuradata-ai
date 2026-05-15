@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Soumissions | EMPLOYE | NEXURA</title>
+  <meta name="description" content="Suivi des soumissions par dossier — espace EMPLOYE NEXURA.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="author" content="NEXURA">
+  <link rel="manifest" href="../site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20260503i">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <nav class="navbar container" aria-label="Navigation EMPLOYE">
+      <a class="brand" href="../index.html" aria-label="NEXURA, retour à l'accueil">
+        <img src="../assets/icons/logo-petit.svg" alt="NEXURA" width="200" height="24">
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Dossiers</a>
+        <a href="payments.html">Paiements</a>
+        <a href="follow-up.html">Relances</a>
+        <a href="../index.html" class="button button-outline button-small">Retour au site</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="contenu" class="page-shell">
+    <div class="container" data-ops-view="quotes" data-ops-endpoint="/api/ops/quotes">
+      <header class="page-hero ops-hero">
+        <p class="eyebrow">EMPLOYE</p>
+        <h1>Travaux demandés et approuvés</h1>
+        <p class="page-intro">
+          Vue rapide des interventions à autoriser, approuvées ou à relancer. Les dossiers approuvés remontent en priorité.
+        </p>
+      </header>
+
+      <form class="ops-view-filters" data-ops-view-filters>
+        <label class="field">
+          <span>Recherche</span>
+          <input type="search" name="query" placeholder="Dossier, client, courriel..." autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Statut soumission</span>
+          <select name="quoteStatus">
+            <option value="">Toutes</option>
+            <option value="draft">Brouillon</option>
+            <option value="sent">Envoyée</option>
+            <option value="approved">Approuvée</option>
+            <option value="expired">Expirée</option>
+            <option value="declined">Refusée</option>
+          </select>
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="button button-primary button-small">Filtrer</button>
+        </div>
+      </form>
+
+      <p class="form-status" data-ops-view-status aria-live="polite"></p>
+
+      <div class="ops-view-table-wrap" data-ops-view-results>
+        <table class="ops-view-table">
+          <thead>
+            <tr>
+              <th>Dossier</th>
+              <th>Client</th>
+              <th>Montant</th>
+              <th>Soumission</th>
+              <th>Statut dossier</th>
+              <th>Envoyée</th>
+              <th>Relance suggérée</th>
+              <th>Prochaine étape</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody data-ops-view-tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <p>© <span data-year></span> NEXURA. Tous droits réservés.</p>
+    </div>
+  </footer>
+</body>
+</html>

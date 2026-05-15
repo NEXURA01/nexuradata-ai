@@ -26,6 +26,15 @@ Out of scope:
 - Change control: critical changes are validated by CI checks before merge and deployment.
 - Monitoring: operational and deployment workflows are monitored, with security findings tracked to remediation.
 
+## AI-Specific Security Controls
+
+- Prompt and input hardening: untrusted user input is treated as hostile, validated, and constrained before downstream AI processing.
+- Prompt-injection resilience: high-impact actions require explicit server-side authorization and must not rely only on model output.
+- Data minimization for AI: only required fields are sent to AI providers; sensitive operational data is excluded unless strictly necessary.
+- Human oversight: AI-assisted outputs that can affect customer operations are reviewable and can be overridden by operators.
+- Output safety and validation: AI outputs used in workflows are validated against schema and business rules before execution.
+- Traceability: AI-relevant workflow events are logged for audit and incident analysis.
+
 ## GitHub Marketplace Application Security
 
 For marketplace-facing integrations and automations, we apply the following baseline:
@@ -36,6 +45,13 @@ For marketplace-facing integrations and automations, we apply the following base
 - Retention and deletion: data retention is limited to operational needs; uninstall/offboarding triggers token revocation and scheduled data cleanup.
 - Auditability: security-relevant administrative and integration events are logged.
 - Vulnerability management: dependency and code scanning are run continuously; critical issues are prioritized for immediate remediation.
+
+## AI Data and Model Governance
+
+- AI providers are treated as subprocessors when used; customer data handling follows privacy and contractual obligations.
+- Secrets, credentials, and private keys are never intentionally sent to model prompts.
+- Retention follows least-time principles and operational necessity; deletion requests are honored according to policy.
+- Model behavior changes are introduced through controlled releases with rollback capability.
 
 ## Reporting a Vulnerability
 

@@ -33,6 +33,7 @@ Le depot couvre:
 - `supabase/migrations/` : migrations Supabase cible pour le projet `amddiekyhrvxnzszugxb`
 - `supabase/migrations/20260511220000_enable_pg_cron.sql` : active `pg_cron` sans planifier de job par defaut
 - `supabase/migrations/20260515061500_connect_chat_supabase.sql` : ajoute les tables de telemetrie du bot (`chat_sessions`, `chat_events`) pour connecter `/api/chat` a Supabase sans exposer la cle service-role au navigateur
+- `supabase/migrations/20260515090000_add_chat_thread_schema.sql` : ajoute le schema conversationnel du widget (`chat_users`, `chat_threads`, `chat_thread_members`, `chat_messages`, `thread_summaries`) avec index + RLS
 - `migrations/neon/0001_full_schema.sql` : schema Postgres historique conserve temporairement
 - `migrations/d1-archive/` : ancienne base D1 (archive historique uniquement)
 - `wrangler.jsonc` : configuration Pages/Functions, source de verite
@@ -44,10 +45,21 @@ Supabase est la pile cible pour les nouveaux developpements. Le depot conserve t
 
 Le widget `/api/chat` est maintenant connecte a Supabase cote serveur uniquement: un identifiant de session local est envoye par le navigateur, puis les tentatives acceptees / rejetees sont journalisees dans `chat_sessions` et `chat_events` via `SUPABASE_SERVICE_ROLE_KEY`. Aucune cle Supabase publique n'est necessaire pour le bot.
 
+Le client chat (`components/ChatWidget.tsx`) supporte aussi une synchronisation conversationnelle Supabase cote navigateur via `lib/supabase-chat.ts`:
+
+- profil utilisateur `chat_users`
+- fils de discussion `chat_threads`
+- appartenance `chat_thread_members`
+- messages persistes `chat_messages`
+- resume optionnel via `thread_summaries`
+
+La liste des fils est basee sur les memberships (et non uniquement sur les createurs), et le chargement d'historique hydrate les IDs deja persistes pour eviter les duplications de messages lors des changements de fil.
+
 ## Prerequis de lancement
 
 1. Lier Supabase au projet `amddiekyhrvxnzszugxb` avec `npm run supabase:link`.
 2. Appliquer les migrations `supabase/migrations/` avec `npm run supabase:db:push` ou SQL Editor.
+	- Inclure explicitement `20260515090000_add_chat_thread_schema.sql` pour le chat multi-fil et ses policies RLS.
 3. Verifier que l'extension `pg_cron` est active avant d'ajouter des jobs planifies.
 4. Declarer l'URL Postgres Supabase comme secret Cloudflare Pages sous le nom `DATABASE_URL` tant que l'adaptateur legacy reste actif.
 5. Creer un secret fort `ACCESS_CODE_SECRET`.

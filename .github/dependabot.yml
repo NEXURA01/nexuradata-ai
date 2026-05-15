@@ -8,6 +8,13 @@ updates:
       time: "09:00"
       timezone: "America/Toronto"
     open-pull-requests-limit: 5
+    ignore:
+      # Dependabot currently cannot resolve a security update path for postcss
+      # with the active Next.js dependency constraints in this repo.
+      # Remove this ignore when upstream allows a valid patched resolution.
+      - dependency-name: "postcss"
+        versions:
+          - "*"
     groups:
       production-dependencies:
         dependency-type: "production"

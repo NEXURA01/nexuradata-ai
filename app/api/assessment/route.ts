@@ -1,4 +1,3 @@
-import { generateText } from "ai";
 import { createClient } from "@supabase/supabase-js";
 import {
   sendClientAssessmentReportEmail,
@@ -10,6 +9,125 @@ const isValidEmail = (value: unknown) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(`${va
 
 const normalizeText = (value: unknown, maxLength = 2400) =>
   typeof value === "string" ? value.trim().replace(/\s+/g, " ").slice(0, maxLength) : "";
+
+type AssessmentEstimate = {
+  complexity: string;
+  scope: string;
+  range: string;
+  nextStep: string;
+};
+
+const fallbackEstimate = (locale: string): AssessmentEstimate => ({
+  complexity: "Medium",
+  scope:
+    locale === "fr"
+      ? "Analyse approfondie requise"
+      : "Detailed analysis required",
+  range: "$2,500 - $15,000",
+  nextStep:
+    locale === "fr"
+      ? "Réservez une revue opérationnelle pour obtenir des recommandations détaillées."
+      : "Book an operational review to get detailed recommendations.",
+});
+
+const parseEstimate = (text: string, locale: string): AssessmentEstimate => {
+  try {
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    return jsonMatch ? JSON.parse(jsonMatch[0]) : fallbackEstimate(locale);
+  } catch {
+    return fallbackEstimate(locale);
+  }
+};
+
+const generateAssessmentEstimate = async ({
+  company,
+  name,
+  problem,
+  tools,
+  teams,
+  urgency,
+  locale,
+}: {
+  company: string;
+  name: string;
+  problem: string;
+  tools: string;
+  teams: string;
+  urgency: string;
+  locale: string;
+}): Promise<AssessmentEstimate> => {
+  const openAiKey = process.env.OPENAI_API_KEY;
+
+  if (!openAiKey) {
+    console.error("OPENAI_API_KEY is not configured");
+    return fallbackEstimate(locale);
+  }
+
+  const system = `You are an operational analyst at NEXURA. Analyze the client's operational problem and provide a structured estimate.
+
+Rules:
+- Never give exact prices, only ranges
+- Never promise specific results
+- Don't invent details not provided
+- Focus on identifying complexity and scope
+- Be professional but accessible
+- Respond in ${locale === "fr" ? "French" : "English"}
+
+Output format (JSON):
+{
+  "complexity": "Low | Medium | High | Critical",
+  "scope": "Brief description of recommended work",
+  "range": "Price range in CAD (e.g., $2,500 - $10,000)",
+  "nextStep": "What happens after they book the review"
+}`;
+
+  const prompt = `Company: ${company}
+Name: ${name}
+Main Problem: ${problem}
+Current Tools: ${tools || "Not specified"}
+Number of Teams: ${teams || "Not specified"}
+Urgency: ${urgency}
+
+Analyze this operational problem and provide an estimate.`;
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${openAiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: prompt },
+        ],
+        max_tokens: 500,
+        response_format: { type: "json_object" },
+        temperature: 0.2,
+      }),
+    });
+
+    if (!response.ok) {
+      const details = await response.text().catch(() => "");
+      console.error("OpenAI estimate error:", response.status, details.slice(0, 500));
+      return fallbackEstimate(locale);
+    }
+
+    const data = (await response.json().catch(() => null)) as
+      | { choices?: Array<{ message?: { content?: string } }> }
+      | null;
+    const text = data?.choices?.[0]?.message?.content;
+
+    return typeof text === "string" && text.trim()
+      ? parseEstimate(text, locale)
+      : fallbackEstimate(locale);
+  } catch (error) {
+    console.error("OpenAI estimate error:", error);
+    return fallbackEstimate(locale);
+  }
+};
 
 export async function POST(req: Request) {
   const guarded = guardPublicPost(req, { namespace: "assessment", maxRequests: 4 });
@@ -58,55 +176,15 @@ export async function POST(req: Request) {
     }
 
     // Generate AI estimate
-    const { text } = await generateText({
-      model: "openai/gpt-4o-mini",
-      system: `You are an operational analyst at NEXURA. Analyze the client's operational problem and provide a structured estimate.
-
-Rules:
-- Never give exact prices, only ranges
-- Never promise specific results
-- Don't invent details not provided
-- Focus on identifying complexity and scope
-- Be professional but accessible
-- Respond in ${locale === "fr" ? "French" : "English"}
-
-Output format (JSON):
-{
-  "complexity": "Low | Medium | High | Critical",
-  "scope": "Brief description of recommended work",
-  "range": "Price range in CAD (e.g., $2,500 - $10,000)",
-  "nextStep": "What happens after they book the review"
-}`,
-      prompt: `Company: ${company}
-Name: ${name}
-Main Problem: ${problem}
-Current Tools: ${tools || "Not specified"}
-Number of Teams: ${teams || "Not specified"}
-Urgency: ${urgency}
-
-Analyze this operational problem and provide an estimate.`,
-      maxOutputTokens: 500,
+    const estimate = await generateAssessmentEstimate({
+      company,
+      name,
+      problem,
+      tools,
+      teams,
+      urgency,
+      locale,
     });
-
-    // Parse AI response
-    let estimate;
-    try {
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      estimate = jsonMatch ? JSON.parse(jsonMatch[0]) : null;
-    } catch {
-      estimate = {
-        complexity: "Medium",
-        scope:
-          locale === "fr"
-            ? "Analyse approfondie requise"
-            : "Detailed analysis required",
-        range: "$2,500 - $15,000",
-        nextStep:
-          locale === "fr"
-            ? "Réservez une revue opérationnelle pour obtenir des recommandations détaillées."
-            : "Book an operational review to get detailed recommendations.",
-      };
-    }
 
     // Store lead in Supabase
     const teamCount = Number.parseInt(`${teams || ""}`, 10);

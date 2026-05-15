@@ -112,6 +112,7 @@ Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md).
 - Les industries initiales incluent: landscaping, window washing, moving, junk removal, pressure washing, cleaning, property maintenance, handyman, painting et roofing.
 - Les leads doivent disposer d'un email public trouve via le site de l'entreprise ou une page de contact.
 - Le dashboard `/leads` affiche le jour courant, la region et les industries visees.
+- Guide templates Mailgun pret a copier/coller: [`docs/MAILGUN_TEMPLATES_READY.md`](docs/MAILGUN_TEMPLATES_READY.md)
 
 ## Redirect smoke-test (Vercel)
 

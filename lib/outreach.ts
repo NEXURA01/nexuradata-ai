@@ -47,6 +47,8 @@ export async function sendOutreachSequence(
       subject: draft.subject,
       text: draft.text,
       html: draft.html,
+      template: draft.template,
+      templateVariables: draft.templateVariables,
     });
 
     if (result.success) {

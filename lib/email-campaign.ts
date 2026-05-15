@@ -31,6 +31,16 @@ export type LeadContact = {
   intent_signal?: string | null;
 };
 
+type CampaignTemplateVariables = {
+  firstName: string;
+  businessName: string;
+  region: string;
+  industryLabel: string;
+  industryPain: string;
+  industryValueProp: string;
+  bookingUrl: string;
+};
+
 const getMailgunApiBase = (apiRegion: string) => {
   if (apiRegion.toLowerCase() === "eu") {
     return "https://api.eu.mailgun.net/v3";
@@ -125,6 +135,19 @@ const INDUSTRY_EMAIL_SUBJECT: Record<CampaignIndustryKey, string> = {
   handyman: "More handyman estimate requests in {region}",
   painting: "More painting walkthroughs in {region}",
   roofing: "More roofing estimate calls in {region}",
+};
+
+const INDUSTRY_TEMPLATE_ENV_KEYS: Record<CampaignIndustryKey, string> = {
+  landscaping: "MAILGUN_TEMPLATE_LANDSCAPING",
+  window_washing: "MAILGUN_TEMPLATE_WINDOW_WASHING",
+  moving: "MAILGUN_TEMPLATE_MOVING",
+  junk_removal: "MAILGUN_TEMPLATE_JUNK_REMOVAL",
+  pressure_washing: "MAILGUN_TEMPLATE_PRESSURE_WASHING",
+  cleaning: "MAILGUN_TEMPLATE_CLEANING",
+  property_maintenance: "MAILGUN_TEMPLATE_PROPERTY_MAINTENANCE",
+  handyman: "MAILGUN_TEMPLATE_HANDYMAN",
+  painting: "MAILGUN_TEMPLATE_PAINTING",
+  roofing: "MAILGUN_TEMPLATE_ROOFING",
 };
 
 const getIndustryInfo = (industry: CampaignIndustryKey) => INDUSTRY_COPY[industry];
@@ -234,7 +257,38 @@ const getMailgunConfig = () => ({
   regionByDefault: process.env.MAILGUN_REGION_FALLBACK || "Montreal",
   bookingUrl: process.env.CALENDLY_BOOKING_URL || `${process.env.NEXT_PUBLIC_APP_URL || "https://nexuradata.ca"}/book`,
   tracking: process.env.MAILGUN_TRACKING || "yes",
+  templateDefault: process.env.MAILGUN_TEMPLATE_NAME_DEFAULT || "",
 });
+
+const getTemplateNameForIndustry = (industry: CampaignIndustryKey, fallback = "") => {
+  const envKey = INDUSTRY_TEMPLATE_ENV_KEYS[industry];
+  return process.env[envKey] || fallback;
+};
+
+const getTemplateVariables = ({
+  lead,
+  region,
+  industry,
+  bookingUrl,
+}: {
+  lead: LeadContact;
+  region: string;
+  industry: CampaignIndustryKey;
+  bookingUrl: string;
+}): CampaignTemplateVariables => {
+  const industryInfo = getIndustryInfo(industry);
+  const firstName = (lead.name || lead.business_name || "there").split(" ")[0];
+
+  return {
+    firstName,
+    businessName: lead.business_name || lead.name || "your business",
+    region,
+    industryLabel: industryInfo.label,
+    industryPain: industryInfo.pain,
+    industryValueProp: industryInfo.valueProp,
+    bookingUrl,
+  };
+};
 
 export const buildCampaignEmail = ({
   lead,
@@ -251,11 +305,20 @@ export const buildCampaignEmail = ({
   const subject = INDUSTRY_EMAIL_SUBJECT[industry].replace("{region}", region);
   const text = buildPlainTextEmail({ lead, region, industry, bookingUrl: config.bookingUrl });
   const html = buildHtmlEmail({ lead, region, industry, bookingUrl: config.bookingUrl });
+  const template = getTemplateNameForIndustry(industry, config.templateDefault);
+  const templateVariables = getTemplateVariables({
+    lead,
+    region,
+    industry,
+    bookingUrl: config.bookingUrl,
+  });
 
   return {
     subject,
     text,
     html,
+    template,
+    templateVariables,
     region,
     industryLabel: industryInfo.label,
     bookingUrl: config.bookingUrl,
@@ -267,11 +330,15 @@ export const sendMailgunEmail = async ({
   subject,
   text,
   html,
+  template,
+  templateVariables,
 }: {
   to: string;
   subject: string;
   text: string;
   html: string;
+  template?: string;
+  templateVariables?: CampaignTemplateVariables;
 }) => {
   const { apiKey, domain, apiRegion, from, tracking } = getMailgunConfig();
 
@@ -283,8 +350,17 @@ export const sendMailgunEmail = async ({
   body.set("from", from);
   body.set("to", to);
   body.set("subject", subject);
-  body.set("text", text);
-  body.set("html", html);
+
+  if (template) {
+    body.set("template", template);
+    if (templateVariables) {
+      body.set("h:X-Mailgun-Variables", JSON.stringify(templateVariables));
+    }
+  } else {
+    body.set("text", text);
+    body.set("html", html);
+  }
+
   body.set("o:tracking", tracking);
 
   const response = await fetch(`${getMailgunApiBase(apiRegion)}/${domain}/messages`, {

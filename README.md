@@ -34,6 +34,9 @@ Le depot couvre:
 - `supabase/migrations/20260511220000_enable_pg_cron.sql` : active `pg_cron` sans planifier de job par defaut
 - `supabase/migrations/20260515061500_connect_chat_supabase.sql` : ajoute les tables de telemetrie du bot (`chat_sessions`, `chat_events`) pour connecter `/api/chat` a Supabase sans exposer la cle service-role au navigateur
 - `supabase/migrations/20260515090000_add_chat_thread_schema.sql` : ajoute le schema conversationnel du widget (`chat_users`, `chat_threads`, `chat_thread_members`, `chat_messages`, `thread_summaries`) avec index + RLS
+- `lib/email-campaign.ts` : plan de campagne email 15 jours, ciblage par region + industrie et templates Mailgun
+- `lib/lead-sourcing.ts` : sourcing Google Maps + extraction d'emails publics sur les sites des entreprises
+- `lib/outreach.ts` : envoi email uniquement via Mailgun
 - `migrations/neon/0001_full_schema.sql` : schema Postgres historique conserve temporairement
 - `migrations/d1-archive/` : ancienne base D1 (archive historique uniquement)
 - `wrangler.jsonc` : configuration Pages/Functions, source de verite
@@ -63,8 +66,8 @@ La liste des fils est basee sur les memberships (et non uniquement sur les creat
 3. Verifier que l'extension `pg_cron` est active avant d'ajouter des jobs planifies.
 4. Declarer l'URL Postgres Supabase comme secret Cloudflare Pages sous le nom `DATABASE_URL` tant que l'adaptateur legacy reste actif.
 5. Creer un secret fort `ACCESS_CODE_SECRET`.
-6. Configurer les alias `contact@`, `urgence@`, `dossiers@` dans Cloudflare Email Routing.
-7. Verifier le domaine d'envoi dans Resend et fournir `RESEND_API_KEY`, `RESEND_FROM_EMAIL` et `TEAM_INBOX_EMAILS` pour les notifications d'equipe.
+6. Verifier le domaine d'envoi Mailgun et fournir `MAILGUN_API_KEY`, `MAILGUN_DOMAIN`, `MAILGUN_FROM_EMAIL` et `MAILGUN_TRACKING`.
+7. Fournir `CALENDLY_BOOKING_URL` pour les CTA de conversion.
 8. Proteger `/operations/*` et `/api/ops/*` avec Cloudflare Access.
 
 Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md). Voir aussi [`docs/`](docs/) pour la checklist de lancement, le guide de deploiement rapide et les notes de recherche concurrentielle / tarifaire.
@@ -101,6 +104,14 @@ Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md).
 - `npm test`
 
 `release-cloudflare/` est regenere a chaque build pour les assets statiques. Les `functions/` restent a la racine du projet pour Cloudflare Pages Functions.
+
+## Lead campaign email (Mailgun)
+
+- La campagne est email-only.
+- Ciblage par region et industrie sur 15 jours.
+- Les industries initiales incluent: landscaping, window washing, moving, junk removal, pressure washing, cleaning, property maintenance, handyman, painting et roofing.
+- Les leads doivent disposer d'un email public trouve via le site de l'entreprise ou une page de contact.
+- Le dashboard `/leads` affiche le jour courant, la region et les industries visees.
 
 ## Redirect smoke-test (Vercel)
 

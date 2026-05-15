@@ -1,28 +1,28 @@
-# Lead Generation System - Landscaping & Window Cleaning
+# Lead Generation System - Email Campaign for Hot Service Businesses
 
 ## Overview
 
-Automated lead sourcing and outreach system for landscaping/window cleaning services. Targets 40-50 qualified leads/day with 70% WhatsApp + 30% SMS delivery, multi-day cadence sequencing, and real-time conversion tracking.
+Automated lead sourcing and outreach system for landscaping, window washing, moving, junk removal, pressure washing, cleaning and related service businesses. The campaign is email-only, region-based, and scheduled across 15 days with 10 industry types.
 
 **Expected Performance:**
-- Daily Outreach: 40-50 leads
-- Response Rate: 25% qualified leads
-- Daily Qualified Leads: 10-12
-- CAC (Cost Acquisition): $20-30
-- Revenue per Booked Lead: $500-800
+- Daily Outreach: 20-30 targeted emails
+- Response Rate: depends on region + niche fit
+- Daily Qualified Leads: tracked by replies/bookings
+- CAC (Cost Acquisition): lower than SMS-first outreach
+- Revenue per Booked Lead: depends on service type
 
 ## Architecture
 
 ```
-Google Maps API
+Google Maps API + public website email extraction
      ↓
-Lead Sourcing Service (40-50/day)
+Lead Sourcing Service (region + industry)
      ↓
 Supabase (leads_landscaping table)
      ↓
 Lead Management API
      ↓
-Twilio (WhatsApp 70% + SMS 30%)
+Mailgun (email-only outreach)
      ↓
 Lead Dashboard (realtime tracking)
 ```
@@ -35,17 +35,17 @@ Lead Dashboard (realtime tracking)
 - `name`, `business_name`, `business_type`: Lead info
 - `score` (INT 1-10): Qualification score
 - `status` (TEXT): Pipeline stage [new → contacted → qualified → booked → archived]
-- `contact_channel` (TEXT): WhatsApp or SMS
+- `contact_channel` (TEXT): email
 - `first_contact_at`, `responded_at`, `booked_at`: Timestamps
 - `booking_value`, `booking_type`: Revenue tracking
 - `intent_signal` (TEXT): Why this lead was qualified
 - `source` (TEXT): google_maps, facebook, referral, etc.
 
 **lead_interactions** - Outreach history
-- `id`, `lead_id` (FK), `interaction_type` (whatsapp_sent, sms_sent, response_received)
+- `id`, `lead_id` (FK), `interaction_type` (email_sent, email_replied, response_received)
 - `status` (sent, delivered, read, failed)
 - `message_preview`: First 100 chars of message
-- `metadata` (JSONB): Twilio SID, provider details
+- `metadata` (JSONB): Mailgun message ID + provider details
 
 **lead_conversions** - Revenue pipeline
 - `id`, `lead_id` (FK), `funnel_stage`, `timestamp`
@@ -96,10 +96,10 @@ Returns: `{ id, phone, name, score, status: "new", created_at }`
 {
   "action": "log_interaction",
   "lead_id": "uuid-123",
-  "interaction_type": "whatsapp_sent",
-  "status": "delivered",
-  "message_preview": "Salut John...",
-  "metadata": { "twilio_sid": "SM123..." }
+  "interaction_type": "email_sent",
+  "status": "sent",
+  "message_preview": "Hi John...",
+  "metadata": { "mailgun_message_id": "<20260515.abc123@mg.domain>" }
 }
 ```
 
@@ -117,14 +117,14 @@ Returns: `{ date, leads_sent, leads_responded, leads_qualified, leads_booked }`
 **lib/lead-sourcing.ts**
 
 ```typescript
-// Source 40-50 leads from Google Maps
-const leads = await sourceCitiesLeads(["Montreal", "Quebec City", "Laval"], 40);
+// Source leads by region and industry
+const leads = await sourceCampaignLeads(["Montreal"], ["landscaping", "window_washing"], 30);
 
 // Insert to Supabase
 const insertedIds = await insertLeadsToSupabase(leads);
 
-// Get leads ready for outreach (status=new, score>=6)
-const leadsToContact = await getLeadsForOutreach(40);
+// Get leads ready for outreach (status=new, score>=6, email present)
+const leadsToContact = await getLeadsForOutreach(30, { region: "Montreal", industries: ["landscaping"] });
 ```
 
 ### Scoring Logic
@@ -136,7 +136,7 @@ Leads are scored 1-10 based on:
 - **Business rating ≥4.5** (+1): Well-maintained, likely to engage
 - **Real estate business** (+1): Easy conversion
 
-Only leads with score ≥6 are contacted.
+Only leads with score ≥6 and a public email are contacted.
 
 ## Outreach Service
 
@@ -144,32 +144,27 @@ Only leads with score ≥6 are contacted.
 
 ### Message Templates
 
-**WhatsApp (Day 0 & 2)**
+**Email (Mailgun, day-based region campaign)**
 ```
-👋 Salut [Name],
+Hi [First Name],
 
-Rapide question: Tu délègues actuellement la maintenance de ta propriété?
+I’m reaching out because businesses like [Business Name] in [Region] often lose opportunities when the inbox gets busy on job sites.
 
-40% des entrepreneurs disent que c'est leur plus grand time-waster. 
-On récupère 3-4h/mois juste avec paysage + vitres.
+We help [Industry] companies get more booked work with a focused email campaign and a simple booking flow.
 
-Ça te parle? → [Calendly]
+If this is worth a quick look, book a short call here: [Booking Link]
 
-— NEXURA Team
-```
+If it is not a fit, reply once and I will stop reaching out.
 
-**SMS (Day 4)**
-```
-Hi [Name], confirm interest or we'll remove you. 
-Reply YES or go here: [App URL]/confirm-interest
+— NEXURA
 ```
 
 ### Sending Sequence
 
 ```typescript
-const results = await sendOutreachSequence(leads, calendlyUrl);
-// 70% WhatsApp, 30% SMS
-// Rate limited: 5-6 leads/hour (1 every ~10 seconds)
+const results = await sendOutreachSequence(leads, plan, plan.industries[0]);
+// Mailgun email-only
+// Region + industry targeting
 ```
 
 **Response:** `{ sent: 28, failed: 0, results: [...] }`
@@ -180,19 +175,27 @@ const results = await sendOutreachSequence(leads, calendlyUrl);
 
 Triggers full daily sequence:
 
-1. **Source** 40-50 leads from Google Maps API
-2. **Insert** new leads to Supabase (skip duplicates by phone)
-3. **Fetch** leads ready for contact (status=new, score≥6)
-4. **Send** WhatsApp (70%) + SMS (30%) with rate limiting
-5. **Record** daily stats in lead_daily_stats table
+1. **Resolve** the 15-day campaign plan from the campaign start date
+2. **Source** leads from Google Maps by region + industry
+3. **Extract** public emails from business websites / contact pages
+4. **Insert** new leads to Supabase (skip duplicates by phone)
+5. **Fetch** leads ready for contact (status=new, score≥6, email present)
+6. **Send** Mailgun email sequence
+7. **Record** daily stats in lead_daily_stats table
 
 **Response:**
 ```json
 {
   "message": "Daily outreach started",
+  "campaign": {
+    "day": 1,
+    "region": "Montreal",
+    "industries": ["landscaping", "window_washing"],
+    "quota": 30
+  },
   "leads_sourced": 42,
-  "leads_queued": 40,
-  "leads_sent": 40,
+  "leads_queued": 30,
+  "leads_sent": 28,
   "leads_failed": 0,
   "results": [...]
 }
@@ -208,13 +211,14 @@ Access real-time metrics at `/leads`:
 - **Booked**: Completed conversions
 - **Conversion Funnel**: Visual pipeline
 - **Control Panel**: Start daily automation
+- **Campaign Header**: Current day, region and industries targeted
 
 ### Dashboard Features
 
 - 30-second refresh interval
 - Live conversion rate calculation
 - Manual trigger for daily run
-- Rate limiting verification (5-6/hour)
+- 15-day campaign tracking
 
 ## Setup Instructions
 
@@ -228,17 +232,20 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
 
-# Twilio
-TWILIO_ACCOUNT_SID=...
-TWILIO_AUTH_TOKEN=...
-TWILIO_WHATSAPP_NUMBER=+1234567890
-TWILIO_SMS_NUMBER=+1234567890
+# Mailgun
+MAILGUN_API_KEY=...
+MAILGUN_DOMAIN=...
+MAILGUN_FROM_EMAIL=NEXURA <noreply@your-domain.com>
+MAILGUN_TRACKING=yes
 
 # Google Maps
 GOOGLE_PLACES_API_KEY=...
 
 # Calendly
 CALENDLY_BOOKING_URL=https://calendly.com/your-username
+
+# Campaign start date (optional)
+CAMPAIGN_START_DATE=2026-05-15
 
 # App
 NEXT_PUBLIC_APP_URL=https://yourdomain.com
@@ -295,26 +302,19 @@ To automate the daily run at 9am:
 
 1. Create Make.com scenario
 2. Trigger: **Schedule** (Daily, 9:00 AM EST)
-3. Action: **HTTP module** → POST to `/api/leads/run-daily`
-4. Add follow-up steps for Day 2, Day 4, Day 7 sequences
+3. Action: **HTTP module** → POST to `/api/leads/run-daily` with optional `x-api-key` header
+4. Action: **Tools filter** → continue only when HTTP response status is `200`
+5. Action: **Slack/Email module** → notify results (`leads_sent`, `leads_failed`, `campaign.region`)
 
-**Day 2 Step** (48 hours later):
-```json
-{
-  "action": "log_interaction",
-  "lead_id": "{{lead_id}}",
-  "interaction_type": "whatsapp_sent",
-  "status": "followup",
-  "message_preview": "Salut [Name], regarde ce qu'on fait..."
-}
-```
+Import-ready blueprint template:
+- `docs/make/lead-campaign-scenario.json`
 
 ## Monitoring & Optimization
 
 ### Key Metrics to Track
 
-- **Daily Send Volume**: 40-50 leads
-- **WhatsApp Delivery Rate**: 95%+ (Twilio reports)
+- **Daily Send Volume**: 20-30 targeted emails
+- **Email Delivery Rate**: 95%+ (Mailgun logs)
 - **Response Rate**: Target 25%
 - **Qualified Rate**: 70% of responses
 - **Booking Rate**: 30% of qualified
@@ -324,7 +324,7 @@ To automate the daily run at 9am:
 ### Optimization Opportunities
 
 1. **Score Tuning**: Adjust scoring weights based on response rates
-2. **Message A/B Testing**: Compare WhatsApp copy variants
+2. **Message A/B Testing**: Compare email subject/body variants
 3. **Time Zone Optimization**: Send at peak engagement hours
 4. **City Targeting**: Focus on high-response cities
 5. **Intent Signals**: Add more property age/business type signals
@@ -336,15 +336,15 @@ To automate the daily run at 9am:
 - Verify cities are spelled correctly
 - Check Google Maps API quota
 
-**WhatsApp send fails:**
-- Verify `TWILIO_ACCOUNT_SID` and `TWILIO_AUTH_TOKEN`
-- Check phone number format (+1234567890)
-- Ensure WhatsApp is enabled on Twilio account
+**Mailgun send fails:**
+- Verify `MAILGUN_API_KEY` and `MAILGUN_DOMAIN`
+- Check sender domain DNS (SPF/DKIM) is verified in Mailgun
+- Verify recipient email is present on the lead record
 
 **High bounce rate:**
-- Phone numbers from Google Maps may be outdated
+- Public emails from websites may be outdated
 - Add email verification step
-- Cross-reference against LinkedIn
+- Prioritize role inboxes (`info@`, `contact@`, `service@`) and remove generic catch-all domains
 
 **Supabase RLS errors:**
 - Ensure Service Role key is used (not Publishable key)
@@ -359,10 +359,12 @@ To automate the daily run at 9am:
 | `app/api/leads/run-daily/route.ts` | Daily automation trigger |
 | `app/[locale]/leads/page.tsx` | Dashboard page |
 | `components/LeadsDashboard.tsx` | Real-time stats UI |
-| `lib/lead-sourcing.ts` | Google Maps sourcing + Supabase insert |
-| `lib/outreach.ts` | Twilio WhatsApp/SMS sending |
+| `lib/lead-sourcing.ts` | Google Maps sourcing + website email extraction + Supabase insert |
+| `lib/email-campaign.ts` | 15-day campaign plan + Mailgun email composer |
+| `lib/outreach.ts` | Mailgun email sending |
 | `supabase/migrations/20260515_landscaping_leads_schema.sql` | DB schema |
 | `.env.example.leads` | Environment template |
+| `docs/make/lead-campaign-scenario.json` | Make.com import template |
 
 ## Next Steps
 
@@ -371,9 +373,9 @@ To automate the daily run at 9am:
 3. ✅ Lead sourcing service built
 4. ✅ Outreach service built
 5. ✅ Dashboard created
-6. ⏳ **TODO:** Configure Twilio WhatsApp + SMS
+6. ⏳ **TODO:** Configure Mailgun domain + API key
 7. ⏳ **TODO:** Configure Google Maps API
-8. ⏳ **TODO:** Create Make.com automation workflow
+8. ✅ Make.com blueprint added (`docs/make/lead-campaign-scenario.json`)
 9. ⏳ **TODO:** Test end-to-end (source → send → track → book)
 10. ⏳ **TODO:** Launch daily automation at 9am
 

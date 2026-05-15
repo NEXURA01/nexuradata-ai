@@ -60,6 +60,7 @@ Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md).
 - La configuration repo inclut CI, CodeQL, `njsscan`, Dependabot et dependency review.
 - Les protections GitHub a maintenir dans les regles du depot: PR requise vers `main`, historique lineaire, suppression/force-push bloques, required checks et bypass limite au mode break-glass.
 - Les controles requis recommandes couvrent `Tests + build`, `CodeQL`, `njsscan code scanning` et dependency review.
+- Notre standard de qualite est explicite: merge uniquement quand les checks critiques sont au vert et que le deploiement est verifiable.
 - Le check `Tests + build` execute `npm run check` qui valide notamment:
 	- la presence d'une CSP dans `_headers`, `next.config.*` ou `vercel.json`
 	- l'absence de secrets hardcodes dans `functions/`

@@ -77,6 +77,10 @@ const nextConfig: NextConfig = {
         source: "/:locale(fr|en)/(portal|payment-success)",
         headers: noIndexHeaders,
       },
+      {
+        source: "/:locale(fr|en)/(employe|leads)",
+        headers: noIndexHeaders,
+      },
     ];
   },
   async redirects() {
@@ -96,12 +100,12 @@ const nextConfig: NextConfig = {
       {
         source: "/portal",
         destination: "/fr/contact",
-        permanent: false,
+        permanent: true,
       },
       {
         source: "/portal.html",
         destination: "/fr/contact",
-        permanent: false,
+        permanent: true,
       },
       {
         source: "/trust",

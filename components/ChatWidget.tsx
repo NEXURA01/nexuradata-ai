@@ -72,6 +72,7 @@ const renderMessageText = (value: string) => {
       href.startsWith("http://") ||
       href.startsWith("https://") ||
       href.startsWith("/");
+    const isInternalNexuraLink = href.startsWith("/") || href.startsWith("https://nexuradata.ca");
 
     if (!isLink) return part;
 
@@ -81,8 +82,8 @@ const renderMessageText = (value: string) => {
       <span key={`${part}-${index}`}>
         <a
           href={href}
-          target="_blank"
-          rel="noopener noreferrer"
+          target={isInternalNexuraLink ? "_self" : "_blank"}
+          rel={isInternalNexuraLink ? undefined : "noopener noreferrer"}
           className="border-b border-current/35 text-current transition-opacity hover:opacity-70"
         >
           {label}
@@ -96,8 +97,22 @@ const renderMessageText = (value: string) => {
 const CONTACT_FORM_TRIGGER_RE =
   /\b(contact|assessment|evaluation|operational-assessment|rendez[-\s]?vous|book\s+(a\s+)?(call|meeting)|schedule|speak\s+with|parler\s+a|prendre\s+rendez-vous|formulaire\s+de\s+contact)\b/;
 
+const PAYMENT_LINK_TRIGGER_RE =
+  /\b(stripe|checkout|payment\s+link|payment|lien\s+de\s+paiement|paiement)\b/;
+
 const CONTACT_PAGE_RE =
   /https?:\/\/nexuradata\.ca\/(?:fr|en)\/(?:contact|operational-assessment)|https?:\/\/nexuradata\.ca\/(?:contact|operational-assessment)|\/(?:fr|en)\/(?:contact|operational-assessment)|\/(?:contact|operational-assessment)/;
+
+const ASSESSMENT_TRIGGER_RE =
+  /\b(operational-assessment|assessment|evaluation|evaluation\s+gratuite|free\s+assessment)\b/;
+
+const USER_ASSESSMENT_INTENT_RE =
+  /\b(assessment|evaluation|évaluation|operational-assessment|faire\s+mon\s+assessment|start\s+(the\s+)?assessment|commencer\s+l[' ]?évaluation)\b/;
+
+const ASSESSMENT_PATH_BY_LOCALE = {
+  fr: "/fr/operational-assessment",
+  en: "/en/operational-assessment",
+} as const;
 
 const createChatSessionId = () => {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
@@ -106,6 +121,11 @@ const createChatSessionId = () => {
 
   return `chat_${Math.random().toString(36).slice(2, 12)}${Date.now().toString(36)}`;
 };
+
+const createPaymentLinkDraft = (isFr: boolean) =>
+  isFr
+    ? "Je veux un lien de paiement Stripe. Service: [preciser]. Demarrage souhaite: [date]."
+    : "I want a Stripe payment link. Service: [specify]. Preferred start date: [date].";
 
 const getStoredSessionId = () => {
   if (typeof window === "undefined") {
@@ -142,6 +162,7 @@ export function ChatWidget() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const persistedUserMessageIdsRef = useRef<Set<string>>(new Set());
+  const assessmentRedirectedMessageIdRef = useRef<string | null>(null);
 
   const hydrateMessagesFromHistory = (history: ChatMessage[], userId: string) => {
     persistedUserMessageIdsRef.current = new Set(
@@ -170,11 +191,42 @@ export function ChatWidget() {
   const isFr = locale === "fr";
 
   const lastAssistantMessage = [...messages].reverse().find((message) => message.role === "assistant");
+  const lastUserMessage = [...messages].reverse().find((message) => message.role === "user");
   const lastAssistantText = cleanAssistantText(extractMessageText(lastAssistantMessage?.parts as Array<{ type: string; text?: string }> | undefined)).toLowerCase();
+  const lastUserText = cleanAssistantText(extractMessageText(lastUserMessage?.parts as Array<{ type: string; text?: string }> | undefined)).toLowerCase();
   const showInlineContactForm =
     messages.length > 0 &&
-    contactStatus !== "success" &&
-    (CONTACT_FORM_TRIGGER_RE.test(lastAssistantText) || CONTACT_PAGE_RE.test(lastAssistantText));
+    (
+      CONTACT_FORM_TRIGGER_RE.test(lastAssistantText) ||
+      PAYMENT_LINK_TRIGGER_RE.test(lastAssistantText) ||
+      CONTACT_PAGE_RE.test(lastAssistantText)
+    );
+  const showAssessmentCta = messages.length > 0 && ASSESSMENT_TRIGGER_RE.test(lastAssistantText);
+  const assessmentPath = isFr ? ASSESSMENT_PATH_BY_LOCALE.fr : ASSESSMENT_PATH_BY_LOCALE.en;
+  const shouldAutoRedirectToAssessment =
+    Boolean(lastAssistantMessage?.id) &&
+    showAssessmentCta &&
+    USER_ASSESSMENT_INTENT_RE.test(lastUserText);
+
+  useEffect(() => {
+    if (!shouldAutoRedirectToAssessment || !lastAssistantMessage?.id) {
+      return;
+    }
+
+    if (assessmentRedirectedMessageIdRef.current === lastAssistantMessage.id) {
+      return;
+    }
+
+    assessmentRedirectedMessageIdRef.current = lastAssistantMessage.id;
+
+    const timeout = window.setTimeout(() => {
+      window.location.assign(assessmentPath);
+    }, 350);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, [shouldAutoRedirectToAssessment, lastAssistantMessage?.id, assessmentPath]);
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -529,11 +581,13 @@ export function ChatWidget() {
                           "Que fait NEXURA exactement?",
                           "Combien coûte une évaluation?",
                           "Comment fonctionne l'automatisation?",
+                          "Je veux un lien de paiement sécurisé",
                         ]
                       : [
                           "What does NEXURA do exactly?",
                           "How much does an assessment cost?",
                           "How does the automation work?",
+                          "I want a secure payment link",
                         ]
                     ).map((prompt) => (
                       <button
@@ -580,6 +634,17 @@ export function ChatWidget() {
                     {isFr ? "Formulaire de contact rapide" : "Quick contact form"}
                   </p>
                   <form onSubmit={handleInlineContactSubmit} className="space-y-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setContactMessage(createPaymentLinkDraft(isFr));
+                        setContactStatus("idle");
+                        setContactError(null);
+                      }}
+                      className="w-full border border-foreground/25 bg-background px-2.5 py-2 text-[11px] font-mono uppercase tracking-wider hover:bg-foreground/5"
+                    >
+                      {isFr ? "Pre-remplir: demande de lien Stripe" : "Prefill: Stripe link request"}
+                    </button>
                     <input
                       value={contactName}
                       onChange={(e) => setContactName(e.target.value)}
@@ -615,13 +680,29 @@ export function ChatWidget() {
                     </button>
                     {contactStatus === "success" && (
                       <p className="text-[11px] text-emerald-600">
-                        {isFr ? "Message envoye. On vous recontacte rapidement." : "Message sent. We will get back to you shortly."}
+                        {isFr
+                          ? "Message envoye. Vous recevez rapidement la prochaine etape, incluant le lien de paiement si demande."
+                          : "Message sent. You will quickly receive next steps, including the payment link when requested."}
                       </p>
                     )}
                     {contactStatus === "error" && contactError && (
                       <p className="text-[11px] text-red-600">{contactError}</p>
                     )}
                   </form>
+                </div>
+              )}
+
+              {showAssessmentCta && (
+                <div className="border border-foreground/20 bg-foreground/[0.03] p-3">
+                  <p className="text-xs font-mono uppercase tracking-wider text-foreground/60 mb-2">
+                    {isFr ? "Action recommandee" : "Recommended action"}
+                  </p>
+                  <a
+                    href={assessmentPath}
+                    className="block w-full border border-foreground bg-foreground text-background px-3 py-2 text-center text-xs font-mono uppercase tracking-wider"
+                  >
+                    {isFr ? "Ouvrir l'evaluation gratuite" : "Open free assessment"}
+                  </a>
                 </div>
               )}
 

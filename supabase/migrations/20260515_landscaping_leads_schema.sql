@@ -12,25 +12,25 @@ CREATE TABLE IF NOT EXISTS leads_landscaping (
   city TEXT,
   postal_code TEXT,
   email TEXT,
-  
+
   -- Lead scoring
   score INT DEFAULT 5, -- 1-10 scale
   intent_signal TEXT, -- "new_property" | "maintenance_due" | "commercial_growth"
-  
+
   -- Status pipeline
   status TEXT DEFAULT 'new', -- "new" | "contacted" | "qualified" | "booked" | "archived"
   contact_channel TEXT DEFAULT 'whatsapp', -- "whatsapp" | "sms" | "email" | "phone"
-  
+
   -- Response tracking
   first_contact_at TIMESTAMP,
   responded_at TIMESTAMP,
   response_type TEXT, -- "positive" | "negative" | "maybe" | null
-  
+
   -- Booking
   booked_at TIMESTAMP,
   booking_value NUMERIC,
   booking_type TEXT, -- "landscaping" | "window_cleaning" | "both"
-  
+
   -- Metadata
   source TEXT DEFAULT 'google_maps', -- "google_maps" | "linkedin" | "facebook" | "manual"
   created_at TIMESTAMP DEFAULT NOW(),

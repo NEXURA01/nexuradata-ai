@@ -27,29 +27,72 @@
   "problem": {
     "title": "Le problème",
     "items": [
-      { "label": "Trop d'outils", "desc": "Systèmes éparpillés qui ne communiquent pas" },
-      { "label": "Workflows désorganisés", "desc": "Pas de processus clair, des choses passent entre les mailles" },
-      { "label": "Tâches manuelles", "desc": "Travail répétitif qui épuise votre équipe" },
-      { "label": "Pas de visibilité", "desc": "Difficile de voir ce qui se passe dans les opérations" },
-      { "label": "Coordination difficile", "desc": "Équipes en silos sans synchronisation" }
+      {
+        "label": "Trop d'outils",
+        "desc": "Systèmes éparpillés qui ne communiquent pas"
+      },
+      {
+        "label": "Workflows désorganisés",
+        "desc": "Pas de processus clair, des choses passent entre les mailles"
+      },
+      {
+        "label": "Tâches manuelles",
+        "desc": "Travail répétitif qui épuise votre équipe"
+      },
+      {
+        "label": "Pas de visibilité",
+        "desc": "Difficile de voir ce qui se passe dans les opérations"
+      },
+      {
+        "label": "Coordination difficile",
+        "desc": "Équipes en silos sans synchronisation"
+      }
     ]
   },
   "solution": {
     "title": "La solution",
     "items": [
-      { "label": "Automatisation des workflows", "desc": "Automatisez les tâches répétitives et les transferts" },
-      { "label": "Tableau de bord opérationnel", "desc": "Voyez tout au même endroit" },
-      { "label": "Analyse IA des opérations", "desc": "Obtenez des insights sur les goulots et améliorations" },
-      { "label": "Opérations centralisées", "desc": "Un système, une source de vérité" }
+      {
+        "label": "Automatisation des workflows",
+        "desc": "Automatisez les tâches répétitives et les transferts"
+      },
+      {
+        "label": "Tableau de bord opérationnel",
+        "desc": "Voyez tout au même endroit"
+      },
+      {
+        "label": "Analyse IA des opérations",
+        "desc": "Obtenez des insights sur les goulots et améliorations"
+      },
+      {
+        "label": "Opérations centralisées",
+        "desc": "Un système, une source de vérité"
+      }
     ]
   },
   "howItWorks": {
     "title": "Comment ça marche",
     "steps": [
-      { "num": "01", "label": "Soumettez l'évaluation", "desc": "Parlez-nous de vos opérations" },
-      { "num": "02", "label": "L'IA analyse les opérations", "desc": "On identifie la complexité et la portée" },
-      { "num": "03", "label": "NEXURA recommande une structure", "desc": "Vous recevez un plan clair" },
-      { "num": "04", "label": "Les workflows deviennent centralisés", "desc": "Les opérations roulent" }
+      {
+        "num": "01",
+        "label": "Soumettez l'évaluation",
+        "desc": "Parlez-nous de vos opérations"
+      },
+      {
+        "num": "02",
+        "label": "L'IA analyse les opérations",
+        "desc": "On identifie la complexité et la portée"
+      },
+      {
+        "num": "03",
+        "label": "NEXURA recommande une structure",
+        "desc": "Vous recevez un plan clair"
+      },
+      {
+        "num": "04",
+        "label": "Les workflows deviennent centralisés",
+        "desc": "Les opérations roulent"
+      }
     ]
   },
   "reviews": {
@@ -79,10 +122,22 @@
   "workflowPreview": {
     "title": "Ce qui arrive après l'évaluation",
     "items": [
-      { "status": "complete", "label": "Évaluation reçue" },
-      { "status": "complete", "label": "Analyse IA complétée" },
-      { "status": "complete", "label": "Recommandation préparée" },
-      { "status": "pending", "label": "Initialisation du workflow en attente" }
+      {
+        "status": "complete",
+        "label": "Évaluation reçue"
+      },
+      {
+        "status": "complete",
+        "label": "Analyse IA complétée"
+      },
+      {
+        "status": "complete",
+        "label": "Recommandation préparée"
+      },
+      {
+        "status": "pending",
+        "label": "Initialisation du workflow en attente"
+      }
     ]
   },
   "assessment": {
@@ -98,7 +153,12 @@
       "toolsPlaceholder": "Listez les outils principaux (Slack, Notion, Airtable, etc.)",
       "teams": "Nombre d'équipes",
       "urgency": "Urgence",
-      "urgencyOptions": ["Basse", "Moyenne", "Haute", "Critique"],
+      "urgencyOptions": [
+        "Basse",
+        "Moyenne",
+        "Haute",
+        "Critique"
+      ],
       "submit": "Générer l'estimation opérationnelle"
     },
     "result": {
@@ -125,9 +185,18 @@
   "paymentSuccess": {
     "title": "Paiement confirmé",
     "items": [
-      { "status": "complete", "label": "Paiement confirmé" },
-      { "status": "complete", "label": "Évaluation initialisée" },
-      { "status": "pending", "label": "Revue humaine en attente" }
+      {
+        "status": "complete",
+        "label": "Paiement confirmé"
+      },
+      {
+        "status": "complete",
+        "label": "Évaluation initialisée"
+      },
+      {
+        "status": "pending",
+        "label": "Revue humaine en attente"
+      }
     ],
     "nextStep": "Notre équipe examinera votre évaluation dans les 24-48 heures.",
     "cta": "Voir le statut de l'évaluation"
@@ -174,12 +243,36 @@
     "subtitle": "Fourchettes, pas prix fixes. Chaque opération est unique.",
     "note": "En CAD. Soumission finale après évaluation.",
     "items": [
-      { "title": "Évaluation", "range": "Gratuit", "desc": "Analyse IA de vos opérations" },
-      { "title": "Revue", "range": "250$", "desc": "Revue + recommandations détaillées" },
-      { "title": "Automatisation", "range": "2.5K–15K$", "desc": "Selon complexité et intégrations" },
-      { "title": "Tableau de bord", "range": "5K–25K$", "desc": "Personnalisé pour vos opérations" },
-      { "title": "Infrastructure complet", "range": "15K–75K$+", "desc": "Transformation système complète" },
-      { "title": "Support mensuel", "range": "500–2.5K$/m", "desc": "Maintenance et améliorations" }
+      {
+        "title": "Évaluation",
+        "range": "Gratuit",
+        "desc": "Analyse IA de vos opérations"
+      },
+      {
+        "title": "Revue",
+        "range": "250$",
+        "desc": "Revue + recommandations détaillées"
+      },
+      {
+        "title": "Automatisation",
+        "range": "2.5K–15K$",
+        "desc": "Selon complexité et intégrations"
+      },
+      {
+        "title": "Tableau de bord",
+        "range": "5K–25K$",
+        "desc": "Personnalisé pour vos opérations"
+      },
+      {
+        "title": "Infrastructure complet",
+        "range": "15K–75K$+",
+        "desc": "Transformation système complète"
+      },
+      {
+        "title": "Support mensuel",
+        "range": "500–2.5K$/m",
+        "desc": "Maintenance et améliorations"
+      }
     ],
     "cta": "Démarrer l'évaluation"
   },

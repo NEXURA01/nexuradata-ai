@@ -1,0 +1,114 @@
+name: Redirect smoke-test
+
+# Runs after every Vercel deployment finishes. If any redirect rule from
+# vercel.json doesn't behave as expected, this job fails — and because it's
+# a required check on the production environment, Vercel will refuse to
+# promote the deployment.
+#
+# Wiring:
+#   1. In Vercel → Project → Settings → Git, enable "GitHub Deployment
+#      events" so Vercel posts deployment_status events to GitHub.
+#   2. In GitHub → Settings → Environments → Production → Deployment
+#      protection rules, add this workflow as a required status check
+#      (or use environment "wait-for-checks" gate).
+#   3. Optionally also run on workflow_dispatch for manual re-runs.
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Base URL to test (e.g. https://nexuradata.ca)"
+        required: false
+        default: "https://nexuradata.ca"
+
+permissions:
+  contents: read
+  deployments: write
+  statuses: write
+
+jobs:
+  smoketest:
+    # Only run on successful deployments (skip pending/failed/in_progress)
+    # and skip preview deploys for non-production environments unless you
+    # want to gate previews too — remove the environment check to test all.
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve target URL
+        id: target
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            URL="${{ github.event.inputs.base_url }}"
+            CHECK_HOST_RULES="auto"
+            ALLOW_PROTECTED_BASE_401="auto"
+          else
+            URL="${{ github.event.deployment_status.environment_url }}"
+            if [ -z "$URL" ] || [ "$URL" = "null" ]; then
+              URL="${{ github.event.deployment_status.target_url }}"
+            fi
+            if [ -z "$URL" ] || [ "$URL" = "null" ]; then
+              echo "Could not resolve deployment URL from deployment_status payload" >&2
+              exit 1
+            fi
+
+            # Only run global host canonicalization checks for production deploys.
+            if [ "${{ github.event.deployment.environment }}" = "production" ]; then
+              CHECK_HOST_RULES="true"
+            else
+              CHECK_HOST_RULES="false"
+            fi
+
+            # Dynamic mode: script decides whether 401 skip is allowed from target host.
+            ALLOW_PROTECTED_BASE_401="auto"
+          fi
+          echo "Testing URL: $URL"
+          echo "CHECK_HOST_RULES: $CHECK_HOST_RULES"
+          echo "ALLOW_PROTECTED_BASE_401: $ALLOW_PROTECTED_BASE_401"
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "check_host_rules=$CHECK_HOST_RULES" >> "$GITHUB_OUTPUT"
+          echo "allow_protected_base_401=$ALLOW_PROTECTED_BASE_401" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for deployment to be reachable
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sS -I --max-time 8 "${{ steps.target.outputs.url }}" >/dev/null 2>&1; then
+              echo "Reachable after ${i} attempt(s)"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Deployment never became reachable" >&2
+          exit 1
+
+      - name: Run redirect smoke-test
+        env:
+          CHECK_HOST_RULES: ${{ steps.target.outputs.check_host_rules }}
+          ALLOW_PROTECTED_BASE_401: ${{ steps.target.outputs.allow_protected_base_401 }}
+        run: python3 scripts/redirect-smoketest.py "${{ steps.target.outputs.url }}"
+
+      - name: Mark deployment as failed on smoketest failure
+        if: failure() && github.event_name == 'deployment_status'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment.id,
+              state: 'failure',
+              description: 'Redirect smoke-test failed — promotion blocked',
+              environment_url: '${{ steps.target.outputs.url }}',
+            });

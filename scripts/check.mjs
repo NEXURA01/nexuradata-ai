@@ -19,6 +19,14 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const errors = [];
+const NEXT_CONFIG_FILES = [
+    "next.config.ts",
+    "next.config.js",
+    "next.config.mjs",
+    "next.config.cjs",
+    "next.config.mts",
+    "next.config.cts",
+];
 
 function fail(rule, detail) {
     errors.push({ rule, detail });
@@ -35,7 +43,46 @@ if (existsSync(headersPath)) {
         );
     }
 } else {
-    fail("CSP_MISSING", "_headers file not found.");
+    let cspFoundIn = null;
+
+    for (const configFile of NEXT_CONFIG_FILES) {
+        const configPath = join(ROOT, configFile);
+        if (!existsSync(configPath)) {
+            continue;
+        }
+        const nextConfig = readFileSync(configPath, "utf8");
+        if (/Content-Security-Policy/i.test(nextConfig)) {
+            cspFoundIn = configFile;
+            break;
+        }
+    }
+
+    if (!cspFoundIn) {
+        const vercelConfigPath = join(ROOT, "vercel.json");
+        if (existsSync(vercelConfigPath)) {
+            const vercelConfigRaw = readFileSync(vercelConfigPath, "utf8");
+            try {
+                const vercelConfig = JSON.parse(vercelConfigRaw);
+                const headerRules = Array.isArray(vercelConfig.headers) ? vercelConfig.headers : [];
+                const hasCspHeader = headerRules.some((rule) => Array.isArray(rule?.headers)
+                    && rule.headers.some((h) => String(h?.key || "").toLowerCase() === "content-security-policy"));
+                if (hasCspHeader) {
+                    cspFoundIn = "vercel.json";
+                }
+            } catch {
+                if (/Content-Security-Policy/i.test(vercelConfigRaw)) {
+                    cspFoundIn = "vercel.json";
+                }
+            }
+        }
+    }
+
+    if (!cspFoundIn) {
+        fail(
+            "CSP_MISSING",
+            "No Content-Security-Policy found in _headers, any next.config.* file, or vercel.json."
+        );
+    }
 }
 
 // ─── 2. No hardcoded secrets in functions/ ───────────────────────────────────

@@ -8,6 +8,10 @@ import { guardPublicPost, jsonWithSecurity } from "@/lib/request-guard";
 
 export const maxDuration = 30;
 
+const MAX_MESSAGES = 10;
+const MAX_MESSAGE_CHARS = 1000;
+const MAX_TOTAL_CHARS = 6000;
+
 const SYSTEM_EN = `You are NEXURA's AI assistant — concise, professional, embedded on nexuradata.ca.
 
 NEXURA is an operational intelligence company based in Montreal, Canada.
@@ -60,6 +64,77 @@ RÈGLES:
 - N'inventez rien — si incertain, dites-le
 - Si hors sujet, redirigez poliment`;
 
+type ChatRequestBody = {
+  messages?: UIMessage[];
+  locale?: string;
+};
+
+function normalizeLocale(locale: string | undefined) {
+  return locale === "fr" ? "fr" : "en";
+}
+
+function extractTextParts(message: UIMessage) {
+  if (!Array.isArray(message.parts)) {
+    return [] as string[];
+  }
+
+  return message.parts
+    .filter((part): part is { type: "text"; text: string } => part.type === "text" && typeof part.text === "string")
+    .map((part) => part.text.trim())
+    .filter(Boolean);
+}
+
+function normalizeMessages(messages: UIMessage[]) {
+  const trimmedMessages = messages.slice(-MAX_MESSAGES);
+  const normalizedMessages: UIMessage[] = [];
+  let totalChars = 0;
+
+  for (const message of trimmedMessages) {
+    if (message.role !== "user" && message.role !== "assistant") {
+      continue;
+    }
+
+    const textParts = extractTextParts(message);
+    if (textParts.length === 0) {
+      continue;
+    }
+
+    const normalizedParts = [] as { type: "text"; text: string }[];
+    for (const text of textParts) {
+      const truncated = text.slice(0, MAX_MESSAGE_CHARS);
+      totalChars += truncated.length;
+      normalizedParts.push({ type: "text", text: truncated });
+    }
+
+    normalizedMessages.push({
+      ...message,
+      parts: normalizedParts,
+    });
+  }
+
+  if (normalizedMessages.length === 0) {
+    return { ok: false as const, error: "invalid-chat-payload" };
+  }
+
+  if (totalChars > MAX_TOTAL_CHARS) {
+    return { ok: false as const, error: "chat-payload-too-large" };
+  }
+
+  const latestUserMessage = [...normalizedMessages].reverse().find((message) => message.role === "user");
+  const latestUserText = latestUserMessage
+    ? extractTextParts(latestUserMessage).join(" ").trim()
+    : "";
+
+  if (!latestUserText || latestUserText.length < 2) {
+    return { ok: false as const, error: "chat-message-too-short" };
+  }
+
+  return {
+    ok: true as const,
+    messages: normalizedMessages,
+  };
+}
+
 export async function POST(req: Request) {
   const guarded = guardPublicPost(req, { namespace: "chat", maxRequests: 8 });
 
@@ -67,24 +142,25 @@ export async function POST(req: Request) {
     return guarded;
   }
 
-  const body = (await req.json().catch(() => ({}))) as { messages?: UIMessage[]; locale?: string };
-  const messages = Array.isArray(body.messages) ? body.messages : [];
-  const locale = body.locale;
+  const body = (await req.json().catch(() => ({}))) as ChatRequestBody;
+  const candidateMessages = Array.isArray(body.messages) ? body.messages : [];
+  const locale = normalizeLocale(body.locale);
+  const normalized = normalizeMessages(candidateMessages);
 
-  if (!messages.length) {
-    return jsonWithSecurity({ ok: false, error: "invalid-chat-payload" }, { status: 400 });
+  if (!normalized.ok) {
+    return jsonWithSecurity({ ok: false, error: normalized.error }, { status: 400 });
   }
 
   const result = streamText({
     model: "openai/gpt-4o-mini",
     system: locale === "fr" ? SYSTEM_FR : SYSTEM_EN,
-    messages: await convertToModelMessages(messages),
+    messages: await convertToModelMessages(normalized.messages),
     maxOutputTokens: 500,
     abortSignal: req.signal,
   });
 
   return result.toUIMessageStreamResponse({
-    originalMessages: messages,
+    originalMessages: normalized.messages,
     consumeSseStream: consumeStream,
   });
 }

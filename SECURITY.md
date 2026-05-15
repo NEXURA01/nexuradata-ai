@@ -10,13 +10,32 @@ In scope:
 - Case status lookup (`/api/status`)
 - Stripe webhook handler (`/api/stripe-webhook`)
 - Operator console (`/operations/`, `/api/ops/*`)
-- Cloudflare Pages configuration (`_headers`, `_redirects`)
+- Security headers and redirects configuration (`next.config.ts`, `vercel.json`, redirect smoke-test workflow)
 
 Out of scope:
 
 - Third-party services (Stripe, Resend, Supabase, Neon, Cloudflare)
 - Social engineering or phishing
 - Physical infrastructure
+
+## Security Controls
+
+- Least privilege: access to production systems and secrets is limited by role.
+- Secrets handling: no plaintext secrets in source control; secrets are stored in platform-managed secret stores.
+- Transport and storage: encryption in transit and at rest is required for customer and operational data.
+- Change control: critical changes are validated by CI checks before merge and deployment.
+- Monitoring: operational and deployment workflows are monitored, with security findings tracked to remediation.
+
+## GitHub Marketplace Application Security
+
+For marketplace-facing integrations and automations, we apply the following baseline:
+
+- Permission minimization: only required GitHub App permissions are requested.
+- Webhook verification: webhook signatures are validated before processing.
+- Tenant isolation: customer data is logically separated by organization/repository boundary.
+- Retention and deletion: data retention is limited to operational needs; uninstall/offboarding triggers token revocation and scheduled data cleanup.
+- Auditability: security-relevant administrative and integration events are logged.
+- Vulnerability management: dependency and code scanning are run continuously; critical issues are prioritized for immediate remediation.
 
 ## Reporting a Vulnerability
 
@@ -32,6 +51,8 @@ Include:
 4. Your contact information (optional)
 
 Do **not** open a public GitHub issue for security vulnerabilities.
+
+If encrypted disclosure is preferred, mention this in your email and we will coordinate a secure channel.
 
 ## Response Commitment
 

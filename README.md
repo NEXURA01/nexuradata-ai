@@ -67,7 +67,7 @@ Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md).
 	- la signature CORS des handlers
 	- la synchronisation de `release-cloudflare/` avec la source
 - Le workflow `Redirect smoke-test` valide les redirections apres deploiement Vercel et gere dynamiquement les previews proteges (401) sans bloquer les validations de production.
-- Les vulnerabilites doivent etre rapportees en prive selon [`SECURITY.md`](SECURITY.md).
+- Les vulnerabilites doivent etre rapportees en prive selon [`SECURITY.md`](SECURITY.md), qui precise aussi les controles de securite et la baseline de securite pour une application distribuee via GitHub Marketplace.
 
 ## Commandes
 

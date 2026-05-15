@@ -15,6 +15,16 @@ export async function POST(req: NextRequest) {
   try {
     const configuredApiKey = process.env.LEADS_API_KEY;
     const requestApiKey = req.headers.get("x-api-key");
+    const requireApiKey =
+      process.env.NODE_ENV === "production" ||
+      process.env.LEADS_API_KEY_REQUIRED === "true";
+
+    if (requireApiKey && !configuredApiKey) {
+      return NextResponse.json(
+        { error: "LEADS_API_KEY is not configured" },
+        { status: 500 }
+      );
+    }
 
     if (configuredApiKey && requestApiKey !== configuredApiKey) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

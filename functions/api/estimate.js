@@ -1,5 +1,5 @@
 import { generateEstimate } from "../_lib/ai-estimator.js";
-import { sendTeamOperationalAssessmentEmail } from "../_lib/email.js";
+import { sendClientOperationalAssessmentEmail, sendTeamOperationalAssessmentEmail } from "../_lib/email.js";
 import { json, methodNotAllowed, onOptions, parsePayload } from "../_lib/http.js";
 import { hasSupabaseServiceKey, supabaseInsert } from "../_lib/supabase.js";
 
@@ -125,6 +125,7 @@ export const onRequestPost = async (context) => {
     });
     const workflowCase = workflowCaseInsert?.[0] || null;
     let teamDelivery = { sent: false, reason: "not-attempted" };
+    let clientDelivery = { sent: false, reason: "not-attempted" };
 
     try {
       teamDelivery = await sendTeamOperationalAssessmentEmail(
@@ -146,6 +147,26 @@ export const onRequestPost = async (context) => {
       teamDelivery = { sent: false, reason: "notification-error" };
     }
 
+    try {
+      clientDelivery = await sendClientOperationalAssessmentEmail(
+        context.env,
+        {
+          payload,
+          lead,
+          estimate,
+          workflowCase
+        },
+        context.request.url
+      );
+    } catch (error) {
+      console.error(JSON.stringify({
+        timestamp: new Date().toISOString(),
+        context: "client_assessment_report_error",
+        error: error.message
+      }));
+      clientDelivery = { sent: false, reason: "notification-error" };
+    }
+
     return json({
       ok: true,
       lead,
@@ -156,7 +177,8 @@ export const onRequestPost = async (context) => {
       },
       workflow_case: workflowCase,
       delivery: {
-        team: teamDelivery.sent ? "sent" : teamDelivery.reason
+        team: teamDelivery.sent ? "sent" : teamDelivery.reason,
+        client_report: clientDelivery.sent ? "sent" : clientDelivery.reason
       },
       next: "human_validation"
     });

@@ -12,7 +12,9 @@ vi.mock("@neondatabase/serverless", () => ({
 import {
   sendLabNotificationEmail,
   sendTeamOperationalAssessmentEmail,
+  sendClientOperationalAssessmentEmail,
   sendTeamPaymentCompletedEmail,
+  sendClientOperationalPaymentFollowUpEmail,
   sendClientAccessEmail,
   sendClientStatusEmail,
   sendClientPaymentLinkEmail
@@ -170,6 +172,64 @@ describe("team notification emails", () => {
     expect(body.text).toContain("Workflow centralise");
   });
 
+  it("sends the client an operational assessment report", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(RESEND_OK());
+    const result = await sendClientOperationalAssessmentEmail(
+      baseEnv,
+      {
+        payload: {
+          organization: "NEXURA Client",
+          contact_name: "Marie",
+          email: "marie@test.com",
+          urgency: "Cette semaine",
+          workflow_summary: "Le client veut centraliser les demandes et la validation interne."
+        },
+        lead: { id: "lead-1" },
+        estimate: {
+          estimated_min: 150000,
+          estimated_max: 300000,
+          confidence: "medium",
+          recommended_scope: "Workflow centralise",
+          reasoning: ["Plusieurs validations internes doivent être centralisées."],
+          included_layers: ["Cartographie du flux", "Validation humaine"],
+          missing_information: ["Liste exacte des outils à intégrer"]
+        },
+        workflowCase: { id: "workflow-1" }
+      },
+      "https://nexuradata.ca/api/estimate"
+    );
+
+    expect(result.sent).toBe(true);
+    const [, options] = fetchSpy.mock.calls[0];
+    expect(options.headers["Idempotency-Key"]).toBe("client-assessment-report-lead-1-workflow-1-marie-test-com");
+    const body = JSON.parse(options.body);
+    expect(body.to).toEqual(["marie@test.com"]);
+    expect(body.subject).toContain("Rapport d'évaluation opérationnelle");
+    expect(body.subject).toContain("NEXURA Client");
+    expect(body.text).toContain("RAPPORT INDICATIF");
+    expect(body.text).toContain("Workflow centralise");
+    expect(body.text).toContain("Fourchette indicative");
+    expect(body.text).toMatch(/validation humaine/i);
+    expect(body.text).toContain("Stripe");
+    expect(body.text).not.toMatch(/newsletter|infolettre|subscribe|abonner/i);
+  });
+
+  it("does not attempt a client report without a client email", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(RESEND_OK());
+    const result = await sendClientOperationalAssessmentEmail(
+      baseEnv,
+      {
+        payload: { organization: "NEXURA Client" },
+        estimate: { recommended_scope: "Workflow centralise" }
+      },
+      "https://nexuradata.ca/api/estimate"
+    );
+
+    expect(result.sent).toBe(false);
+    expect(result.reason).toBe("missing-client-email");
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
   it("notifies the team when an operational payment is confirmed", async () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(RESEND_OK());
     const result = await sendTeamPaymentCompletedEmail(
@@ -200,6 +260,54 @@ describe("team notification emails", () => {
     expect(body.text).toContain("Decision rapide: APPROVE");
     expect(body.text).toContain("PAIEMENT");
     expect(body.text).toContain("PAY-1");
+  });
+
+  it("sends the client an automated follow-up when operational payment is confirmed", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(RESEND_OK());
+    const result = await sendClientOperationalPaymentFollowUpEmail(
+      baseEnv,
+      {
+        payment: {
+          id: "payment-1",
+          payment_request_id: "PAY-1",
+          stripe_session_id: "cs_test",
+          amount: 25000,
+          currency: "cad",
+          customer_email: "client@test.com",
+          workflow_case_id: "workflow-1"
+        },
+        workflowCase: { id: "workflow-1" },
+        event: { id: "evt-1", type: "checkout.session.completed", data: { object: { id: "cs_test" } } }
+      },
+      "https://nexuradata.ca/api/stripe-webhook"
+    );
+
+    expect(result.sent).toBe(true);
+    const [, options] = fetchSpy.mock.calls[0];
+    expect(options.headers["Idempotency-Key"]).toBe("client-payment-follow-up-evt-1-payment-1-cs_test-client-test-com");
+    const body = JSON.parse(options.body);
+    expect(body.to).toEqual(["client@test.com"]);
+    expect(body.subject).toContain("Paiement confirmé");
+    expect(body.text).toContain("SUIVI AUTOMATISÉ");
+    expect(body.text).toContain("revue humaine");
+    expect(body.text).toContain("ne lance pas automatiquement une implémentation complète");
+    expect(body.text).not.toMatch(/newsletter|infolettre|subscribe|abonner/i);
+  });
+
+  it("does not attempt a payment follow-up without a client email", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(RESEND_OK());
+    const result = await sendClientOperationalPaymentFollowUpEmail(
+      baseEnv,
+      {
+        payment: { id: "payment-1", amount: 25000, currency: "cad" },
+        event: { id: "evt-1", data: { object: { id: "cs_test" } } }
+      },
+      "https://nexuradata.ca/api/stripe-webhook"
+    );
+
+    expect(result.sent).toBe(false);
+    expect(result.reason).toBe("missing-client-email");
+    expect(fetchSpy).not.toHaveBeenCalled();
   });
 });
 

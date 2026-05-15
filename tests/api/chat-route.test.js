@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const convertToModelMessagesMock = vi.fn(async (messages) => messages);
+const normalizeSessionTokenMock = vi.fn((value) => typeof value === "string" ? value : null);
+const recordChatAttemptMock = vi.fn(async () => undefined);
 const toUIMessageStreamResponseMock = vi.fn(() => new Response("ok", { status: 200 }));
 const streamTextMock = vi.fn(() => ({
   toUIMessageStreamResponse: toUIMessageStreamResponseMock,
@@ -12,6 +14,11 @@ vi.mock("ai", () => ({
   streamText: streamTextMock,
 }));
 
+vi.mock("@/lib/chat-storage", () => ({
+  normalizeSessionToken: normalizeSessionTokenMock,
+  recordChatAttempt: recordChatAttemptMock,
+}));
+
 vi.mock("@/lib/request-guard", async () => {
   const actual = await import("../../lib/request-guard.ts");
   return actual;
@@ -21,6 +28,8 @@ describe("POST /api/chat", () => {
   beforeEach(async () => {
     vi.resetModules();
     convertToModelMessagesMock.mockClear();
+    normalizeSessionTokenMock.mockClear();
+    recordChatAttemptMock.mockClear();
     streamTextMock.mockClear();
     toUIMessageStreamResponseMock.mockClear();
     const { resetRequestGuardForTests } = await import("../../lib/request-guard.ts");
@@ -53,6 +62,10 @@ describe("POST /api/chat", () => {
       error: "invalid-chat-payload",
     });
     expect(streamTextMock).not.toHaveBeenCalled();
+    expect(recordChatAttemptMock).toHaveBeenCalledWith(expect.objectContaining({
+      outcome: "rejected",
+      errorCode: "invalid-chat-payload",
+    }));
   });
 
   it("rejects very short user prompts", async () => {
@@ -72,6 +85,11 @@ describe("POST /api/chat", () => {
       error: "chat-message-too-short",
     });
     expect(streamTextMock).not.toHaveBeenCalled();
+    expect(recordChatAttemptMock).toHaveBeenCalledWith(expect.objectContaining({
+      outcome: "rejected",
+      errorCode: "chat-message-too-short",
+      locale: "fr",
+    }));
   });
 
   it("rejects oversized payloads", async () => {
@@ -91,6 +109,11 @@ describe("POST /api/chat", () => {
       error: "chat-payload-too-large",
     });
     expect(streamTextMock).not.toHaveBeenCalled();
+    expect(recordChatAttemptMock).toHaveBeenCalledWith(expect.objectContaining({
+      outcome: "rejected",
+      errorCode: "chat-payload-too-large",
+      locale: "en",
+    }));
   });
 
   it("normalizes incoming messages before sending them to the model", async () => {
@@ -113,10 +136,15 @@ describe("POST /api/chat", () => {
       },
     ];
 
-    const response = await POST(makeRequest({ locale: "es", messages }));
+    const response = await POST(makeRequest({ locale: "es", sessionId: "chat_session_12345", messages }));
 
     expect(response.status).toBe(200);
     expect(convertToModelMessagesMock).toHaveBeenCalledTimes(1);
+    expect(recordChatAttemptMock).toHaveBeenCalledWith(expect.objectContaining({
+      outcome: "accepted",
+      locale: "en",
+      sessionToken: "chat_session_12345",
+    }));
     const normalizedMessages = convertToModelMessagesMock.mock.calls[0][0];
     expect(normalizedMessages).toHaveLength(9);
     expect(normalizedMessages.every((message) => message.role === "user" || message.role === "assistant")).toBe(true);

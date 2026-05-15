@@ -4,6 +4,7 @@ import {
   streamText,
   UIMessage,
 } from "ai";
+import { normalizeSessionToken, recordChatAttempt } from "@/lib/chat-storage";
 import { guardPublicPost, jsonWithSecurity } from "@/lib/request-guard";
 
 export const maxDuration = 30;
@@ -67,6 +68,7 @@ RÈGLES:
 type ChatRequestBody = {
   messages?: UIMessage[];
   locale?: string;
+  sessionId?: string;
 };
 
 function normalizeLocale(locale: string | undefined) {
@@ -135,21 +137,80 @@ function normalizeMessages(messages: UIMessage[]) {
   };
 }
 
-export async function POST(req: Request) {
-  const guarded = guardPublicPost(req, { namespace: "chat", maxRequests: 8 });
+function summarizeMessages(messages: UIMessage[]) {
+  let messageCount = 0;
+  let totalChars = 0;
+  let latestUserMessage = "";
 
-  if (guarded) {
-    return guarded;
+  for (const message of messages) {
+    if (message.role !== "user" && message.role !== "assistant") {
+      continue;
+    }
+
+    const textParts = extractTextParts(message);
+    if (textParts.length === 0) {
+      continue;
+    }
+
+    messageCount += 1;
+
+    for (const text of textParts) {
+      totalChars += text.length;
+    }
+
+    if (message.role === "user") {
+      latestUserMessage = textParts.join(" ").trim();
+    }
   }
 
+  return {
+    messageCount,
+    totalChars,
+    latestUserMessage,
+  };
+}
+
+export async function POST(req: Request) {
   const body = (await req.json().catch(() => ({}))) as ChatRequestBody;
   const candidateMessages = Array.isArray(body.messages) ? body.messages : [];
   const locale = normalizeLocale(body.locale);
+  const sessionToken = normalizeSessionToken(body.sessionId);
+  const candidateSummary = summarizeMessages(candidateMessages);
+  const guarded = guardPublicPost(req, { namespace: "chat", maxRequests: 8 });
+
+  if (guarded) {
+    await recordChatAttempt({
+      request: req,
+      sessionToken,
+      locale,
+      outcome: "rejected",
+      errorCode: guarded.status === 429 ? "rate-limited" : "forbidden",
+      ...candidateSummary,
+    });
+    return guarded;
+  }
+
   const normalized = normalizeMessages(candidateMessages);
 
   if (!normalized.ok) {
+    await recordChatAttempt({
+      request: req,
+      sessionToken,
+      locale,
+      outcome: "rejected",
+      errorCode: normalized.error,
+      ...candidateSummary,
+    });
     return jsonWithSecurity({ ok: false, error: normalized.error }, { status: 400 });
   }
+
+  await recordChatAttempt({
+    request: req,
+    sessionToken,
+    locale,
+    outcome: "accepted",
+    ...summarizeMessages(normalized.messages),
+  });
 
   const result = streamText({
     model: "openai/gpt-4o-mini",

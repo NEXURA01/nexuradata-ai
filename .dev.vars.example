@@ -1,7 +1,7 @@
 DATABASE_URL=replace-with-supabase-postgres-url
 SUPABASE_URL=https://project-ref.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=replace-with-service-role-key
-SUBABASE_SECRET_KEY=replace-with-service-role-key
+SUPABASE_SECRET_KEY=replace-with-service-role-key
 OPENAI_API_KEY=replace-with-openai-api-key
 RESEND_API_KEY=replace-with-resend-api-key
 RESEND_FROM_EMAIL=NEXURA <dossiers@nexuradata.ca>

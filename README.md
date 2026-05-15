@@ -32,6 +32,7 @@ Le depot couvre:
 - `functions/_lib/` : logique partagee (DB, auth, emails, Stripe, rate-limit)
 - `supabase/migrations/` : migrations Supabase cible pour le projet `amddiekyhrvxnzszugxb`
 - `supabase/migrations/20260511220000_enable_pg_cron.sql` : active `pg_cron` sans planifier de job par defaut
+- `supabase/migrations/20260515061500_connect_chat_supabase.sql` : ajoute les tables de telemetrie du bot (`chat_sessions`, `chat_events`) pour connecter `/api/chat` a Supabase sans exposer la cle service-role au navigateur
 - `migrations/neon/0001_full_schema.sql` : schema Postgres historique conserve temporairement
 - `migrations/d1-archive/` : ancienne base D1 (archive historique uniquement)
 - `wrangler.jsonc` : configuration Pages/Functions, source de verite
@@ -40,6 +41,8 @@ Le depot couvre:
 ## Note de transition stack
 
 Supabase est la pile cible pour les nouveaux developpements. Le depot conserve temporairement des chemins Neon existants, notamment `functions/_lib/db.js`, `migrations/neon/0001_full_schema.sql` et la dependance `@neondatabase/serverless`. La migration doit rester progressive, non destructive, et preserver le comportement actuel jusqu'a ce que les equivalents Supabase soient prets, testes et valides.
+
+Le widget `/api/chat` est maintenant connecte a Supabase cote serveur uniquement: un identifiant de session local est envoye par le navigateur, puis les tentatives acceptees / rejetees sont journalisees dans `chat_sessions` et `chat_events` via `SUPABASE_SERVICE_ROLE_KEY`. Aucune cle Supabase publique n'est necessaire pour le bot.
 
 ## Prerequis de lancement
 

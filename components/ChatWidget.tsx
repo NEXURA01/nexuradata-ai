@@ -7,6 +7,8 @@ import { useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogoMark } from "@/components/Logo";
 
+const CHAT_SESSION_STORAGE_KEY = "nexura.chat.session";
+
 const cleanAssistantText = (value: string) =>
   value
     .replace(/\*\*([^*]+)\*\*/g, "$1")
@@ -33,9 +35,34 @@ const renderMessageText = (value: string) => {
   });
 };
 
+const createChatSessionId = () => {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  return `chat_${Math.random().toString(36).slice(2, 12)}${Date.now().toString(36)}`;
+};
+
+const getStoredSessionId = () => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const existingSessionId = window.localStorage.getItem(CHAT_SESSION_STORAGE_KEY);
+
+  if (existingSessionId) {
+    return existingSessionId;
+  }
+
+  const nextSessionId = createChatSessionId();
+  window.localStorage.setItem(CHAT_SESSION_STORAGE_KEY, nextSessionId);
+  return nextSessionId;
+};
+
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [sessionId, setSessionId] = useState<string | null>(() => getStoredSessionId());
   const locale = useLocale();
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -43,7 +70,7 @@ export function ChatWidget() {
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
-      body: { locale },
+      body: { locale, sessionId: sessionId || undefined },
     }),
   });
 
@@ -63,6 +90,12 @@ export function ChatWidget() {
       inputRef.current.focus();
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!sessionId) {
+      setSessionId(getStoredSessionId());
+    }
+  }, [sessionId]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

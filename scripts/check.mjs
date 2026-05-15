@@ -35,7 +35,31 @@ if (existsSync(headersPath)) {
         );
     }
 } else {
-    fail("CSP_MISSING", "_headers file not found.");
+    const nextConfigPath = join(ROOT, "next.config.ts");
+    const vercelConfigPath = join(ROOT, "vercel.json");
+
+    let cspFound = false;
+
+    if (existsSync(nextConfigPath)) {
+        const nextConfig = readFileSync(nextConfigPath, "utf8");
+        if (/Content-Security-Policy/.test(nextConfig)) {
+            cspFound = true;
+        }
+    }
+
+    if (!cspFound && existsSync(vercelConfigPath)) {
+        const vercelConfig = readFileSync(vercelConfigPath, "utf8");
+        if (/Content-Security-Policy/.test(vercelConfig)) {
+            cspFound = true;
+        }
+    }
+
+    if (!cspFound) {
+        fail(
+            "CSP_MISSING",
+            "No Content-Security-Policy found in _headers, next.config.ts, or vercel.json."
+        );
+    }
 }
 
 // ─── 2. No hardcoded secrets in functions/ ───────────────────────────────────

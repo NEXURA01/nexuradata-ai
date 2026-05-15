@@ -53,6 +53,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             URL="${{ github.event.inputs.base_url }}"
             CHECK_HOST_RULES="auto"
+            ALLOW_PROTECTED_BASE_401="auto"
           else
             URL="${{ github.event.deployment_status.environment_url }}"
             if [ -z "$URL" ] || [ "$URL" = "null" ]; then
@@ -69,11 +70,16 @@ jobs:
             else
               CHECK_HOST_RULES="false"
             fi
+
+            # Dynamic mode: script decides whether 401 skip is allowed from target host.
+            ALLOW_PROTECTED_BASE_401="auto"
           fi
           echo "Testing URL: $URL"
           echo "CHECK_HOST_RULES: $CHECK_HOST_RULES"
+          echo "ALLOW_PROTECTED_BASE_401: $ALLOW_PROTECTED_BASE_401"
           echo "url=$URL" >> "$GITHUB_OUTPUT"
           echo "check_host_rules=$CHECK_HOST_RULES" >> "$GITHUB_OUTPUT"
+          echo "allow_protected_base_401=$ALLOW_PROTECTED_BASE_401" >> "$GITHUB_OUTPUT"
 
       - name: Wait for deployment to be reachable
         run: |
@@ -90,6 +96,7 @@ jobs:
       - name: Run redirect smoke-test
         env:
           CHECK_HOST_RULES: ${{ steps.target.outputs.check_host_rules }}
+          ALLOW_PROTECTED_BASE_401: ${{ steps.target.outputs.allow_protected_base_401 }}
         run: python3 scripts/redirect-smoketest.py "${{ steps.target.outputs.url }}"
 
       - name: Mark deployment as failed on smoketest failure

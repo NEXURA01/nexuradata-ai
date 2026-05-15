@@ -95,6 +95,8 @@ TIMEOUT = int(os.environ.get("TIMEOUT", "15"))
 MAX_HOPS = int(os.environ.get("MAX_HOPS", "5"))
 USER_AGENT = "nexuradata-redirect-smoketest/2.0"
 CHECK_HOST_RULES = os.environ.get("CHECK_HOST_RULES", "auto").strip().lower()
+ALLOW_PROTECTED_BASE_401 = os.environ.get("ALLOW_PROTECTED_BASE_401", "false").strip().lower()
+CANONICAL_HOSTS = {"nexuradata.ca", "www.nexuradata.ca"}
 
 
 # ───────────────────────── Data ─────────────────────────
@@ -184,6 +186,17 @@ def should_check_host_rules(base: str) -> bool:
 
     # Auto mode: run host canonicalization checks only on the canonical apex.
     return urlsplit(base).netloc == "nexuradata.ca"
+
+
+def should_allow_protected_base_401(base: str) -> bool:
+    if ALLOW_PROTECTED_BASE_401 in {"1", "true", "yes", "on"}:
+        return True
+    if ALLOW_PROTECTED_BASE_401 in {"0", "false", "no", "off"}:
+        return False
+
+    # Auto mode: allow protected-401 skip only for non-canonical hosts
+    # (typically preview deployment URLs).
+    return urlsplit(base).netloc not in CANONICAL_HOSTS
 
 
 # ───────────────────────── Checks ─────────────────────────
@@ -389,6 +402,18 @@ def main() -> int:
     report_dir.mkdir(parents=True, exist_ok=True)
 
     print(BOLD(f"Smoke-testing redirects against: {base}\n"))
+
+    if should_allow_protected_base_401(base):
+        probe = _fetch(base.rstrip("/") + "/")
+        if probe.status == 401:
+            json_path = report_dir / "report.json"
+            html_path = report_dir / "report.html"
+            write_json_report(json_path, base, [])
+            write_html_report(html_path, base, [])
+            print(DIM("Detected protected deployment (base URL returned 401)."))
+            print(DIM("Skipping redirect assertions for this deployment target."))
+            print(f"Reports: {json_path}  {html_path}")
+            return 0
 
     results: list[RuleResult] = []
 

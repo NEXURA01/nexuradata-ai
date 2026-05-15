@@ -1,0 +1,55 @@
+{
+  "name": "NEXURA Lead Campaign Daily Run",
+  "description": "Daily trigger for /api/leads/run-daily with notification summary.",
+  "timezone": "America/Toronto",
+  "modules": [
+    {
+      "id": 1,
+      "type": "scheduler",
+      "name": "Daily 09:00",
+      "config": {
+        "frequency": "daily",
+        "time": "09:00"
+      }
+    },
+    {
+      "id": 2,
+      "type": "http",
+      "name": "Run Daily Campaign",
+      "config": {
+        "method": "POST",
+        "url": "https://nexuradata.ca/api/leads/run-daily",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "x-api-key",
+            "value": "{{LEADS_API_KEY}}"
+          }
+        ],
+        "bodyType": "raw",
+        "body": "{}"
+      }
+    },
+    {
+      "id": 3,
+      "type": "filter",
+      "name": "Only Success",
+      "config": {
+        "condition": "{{2.statusCode}} = 200"
+      }
+    },
+    {
+      "id": 4,
+      "type": "email",
+      "name": "Ops Summary",
+      "config": {
+        "to": "ops@nexuradata.ca",
+        "subject": "Lead Campaign Daily Run - {{formatDate(now; \"YYYY-MM-DD\")}}",
+        "body": "Status: {{2.statusCode}}\nRegion: {{2.body.campaign.region}}\nIndustries: {{join(2.body.campaign.industries; \", \")}}\nSourced: {{2.body.leads_sourced}}\nQueued: {{2.body.leads_queued}}\nSent: {{2.body.leads_sent}}\nFailed: {{2.body.leads_failed}}"
+      }
+    }
+  ]
+}

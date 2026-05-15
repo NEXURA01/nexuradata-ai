@@ -45,7 +45,7 @@ Lead Dashboard (realtime tracking)
 - `id`, `lead_id` (FK), `interaction_type` (email_sent, email_replied, response_received)
 - `status` (sent, delivered, read, failed)
 - `message_preview`: First 100 chars of message
-- `metadata` (JSONB): Twilio SID, provider details
+- `metadata` (JSONB): Mailgun message ID + provider details
 
 **lead_conversions** - Revenue pipeline
 - `id`, `lead_id` (FK), `funnel_stage`, `timestamp`
@@ -96,10 +96,10 @@ Returns: `{ id, phone, name, score, status: "new", created_at }`
 {
   "action": "log_interaction",
   "lead_id": "uuid-123",
-  "interaction_type": "whatsapp_sent",
-  "status": "delivered",
-  "message_preview": "Salut John...",
-  "metadata": { "twilio_sid": "SM123..." }
+  "interaction_type": "email_sent",
+  "status": "sent",
+  "message_preview": "Hi John...",
+  "metadata": { "mailgun_message_id": "<20260515.abc123@mg.domain>" }
 }
 ```
 
@@ -302,26 +302,19 @@ To automate the daily run at 9am:
 
 1. Create Make.com scenario
 2. Trigger: **Schedule** (Daily, 9:00 AM EST)
-3. Action: **HTTP module** → POST to `/api/leads/run-daily`
-4. Add follow-up steps for Day 2, Day 4, Day 7 sequences
+3. Action: **HTTP module** → POST to `/api/leads/run-daily` with optional `x-api-key` header
+4. Action: **Tools filter** → continue only when HTTP response status is `200`
+5. Action: **Slack/Email module** → notify results (`leads_sent`, `leads_failed`, `campaign.region`)
 
-**Day 2 Step** (48 hours later):
-```json
-{
-  "action": "log_interaction",
-  "lead_id": "{{lead_id}}",
-  "interaction_type": "whatsapp_sent",
-  "status": "followup",
-  "message_preview": "Salut [Name], regarde ce qu'on fait..."
-}
-```
+Import-ready blueprint template:
+- `docs/make/lead-campaign-scenario.json`
 
 ## Monitoring & Optimization
 
 ### Key Metrics to Track
 
-- **Daily Send Volume**: 40-50 leads
-- **WhatsApp Delivery Rate**: 95%+ (Twilio reports)
+- **Daily Send Volume**: 20-30 targeted emails
+- **Email Delivery Rate**: 95%+ (Mailgun logs)
 - **Response Rate**: Target 25%
 - **Qualified Rate**: 70% of responses
 - **Booking Rate**: 30% of qualified
@@ -331,7 +324,7 @@ To automate the daily run at 9am:
 ### Optimization Opportunities
 
 1. **Score Tuning**: Adjust scoring weights based on response rates
-2. **Message A/B Testing**: Compare WhatsApp copy variants
+2. **Message A/B Testing**: Compare email subject/body variants
 3. **Time Zone Optimization**: Send at peak engagement hours
 4. **City Targeting**: Focus on high-response cities
 5. **Intent Signals**: Add more property age/business type signals
@@ -345,13 +338,13 @@ To automate the daily run at 9am:
 
 **Mailgun send fails:**
 - Verify `MAILGUN_API_KEY` and `MAILGUN_DOMAIN`
-- Check phone number format (+1234567890)
-- Ensure WhatsApp is enabled on Twilio account
+- Check sender domain DNS (SPF/DKIM) is verified in Mailgun
+- Verify recipient email is present on the lead record
 
 **High bounce rate:**
-- Phone numbers from Google Maps may be outdated
+- Public emails from websites may be outdated
 - Add email verification step
-- Cross-reference against LinkedIn
+- Prioritize role inboxes (`info@`, `contact@`, `service@`) and remove generic catch-all domains
 
 **Supabase RLS errors:**
 - Ensure Service Role key is used (not Publishable key)
@@ -366,10 +359,12 @@ To automate the daily run at 9am:
 | `app/api/leads/run-daily/route.ts` | Daily automation trigger |
 | `app/[locale]/leads/page.tsx` | Dashboard page |
 | `components/LeadsDashboard.tsx` | Real-time stats UI |
-| `lib/lead-sourcing.ts` | Google Maps sourcing + Supabase insert |
-| `lib/outreach.ts` | Twilio WhatsApp/SMS sending |
+| `lib/lead-sourcing.ts` | Google Maps sourcing + website email extraction + Supabase insert |
+| `lib/email-campaign.ts` | 15-day campaign plan + Mailgun email composer |
+| `lib/outreach.ts` | Mailgun email sending |
 | `supabase/migrations/20260515_landscaping_leads_schema.sql` | DB schema |
 | `.env.example.leads` | Environment template |
+| `docs/make/lead-campaign-scenario.json` | Make.com import template |
 
 ## Next Steps
 
@@ -378,9 +373,9 @@ To automate the daily run at 9am:
 3. ✅ Lead sourcing service built
 4. ✅ Outreach service built
 5. ✅ Dashboard created
-6. ⏳ **TODO:** Configure Twilio WhatsApp + SMS
+6. ⏳ **TODO:** Configure Mailgun domain + API key
 7. ⏳ **TODO:** Configure Google Maps API
-8. ⏳ **TODO:** Create Make.com automation workflow
+8. ✅ Make.com blueprint added (`docs/make/lead-campaign-scenario.json`)
 9. ⏳ **TODO:** Test end-to-end (source → send → track → book)
 10. ⏳ **TODO:** Launch daily automation at 9am
 

@@ -13,6 +13,13 @@ function getSupabaseClient() {
 
 export async function POST(req: NextRequest) {
   try {
+    const configuredApiKey = process.env.LEADS_API_KEY;
+    const requestApiKey = req.headers.get("x-api-key");
+
+    if (configuredApiKey && requestApiKey !== configuredApiKey) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const supabase = getSupabaseClient();
 
     // Check if already ran today

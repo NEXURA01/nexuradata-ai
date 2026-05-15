@@ -19,6 +19,14 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const errors = [];
+const NEXT_CONFIG_FILES = [
+    "next.config.ts",
+    "next.config.js",
+    "next.config.mjs",
+    "next.config.cjs",
+    "next.config.mts",
+    "next.config.cts",
+];
 
 function fail(rule, detail) {
     errors.push({ rule, detail });
@@ -35,29 +43,44 @@ if (existsSync(headersPath)) {
         );
     }
 } else {
-    const nextConfigPath = join(ROOT, "next.config.ts");
-    const vercelConfigPath = join(ROOT, "vercel.json");
+    let cspFoundIn = null;
 
-    let cspFound = false;
-
-    if (existsSync(nextConfigPath)) {
-        const nextConfig = readFileSync(nextConfigPath, "utf8");
-        if (/Content-Security-Policy/.test(nextConfig)) {
-            cspFound = true;
+    for (const configFile of NEXT_CONFIG_FILES) {
+        const configPath = join(ROOT, configFile);
+        if (!existsSync(configPath)) {
+            continue;
+        }
+        const nextConfig = readFileSync(configPath, "utf8");
+        if (/Content-Security-Policy/i.test(nextConfig)) {
+            cspFoundIn = configFile;
+            break;
         }
     }
 
-    if (!cspFound && existsSync(vercelConfigPath)) {
-        const vercelConfig = readFileSync(vercelConfigPath, "utf8");
-        if (/Content-Security-Policy/.test(vercelConfig)) {
-            cspFound = true;
+    if (!cspFoundIn) {
+        const vercelConfigPath = join(ROOT, "vercel.json");
+        if (existsSync(vercelConfigPath)) {
+            const vercelConfigRaw = readFileSync(vercelConfigPath, "utf8");
+            try {
+                const vercelConfig = JSON.parse(vercelConfigRaw);
+                const headerRules = Array.isArray(vercelConfig.headers) ? vercelConfig.headers : [];
+                const hasCspHeader = headerRules.some((rule) => Array.isArray(rule?.headers)
+                    && rule.headers.some((h) => String(h?.key || "").toLowerCase() === "content-security-policy"));
+                if (hasCspHeader) {
+                    cspFoundIn = "vercel.json";
+                }
+            } catch {
+                if (/Content-Security-Policy/i.test(vercelConfigRaw)) {
+                    cspFoundIn = "vercel.json";
+                }
+            }
         }
     }
 
-    if (!cspFound) {
+    if (!cspFoundIn) {
         fail(
             "CSP_MISSING",
-            "No Content-Security-Policy found in _headers, next.config.ts, or vercel.json."
+            "No Content-Security-Policy found in _headers, any next.config.* file, or vercel.json."
         );
     }
 }

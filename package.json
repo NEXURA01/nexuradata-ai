@@ -47,12 +47,12 @@
     "prepare": "node ./scripts/setup-hooks.mjs"
   },
   "devDependencies": {
-    "@types/node": "25.7.0",
+    "@types/node": "25.8.0",
     "qrcode": "^1.5.4",
     "sharp": "^0.34.5",
     "supabase": "^2.98.2",
-    "vitest": "^4.1.4",
-    "wrangler": "^4.84.0"
+    "vitest": "^4.1.6",
+    "wrangler": "^4.91.0"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.182",

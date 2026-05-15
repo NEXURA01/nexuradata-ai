@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { sourceCitiesLeads, insertLeadsToSupabase, getLeadsForOutreach } from "@/lib/lead-sourcing";
+import { sourceCampaignLeads, insertLeadsToSupabase, getLeadsForOutreach } from "@/lib/lead-sourcing";
 import { sendOutreachSequence } from "@/lib/outreach";
+import { getCampaignPlanForDate } from "@/lib/email-campaign";
 
 function getSupabaseClient() {
   return createClient(
@@ -29,9 +30,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Source new leads from Google Maps
-    const cities = ["Montreal", "Quebec City", "Laval"];
-    const newLeads = await sourceCitiesLeads(cities, 40);
+    const { data: firstRun } = await supabase
+      .from("lead_daily_stats")
+      .select("date")
+      .order("date", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    const campaignPlan = getCampaignPlanForDate(new Date(), firstRun?.date || today);
+
+    if (!campaignPlan.active || !campaignPlan.plan) {
+      return NextResponse.json(
+        { message: "15-day campaign completed", campaign_complete: true },
+        { status: 200 }
+      );
+    }
+
+    // 1. Source new leads from Google Maps for today's region and industries
+    const newLeads = await sourceCampaignLeads(
+      [campaignPlan.plan.region],
+      campaignPlan.plan.industries,
+      campaignPlan.plan.quota
+    );
 
     if (newLeads.length === 0) {
       return NextResponse.json(
@@ -44,7 +64,11 @@ export async function POST(req: NextRequest) {
     const insertedIds = await insertLeadsToSupabase(newLeads);
 
     // 3. Get leads ready for outreach
-    const leadsToContact = await getLeadsForOutreach(40);
+    const leadsToContact = await getLeadsForOutreach(campaignPlan.plan.quota, {
+      region: campaignPlan.plan.region,
+      industries: campaignPlan.plan.industries,
+      createdSince: `${today}T00:00:00`,
+    });
 
     if (leadsToContact.length === 0) {
       return NextResponse.json(
@@ -53,18 +77,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Get Calendly URL (should be env var)
-    const calendlyUrl =
-      process.env.CALENDLY_BOOKING_URL ||
-      "https://calendly.com/nexura-scheduler";
-
-    // 5. Send outreach (rate-limited)
+    // 4. Send outreach (email-only)
     const outreachResults = await sendOutreachSequence(
       leadsToContact,
-      calendlyUrl
+      campaignPlan.plan,
+      campaignPlan.plan.industries[0]
     );
 
-    // 6. Record daily stats
+    // 5. Record daily stats
     await supabase.from("lead_daily_stats").insert([
       {
         date: today,
@@ -78,6 +98,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         message: "Daily outreach started",
+        campaign: campaignPlan.plan,
         leads_sourced: newLeads.length,
         leads_queued: leadsToContact.length,
         leads_sent: outreachResults.sent,

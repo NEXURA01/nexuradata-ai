@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { getCampaignPlanForDate, getCampaignPlanSummary } from "@/lib/email-campaign";
 
 function getSupabaseClient() {
   return createClient(
@@ -21,6 +22,8 @@ export async function POST(req: NextRequest) {
       return await logInteraction(body);
     } else if (action === "get_daily_stats") {
       return await getDailyStats();
+    } else if (action === "get_campaign_plan") {
+      return await getCampaignPlan();
     }
 
     return NextResponse.json({ error: "Unknown action" }, { status: 400 });
@@ -146,14 +149,14 @@ async function logInteraction(body: any) {
   }
 
   // Auto-update lead status based on interaction
-  if (interaction_type === "whatsapp_sent" && status === "delivered") {
+  if (interaction_type === "email_sent" && status === "sent") {
     await supabase
       .from("leads_landscaping")
       .update({ status: "contacted" })
       .eq("id", lead_id);
   }
 
-  if (interaction_type === "response_received") {
+  if (interaction_type === "email_replied" || interaction_type === "response_received") {
     await supabase
       .from("leads_landscaping")
       .update({ status: "qualified", responded_at: new Date() })
@@ -179,7 +182,7 @@ async function getDailyStats() {
       .from("lead_interactions")
       .select("*", { count: "exact" })
       .gte("timestamp", `${today}T00:00:00`)
-      .eq("interaction_type", "whatsapp_sent");
+      .eq("interaction_type", "email_sent");
 
     const { count: responded } = await supabase
       .from("leads_landscaping")
@@ -208,4 +211,26 @@ async function getDailyStats() {
   }
 
   return NextResponse.json(stats);
+}
+
+async function getCampaignPlan() {
+  const supabase = getSupabaseClient();
+  const today = new Date();
+
+  const { data: firstRun } = await supabase
+    .from("lead_daily_stats")
+    .select("date")
+    .order("date", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  const plan = getCampaignPlanForDate(
+    today,
+    firstRun?.date || today.toISOString().split("T")[0]
+  );
+
+  return NextResponse.json({
+    ...plan,
+    schedule: getCampaignPlanSummary(),
+  });
 }

@@ -60,12 +60,19 @@ Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md).
 - La configuration repo inclut CI, CodeQL, `njsscan`, Dependabot et dependency review.
 - Les protections GitHub a maintenir dans les regles du depot: PR requise vers `main`, historique lineaire, suppression/force-push bloques, required checks et bypass limite au mode break-glass.
 - Les controles requis recommandes couvrent `Tests + build`, `CodeQL`, `njsscan code scanning` et dependency review.
+- Le check `Tests + build` execute `npm run check` qui valide notamment:
+	- la presence d'une CSP dans `_headers`, `next.config.*` ou `vercel.json`
+	- l'absence de secrets hardcodes dans `functions/`
+	- la signature CORS des handlers
+	- la synchronisation de `release-cloudflare/` avec la source
+- Le workflow `Redirect smoke-test` valide les redirections apres deploiement Vercel et gere dynamiquement les previews proteges (401) sans bloquer les validations de production.
 - Les vulnerabilites doivent etre rapportees en prive selon [`SECURITY.md`](SECURITY.md).
 
 ## Commandes
 
 - `npm install`
 - `npm run build`
+- `npm run check`
 - `npm run cf:whoami`
 - `npm run cf:dev`
 - `npm run cf:check`
@@ -77,6 +84,14 @@ Le runbook detaille est dans [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md).
 - `npm test`
 
 `release-cloudflare/` est regenere a chaque build pour les assets statiques. Les `functions/` restent a la racine du projet pour Cloudflare Pages Functions.
+
+## Redirect smoke-test (Vercel)
+
+- Workflow: `.github/workflows/redirect-smoketest.yml`
+- Script: `scripts/redirect-smoketest.py`
+- Le workflow tourne apres `deployment_status` et en manuel (`workflow_dispatch`).
+- Les checks de host canonicalization sont actives sur les deploiements production.
+- Les previews proteges (base URL en 401) sont detectes automatiquement et traites en mode skip controle, sans masquer les regressions sur le domaine canonique.
 
 ## Cloudflare Pages
 

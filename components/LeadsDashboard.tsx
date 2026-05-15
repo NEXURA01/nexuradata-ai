@@ -12,14 +12,35 @@ interface DashboardStats {
   conversion_rate?: number;
 }
 
+interface CampaignPlan {
+  active: boolean;
+  day: number | null;
+  plan: null | {
+    day: number;
+    region: string;
+    industries: string[];
+    quota: number;
+    angle: string;
+  };
+  schedule?: Array<{
+    day: number;
+    region: string;
+    industries: string[];
+    quota: number;
+    angle: string;
+  }>;
+}
+
 export function LeadsDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [campaign, setCampaign] = useState<CampaignPlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchStats();
+    fetchCampaignPlan();
     const interval = setInterval(fetchStats, 30000); // Refresh every 30s
     return () => clearInterval(interval);
   }, []);
@@ -42,6 +63,23 @@ export function LeadsDashboard() {
       setError(String(error));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchCampaignPlan = async () => {
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "get_campaign_plan" }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setCampaign(data);
+      }
+    } catch (fetchError) {
+      console.error("Campaign fetch error:", fetchError);
     }
   };
 
@@ -107,8 +145,18 @@ export function LeadsDashboard() {
         <div className="mb-12">
           <h1 className="text-4xl font-serif mb-2">Lead Outreach Dashboard</h1>
           <p className="text-muted">
-            Real-time automation for landscaping + window cleaning leads
+            15-day email campaign for landscaping, window washing, moving, junk removal, and other hot local service businesses
           </p>
+          {campaign?.plan && (
+            <div className="mt-4 inline-flex flex-wrap gap-2 border border-foreground/10 bg-surface px-4 py-3 text-sm text-muted">
+              <span className="font-mono uppercase tracking-widest text-accent">
+                Day {campaign.day}
+              </span>
+              <span>Region: {campaign.plan.region}</span>
+              <span>Industries: {campaign.plan.industries.join(", ")}</span>
+              <span>Quota: {campaign.plan.quota}/day</span>
+            </div>
+          )}
           {error && (
             <p className="text-sm text-yellow-600 mt-2">⚠ {error}</p>
           )}
@@ -221,8 +269,7 @@ export function LeadsDashboard() {
           <h2 className="mb-6 text-2xl font-serif">Daily Automation Control</h2>
           <div className="space-y-4">
             <p className="text-sm text-muted">
-              Trigger today's outreach sequence: 40 leads, 70% WhatsApp + 30%
-              SMS, rate-limited to 5-6/hour
+              Trigger today's email outreach sequence by region and industry. Campaign uses Mailgun, public business emails, and a 15-day target plan.
             </p>
             <button
               onClick={startDailyRun}
@@ -232,11 +279,7 @@ export function LeadsDashboard() {
               {isRunning ? "▶ Running..." : "▶ Start Daily Outreach"}
             </button>
             <p className="text-xs text-muted">
-              Last run: Today at{" "}
-              {new Date().toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
+              Use one region and industry mix per day so the campaign stays targeted.
             </p>
           </div>
         </div>

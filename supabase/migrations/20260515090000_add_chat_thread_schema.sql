@@ -106,15 +106,7 @@ with check (created_by = auth.uid());
 
 create policy "chat_thread_members_select_visible" on public.chat_thread_members
 for select to authenticated
-using (
-  user_id = auth.uid()
-  or exists (
-    select 1
-    from public.chat_thread_members mine
-    where mine.thread_id = chat_thread_members.thread_id
-      and mine.user_id = auth.uid()
-  )
-);
+using (user_id = auth.uid());
 
 create policy "chat_thread_members_insert_by_member_or_owner" on public.chat_thread_members
 for insert to authenticated

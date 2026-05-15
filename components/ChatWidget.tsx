@@ -28,21 +28,67 @@ const cleanAssistantText = (value: string) =>
     .replace(/^#{1,6}\s+/gm, "")
     .trim();
 
+const extractMessageText = (parts?: Array<{ type: string; text?: string }>) =>
+  (parts || [])
+    .filter((part): part is { type: "text"; text: string } => part.type === "text" && typeof part.text === "string")
+    .map((part) => part.text)
+    .join("")
+    .trim();
+
+const normalizeLink = (value: string) => {
+  if (value.startsWith("http://") || value.startsWith("https://")) {
+    return value;
+  }
+
+  if (value.startsWith("nexuradata.ca") || value.startsWith("www.nexuradata.ca")) {
+    return `https://${value.replace(/^www\./, "")}`;
+  }
+
+  if (value.startsWith("/")) {
+    return `https://nexuradata.ca${value}`;
+  }
+
+  return value;
+};
+
+const splitTrailingPunctuation = (value: string) => {
+  const match = value.match(/^(.*?)([.,;!?]+)?$/);
+  return {
+    core: match?.[1] || value,
+    trailing: match?.[2] || "",
+  };
+};
+
 const renderMessageText = (value: string) => {
   const cleanText = cleanAssistantText(value);
-  const parts = cleanText.split(/(https?:\/\/[^\s)]+)/g);
+  const parts = cleanText.split(
+    /(https?:\/\/[^\s)]+|(?:www\.)?nexuradata\.ca[^\s)]*|\/(?:fr|en)\/[A-Za-z0-9\-/?=&_%#]+|\/(?:contact|services|pricing|operational-assessment|evaluation|tarifs|portal|about|faq)[A-Za-z0-9\-/?=&_%#]*)/g
+  );
 
   return parts.map((part, index) => {
-    if (!part.startsWith("http")) return part;
+    const { core, trailing } = splitTrailingPunctuation(part);
+    const href = normalizeLink(core);
+    const isLink =
+      href.startsWith("http://") ||
+      href.startsWith("https://") ||
+      href.startsWith("/");
+
+    if (!isLink) return part;
+
+    const label = href.replace(/^https?:\/\/nexuradata\.ca/, "");
 
     return (
-      <a
-        key={`${part}-${index}`}
-        href={part}
-        className="border-b border-current/35 text-current transition-opacity hover:opacity-70"
-      >
-        {part.replace(/^https?:\/\/nexuradata\.ca/, "")}
-      </a>
+      <span key={`${part}-${index}`}>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border-b border-current/35 text-current transition-opacity hover:opacity-70"
+        >
+          {label}
+        </a>
+        {trailing}
+      </span>
     );
   });
 };
@@ -81,6 +127,11 @@ export function ChatWidget() {
   const [isThreadSyncEnabled, setIsThreadSyncEnabled] = useState(false);
   const [isSyncReady, setIsSyncReady] = useState(false);
   const [syncError, setSyncError] = useState<string | null>(null);
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+  const [contactStatus, setContactStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [contactError, setContactError] = useState<string | null>(null);
   const locale = useLocale();
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -111,6 +162,12 @@ export function ChatWidget() {
 
   const isLoading = status === "streaming" || status === "submitted";
   const isFr = locale === "fr";
+
+  const lastAssistantMessage = [...messages].reverse().find((message) => message.role === "assistant");
+  const lastAssistantText = cleanAssistantText(extractMessageText(lastAssistantMessage?.parts as Array<{ type: string; text?: string }> | undefined)).toLowerCase();
+  const showInlineContactForm =
+    messages.length > 0 &&
+    /contact|assessment|evaluation|operational-assessment|rendez-vous|book|call|formulaire|form/.test(lastAssistantText);
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -298,6 +355,48 @@ export function ChatWidget() {
     }
   };
 
+  const handleInlineContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!contactName.trim() || !contactEmail.trim() || !contactMessage.trim()) {
+      setContactStatus("error");
+      setContactError(isFr ? "Merci de remplir les 3 champs." : "Please fill all 3 fields.");
+      return;
+    }
+
+    try {
+      setContactStatus("sending");
+      setContactError(null);
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: contactName,
+          email: contactEmail,
+          message: contactMessage,
+          locale,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("contact-submit-failed");
+      }
+
+      setContactStatus("success");
+      setContactName("");
+      setContactEmail("");
+      setContactMessage("");
+    } catch {
+      setContactStatus("error");
+      setContactError(
+        isFr
+          ? "Impossible d'envoyer le formulaire pour le moment."
+          : "Unable to send the form right now."
+      );
+    }
+  };
+
   return (
     <>
       {/* Floating trigger button */}
@@ -410,6 +509,11 @@ export function ChatWidget() {
                       ? "Posez-moi une question sur nos services, nos tarifs, ou comment NEXURA peut aider votre entreprise."
                       : "Ask me about our services, pricing, or how NEXURA can help your company."}
                   </p>
+                  <p className="mt-3 text-xs text-foreground/60 leading-relaxed max-w-[280px] font-mono">
+                    {isFr
+                      ? "Petit mot de ma part: donnez-moi votre contexte en 1-2 phrases, et je vous guide vers la prochaine meilleure etape."
+                      : "A quick note from me: share your context in 1-2 lines and I will guide you to the best next step."}
+                  </p>
 
                   {/* Quick prompts */}
                   <div className="mt-6 flex flex-col gap-2 w-full">
@@ -440,13 +544,7 @@ export function ChatWidget() {
               ) : (
                 messages.map((message) => {
                   const isUser = message.role === "user";
-                  const text = message.parts
-                    ?.filter(
-                      (p): p is { type: "text"; text: string } =>
-                        p.type === "text"
-                    )
-                    .map((p) => p.text)
-                    .join("");
+                  const text = extractMessageText(message.parts as Array<{ type: string; text?: string }> | undefined);
 
                   if (!text) return null;
 
@@ -467,6 +565,57 @@ export function ChatWidget() {
                     </div>
                   );
                 })
+              )}
+
+              {showInlineContactForm && (
+                <div className="border border-foreground/20 bg-foreground/[0.03] p-3">
+                  <p className="text-xs font-mono uppercase tracking-wider text-foreground/60 mb-2">
+                    {isFr ? "Formulaire de contact rapide" : "Quick contact form"}
+                  </p>
+                  <form onSubmit={handleInlineContactSubmit} className="space-y-2">
+                    <input
+                      value={contactName}
+                      onChange={(e) => setContactName(e.target.value)}
+                      placeholder={isFr ? "Nom" : "Name"}
+                      className="w-full border border-foreground/20 bg-background px-2.5 py-2 text-xs outline-none focus:border-foreground/40"
+                    />
+                    <input
+                      value={contactEmail}
+                      onChange={(e) => setContactEmail(e.target.value)}
+                      placeholder={isFr ? "Courriel" : "Email"}
+                      type="email"
+                      className="w-full border border-foreground/20 bg-background px-2.5 py-2 text-xs outline-none focus:border-foreground/40"
+                    />
+                    <textarea
+                      value={contactMessage}
+                      onChange={(e) => setContactMessage(e.target.value)}
+                      placeholder={isFr ? "Votre besoin en 2-3 lignes" : "Your need in 2-3 lines"}
+                      rows={3}
+                      className="w-full border border-foreground/20 bg-background px-2.5 py-2 text-xs resize-y outline-none focus:border-foreground/40"
+                    />
+                    <button
+                      type="submit"
+                      disabled={contactStatus === "sending"}
+                      className="w-full border border-foreground bg-foreground text-background px-2.5 py-2 text-xs font-mono uppercase tracking-wider disabled:opacity-50"
+                    >
+                      {contactStatus === "sending"
+                        ? isFr
+                          ? "Envoi..."
+                          : "Sending..."
+                        : isFr
+                          ? "Envoyer"
+                          : "Send"}
+                    </button>
+                    {contactStatus === "success" && (
+                      <p className="text-[11px] text-emerald-600">
+                        {isFr ? "Message envoye. On vous recontacte rapidement." : "Message sent. We will get back to you shortly."}
+                      </p>
+                    )}
+                    {contactStatus === "error" && contactError && (
+                      <p className="text-[11px] text-red-600">{contactError}</p>
+                    )}
+                  </form>
+                </div>
               )}
 
               {/* Typing indicator */}

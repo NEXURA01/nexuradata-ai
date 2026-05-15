@@ -93,6 +93,12 @@ const renderMessageText = (value: string) => {
   });
 };
 
+const CONTACT_FORM_TRIGGER_RE =
+  /\b(contact|assessment|evaluation|operational-assessment|rendez[-\s]?vous|book\s+(a\s+)?(call|meeting)|schedule|speak\s+with|parler\s+a|prendre\s+rendez-vous|formulaire\s+de\s+contact)\b/;
+
+const CONTACT_PAGE_RE =
+  /https?:\/\/nexuradata\.ca\/(?:fr|en)\/(?:contact|operational-assessment)|https?:\/\/nexuradata\.ca\/(?:contact|operational-assessment)|\/(?:fr|en)\/(?:contact|operational-assessment)|\/(?:contact|operational-assessment)/;
+
 const createChatSessionId = () => {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
@@ -167,7 +173,8 @@ export function ChatWidget() {
   const lastAssistantText = cleanAssistantText(extractMessageText(lastAssistantMessage?.parts as Array<{ type: string; text?: string }> | undefined)).toLowerCase();
   const showInlineContactForm =
     messages.length > 0 &&
-    /contact|assessment|evaluation|operational-assessment|rendez-vous|book|call|formulaire|form/.test(lastAssistantText);
+    contactStatus !== "success" &&
+    (CONTACT_FORM_TRIGGER_RE.test(lastAssistantText) || CONTACT_PAGE_RE.test(lastAssistantText));
 
   // Auto-scroll on new messages
   useEffect(() => {

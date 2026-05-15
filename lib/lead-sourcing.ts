@@ -40,6 +40,9 @@ const CONTACT_PAGE_PATHS = [
   "/team",
 ];
 
+const GOOGLE_API_TIMEOUT_MS = Number(process.env.LEADS_GOOGLE_API_TIMEOUT_MS || 8000);
+const MAX_PLACES_PER_QUERY = Math.max(3, Number(process.env.LEADS_MAX_PLACES_PER_QUERY || 8));
+
 const normalizeUrl = (value: string) => {
   try {
     return new URL(value).toString().replace(/\/$/, "");
@@ -64,6 +67,7 @@ async function fetchPlaceDetails(placeId: string, googleMapsApiKey: string) {
   const response = await axios.get(
     "https://maps.googleapis.com/maps/api/place/details/json",
     {
+      timeout: GOOGLE_API_TIMEOUT_MS,
       params: {
         place_id: placeId,
         key: googleMapsApiKey,
@@ -189,6 +193,7 @@ export async function sourceCitiesLeads(
         const response = await axios.get(
           "https://maps.googleapis.com/maps/api/place/textsearch/json",
           {
+            timeout: GOOGLE_API_TIMEOUT_MS,
             params: {
               query: `${query} in ${city}`,
               key: googleMapsApiKey,
@@ -197,7 +202,7 @@ export async function sourceCitiesLeads(
           }
         );
 
-        for (const place of response.data.results || []) {
+        for (const place of (response.data.results || []).slice(0, MAX_PLACES_PER_QUERY)) {
           if (leads.length >= limit) break;
 
           const phone = place.international_phone_number || null;
@@ -264,6 +269,7 @@ export async function sourceCampaignLeads(
           const response = await axios.get(
             "https://maps.googleapis.com/maps/api/place/textsearch/json",
             {
+              timeout: GOOGLE_API_TIMEOUT_MS,
               params: {
                 query: `${query} in ${region}`,
                 key: googleMapsApiKey,
@@ -271,7 +277,7 @@ export async function sourceCampaignLeads(
             }
           );
 
-          for (const place of response.data.results || []) {
+          for (const place of (response.data.results || []).slice(0, MAX_PLACES_PER_QUERY)) {
             if (leads.length >= limit) {
               break;
             }

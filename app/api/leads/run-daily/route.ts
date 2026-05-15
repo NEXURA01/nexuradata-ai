@@ -4,6 +4,24 @@ import { sourceCampaignLeads, insertLeadsToSupabase, getLeadsForOutreach } from 
 import { sendOutreachSequence } from "@/lib/outreach";
 import { getCampaignPlanForDate } from "@/lib/email-campaign";
 
+class StepTimeoutError extends Error {
+  constructor(step: string, timeoutMs: number) {
+    super(`${step} timed out after ${timeoutMs}ms`);
+    this.name = "StepTimeoutError";
+  }
+}
+
+const withTimeout = async <T>(step: string, timeoutMs: number, promise: Promise<T>): Promise<T> => {
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    const timer = setTimeout(() => {
+      clearTimeout(timer);
+      reject(new StepTimeoutError(step, timeoutMs));
+    }, timeoutMs);
+  });
+
+  return Promise.race([promise, timeoutPromise]);
+};
+
 function getSupabaseClient() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -13,6 +31,9 @@ function getSupabaseClient() {
 
 export async function POST(req: NextRequest) {
   try {
+    const sourceTimeoutMs = Number(process.env.LEADS_SOURCE_TIMEOUT_MS || 55000);
+    const outreachTimeoutMs = Number(process.env.LEADS_OUTREACH_TIMEOUT_MS || 35000);
+
     const configuredApiKey = process.env.LEADS_API_KEY;
     const requestApiKey = req.headers.get("x-api-key");
     const requireApiKey =
@@ -64,10 +85,14 @@ export async function POST(req: NextRequest) {
     }
 
     // 1. Source new leads from Google Maps for today's region and industries
-    const newLeads = await sourceCampaignLeads(
-      [campaignPlan.plan.region],
-      campaignPlan.plan.industries,
-      campaignPlan.plan.quota
+    const newLeads = await withTimeout(
+      "source-campaign-leads",
+      sourceTimeoutMs,
+      sourceCampaignLeads(
+        [campaignPlan.plan.region],
+        campaignPlan.plan.industries,
+        campaignPlan.plan.quota
+      )
     );
 
     if (newLeads.length === 0) {
@@ -95,10 +120,14 @@ export async function POST(req: NextRequest) {
     }
 
     // 4. Send outreach (email-only)
-    const outreachResults = await sendOutreachSequence(
-      leadsToContact,
-      campaignPlan.plan,
-      campaignPlan.plan.industries[0]
+    const outreachResults = await withTimeout(
+      "send-outreach-sequence",
+      outreachTimeoutMs,
+      sendOutreachSequence(
+        leadsToContact,
+        campaignPlan.plan,
+        campaignPlan.plan.industries[0]
+      )
     );
 
     // 5. Record daily stats
@@ -126,6 +155,14 @@ export async function POST(req: NextRequest) {
     );
   } catch (error) {
     console.error("Daily run error:", error);
+
+    if (error instanceof StepTimeoutError) {
+      return NextResponse.json(
+        { error: error.message, code: "daily-run-timeout" },
+        { status: 504 }
+      );
+    }
+
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }

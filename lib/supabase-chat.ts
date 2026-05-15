@@ -18,6 +18,10 @@ export type ChatMessage = {
   created_at: string;
 };
 
+type ChatThreadMembershipRow = {
+  chat_threads: ChatThread | ChatThread[] | null;
+};
+
 type ThreadSummary = {
   thread_id: string;
   summary: string;
@@ -93,17 +97,33 @@ export async function listUserThreads(limit = 25) {
   }
 
   const { data, error } = await supabase
-    .from("chat_threads")
-    .select("id, title, created_at")
-    .eq("created_by", auth.user.id)
-    .order("created_at", { ascending: false })
-    .limit(limit);
+    .from("chat_thread_members")
+    .select("chat_threads(id, title, created_at)")
+    .eq("user_id", auth.user.id)
+    .limit(limit * 3);
 
   if (error) {
     throw error;
   }
 
-  return (data ?? []) as ChatThread[];
+  const threads = ((data ?? []) as ChatThreadMembershipRow[])
+    .map((row) => {
+      if (Array.isArray(row.chat_threads)) {
+        return row.chat_threads[0] ?? null;
+      }
+
+      return row.chat_threads;
+    })
+    .filter((thread): thread is ChatThread => Boolean(thread));
+
+  const uniqueById = new Map<string, ChatThread>();
+  for (const thread of threads) {
+    uniqueById.set(thread.id, thread);
+  }
+
+  return Array.from(uniqueById.values())
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, limit);
 }
 
 export async function createThread(title?: string) {

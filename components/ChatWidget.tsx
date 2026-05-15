@@ -86,6 +86,22 @@ export function ChatWidget() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const persistedUserMessageIdsRef = useRef<Set<string>>(new Set());
 
+  const hydrateMessagesFromHistory = (history: ChatMessage[], userId: string) => {
+    persistedUserMessageIdsRef.current = new Set(
+      history
+        .filter((message) => message.sender_id === userId)
+        .map((message) => message.id)
+    );
+
+    setMessages(
+      history.map((message) => ({
+        id: message.id,
+        role: message.sender_id === userId ? "user" : "assistant",
+        parts: [{ type: "text" as const, text: message.content }],
+      }))
+    );
+  };
+
   const { messages, sendMessage, setMessages, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
@@ -161,13 +177,7 @@ export function ChatWidget() {
           return merged;
         });
         setThreadId(selectedThread.id);
-        setMessages(
-          history.map((message) => ({
-            id: message.id,
-            role: message.sender_id === userId ? "user" : "assistant",
-            parts: [{ type: "text" as const, text: message.content }],
-          }))
-        );
+        hydrateMessagesFromHistory(history, userId);
         setSyncError(null);
         setIsThreadSyncEnabled(true);
       } catch {
@@ -228,14 +238,7 @@ export function ChatWidget() {
 
     const history = await getMessages(nextThreadId);
     setThreadId(nextThreadId);
-    persistedUserMessageIdsRef.current.clear();
-    setMessages(
-      history.map((message) => ({
-        id: message.id,
-        role: message.sender_id === currentUserId ? "user" : "assistant",
-        parts: [{ type: "text" as const, text: message.content }],
-      }))
-    );
+    hydrateMessagesFromHistory(history, currentUserId);
   };
 
   const createAndLoadThread = async () => {

@@ -6,8 +6,20 @@ import { DefaultChatTransport } from "ai";
 import { useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogoMark } from "@/components/Logo";
+import {
+  createThread,
+  getCurrentUserId,
+  getMessages,
+  listUserThreads,
+  sendMessage as sendThreadMessage,
+  subscribeToMessages,
+  type ChatMessage,
+  type ChatThread,
+  upsertChatProfile,
+} from "@/lib/supabase-chat";
 
 const CHAT_SESSION_STORAGE_KEY = "nexura.chat.session";
+const CHAT_THREAD_STORAGE_KEY = "nexura.chat.thread";
 
 const cleanAssistantText = (value: string) =>
   value
@@ -63,11 +75,18 @@ export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [sessionId, setSessionId] = useState<string | null>(() => getStoredSessionId());
+  const [threadId, setThreadId] = useState<string | null>(null);
+  const [threads, setThreads] = useState<ChatThread[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [isThreadSyncEnabled, setIsThreadSyncEnabled] = useState(false);
+  const [isSyncReady, setIsSyncReady] = useState(false);
+  const [syncError, setSyncError] = useState<string | null>(null);
   const locale = useLocale();
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const persistedUserMessageIdsRef = useRef<Set<string>>(new Set());
 
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, setMessages, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
       body: { locale, sessionId: sessionId || undefined },
@@ -96,6 +115,171 @@ export function ChatWidget() {
       setSessionId(getStoredSessionId());
     }
   }, [sessionId]);
+
+  useEffect(() => {
+    if (!isOpen || isSyncReady) {
+      return;
+    }
+
+    let cancelled = false;
+
+    const initializeSupabaseThreadSync = async () => {
+      try {
+        await upsertChatProfile();
+        const userId = await getCurrentUserId();
+
+        if (!userId) {
+          throw new Error("Not signed in");
+        }
+
+        const availableThreads = await listUserThreads();
+        const storedThreadId =
+          typeof window !== "undefined"
+            ? window.localStorage.getItem(CHAT_THREAD_STORAGE_KEY)
+            : null;
+
+        let selectedThread =
+          availableThreads.find((thread) => thread.id === storedThreadId) ||
+          availableThreads[0];
+
+        if (!selectedThread) {
+          selectedThread = await createThread(isFr ? "Nouveau fil" : "New thread");
+        }
+
+        const history = await getMessages(selectedThread.id);
+
+        if (cancelled) {
+          return;
+        }
+
+        setCurrentUserId(userId);
+        setThreads((prev) => {
+          const merged = [...availableThreads];
+          if (!merged.some((thread) => thread.id === selectedThread.id)) {
+            merged.unshift(selectedThread);
+          }
+          return merged;
+        });
+        setThreadId(selectedThread.id);
+        setMessages(
+          history.map((message) => ({
+            id: message.id,
+            role: message.sender_id === userId ? "user" : "assistant",
+            parts: [{ type: "text" as const, text: message.content }],
+          }))
+        );
+        setSyncError(null);
+        setIsThreadSyncEnabled(true);
+      } catch {
+        if (cancelled) {
+          return;
+        }
+
+        setIsThreadSyncEnabled(false);
+        setSyncError(isFr ? "Sync Supabase indisponible" : "Supabase sync unavailable");
+      } finally {
+        if (!cancelled) {
+          setIsSyncReady(true);
+        }
+      }
+    };
+
+    void initializeSupabaseThreadSync();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, isSyncReady, isFr, setMessages]);
+
+  useEffect(() => {
+    if (!threadId || !isThreadSyncEnabled) {
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(CHAT_THREAD_STORAGE_KEY, threadId);
+    }
+
+    const unsubscribe = subscribeToMessages(threadId, (payload) => {
+      const row = payload.new as ChatMessage;
+      setMessages((current) => {
+        if (current.some((entry) => entry.id === row.id)) {
+          return current;
+        }
+
+        return [
+          ...current,
+          {
+            id: row.id,
+            role: row.sender_id === currentUserId ? "user" : "assistant",
+            parts: [{ type: "text", text: row.content }],
+          },
+        ];
+      });
+    });
+
+    return unsubscribe;
+  }, [threadId, isThreadSyncEnabled, setMessages, currentUserId]);
+
+  const loadThread = async (nextThreadId: string) => {
+    if (!isThreadSyncEnabled || !currentUserId || nextThreadId === threadId) {
+      return;
+    }
+
+    const history = await getMessages(nextThreadId);
+    setThreadId(nextThreadId);
+    persistedUserMessageIdsRef.current.clear();
+    setMessages(
+      history.map((message) => ({
+        id: message.id,
+        role: message.sender_id === currentUserId ? "user" : "assistant",
+        parts: [{ type: "text" as const, text: message.content }],
+      }))
+    );
+  };
+
+  const createAndLoadThread = async () => {
+    if (!isThreadSyncEnabled) {
+      return;
+    }
+
+    const created = await createThread(isFr ? "Nouveau fil" : "New thread");
+    setThreads((current) => [created, ...current]);
+    setThreadId(created.id);
+    persistedUserMessageIdsRef.current.clear();
+    setMessages([]);
+  };
+
+  useEffect(() => {
+    if (!isThreadSyncEnabled || !threadId || messages.length === 0) {
+      return;
+    }
+
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage.role !== "user") {
+      return;
+    }
+
+    if (persistedUserMessageIdsRef.current.has(lastMessage.id)) {
+      return;
+    }
+
+    const content = lastMessage.parts
+      ?.filter((part): part is { type: "text"; text: string } => part.type === "text")
+      .map((part) => part.text)
+      .join("")
+      .trim();
+
+    if (!content) {
+      return;
+    }
+
+    persistedUserMessageIdsRef.current.add(lastMessage.id);
+
+    void sendThreadMessage(threadId, content).catch(() => {
+      persistedUserMessageIdsRef.current.delete(lastMessage.id);
+    });
+  }, [messages, isThreadSyncEnabled, threadId]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -168,6 +352,42 @@ export function ChatWidget() {
                 </span>
               </div>
             </div>
+
+            {isThreadSyncEnabled && (
+              <div className="px-4 py-2 border-b border-foreground/10 bg-background/70 flex items-center gap-2 overflow-x-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    void createAndLoadThread();
+                  }}
+                  className="shrink-0 text-[10px] font-mono uppercase tracking-wider border border-foreground/30 px-2 py-1 hover:bg-foreground/10"
+                >
+                  {isFr ? "Nouveau" : "New"}
+                </button>
+                {threads.slice(0, 6).map((thread, index) => (
+                  <button
+                    key={thread.id}
+                    type="button"
+                    onClick={() => {
+                      void loadThread(thread.id);
+                    }}
+                    className={`shrink-0 text-[10px] font-mono uppercase tracking-wider border px-2 py-1 transition-colors ${
+                      thread.id === threadId
+                        ? "border-foreground bg-foreground text-background"
+                        : "border-foreground/30 text-foreground/70 hover:bg-foreground/10"
+                    }`}
+                  >
+                    {(thread.title || (isFr ? `fil ${index + 1}` : `thread ${index + 1}`)).slice(0, 18)}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {!isThreadSyncEnabled && syncError && (
+              <div className="px-4 py-2 border-b border-foreground/10 text-[10px] font-mono uppercase tracking-wider text-foreground/50">
+                {syncError}
+              </div>
+            )}
 
             {/* Messages area */}
             <div

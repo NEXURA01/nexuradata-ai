@@ -94,6 +94,7 @@ REDIRECT_CODES = {301, 302, 303, 307, 308}
 TIMEOUT = int(os.environ.get("TIMEOUT", "15"))
 MAX_HOPS = int(os.environ.get("MAX_HOPS", "5"))
 USER_AGENT = "nexuradata-redirect-smoketest/2.0"
+CHECK_HOST_RULES = os.environ.get("CHECK_HOST_RULES", "auto").strip().lower()
 
 
 # ───────────────────────── Data ─────────────────────────
@@ -172,6 +173,17 @@ def _equal(a: str, b: str) -> bool:
     """Compare URLs ignoring trailing slash on path."""
     na, nb = normalize(a).rstrip("/"), normalize(b).rstrip("/")
     return na == nb
+
+
+def should_check_host_rules(base: str) -> bool:
+    """Allow CI/workflow to explicitly enable/disable global host checks."""
+    if CHECK_HOST_RULES in {"1", "true", "yes", "on"}:
+        return True
+    if CHECK_HOST_RULES in {"0", "false", "no", "off"}:
+        return False
+
+    # Auto mode: run host canonicalization checks only on the canonical apex.
+    return urlsplit(base).netloc == "nexuradata.ca"
 
 
 # ───────────────────────── Checks ─────────────────────────
@@ -386,11 +398,15 @@ def main() -> int:
         results.append(r)
         print_result(r)
 
-    print(BOLD("\n── Host redirects ──"))
-    for src_host, target_host in HOST_RULES:
-        r = check_host(base, src_host, target_host)
-        results.append(r)
-        print_result(r)
+    if should_check_host_rules(base):
+        print(BOLD("\n── Host redirects ──"))
+        for src_host, target_host in HOST_RULES:
+            r = check_host(base, src_host, target_host)
+            results.append(r)
+            print_result(r)
+    else:
+        print(BOLD("\n── Host redirects ──"))
+        print(DIM("Skipped host canonicalization checks for non-production deployment URL."))
 
     passed = sum(1 for r in results if r.ok)
     failed = len(results) - passed

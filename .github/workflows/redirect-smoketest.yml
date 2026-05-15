@@ -52,18 +52,28 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             URL="${{ github.event.inputs.base_url }}"
+            CHECK_HOST_RULES="auto"
           else
             URL="${{ github.event.deployment_status.environment_url }}"
             if [ -z "$URL" ] || [ "$URL" = "null" ]; then
               URL="${{ github.event.deployment_status.target_url }}"
             fi
-            # Production deploys: prefer the canonical apex.
+            if [ -z "$URL" ] || [ "$URL" = "null" ]; then
+              echo "Could not resolve deployment URL from deployment_status payload" >&2
+              exit 1
+            fi
+
+            # Only run global host canonicalization checks for production deploys.
             if [ "${{ github.event.deployment.environment }}" = "production" ]; then
-              URL="https://nexuradata.ca"
+              CHECK_HOST_RULES="true"
+            else
+              CHECK_HOST_RULES="false"
             fi
           fi
           echo "Testing URL: $URL"
+          echo "CHECK_HOST_RULES: $CHECK_HOST_RULES"
           echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "check_host_rules=$CHECK_HOST_RULES" >> "$GITHUB_OUTPUT"
 
       - name: Wait for deployment to be reachable
         run: |
@@ -78,6 +88,8 @@ jobs:
           exit 1
 
       - name: Run redirect smoke-test
+        env:
+          CHECK_HOST_RULES: ${{ steps.target.outputs.check_host_rules }}
         run: python3 scripts/redirect-smoketest.py "${{ steps.target.outputs.url }}"
 
       - name: Mark deployment as failed on smoketest failure

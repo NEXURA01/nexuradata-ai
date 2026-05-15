@@ -24,7 +24,7 @@ on:
 
 permissions:
   contents: read
-  deployments: read
+  deployments: write
   statuses: write
 
 jobs:
@@ -77,12 +77,12 @@ jobs:
 
       - name: Wait for deployment to be reachable
         run: |
-          for i in $(seq 1 30); do
-            if curl -sfI --max-time 5 "${{ steps.target.outputs.url }}" >/dev/null 2>&1; then
+          for i in $(seq 1 60); do
+            if curl -sS -I --max-time 8 "${{ steps.target.outputs.url }}" >/dev/null 2>&1; then
               echo "Reachable after ${i} attempt(s)"
               exit 0
             fi
-            sleep 2
+            sleep 3
           done
           echo "Deployment never became reachable" >&2
           exit 1

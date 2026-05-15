@@ -16,6 +16,7 @@ export function LeadsDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchStats();
@@ -25,15 +26,20 @@ export function LeadsDashboard() {
 
   const fetchStats = async () => {
     try {
+      setError(null);
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "get_daily_stats" }),
       });
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status}`);
+      }
       const data = await res.json();
       setStats(data);
     } catch (error) {
       console.error("Stats fetch error:", error);
+      setError(String(error));
     } finally {
       setLoading(false);
     }
@@ -47,10 +53,14 @@ export function LeadsDashboard() {
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();
-      alert(
-        `✓ Started: ${data.leads_queued} leads queued for outreach today`
-      );
-      fetchStats();
+      if (!res.ok) {
+        alert(`Error: ${data.error || "Unknown error"}`);
+      } else {
+        alert(
+          `✓ Started: ${data.leads_queued} leads queued for outreach today`
+        );
+        fetchStats();
+      }
     } catch (error) {
       alert(`Error: ${error}`);
     } finally {
@@ -58,7 +68,37 @@ export function LeadsDashboard() {
     }
   };
 
-  if (loading) return <div>Loading stats...</div>;
+  if (error && loading) {
+    return (
+      <main className="min-h-screen bg-noir px-6 pb-24 pt-20 text-os md:px-8">
+        <div className="mx-auto max-w-6xl">
+          <h1 className="text-4xl font-serif mb-4">Lead Outreach Dashboard</h1>
+          <div className="border border-red-500/50 bg-red-950/20 px-6 py-4">
+            <p className="text-red-400">
+              <strong>⚠ Configuration Required:</strong>
+            </p>
+            <p className="text-sm mt-2">
+              {error.includes("supabaseUrl")
+                ? "Missing Supabase configuration. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local"
+                : error}
+            </p>
+            <p className="text-xs text-muted mt-2">
+              See LEAD_GENERATION_GUIDE.md for setup instructions.
+            </p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (loading) return (
+    <main className="min-h-screen bg-noir px-6 pb-24 pt-20 text-os md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <h1 className="text-4xl font-serif mb-2">Lead Outreach Dashboard</h1>
+        <p className="text-muted">Loading stats...</p>
+      </div>
+    </main>
+  );
 
   return (
     <main className="min-h-screen bg-noir px-6 pb-24 pt-20 text-os md:px-8">
@@ -69,6 +109,9 @@ export function LeadsDashboard() {
           <p className="text-muted">
             Real-time automation for landscaping + window cleaning leads
           </p>
+          {error && (
+            <p className="text-sm text-yellow-600 mt-2">⚠ {error}</p>
+          )}
         </div>
 
         {/* Stats Grid */}

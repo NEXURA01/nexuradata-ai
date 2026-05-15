@@ -4,6 +4,9 @@
   "config": {
     "pagesProjectName": "nexuradata-ai"
   },
+  "overrides": {
+    "postcss": "^8.5.14"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

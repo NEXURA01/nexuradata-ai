@@ -168,22 +168,22 @@ export function LeadsDashboard() {
             {
               label: "Leads Sent",
               value: stats?.leads_sent || 0,
-              color: "accent",
+              colorClass: "text-accent",
             },
             {
               label: "Responses",
               value: stats?.leads_responded || 0,
-              color: "green-500",
+              colorClass: "text-green-500",
             },
             {
               label: "Qualified",
               value: stats?.leads_qualified || 0,
-              color: "blue-500",
+              colorClass: "text-blue-500",
             },
             {
               label: "Booked",
               value: stats?.leads_booked || 0,
-              color: "purple-500",
+              colorClass: "text-purple-500",
             },
           ].map((stat, i) => (
             <motion.div
@@ -196,7 +196,7 @@ export function LeadsDashboard() {
               <p className="mb-2 text-sm uppercase tracking-widest text-muted">
                 {stat.label}
               </p>
-              <p className={`text-4xl font-mono font-bold text-${stat.color}`}>
+              <p className={`text-4xl font-mono font-bold ${stat.colorClass}`}>
                 {stat.value}
               </p>
             </motion.div>

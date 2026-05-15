@@ -31,7 +31,13 @@ export type LeadContact = {
   intent_signal?: string | null;
 };
 
-const MAILGUN_API_BASE = "https://api.mailgun.net/v3";
+const getMailgunApiBase = (apiRegion: string) => {
+  if (apiRegion.toLowerCase() === "eu") {
+    return "https://api.eu.mailgun.net/v3";
+  }
+
+  return "https://api.mailgun.net/v3";
+};
 
 const CAMPAIGN_CYCLE: CampaignPlanDay[] = [
   { day: 1, region: "Montreal", industries: ["landscaping", "window_washing"], quota: 30, angle: "busy crews miss calls" },
@@ -223,6 +229,7 @@ const buildHtmlEmail = ({
 const getMailgunConfig = () => ({
   apiKey: process.env.MAILGUN_API_KEY || "",
   domain: process.env.MAILGUN_DOMAIN || "",
+  apiRegion: process.env.MAILGUN_API_REGION || process.env.MAILGUN_REGION || "us",
   from: process.env.MAILGUN_FROM_EMAIL || process.env.RESEND_FROM_EMAIL || "NEXURA <noreply@nexuradata.ca>",
   regionByDefault: process.env.MAILGUN_REGION_FALLBACK || "Montreal",
   bookingUrl: process.env.CALENDLY_BOOKING_URL || `${process.env.NEXT_PUBLIC_APP_URL || "https://nexuradata.ca"}/book`,
@@ -266,7 +273,7 @@ export const sendMailgunEmail = async ({
   text: string;
   html: string;
 }) => {
-  const { apiKey, domain, from, tracking } = getMailgunConfig();
+  const { apiKey, domain, apiRegion, from, tracking } = getMailgunConfig();
 
   if (!apiKey || !domain) {
     return { success: false, reason: "not-configured" as const };
@@ -280,7 +287,7 @@ export const sendMailgunEmail = async ({
   body.set("html", html);
   body.set("o:tracking", tracking);
 
-  const response = await fetch(`${MAILGUN_API_BASE}/${domain}/messages`, {
+  const response = await fetch(`${getMailgunApiBase(apiRegion)}/${domain}/messages`, {
     method: "POST",
     headers: {
       Authorization: `Basic ${Buffer.from(`api:${apiKey}`).toString("base64")}`,

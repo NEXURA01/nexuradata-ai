@@ -199,6 +199,104 @@ describe("POST /api/estimate", () => {
     expect(res.status).toBe(400);
   });
 
+  it("sends team and client report emails for a generated automation estimate", async () => {
+    const payload = {
+      organization: "NEXURA Client",
+      contact_name: "Marie",
+      email: "marie@test.com",
+      workflow_summary: "The client needs to centralize operational requests, route approvals, and expose status across teams.",
+      current_tools: "Email, spreadsheets, Stripe",
+      workflow_count: "3 workflows",
+      teams_involved: "Operations and finance",
+      dashboard_visibility: "Internal dashboard needed",
+      ai_routing: "AI summary and routing needed",
+      payment_portal: "Stripe payment review",
+      urgency: "This month",
+      budget_expectation: "Initial review first",
+      preferred_language: "fr"
+    };
+    const estimateContent = {
+      recommended_scope: "Workflow centralise",
+      estimated_min_cad: 1500,
+      estimated_max_cad: 3000,
+      confidence: "medium",
+      scores: {
+        workflow_count: 2,
+        integration_count: 3,
+        team_complexity: 3,
+        automation_depth: 3,
+        dashboard_need: 3,
+        ai_need: 3,
+        urgency_risk: 2
+      },
+      reasoning: ["Several team approvals need to be centralized."],
+      included_layers: ["Workflow mapping", "Human validation"],
+      missing_information: ["Exact systems to integrate"],
+      human_review_required: true,
+      client_facing_summary: "Based on the information provided, the estimated implementation range is $1,500-$3,000 CAD for workflow centralise, pending human validation."
+    };
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(async (url, options = {}) => {
+      const requestUrl = `${url}`;
+
+      if (requestUrl === "https://api.openai.com/v1/chat/completions") {
+        return Response.json({ choices: [{ message: { content: JSON.stringify(estimateContent) } }] });
+      }
+
+      if (requestUrl.includes("/rest/v1/leads")) {
+        return Response.json([{ id: "lead-1", ...JSON.parse(options.body) }]);
+      }
+
+      if (requestUrl.includes("/rest/v1/ai_estimates")) {
+        return Response.json([{ id: "estimate-1", ...JSON.parse(options.body) }]);
+      }
+
+      if (requestUrl.includes("/rest/v1/workflow_cases")) {
+        return Response.json([{ id: "workflow-1", ...JSON.parse(options.body) }]);
+      }
+
+      if (requestUrl === "https://api.resend.com/emails") {
+        return Response.json({ id: crypto.randomUUID() });
+      }
+
+      return Response.json([]);
+    });
+
+    try {
+      const ctx = makeContext(payload, {
+        SUPABASE_URL: "https://project.supabase.co",
+        SUBABASE_SECRET_KEY: "service-role",
+        OPENAI_API_KEY: "openai-key",
+        RESEND_API_KEY: "re_test_key",
+        RESEND_FROM_EMAIL: "NEXURA <dossiers@nexuradata.ca>",
+        TEAM_INBOX_EMAILS: "ops@test.com"
+      });
+      ctx.request = new Request("https://nexuradata.ca/api/estimate", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const res = await estimateHandler(ctx);
+      const body = await res.json();
+
+      expect(res.status).toBe(200);
+      expect(body.ok).toBe(true);
+      expect(body.delivery.team).toBe("sent");
+      expect(body.delivery.client_report).toBe("sent");
+
+      const resendCalls = fetchMock.mock.calls.filter(([url]) => `${url}` === "https://api.resend.com/emails");
+      expect(resendCalls).toHaveLength(2);
+      const resendBodies = resendCalls.map(([, options]) => JSON.parse(options.body));
+      expect(resendBodies.some((message) => message.to.includes("ops@test.com"))).toBe(true);
+      const clientMessage = resendBodies.find((message) => message.to.includes("marie@test.com"));
+      expect(clientMessage.subject).toContain("Rapport d'évaluation opérationnelle");
+      expect(clientMessage.text).toContain("RAPPORT INDICATIF");
+      expect(clientMessage.text).toMatch(/validation humaine|human validation/i);
+    } finally {
+      fetchMock.mockRestore();
+    }
+  });
+
   it("OPTIONS handler returns 204", () => {
     const res = estimateOptions({ env: {} });
     expect(res.status).toBe(204);

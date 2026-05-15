@@ -1,3 +1,4 @@
+import { generateText } from "ai";
 import { createClient } from "@supabase/supabase-js";
 import {
   sendClientAssessmentReportEmail,
@@ -5,17 +6,23 @@ import {
 } from "@/lib/server-email";
 import { guardPublicPost, hasFilledHoneypot, jsonWithSecurity } from "@/lib/request-guard";
 
-const isValidEmail = (value: unknown) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(`${value || ""}`);
-
-const normalizeText = (value: unknown, maxLength = 2400) =>
-  typeof value === "string" ? value.trim().replace(/\s+/g, " ").slice(0, maxLength) : "";
-
 type AssessmentEstimate = {
   complexity: string;
   scope: string;
   range: string;
   nextStep: string;
 };
+
+const isValidEmail = (value: unknown) => {
+  const email = typeof value === "string" ? value.trim() : "";
+  if (email.length < 5 || email.length > 254 || /\s/.test(email)) return false;
+  const at = email.indexOf("@");
+  const lastDot = email.lastIndexOf(".");
+  return at > 0 && lastDot > at + 1 && lastDot < email.length - 1;
+};
+
+const normalizeText = (value: unknown, maxLength = 2400) =>
+  typeof value === "string" ? value.trim().replace(/\s+/g, " ").slice(0, maxLength) : "";
 
 const fallbackEstimate = (locale: string): AssessmentEstimate => ({
   complexity: "Medium",
@@ -29,105 +36,6 @@ const fallbackEstimate = (locale: string): AssessmentEstimate => ({
       ? "Réservez une revue opérationnelle pour obtenir des recommandations détaillées."
       : "Book an operational review to get detailed recommendations.",
 });
-
-const parseEstimate = (text: string, locale: string): AssessmentEstimate => {
-  try {
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    return jsonMatch ? JSON.parse(jsonMatch[0]) : fallbackEstimate(locale);
-  } catch {
-    return fallbackEstimate(locale);
-  }
-};
-
-const generateAssessmentEstimate = async ({
-  company,
-  name,
-  problem,
-  tools,
-  teams,
-  urgency,
-  locale,
-}: {
-  company: string;
-  name: string;
-  problem: string;
-  tools: string;
-  teams: string;
-  urgency: string;
-  locale: string;
-}): Promise<AssessmentEstimate> => {
-  const openAiKey = process.env.OPENAI_API_KEY;
-
-  if (!openAiKey) {
-    console.error("OPENAI_API_KEY is not configured");
-    return fallbackEstimate(locale);
-  }
-
-  const system = `You are an operational analyst at NEXURA. Analyze the client's operational problem and provide a structured estimate.
-
-Rules:
-- Never give exact prices, only ranges
-- Never promise specific results
-- Don't invent details not provided
-- Focus on identifying complexity and scope
-- Be professional but accessible
-- Respond in ${locale === "fr" ? "French" : "English"}
-
-Output format (JSON):
-{
-  "complexity": "Low | Medium | High | Critical",
-  "scope": "Brief description of recommended work",
-  "range": "Price range in CAD (e.g., $2,500 - $10,000)",
-  "nextStep": "What happens after they book the review"
-}`;
-
-  const prompt = `Company: ${company}
-Name: ${name}
-Main Problem: ${problem}
-Current Tools: ${tools || "Not specified"}
-Number of Teams: ${teams || "Not specified"}
-Urgency: ${urgency}
-
-Analyze this operational problem and provide an estimate.`;
-
-  try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${openAiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: system },
-          { role: "user", content: prompt },
-        ],
-        max_tokens: 500,
-        response_format: { type: "json_object" },
-        temperature: 0.2,
-      }),
-    });
-
-    if (!response.ok) {
-      const details = await response.text().catch(() => "");
-      console.error("OpenAI estimate error:", response.status, details.slice(0, 500));
-      return fallbackEstimate(locale);
-    }
-
-    const data = (await response.json().catch(() => null)) as
-      | { choices?: Array<{ message?: { content?: string } }> }
-      | null;
-    const text = data?.choices?.[0]?.message?.content;
-
-    return typeof text === "string" && text.trim()
-      ? parseEstimate(text, locale)
-      : fallbackEstimate(locale);
-  } catch (error) {
-    console.error("OpenAI estimate error:", error);
-    return fallbackEstimate(locale);
-  }
-};
 
 export async function POST(req: Request) {
   const guarded = guardPublicPost(req, { namespace: "assessment", maxRequests: 4 });
@@ -162,7 +70,7 @@ export async function POST(req: Request) {
     const tools = normalizeText(body.tools, 1200);
     const teams = normalizeText(body.teams, 40);
     const urgency = normalizeText(body.urgency, 80);
-    const locale = normalizeText(body.locale, 12) || "fr";
+    const locale = normalizeText(body.locale, 12) === "en" ? "en" : "fr";
     const sourcePath = normalizeText(body.sourcePath, 240);
     const sourceLabel = normalizeText(body.sourceLabel, 120) || "assessment_form";
     const utmSource = normalizeText(body.utmSource, 120);
@@ -175,21 +83,66 @@ export async function POST(req: Request) {
       return jsonWithSecurity({ error: "Invalid assessment payload" }, { status: 400 });
     }
 
-    // Generate AI estimate
-    const estimate = await generateAssessmentEstimate({
-      company,
-      name,
-      problem,
-      tools,
-      teams,
-      urgency,
-      locale,
+    const { text } = await generateText({
+      model: "openai/gpt-4o-mini",
+      system: `You are an operational analyst at NEXURA. Analyze the client's operational problem and provide a structured estimate.
+
+Rules:
+- Never give exact prices, only ranges
+- Never promise specific results
+- Don't invent details not provided
+- Focus on identifying complexity and scope
+- Be professional but accessible
+- Respond in ${locale === "fr" ? "French" : "English"}
+
+Output format (JSON):
+{
+  "complexity": "Low | Medium | High | Critical",
+  "scope": "Brief description of recommended work",
+  "range": "Price range in CAD (e.g., $2,500 - $10,000)",
+  "nextStep": "What happens after they book the review"
+}`,
+      prompt: `Company: ${company}
+Name: ${name}
+Main Problem: ${problem}
+Current Tools: ${tools || "Not specified"}
+Number of Teams: ${teams || "Not specified"}
+Urgency: ${urgency}
+
+Analyze this operational problem and provide an estimate.`,
+      maxOutputTokens: 500,
     });
 
-    // Store lead in Supabase
+    let estimate = fallbackEstimate(locale);
+    try {
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]) as Partial<AssessmentEstimate>;
+        estimate = {
+          complexity: normalizeText(parsed.complexity, 80) || estimate.complexity,
+          scope: normalizeText(parsed.scope, 500) || estimate.scope,
+          range: normalizeText(parsed.range, 80) || estimate.range,
+          nextStep: normalizeText(parsed.nextStep, 500) || estimate.nextStep,
+        };
+      }
+    } catch {
+      estimate = fallbackEstimate(locale);
+    }
+
     const teamCount = Number.parseInt(`${teams || ""}`, 10);
     const leadScore = [company, name, email, problem, tools, teams, urgency].filter(Boolean).length * 10;
+    const legacyMessage = [
+      `Problem: ${problem}`,
+      tools ? `Tools: ${tools}` : "Tools: Not specified",
+      teams ? `Teams: ${teams}` : "Teams: Not specified",
+      `Urgency: ${urgency}`,
+    ].join("\n");
+
     const { data: lead, error: dbError } = await supabase.from("leads").insert({
+      name,
+      company,
+      message: legacyMessage,
+      source: sourceLabel,
       company_name: company,
       contact_name: name,
       email,
@@ -210,10 +163,19 @@ export async function POST(req: Request) {
       last_client_report_sent_at: new Date().toISOString(),
       lead_score: leadScore,
       status: "new",
+      metadata: {
+        sourcePath,
+        sourceLabel,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        referrer,
+      },
     }).select("id").maybeSingle();
 
     if (dbError) {
       console.error("Supabase error:", dbError);
+      return jsonWithSecurity({ error: "Assessment storage failed" }, { status: 503 });
     }
 
     const emailPayload = {
@@ -238,16 +200,23 @@ export async function POST(req: Request) {
       sendClientAssessmentReportEmail(emailPayload, estimate, req, lead?.id || null),
     ]);
 
+    const delivery = {
+      team: teamDelivery.status === "fulfilled"
+        ? (teamDelivery.value.sent ? "sent" : teamDelivery.value.reason)
+        : "notification-error",
+      client: clientDelivery.status === "fulfilled"
+        ? (clientDelivery.value.sent ? "sent" : clientDelivery.value.reason)
+        : "notification-error",
+    };
+
+    if (delivery.team !== "sent" || delivery.client !== "sent") {
+      return jsonWithSecurity({ error: "Assessment delivery failed", estimate, leadId: lead?.id || null, delivery }, { status: 503 });
+    }
+
     return jsonWithSecurity({
       estimate,
-      delivery: {
-        team: teamDelivery.status === "fulfilled"
-          ? (teamDelivery.value.sent ? "sent" : teamDelivery.value.reason)
-          : "notification-error",
-        client: clientDelivery.status === "fulfilled"
-          ? (clientDelivery.value.sent ? "sent" : clientDelivery.value.reason)
-          : "notification-error",
-      },
+      leadId: lead?.id || null,
+      delivery,
     });
   } catch (error) {
     console.error("Assessment error:", error);

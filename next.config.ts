@@ -2,6 +2,29 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
+const isProduction = process.env.NODE_ENV === "production";
+
+const scriptSources = [
+  "'self'",
+  "'unsafe-inline'",
+  !isProduction ? "'unsafe-eval'" : "",
+  "https://js.stripe.com",
+  "https://vercel.live",
+  "https://www.googletagmanager.com",
+].filter(Boolean).join(" ");
+
+const connectSources = [
+  "'self'",
+  "https://api.stripe.com",
+  "https://checkout.stripe.com",
+  "https://js.stripe.com",
+  "https://*.supabase.co",
+  "wss://*.supabase.co",
+  "https://vitals.vercel-insights.com",
+  "https://www.google-analytics.com",
+  "https://analytics.google.com",
+  "https://region1.google-analytics.com",
+].join(" ");
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -11,9 +34,9 @@ const contentSecurityPolicy = [
   "object-src 'none'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://vercel.live",
+  `script-src ${scriptSources}`,
   "style-src 'self' 'unsafe-inline'",
-  "connect-src 'self' https://api.stripe.com https://checkout.stripe.com https://js.stripe.com https://*.supabase.co wss://*.supabase.co https://vitals.vercel-insights.com",
+  `connect-src ${connectSources}`,
   "frame-src https://checkout.stripe.com https://js.stripe.com",
   "manifest-src 'self'",
   "worker-src 'self' blob:",
@@ -58,6 +81,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.nexuradata.ca" }],
+        destination: "https://nexuradata.ca/:path*",
+        permanent: true,
+      },
       {
         source: "/:path*",
         has: [{ type: "host", value: "nexuradata-ai.vercel.app" }],

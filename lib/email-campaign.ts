@@ -23,12 +23,16 @@ export type LeadContact = {
   name: string;
   business_name: string;
   business_type: string;
+  vertical?: string | null;
   city: string;
   email: string | null;
   phone?: string | null;
   website?: string | null;
   region?: string;
   intent_signal?: string | null;
+  consent_status?: string | null;
+  do_not_contact?: boolean | null;
+  status?: string | null;
 };
 
 type CampaignTemplateVariables = {
@@ -197,6 +201,8 @@ const buildPlainTextEmail = ({
     `If this is worth a quick look, you can book a short call here: ${bookingUrl}`,
     "",
     "If it is not a fit, reply once and I will stop reaching out.",
+    "Reply STOP to opt out.",
+    "Repondez STOP pour ne plus recevoir de messages.",
     "",
     "Best,",
     "NEXURA",
@@ -238,6 +244,7 @@ const buildHtmlEmail = ({
           <p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.7;color:#c8c4bc;">If this is worth a quick look, book a short call here:</p>
           <p style="margin:0 0 18px;"><a href="${bookingUrl}" style="display:inline-block;background:#e8e4dc;color:#0d0d0b;font-family:'Courier New',Courier,monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;padding:11px 22px;border-radius:3px;">Book a quick call →</a></p>
           <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#8f897f;">If it is not a fit, reply once and I will stop reaching out.</p>
+          <p style="margin:8px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#8f897f;">Reply STOP to opt out. Repondez STOP pour ne plus recevoir de messages.</p>
         </td></tr>
         <tr><td style="padding:0 28px 24px;">
           <div style="height:1px;background:rgba(232,228,220,0.12);margin-bottom:16px;"></div>

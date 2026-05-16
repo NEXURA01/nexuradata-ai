@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { EmployeeAccessContent } from "@/components/EmployeeAccessContent";
 import { EmployeeLoginForm } from "@/components/EmployeeLoginForm";
 import { buildPageMetadata } from "@/lib/seo";
-import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { getEmployeContext } from "@/lib/employe-role";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -18,14 +18,11 @@ export default async function EmployePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const supabase = await createServerSupabaseClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const context = await getEmployeContext();
 
-  if (!user) {
+  if (!context) {
     return <EmployeeLoginForm />;
   }
 
-  return <EmployeeAccessContent />;
+  return <EmployeeAccessContent role={context.role} />;
 }

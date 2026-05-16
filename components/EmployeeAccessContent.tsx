@@ -2,12 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
+import type { EmployeRole } from "@/lib/employe-role";
 
 const employeeLinks = [
-  { href: "/operations/", labelFr: "Cas clients", labelEn: "Client cases", detailFr: "Voir la demande, qualifier la priorité, préparer la réponse.", detailEn: "Review the request, qualify priority, and prepare the response." },
-  { href: "/operations/payments.html", labelFr: "Paiements", labelEn: "Payments", detailFr: "Créer ou suivre un lien Stripe pour le dossier.", detailEn: "Create or track a Stripe link attached to the client case." },
-  { href: "/operations/quotes.html", labelFr: "Soumissions", labelEn: "Quotes", detailFr: "Vérifier les travaux demandés, approuvés ou relancés.", detailEn: "Review requested, approved, or follow-up work." },
-  { href: "/operations/follow-up.html", labelFr: "Relances", labelEn: "Follow-ups", detailFr: "Reprendre les dossiers en attente de prochaine action.", detailEn: "Resume cases waiting for the next action." },
+  { href: "/operations/", labelFr: "Cas clients", labelEn: "Client cases", detailFr: "Voir la demande, qualifier la priorité, préparer la réponse.", detailEn: "Review the request, qualify priority, and prepare the response.", adminOnly: false },
+  { href: "/operations/payments.html", labelFr: "Paiements", labelEn: "Payments", detailFr: "Créer ou suivre un lien Stripe pour le dossier.", detailEn: "Create or track a Stripe link attached to the client case.", adminOnly: true },
+  { href: "/operations/quotes.html", labelFr: "Soumissions", labelEn: "Quotes", detailFr: "Vérifier les travaux demandés, approuvés ou relancés.", detailEn: "Review requested, approved, or follow-up work.", adminOnly: false },
+  { href: "/operations/follow-up.html", labelFr: "Relances", labelEn: "Follow-ups", detailFr: "Reprendre les dossiers en attente de prochaine action.", detailEn: "Resume cases waiting for the next action.", adminOnly: false },
 ];
 
 const flowSteps = [
@@ -24,10 +25,16 @@ const automationSteps = [
   { number: "04", titleFr: "Facturer", titleEn: "Invoice", detailFr: "Lien Stripe reste attaché au dossier.", detailEn: "When needed, the Stripe link stays attached to the right client." },
 ];
 
-export function EmployeeAccessContent() {
+type EmployeeAccessContentProps = {
+  role: EmployeRole;
+};
+
+export function EmployeeAccessContent({ role }: EmployeeAccessContentProps) {
   const locale = useLocale();
   const isFr = locale === "fr";
   const router = useRouter();
+  const isAdmin = role === "admin";
+  const visibleLinks = employeeLinks.filter((item) => !item.adminOnly || isAdmin);
 
   async function handleLogout() {
     await fetch("/api/employe/logout", { method: "POST" });
@@ -39,6 +46,9 @@ export function EmployeeAccessContent() {
       <div className="mx-auto max-w-[1180px]">
         <section className="relative overflow-hidden border border-accent/20 bg-surface p-8 md:p-12">
           <p className="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-accent">EMPLOYE</p>
+          <p className="mb-5 font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/55">
+            {isFr ? `Rôle: ${isAdmin ? "admin" : "employé"}` : `Role: ${role}`}
+          </p>
           <h1 className="max-w-[10ch] font-serif text-[clamp(4rem,10vw,8.5rem)] leading-[0.86] text-[var(--os)]">
             {isFr ? "Accès employé." : "Employee access."}
           </h1>
@@ -61,12 +71,14 @@ export function EmployeeAccessContent() {
             >
               {isFr ? "Ouvrir EMPLOYE" : "Open EMPLOYE"}
             </a>
-            <a
-              href="/operations/payments.html"
-              className="border-y border-foreground/20 px-1 py-4 font-mono text-[11px] font-semibold uppercase tracking-[0.24em] text-foreground/60 transition-colors hover:border-foreground/55 hover:text-foreground"
-            >
-              {isFr ? "Paiements" : "Payments"}
-            </a>
+            {isAdmin ? (
+              <a
+                href="/operations/payments.html"
+                className="border-y border-foreground/20 px-1 py-4 font-mono text-[11px] font-semibold uppercase tracking-[0.24em] text-foreground/60 transition-colors hover:border-foreground/55 hover:text-foreground"
+              >
+                {isFr ? "Paiements" : "Payments"}
+              </a>
+            ) : null}
             <button
               type="button"
               onClick={handleLogout}
@@ -82,7 +94,7 @@ export function EmployeeAccessContent() {
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.26em] text-accent">Chemin rapide</p>
             <h2 className="font-serif text-4xl leading-none text-[var(--os)]">{isFr ? "Quoi ouvrir" : "What to open"}</h2>
           <ul className="mt-7 grid gap-0" role="list">
-              {employeeLinks.map((item) => (
+              {visibleLinks.map((item) => (
                 <li key={item.href} className="grid gap-3 border-t border-foreground/10 py-4 md:grid-cols-[13rem_1fr]">
                   <a href={item.href} className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-accent transition-colors hover:text-foreground">
                     {isFr ? item.labelFr : item.labelEn}

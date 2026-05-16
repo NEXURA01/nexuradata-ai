@@ -208,7 +208,10 @@ export function Footer() {
 
             {/* Status indicator */}
             <div className="flex items-center gap-3 md:justify-center">
-              <div className="h-2 w-2 rounded-full bg-[#00c766] animate-pulse" />
+              <div 
+                className="h-2 w-2 rounded-full bg-[#00c766]" 
+                style={{ animation: "operational-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite" }}
+              />
               <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.52)]">
                 {isFr ? "SYSTÈMES OPÉRATIONNELS" : "SYSTEMS OPERATIONAL"}
               </span>

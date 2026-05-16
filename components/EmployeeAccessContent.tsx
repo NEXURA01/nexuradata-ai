@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 
 const employeeLinks = [
@@ -26,6 +27,12 @@ const automationSteps = [
 export function EmployeeAccessContent() {
   const locale = useLocale();
   const isFr = locale === "fr";
+  const router = useRouter();
+
+  async function handleLogout() {
+    await fetch("/api/employe/logout", { method: "POST" });
+    router.refresh();
+  }
 
   return (
     <main className="min-h-screen bg-[var(--noir)] px-6 pb-24 pt-36 text-[var(--os)] md:px-8">
@@ -60,28 +67,17 @@ export function EmployeeAccessContent() {
             >
               {isFr ? "Paiements" : "Payments"}
             </a>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="border-y border-foreground/20 px-1 py-4 font-mono text-[11px] font-semibold uppercase tracking-[0.24em] text-foreground/60 transition-colors hover:border-foreground/55 hover:text-foreground"
+            >
+              {isFr ? "Se déconnecter" : "Sign out"}
+            </button>
           </div>
         </section>
 
-        <section className="mt-6 grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
-          <article className="border border-foreground/12 bg-surface p-7">
-            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.26em] text-accent">Identification</p>
-            <h2 className="font-serif text-4xl leading-none text-[var(--os)]">{isFr ? "Connexion temporaire" : "Temporary login"}</h2>
-            <dl className="mt-7 grid gap-3">
-              <div className="grid gap-2 border border-foreground/10 bg-foreground/[0.04] p-4 sm:grid-cols-[9rem_1fr] sm:items-center">
-                <dt className="font-mono text-[10px] uppercase tracking-[0.22em] text-[rgba(245,247,250,0.48)]">Utilisateur</dt>
-                <dd className="m-0 font-mono text-lg font-semibold text-[var(--os)]">admin</dd>
-              </div>
-              <div className="grid gap-2 border border-foreground/10 bg-foreground/[0.04] p-4 sm:grid-cols-[9rem_1fr] sm:items-center">
-                <dt className="font-mono text-[10px] uppercase tracking-[0.22em] text-[rgba(245,247,250,0.48)]">Mot de passe</dt>
-                <dd className="m-0 font-mono text-lg font-semibold text-[var(--os)]">admin</dd>
-              </div>
-            </dl>
-            <p className="mt-6 text-sm leading-relaxed text-[rgba(245,247,250,0.52)]">
-              {isFr ? "Réservé à l'équipe. Ne pas partager avec un client." : "Team use only. Do not share with a client."}
-            </p>
-          </article>
-
+        <section className="mt-6 grid gap-6">
           <article className="border border-foreground/12 bg-surface p-7">
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.26em] text-accent">Chemin rapide</p>
             <h2 className="font-serif text-4xl leading-none text-[var(--os)]">{isFr ? "Quoi ouvrir" : "What to open"}</h2>

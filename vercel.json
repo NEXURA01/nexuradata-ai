@@ -12,6 +12,11 @@
     ],
     "redirects": [
         {
+            "source": "/employe",
+            "destination": "/fr/employe",
+            "permanent": false
+        },
+        {
             "source": "/portal",
             "destination": "/fr/contact",
             "permanent": false

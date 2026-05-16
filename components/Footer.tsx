@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { LogoMark } from "./Logo";
+import { SealStamp } from "./SealStamp";
 
 export function Footer() {
   const locale = useLocale();
@@ -197,6 +198,11 @@ export function Footer() {
               {isFr ? "Témoins" : "Cookies"}
             </button>
           </div>
+        </div>
+
+        {/* Seal stamp */}
+        <div className="flex justify-center items-center py-12 opacity-70 hover:opacity-100 transition-opacity">
+          <SealStamp />
         </div>
       </div>
     </footer>

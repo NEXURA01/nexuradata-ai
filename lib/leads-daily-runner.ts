@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { createHash } from "crypto";
 import { sourceCampaignLeads, insertLeadsToSupabase, getLeadsForOutreach } from "@/lib/lead-sourcing";
 import { sendOutreachSequence } from "@/lib/outreach";
 import { getCampaignPlanForDate } from "@/lib/email-campaign";
@@ -30,15 +31,23 @@ function getSupabaseClient() {
   );
 }
 
-async function resolveRunMode(req: NextRequest, forcedMode?: "prepare" | "send") {
+async function resolveRunMode(req: NextRequest, forcedMode?: "prepare" | "send" | "preview") {
   if (forcedMode) {
     return forcedMode;
   }
 
   try {
     const body = await req.json();
-    if (body && typeof body === "object" && (body as Record<string, unknown>).mode === "prepare") {
-      return "prepare" as const;
+    if (body && typeof body === "object") {
+      const mode = (body as Record<string, unknown>).mode;
+
+      if (mode === "prepare") {
+        return "prepare" as const;
+      }
+
+      if (mode === "preview") {
+        return "preview" as const;
+      }
     }
   } catch {
     // ignore body parsing failures and use default mode
@@ -47,7 +56,12 @@ async function resolveRunMode(req: NextRequest, forcedMode?: "prepare" | "send")
   return "send" as const;
 }
 
-export async function runDailyLeads(req: NextRequest, forcedMode?: "prepare" | "send") {
+const hashLeadId = (leadId: string) => {
+  const salt = process.env.LEADS_PREVIEW_HASH_SALT || "nexura-outbound-preview";
+  return createHash("sha256").update(`${salt}:${leadId}`).digest("hex").slice(0, 16);
+};
+
+export async function runDailyLeads(req: NextRequest, forcedMode?: "prepare" | "send" | "preview") {
   try {
     const sourceTimeoutMs = Number(process.env.LEADS_SOURCE_TIMEOUT_MS || 55000);
     const outreachTimeoutMs = Number(process.env.LEADS_OUTREACH_TIMEOUT_MS || 35000);
@@ -151,6 +165,22 @@ export async function runDailyLeads(req: NextRequest, forcedMode?: "prepare" | "
       return jsonWithSecurity(
         { ok: false, error: "No leads available for outreach" },
         { status: 400 }
+      );
+    }
+
+    if (runMode === "preview") {
+      return jsonWithSecurity(
+        {
+          ok: true,
+          mode: "preview",
+          leads_sourced: newLeads.length,
+          leads_inserted: insertedIds.length,
+          leads_queued: leadsToContact.length,
+          leads_sent: 0,
+          leads_failed: 0,
+          queued_preview_ids: leadsToContact.slice(0, 20).map((lead) => hashLeadId(String(lead.id))),
+        },
+        { status: 200 }
       );
     }
 

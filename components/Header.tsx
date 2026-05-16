@@ -25,8 +25,8 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 border-b border-[#17181c]/18 bg-[#ece7db]/95 text-[#17181c] backdrop-blur-md">
-      <div className="hidden border-b border-[#17181c]/10 px-5 py-2 font-mono text-[9px] uppercase tracking-[0.24em] text-[#17181c]/46 md:block">
+    <header className="sticky top-0 z-50 border-b border-[#17181c]/18 bg-[#ece7db]/95 text-[#17181c] backdrop-blur-md">
+      <div className="hidden border-b border-[#17181c]/10 px-5 py-2 font-mono text-[10px] uppercase tracking-[0.24em] text-[#17181c]/46 md:block">
         <div className="mx-auto flex max-w-[1480px] items-center justify-between">
           <span>NXR · 0000 — Quiet Mechanism</span>
           <span>Operational Intelligence Atelier · MMXXVI</span>
@@ -41,7 +41,7 @@ export function Header() {
           <div className="hidden items-center border-l border-[#17181c]/16 pl-8 md:flex">
             <button
               onClick={switchLocale}
-              className="font-mono text-[12px] font-semibold uppercase tracking-[0.22em] text-[#17181c]/65 transition-colors hover:text-[#17181c]"
+              className="font-mono text-[13px] font-semibold uppercase tracking-[0.22em] text-[#17181c]/65 transition-colors hover:text-[#17181c]"
               aria-label={locale === "fr" ? "Switch to English" : "Passer en français"}
             >
               {locale === "fr" ? "EN" : "FR"}
@@ -54,14 +54,14 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#17181c]/62 transition-colors hover:text-[#17181c]"
+              className="font-mono text-[13px] font-semibold uppercase tracking-[0.22em] text-[#17181c]/62 transition-colors hover:text-[#17181c]"
             >
               {link.label}
             </Link>
           ))}
           <Link
             href="/contact"
-            className="border border-[#17181c]/28 px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#17181c] transition-colors hover:border-[#17181c] hover:bg-[#17181c] hover:text-[#ece7db]"
+            className="border border-[#17181c]/28 px-4 py-3 font-mono text-[13px] font-semibold uppercase tracking-[0.22em] text-[#17181c] transition-colors hover:border-[#17181c] hover:bg-[#17181c] hover:text-[#ece7db]"
           >
             {t("contact")} ↗
           </Link>

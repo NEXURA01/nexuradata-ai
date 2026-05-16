@@ -37,7 +37,10 @@ export function EmployeeAccessContent({ role }: EmployeeAccessContentProps) {
   const visibleLinks = employeeLinks.filter((item) => !item.adminOnly || isAdmin);
 
   async function handleLogout() {
-    await fetch("/api/employe/logout", { method: "POST" });
+    const response = await fetch("/api/employe/logout", { method: "POST" });
+    if (!response.ok) {
+      return;
+    }
     router.refresh();
   }
 

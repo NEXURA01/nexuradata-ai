@@ -80,9 +80,11 @@ export function Footer() {
   return (
     <footer className="border-t border-[rgba(11,13,16,0.12)] bg-[var(--os)] text-[var(--noir)]">
       <div className="mx-auto max-w-[1480px] px-6 md:px-8">
-        <div className="grid gap-12 border-b border-[rgba(11,13,16,0.10)] py-12 md:grid-cols-12 lg:py-16">
+        {/* Main content grid */}
+        <div className="grid gap-16 border-b border-[rgba(11,13,16,0.10)] py-16 md:grid-cols-12 lg:gap-20 lg:py-24">
+          {/* Branding section */}
           <div className="md:col-span-5">
-            <Link href="/" className="mb-8 inline-flex items-center gap-4 text-[var(--noir)] transition-opacity hover:opacity-70" aria-label="Nexura">
+            <Link href="/" className="mb-12 inline-flex items-center gap-4 text-[var(--noir)] transition-opacity hover:opacity-70" aria-label="Nexura">
               <LogoMark size={48} />
               <span className="font-serif text-[42px] leading-none tracking-[-0.01em]">Nexura</span>
             </Link>
@@ -91,16 +93,17 @@ export function Footer() {
             </p>
           </div>
 
+          {/* Navigation section */}
           <div className="md:col-span-3 md:col-start-7">
-            <span className="mb-7 block font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.42)]">
+            <span className="mb-8 block font-mono text-[9px] uppercase tracking-[0.32em] text-[rgba(11,13,16,0.48)]">
               {isFr ? "Commencer" : "Start"}
             </span>
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-6">
               {primaryLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="font-sans text-xl leading-none text-[rgba(11,13,16,0.64)] transition-colors hover:text-[var(--noir)]"
+                  className="font-sans text-lg leading-none text-[rgba(11,13,16,0.72)] transition-colors hover:text-[var(--copper)]"
                 >
                   {link.label}
                 </Link>
@@ -108,101 +111,132 @@ export function Footer() {
             </div>
           </div>
 
+          {/* Contact section */}
           <div className="md:col-span-4">
-            <span className="mb-7 block font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.42)]">
+            <span className="mb-8 block font-mono text-[9px] uppercase tracking-[0.32em] text-[rgba(11,13,16,0.48)]">
               {isFr ? "Contact direct" : "Direct contact"}
             </span>
-            <div className="flex flex-col gap-6">
-              <a href="mailto:contact@nexuradata.ca" className="break-all font-serif text-3xl leading-none tracking-[-0.01em] text-[var(--noir)] transition-opacity hover:opacity-70 md:text-4xl">
-                contact@nexuradata.ca
-              </a>
-              <Link
-                href="/contact"
-                className="w-fit border-y border-[rgba(11,13,16,0.22)] px-1 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.62)] transition-colors hover:border-[var(--noir)] hover:text-[var(--noir)]"
+            <div className="flex flex-col gap-8">
+              {/* Email CTA */}
+              <a 
+                href="mailto:contact@nexuradata.ca" 
+                className="group border-b border-[var(--copper)]/40 pb-6 transition-all hover:border-[var(--copper)]"
               >
-                {isFr ? "Formulaire court" : "Short form"}
-              </Link>
-              <span className="max-w-[26ch] text-sm leading-relaxed text-[rgba(11,13,16,0.46)]">
-                {isFr
-                  ? "Pour une demande, une évaluation ou une question simple."
-                  : "For a request, assessment, or simple question."}
-              </span>
-              <form onSubmit={submitNewsletter} className="mt-3 max-w-[420px] border-t border-[rgba(11,13,16,0.12)] pt-6">
-                <label htmlFor="footer-newsletter" className="mb-3 block font-mono text-[10px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.42)]">
+                <span className="block font-mono text-[9px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.52)] mb-3 group-hover:text-[var(--copper)] transition-colors">
+                  {isFr ? "Écrire" : "Write"}
+                </span>
+                <span className="break-all font-serif text-2xl leading-tight tracking-[-0.01em] text-[var(--noir)] group-hover:text-[var(--copper)] transition-colors md:text-3xl">
+                  contact@nexuradata.ca
+                </span>
+              </a>
+
+              {/* Form section */}
+              <div className="border-t border-[rgba(11,13,16,0.12)] pt-8">
+                <label htmlFor="footer-newsletter" className="mb-4 block font-mono text-[9px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.48)]">
                   {isFr ? "Diagnostic express" : "Express diagnostic"}
                 </label>
-                <div className="flex border border-[rgba(11,13,16,0.18)]">
-                  <input
-                    id="footer-newsletter"
-                    type="email"
-                    required
-                    value={newsletterEmail}
-                    onChange={(event) => setNewsletterEmail(event.target.value)}
-                    placeholder={isFr ? "courriel" : "email"}
-                    className="min-w-0 flex-1 bg-transparent px-3 py-3 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--noir)] outline-none placeholder:text-[rgba(11,13,16,0.34)]"
-                    disabled={newsletterStatus === "loading"}
-                  />
-                  <button
-                    type="submit"
-                    disabled={newsletterStatus === "loading"}
-                    className="border-l border-[rgba(11,13,16,0.18)] px-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[rgba(11,13,16,0.62)] transition-colors hover:bg-[var(--noir)] hover:text-[var(--os)] disabled:opacity-40"
-                  >
-                    {newsletterStatus === "loading" ? "..." : isFr ? "Recevoir" : "Get"}
-                  </button>
-                </div>
-                {newsletterStatus === "success" && (
-                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[rgba(11,13,16,0.72)]">
-                    {isFr ? "Diagnostic envoyé." : "Diagnostic sent."}
-                  </p>
-                )}
-                {newsletterStatus === "error" && (
-                  <p className="mt-3 text-sm text-[rgba(11,13,16,0.72)]">
-                    {isFr ? "Impossible d'inscrire ce courriel pour le moment." : "Could not subscribe this email right now."}
-                  </p>
-                )}
-              </form>
+                <form onSubmit={submitNewsletter} className="max-w-[420px]">
+                  <div className="flex border-2 border-[rgba(11,13,16,0.22)] bg-transparent transition-colors focus-within:border-[var(--copper)]">
+                    <input
+                      id="footer-newsletter"
+                      type="email"
+                      required
+                      value={newsletterEmail}
+                      onChange={(event) => setNewsletterEmail(event.target.value)}
+                      placeholder={isFr ? "courriel" : "email"}
+                      className="min-w-0 flex-1 bg-transparent px-4 py-3 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--noir)] outline-none placeholder:text-[rgba(11,13,16,0.32)]"
+                      disabled={newsletterStatus === "loading"}
+                    />
+                    <button
+                      type="submit"
+                      disabled={newsletterStatus === "loading"}
+                      className="border-l border-[rgba(11,13,16,0.22)] px-5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--noir)] transition-all hover:bg-[var(--copper)] hover:text-[var(--os)] hover:border-[var(--copper)] disabled:opacity-40"
+                    >
+                      {newsletterStatus === "loading" ? "..." : isFr ? "GO" : "GO"}
+                    </button>
+                  </div>
+                  {newsletterStatus === "success" && (
+                    <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--copper)]">
+                      {isFr ? "✓ Diagnostic envoyé" : "✓ Diagnostic sent"}
+                    </p>
+                  )}
+                  {newsletterStatus === "error" && (
+                    <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-[rgba(11,13,16,0.62)]">
+                      {isFr ? "Erreur — réessayer plus tard" : "Error — try again later"}
+                    </p>
+                  )}
+                </form>
+              </div>
+
+              {/* Short form link */}
+              <Link
+                href="/contact"
+                className="group w-fit border-b border-[rgba(11,13,16,0.22)] pb-2 font-mono text-[9px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.62)] transition-all hover:border-[var(--noir)] hover:text-[var(--noir)]"
+              >
+                {isFr ? "+ Formulaire complet" : "+ Full form"}
+              </Link>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col items-start justify-between gap-5 py-5 md:flex-row md:items-center">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.68)]">© 2026 NEXURA</span>
-            {legalLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="font-mono text-[10px] uppercase tracking-[0.2em] text-[rgba(11,13,16,0.68)] transition-colors hover:text-[var(--noir)]">
-                {link.label}
-              </Link>
-            ))}
-            <Link href="/employe" className="border border-accent/45 px-3 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-accent transition-colors hover:border-[var(--noir)] hover:bg-[var(--noir)] hover:text-[var(--os)]">
-              EMPLOYE
-            </Link>
+        {/* Seal section with divider */}
+        <div className="flex flex-col items-center gap-10 py-16 lg:py-20">
+          <div className="h-px w-16 bg-gradient-to-r from-transparent via-[var(--copper)]/30 to-transparent" />
+          <div className="opacity-75 hover:opacity-100 transition-opacity">
+            <SealStamp />
           </div>
-          <div className="flex flex-wrap items-center gap-8">
-            <div className="flex items-center gap-5">
-              <div className="h-3 w-3 bg-[#00c766]" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.68)]">
+          <div className="h-px w-16 bg-gradient-to-r from-transparent via-[rgba(11,13,16,0.12)] to-transparent" />
+        </div>
+
+        {/* Footer bottom - organized grid */}
+        <div className="border-t border-[rgba(11,13,16,0.10)] py-8">
+          <div className="grid gap-8 md:grid-cols-3 md:gap-12">
+            {/* Copyright and legal */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.52)]">
+                © 2026 NEXURA
+              </span>
+              {legalLinks.map((link, idx) => (
+                <span key={link.href} className="flex items-center gap-4">
+                  {idx > 0 && <span className="h-1 w-1 bg-[rgba(11,13,16,0.22)]" />}
+                  <Link href={link.href} className="font-mono text-[9px] uppercase tracking-[0.2em] text-[rgba(11,13,16,0.52)] transition-colors hover:text-[var(--noir)]">
+                    {link.label}
+                  </Link>
+                </span>
+              ))}
+            </div>
+
+            {/* Status indicator */}
+            <div className="flex items-center gap-3 md:justify-center">
+              <div className="h-2 w-2 rounded-full bg-[#00c766] animate-pulse" />
+              <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.52)]">
                 {isFr ? "SYSTÈMES OPÉRATIONNELS" : "SYSTEMS OPERATIONAL"}
               </span>
             </div>
-            <button
-              onClick={switchLocale}
-              className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.68)] transition-colors hover:text-[var(--noir)]"
-            >
-              {locale === "fr" ? "EN" : "FR"}
-            </button>
-            <button
-              type="button"
-              onClick={openCookiePreferences}
-              className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.68)] transition-colors hover:text-[var(--noir)]"
-            >
-              {isFr ? "Témoins" : "Cookies"}
-            </button>
-          </div>
-        </div>
 
-        {/* Seal stamp */}
-        <div className="flex justify-center items-center py-12 opacity-70 hover:opacity-100 transition-opacity">
-          <SealStamp />
+            {/* Controls */}
+            <div className="flex items-center justify-end gap-6">
+              <button
+                onClick={switchLocale}
+                className="font-mono text-[9px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.52)] transition-colors hover:text-[var(--noir)]"
+              >
+                {locale === "fr" ? "EN" : "FR"}
+              </button>
+              <button
+                type="button"
+                onClick={openCookiePreferences}
+                className="font-mono text-[9px] uppercase tracking-[0.24em] text-[rgba(11,13,16,0.52)] transition-colors hover:text-[var(--noir)]"
+              >
+                {isFr ? "Témoins" : "Cookies"}
+              </button>
+              <Link 
+                href="/employe" 
+                className="border border-[var(--copper)]/50 px-2.5 py-1.5 font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-[var(--copper)] transition-all hover:bg-[var(--copper)] hover:text-[var(--os)]"
+              >
+                EMPLOYE
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

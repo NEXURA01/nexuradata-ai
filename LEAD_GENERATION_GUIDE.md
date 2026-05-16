@@ -304,7 +304,7 @@ To automate the daily run at 9am:
 2. Trigger: **Schedule** (Daily, 9:00 AM EST)
 3. Action: **HTTP module** → POST to `/api/leads/run-daily` with optional `x-api-key` header
 4. Action: **Tools filter** → continue only when HTTP response status is `200`
-5. Action: **Slack/Email module** → notify results (`leads_sent`, `leads_failed`, `campaign.region`)
+5. Action: **Slack/Email module** → notify results (`leads_sent`, `leads_failed`); include `campaign.region` and `campaign.industries` only when the API response contains `campaign`
 
 Import-ready blueprint template:
 - `docs/make/lead-campaign-scenario.json`

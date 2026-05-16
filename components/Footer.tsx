@@ -151,12 +151,12 @@ export function Footer() {
                   </button>
                 </div>
                 {newsletterStatus === "success" && (
-                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[rgba(11,13,16,0.56)]">
+                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[rgba(11,13,16,0.72)]">
                     {isFr ? "Diagnostic envoyé." : "Diagnostic sent."}
                   </p>
                 )}
                 {newsletterStatus === "error" && (
-                  <p className="mt-3 text-sm text-[rgba(11,13,16,0.58)]">
+                  <p className="mt-3 text-sm text-[rgba(11,13,16,0.72)]">
                     {isFr ? "Impossible d'inscrire ce courriel pour le moment." : "Could not subscribe this email right now."}
                   </p>
                 )}
@@ -167,9 +167,9 @@ export function Footer() {
 
         <div className="flex flex-col items-start justify-between gap-5 py-5 md:flex-row md:items-center">
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.42)]">© 2026 NEXURA</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.68)]">© 2026 NEXURA</span>
             {legalLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="font-mono text-[10px] uppercase tracking-[0.2em] text-[rgba(11,13,16,0.42)] transition-colors hover:text-[var(--noir)]">
+              <Link key={link.href} href={link.href} className="font-mono text-[10px] uppercase tracking-[0.2em] text-[rgba(11,13,16,0.68)] transition-colors hover:text-[var(--noir)]">
                 {link.label}
               </Link>
             ))}
@@ -180,20 +180,20 @@ export function Footer() {
           <div className="flex flex-wrap items-center gap-8">
             <div className="flex items-center gap-5">
               <div className="h-3 w-3 bg-[#00c766]" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.42)]">
+              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.68)]">
                 {isFr ? "SYSTÈMES OPÉRATIONNELS" : "SYSTEMS OPERATIONAL"}
               </span>
             </div>
             <button
               onClick={switchLocale}
-              className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.42)] transition-colors hover:text-[var(--noir)]"
+              className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.68)] transition-colors hover:text-[var(--noir)]"
             >
               {locale === "fr" ? "EN" : "FR"}
             </button>
             <button
               type="button"
               onClick={openCookiePreferences}
-              className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.42)] transition-colors hover:text-[var(--noir)]"
+              className="font-mono text-[10px] uppercase tracking-[0.28em] text-[rgba(11,13,16,0.68)] transition-colors hover:text-[var(--noir)]"
             >
               {isFr ? "Témoins" : "Cookies"}
             </button>
